@@ -8,8 +8,6 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
 }
 
-def ROBOT_CLASS = "frc.team166.robot.Robot"
-
 repositories {
     mavenCentral()
 }
@@ -55,7 +53,7 @@ wrapper {
 }
 
 group = 'frc.team166'
-version = '2019.0.0-alpha1'
+version = '2019.0.0-alpha2'
 
 publishing {
     publications {

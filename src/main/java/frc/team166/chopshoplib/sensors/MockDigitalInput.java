@@ -7,7 +7,7 @@ public class MockDigitalInput extends SendableBase implements DigitalInputSource
 
     private boolean value;
 
-    public void setValue(boolean value) {
+    public void setValue(final boolean value) {
         this.value = value;
     }
 
@@ -17,7 +17,7 @@ public class MockDigitalInput extends SendableBase implements DigitalInputSource
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Digital Input");
         builder.addBooleanProperty("Value", this::getAsBoolean, this::setValue);
     }

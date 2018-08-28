@@ -8,16 +8,22 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public final class RobotUtils {
     private RobotUtils() {
     }
 
+    public static void clearPreferences() {
+        Preferences prefs = Preferences.getInstance();
+        for (String key : prefs.getKeys()) {
+            prefs.remove(key);
+        }
+    }
+
     public static Double[] toBoxed(final double... args) {
-        return DoubleStream.of(args)
-                .boxed()
-                .toArray(Double[]::new);
+        return DoubleStream.of(args).boxed().toArray(Double[]::new);
     }
 
     public static void logTelemetry() {
@@ -38,8 +44,7 @@ public final class RobotUtils {
         try (InputStream stream = RobotUtils.class.getResourceAsStream("/" + path);
                 InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
                 BufferedReader bufferedReader = new BufferedReader(reader)) {
-            return bufferedReader.lines()
-                    .collect(Collectors.joining("\n"));
+            return bufferedReader.lines().collect(Collectors.joining("\n"));
         } catch (IOException e) {
             return "";
         }

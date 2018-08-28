@@ -6,21 +6,23 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class CommandRobot extends TimedRobot {
 
     @Override
+    public void robotPeriodic() {
+        // Do not call the super method, remove the annoying print
+    }
+
+    @Override
     public void disabledPeriodic() {
-        Scheduler.getInstance()
-                .run();
+        Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance()
-                .run();
+        Scheduler.getInstance().run();
     }
 
     @Override
     public void teleopPeriodic() {
-        Scheduler.getInstance()
-                .run();
+        Scheduler.getInstance().run();
     }
 
     @Override

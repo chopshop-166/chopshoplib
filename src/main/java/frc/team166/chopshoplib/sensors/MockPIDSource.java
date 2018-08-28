@@ -10,12 +10,12 @@ public class MockPIDSource extends SensorBase implements PIDSource {
     private double value;
     private PIDSourceType sourceType;
 
-    public void pidSet(double newValue) {
+    public void pidSet(final double newValue) {
         value = newValue;
     }
 
     @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
+    public void setPIDSourceType(final PIDSourceType pidSource) {
         sourceType = pidSource;
     }
 
