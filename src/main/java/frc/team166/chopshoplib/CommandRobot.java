@@ -11,6 +11,11 @@ public class CommandRobot extends TimedRobot {
     }
 
     @Override
+    public void disabledInit() {
+        RobotUtils.resetAll(this);
+    }
+
+    @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
