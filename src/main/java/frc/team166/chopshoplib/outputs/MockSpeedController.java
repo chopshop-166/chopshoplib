@@ -1,13 +1,12 @@
 package frc.team166.chopshoplib.outputs;
 
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class MockSpeedController implements SendableSpeedController {
+public class MockSpeedController extends SendableBase implements SendableSpeedController {
 
     private double speed;
     private boolean isInverted;
-    private String name;
-    private String subsystem;
 
     @Override
     public void pidWrite(final double output) {
@@ -42,26 +41,6 @@ public class MockSpeedController implements SendableSpeedController {
     @Override
     public void stopMotor() {
         this.speed = 0.0;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getSubsystem() {
-        return subsystem;
-    }
-
-    @Override
-    public void setSubsystem(final String subsystem) {
-        this.subsystem = subsystem;
     }
 
     @Override
