@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team166.chopshoplib.commands.Display;
 
 public final class DashboardUtils {
     private DashboardUtils() {

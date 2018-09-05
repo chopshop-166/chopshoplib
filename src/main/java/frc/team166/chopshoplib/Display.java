@@ -1,4 +1,4 @@
-package frc.team166.chopshoplib.commands;
+package frc.team166.chopshoplib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;

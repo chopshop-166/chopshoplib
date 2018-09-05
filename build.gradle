@@ -53,7 +53,7 @@ wrapper {
 }
 
 group = 'frc.team166'
-version = '2019.0.0-alpha2'
+version = '2019.0.0-alpha2-SNAPSHOT'
 
 publishing {
     publications {
