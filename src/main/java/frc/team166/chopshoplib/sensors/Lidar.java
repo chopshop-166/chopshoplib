@@ -51,9 +51,7 @@ public class Lidar extends SensorBase implements PIDSource {
 
     public static class Settings {
         public enum OpMode {
-            SINGLESTEP,
-            CONTINOUS,
-            INVALID;
+            SINGLESTEP, CONTINOUS, INVALID;
 
             public static OpMode fromByte(final byte value) {
                 if (value == 0x43) {
@@ -67,11 +65,7 @@ public class Lidar extends SensorBase implements PIDSource {
         }
 
         public enum PresetConfiguration {
-            HIGHSPEED,
-            LONGRANGE,
-            HIGHACCURACY,
-            TINYLIDAR,
-            CUSTOM;
+            HIGHSPEED, LONGRANGE, HIGHACCURACY, TINYLIDAR, CUSTOM;
 
             public static PresetConfiguration fromByte(final byte value) {
                 switch (value) {
@@ -90,10 +84,7 @@ public class Lidar extends SensorBase implements PIDSource {
         }
 
         public enum LedIndicator {
-            OFF,
-            ON,
-            MEASUREMENT,
-            UNKNOWN;
+            OFF, ON, MEASUREMENT, UNKNOWN;
 
             public static LedIndicator fromInt(final int value) {
                 switch (value) {
@@ -110,8 +101,7 @@ public class Lidar extends SensorBase implements PIDSource {
         }
 
         public enum OffsetCalFlag {
-            CUSTOM,
-            DEFAULT
+            CUSTOM, DEFAULT;
         }
 
         public OpMode operationMode;
@@ -135,8 +125,7 @@ public class Lidar extends SensorBase implements PIDSource {
          * This will process the byte array and turn it into a more easily accessible
          * object.
          *
-         * @param response
-         *            A byte array with the response from a settings query
+         * @param response A byte array with the response from a settings query
          */
         public Settings(final byte[] response) {
             /* Process the zeroth byte */
@@ -144,13 +133,11 @@ public class Lidar extends SensorBase implements PIDSource {
             /* Process the first byte */
             preset = PresetConfiguration.fromByte(response[1]);
             /* Process the 2nd & 3rd bytes */
-            signalRateLimit = ByteBuffer.wrap(response, 2, 2)
-                    .getShort() / 65536.0;
+            signalRateLimit = ByteBuffer.wrap(response, 2, 2).getShort() / 65536.0;
             /* Process the 4th byte */
             sigmaEstimateLimate = response[4];
             /* Process the 5th & 6th bytes */
-            timingBudgetInMS = ByteBuffer.wrap(response, 5, 2)
-                    .getShort();
+            timingBudgetInMS = ByteBuffer.wrap(response, 5, 2).getShort();
             /* Process the 7th byte */
             if (response[7] == 0x0e) {
                 preRangeVcselPeriod = 14;
@@ -172,11 +159,9 @@ public class Lidar extends SensorBase implements PIDSource {
             ledIndicatorMode = LedIndicator.fromInt((response[14] & 0x6) >> 1);
             watchdogTimer = (response[14] & 1) != 0;
             /* Process the 15th, 16th, 17th, & 18th bytes */
-            offsetCalibrationValue = ByteBuffer.wrap(response, 15, 4)
-                    .getInt() / 1000;
+            offsetCalibrationValue = ByteBuffer.wrap(response, 15, 4).getInt() / 1000;
             /* Process the 19th, 20th, 21th, & 22th bytes */
-            crosstalkCalibrationValue = ByteBuffer.wrap(response, 19, 4)
-                    .getInt() / 65536;
+            crosstalkCalibrationValue = ByteBuffer.wrap(response, 19, 4).getInt() / 65536;
         }
 
     }
@@ -184,12 +169,9 @@ public class Lidar extends SensorBase implements PIDSource {
     /**
      * Create a LIDAR object
      *
-     * @param port
-     *            The I2C port the sensor is connected to
-     * @param kAddress
-     *            The I2C address the sensor is found at
-     * @param averageOver
-     *            The number of samples to average
+     * @param port        The I2C port the sensor is connected to
+     * @param kAddress    The I2C address the sensor is found at
+     * @param averageOver The number of samples to average
      */
     public Lidar(final Port port, final int kAddress, final int averageOver) {
         super();
@@ -207,10 +189,8 @@ public class Lidar extends SensorBase implements PIDSource {
     /**
      * Create a LIDAR object
      *
-     * @param port
-     *            The I2C port the sensor is connected to
-     * @param kAddress
-     *            The I2C address the sensor is found at
+     * @param port     The I2C port the sensor is connected to
+     * @param kAddress The I2C address the sensor is found at
      */
     public Lidar(final Port port, final int kAddress) {
         // Default to averaging over 25 samples
@@ -221,8 +201,7 @@ public class Lidar extends SensorBase implements PIDSource {
      * Set the maximum allowed standard deviation before the input is considered
      * invalid
      *
-     * @param sdLimit
-     *            The maximum standard deviation expected
+     * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
         synchronized (this) {
@@ -246,9 +225,8 @@ public class Lidar extends SensorBase implements PIDSource {
     /**
      * This function gets the distance from a LiDAR sensor
      *
-     * @param bFlag
-     *            True requests the distance in inches, false requests the distance
-     *            in mm
+     * @param bFlag True requests the distance in inches, false requests the
+     *              distance in mm
      */
     public Optional<Double> getDistanceOptional(final Boolean bFlag) {
         synchronized (this) {
@@ -262,9 +240,8 @@ public class Lidar extends SensorBase implements PIDSource {
     /**
      * This function gets the distance from a LiDAR sensor
      *
-     * @param bFlag
-     *            True requests the distance in inches, false requests the distance
-     *            in mm
+     * @param bFlag True requests the distance in inches, false requests the
+     *              distance in mm
      */
     public double getDistance(final Boolean bFlag) {
         return bFlag ? distanceMM / 25.4 : distanceMM;
@@ -298,8 +275,7 @@ public class Lidar extends SensorBase implements PIDSource {
     /**
      * Change the mode of the LiDAR sensor
      *
-     * @param mode
-     *            Which mode to change to
+     * @param mode Which mode to change to
      */
     public void setMode(final Settings.OpMode mode) {
         if (mode == Settings.OpMode.CONTINOUS) {
@@ -325,11 +301,11 @@ public class Lidar extends SensorBase implements PIDSource {
         builder.setSmartDashboardType("LiDAR");
         final NetworkTableEntry mmDistance = builder.getEntry("Distance");
         final NetworkTableEntry standardDeviation = builder.getEntry("Standard Deviation");
-        final NetworkTableEntry isValidEntry = builder.getEntry("isValid");
+        final NetworkTableEntry validityEntry = builder.getEntry("isValid");
         builder.setUpdateTable(() -> {
             mmDistance.setDouble(getDistance(true));
             synchronized (this) {
-                isValidEntry.setBoolean(isValid);
+                validityEntry.setBoolean(isValid);
                 standardDeviation.setDouble(stdDevValue);
             }
         });

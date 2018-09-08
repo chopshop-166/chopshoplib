@@ -10,15 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TimeoutCommand extends Command {
 
-    private final Command m_command;
+    private final Command command;
 
     /**
      * Wrap the provided command with a timeout
      * 
-     * @param timeout
-     *            The maximum time before timing out
-     * @param cmd
-     *            The command to time out
+     * @param timeout The maximum time before timing out
+     * @param cmd     The command to time out
      */
     public TimeoutCommand(final double timeout, final Command cmd) {
         this("Timeout(" + cmd.getName() + ", " + timeout + ")", timeout, cmd);
@@ -27,32 +25,29 @@ public class TimeoutCommand extends Command {
     /**
      * Wrap the provided command with a timeout
      * 
-     * @param name
-     *            The name for the timed out command
-     * @param timeout
-     *            The maximum time before timing out
-     * @param cmd
-     *            The command to time out
+     * @param name    The name for the timed out command
+     * @param timeout The maximum time before timing out
+     * @param cmd     The command to time out
      */
     public TimeoutCommand(final String name, final double timeout, final Command cmd) {
         super(name, timeout);
-        m_command = cmd;
+        command = cmd;
     }
 
     @Override
     protected void initialize() {
-        m_command.start();
+        command.start();
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || m_command.isCompleted();
+        return isTimedOut() || command.isCompleted();
     }
 
     @Override
     protected void end() {
-        if (m_command.isRunning()) {
-            m_command.cancel();
+        if (command.isRunning()) {
+            command.cancel();
         }
     }
 }

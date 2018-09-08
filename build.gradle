@@ -8,6 +8,9 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
 }
 
+group = 'frc.team166'
+version = '2019.0.0-alpha2-SNAPSHOT'
+
 repositories {
     mavenCentral()
 }
@@ -42,7 +45,7 @@ findbugs {
 }
 
 pmd {
-    toolVersion = "6.6.0"
+    toolVersion = "6.7.0"
     ignoreFailures = true
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
@@ -51,9 +54,6 @@ pmd {
 wrapper {
     gradleVersion = '4.10'
 }
-
-group = 'frc.team166'
-version = '2019.0.0-alpha2-SNAPSHOT'
 
 publishing {
     publications {
