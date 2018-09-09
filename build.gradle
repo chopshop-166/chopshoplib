@@ -13,12 +13,16 @@ version = '2019.0.0-alpha3-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://first.wpi.edu/FRC/roborio/maven/development/'
+    }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
 // and NavX.
 dependencies {
     api wpilib()
+    api group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.4.1-20180902173235-1178-g0b113ad'
     api ctre()
     api navx()
     api group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'

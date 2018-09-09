@@ -2,10 +2,10 @@ package frc.team166.chopshoplib.sensors;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class MockPIDSource extends SensorBase implements PIDSource {
+public class MockPIDSource extends SendableBase implements PIDSource {
 
     private double value;
     private PIDSourceType sourceType;

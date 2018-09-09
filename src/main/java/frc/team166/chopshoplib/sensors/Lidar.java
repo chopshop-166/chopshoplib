@@ -8,13 +8,13 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class Lidar extends SensorBase implements PIDSource {
+public class Lidar extends SendableBase implements PIDSource {
     private I2C i2cDevice;
     private Thread accessThread;
     private double distanceMM;

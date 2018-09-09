@@ -1,11 +1,11 @@
 package frc.team166.chopshoplib.sensors;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class MockPotentiometer extends SensorBase implements Potentiometer {
+public class MockPotentiometer extends SendableBase implements Potentiometer {
 
     private PIDSourceType sourceType;
     private double value;

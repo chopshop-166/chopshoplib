@@ -1,10 +1,10 @@
 package frc.team166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class MockGyro extends SensorBase implements Gyro {
+public class MockGyro extends SendableBase implements Gyro {
 
     private double angle;
 
