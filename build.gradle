@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'frc.team166'
-version = '2019.0.0-alpha2-SNAPSHOT'
+version = '2019.0.0-alpha3-SNAPSHOT'
 
 repositories {
     mavenCentral()
