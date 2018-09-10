@@ -78,8 +78,9 @@ public class ScriptCommand extends Command {
             @Override
             protected void initialize() {
                 final String script = Preferences.getInstance().getString(key, "");
-                final Command cmd = new ScriptCommand(key, script, engine);
-                cmd.start();
+                try (final Command cmd = new ScriptCommand(key, script, engine)) {
+                    cmd.start();
+                }
             }
         };
     }
