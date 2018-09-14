@@ -51,6 +51,7 @@ public class CommandChain extends CommandGroup {
      * Do a set of commands after the ones already provided
      * 
      * @param cmds The commands to run next
+     * @return this for chaining calls
      */
     public CommandChain then(final Command... cmds) {
         addCommands(cmds);
@@ -63,6 +64,7 @@ public class CommandChain extends CommandGroup {
      * @param timeout The maximum amount of time before moving on to the next
      *                commands
      * @param cmds    The commands to run next
+     * @return this for chaining calls
      */
     public CommandChain then(final double timeout, final Command... cmds) {
         addCommands(timeout, cmds);

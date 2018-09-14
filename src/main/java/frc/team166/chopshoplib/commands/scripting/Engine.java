@@ -9,22 +9,18 @@ public interface Engine {
     /**
      * Register a command function with the given prefix
      * 
-     * @param prefix
-     *            The prefix for use in scripts
-     * @param func
-     *            The function that creates the given command, given a double
-     *            parameter
+     * @param prefix The prefix for use in scripts
+     * @param func   The function that creates the given command, given a double
+     *               parameter
      */
     void registerHandler(String prefix, Function<String, Command> func);
 
     /**
      * Register a command function with the given prefix
      * 
-     * @param prefix
-     *            The prefix for use in scripts
-     * @param func
-     *            The function that creates the given command, given a double
-     *            parameter
+     * @param prefix The prefix for use in scripts
+     * @param func   The function that creates the given command, given a double
+     *               parameter
      */
     default void register(String prefix, Function<Double, Command> func) {
         registerHandler(prefix, s -> {
@@ -36,10 +32,8 @@ public interface Engine {
     /**
      * Register a command function with the given prefix
      * 
-     * @param prefix
-     *            The prefix for use in scripts
-     * @param func
-     *            The function that creates the given command
+     * @param prefix The prefix for use in scripts
+     * @param func   The function that creates the given command
      */
     default void register(String prefix, Supplier<Command> func) {
         registerHandler(prefix, s -> func.get());
@@ -48,8 +42,7 @@ public interface Engine {
     /**
      * Register a command function with the given prefix
      * 
-     * @param scriptable
-     *            The scriptable object to register
+     * @param scriptable The scriptable object to register
      */
     default void register(Scriptable scriptable) {
         scriptable.registerScriptable(this);
@@ -61,16 +54,15 @@ public interface Engine {
      * If no new command is specified for this prefix, its usage in scripts will be
      * an error
      * 
-     * @param prefix
-     *            The prefix for use in scripts
+     * @param prefix The prefix for use in scripts
      */
     void unregister(String prefix);
 
     /**
      * Create a sequence of commands from the provided script
      * 
-     * @param script
-     *            The text of the script to translate
+     * @param script The text of the script to translate
+     * @return The command chain generated from the script
      */
     Command parseScript(String script);
 }

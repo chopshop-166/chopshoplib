@@ -43,6 +43,16 @@ tasks.withType(FindBugs) {
     }
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
 findbugs {
     ignoreFailures = true
     excludeFilter = file("$rootProject.projectDir/config/findbugs-ignore.xml")
@@ -63,6 +73,8 @@ publishing {
     publications {
         chopshoplib(MavenPublication) {
             from components.java
+            artifact sourceJar
+            artifact javadocJar
         }
     }
 

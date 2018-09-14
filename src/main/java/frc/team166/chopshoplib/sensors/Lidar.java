@@ -28,6 +28,10 @@ public class Lidar extends SendableBase implements PIDSource {
     private double stdDevValue;
     private double stdDevLimit = 100;
 
+    public enum MeasurementType {
+        INCHES, MILLIMETERS;
+    }
+
     private class PollSensor implements Runnable {
 
         public PollSensor() {
@@ -225,26 +229,26 @@ public class Lidar extends SendableBase implements PIDSource {
     /**
      * This function gets the distance from a LiDAR sensor
      *
-     * @param bFlag True requests the distance in inches, false requests the
-     *              distance in mm
+     * @param meas The unit of measure to return in
+     * @return An Optional containing the distance if it exists
      */
-    public Optional<Double> getDistanceOptional(final Boolean bFlag) {
+    public Optional<Double> getDistanceOptional(final MeasurementType meas) {
         synchronized (this) {
             if (!isValid) {
                 return Optional.empty();
             }
         }
-        return Optional.of(getDistance(bFlag));
+        return Optional.of(getDistance(meas));
     }
 
     /**
      * This function gets the distance from a LiDAR sensor
      *
-     * @param bFlag True requests the distance in inches, false requests the
-     *              distance in mm
+     * @param meas The unit of measure to return in
+     * @return The distance
      */
-    public double getDistance(final Boolean bFlag) {
-        return bFlag ? distanceMM / 25.4 : distanceMM;
+    public double getDistance(final MeasurementType meas) {
+        return meas == MeasurementType.INCHES ? distanceMM / 25.4 : distanceMM;
     }
 
     private void readDistance() {
@@ -303,7 +307,7 @@ public class Lidar extends SendableBase implements PIDSource {
         final NetworkTableEntry standardDeviation = builder.getEntry("Standard Deviation");
         final NetworkTableEntry validityEntry = builder.getEntry("isValid");
         builder.setUpdateTable(() -> {
-            mmDistance.setDouble(getDistance(true));
+            mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
             synchronized (this) {
                 validityEntry.setBoolean(isValid);
                 standardDeviation.setDouble(stdDevValue);
@@ -325,6 +329,6 @@ public class Lidar extends SendableBase implements PIDSource {
 
     @Override
     public double pidGet() {
-        return getDistance(true);
+        return getDistance(MeasurementType.MILLIMETERS);
     }
 }

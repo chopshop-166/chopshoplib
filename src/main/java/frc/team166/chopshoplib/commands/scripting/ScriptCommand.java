@@ -68,6 +68,8 @@ public class ScriptCommand extends Command {
      * 
      * @param key    The preference name to read from
      * @param engine The scripting engine to use
+     * @return A command that, when run, reads the given preference, parses it, and
+     *         starts the resulting command
      */
     public static Command fromPreference(final String key, final Engine engine) {
         final Preferences prefs = Preferences.getInstance();
@@ -89,6 +91,8 @@ public class ScriptCommand extends Command {
      * Create a command that parses and runs a ScriptCommand from a preference
      * 
      * @param key The preference name to read from
+     * @return A command that, when run, reads the given preference, parses it, and
+     *         starts the resulting command
      */
     public static Command fromPreference(final String key) {
         return fromPreference(key, DEFAULT_ENGINE);
