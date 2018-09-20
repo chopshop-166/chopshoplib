@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 public class CommandUtils {
     private CommandUtils() {
@@ -75,7 +76,7 @@ public class CommandUtils {
     }
 
     public static Command from(final Runnable func) {
-        return new ActionCommand(func);
+        return new InstantCommand(func);
     }
 
     public static Command first(final Command... cmds) {
