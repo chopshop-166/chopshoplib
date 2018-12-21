@@ -2,7 +2,7 @@
 <FindBugsFilter>
 
     <Match>
-        <Class name="frc.team166.chopshoplib.sensors.Lidar$Settings"/>
+        <Class name="com.chopshop166.chopshoplib.sensors.Lidar$Settings"/>
         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
