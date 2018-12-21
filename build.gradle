@@ -21,9 +21,9 @@ repositories {
 dependencies {
     api wpilib()
     api group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.4.1-20180920141831-1187-gd2a5aaa'
-    api ctre()
-    api navx()
-    api group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    // api ctre()
+    // api navx()
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
 }
 
 // Force Java 8 Compatibility mode for deployed code,
