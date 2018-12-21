@@ -3,6 +3,8 @@ chopshoplib
 
 [![Chopshoplib on jitpack](https://jitpack.io/v/chopshop-166/chopshoplib.svg)](https://jitpack.io/#chopshop-166/chopshoplib)
 
+For documentation on classes, see the [javadocs](https://jitpack.io/com/github/chopshop-166/chopshoplib/latest/javadoc/)
+
 To use, in your `build.gradle` add the following:
 
 ```groovy
