@@ -1,22 +1,21 @@
 chopshoplib
 ===========
 
+[![Chopshoplib on jitpack](https://jitpack.io/v/chopshop-166/chopshoplib.svg)](https://jitpack.io/#chopshop-166/chopshoplib)
+
 To use, in your `build.gradle` add the following:
 
 ```groovy
 repositories {
     mavenCentral()
-    maven {
-        name "ChopShopLib"
-        url "https://chopshop-166.github.io/chopshoplib/"
-    }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
-    compile group: 'frc.team166', name: 'chopshoplib', version: '2019.0.0-alpha2', changing: true
+    compile group: 'com.github.chopshop-166', name: 'chopshoplib', version: '2019.0.0-alpha4'
 }
 ```
 
