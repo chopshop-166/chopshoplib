@@ -17,7 +17,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" >
+<xsl:transform version="2.0"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
    <xsl:output
          method="xml" indent="yes"
          doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -43,7 +44,7 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
       <title>
-        FindBugs (<xsl:value-of select="/BugCollection/@version" />)
+        SpotBugs (<xsl:value-of select="/BugCollection/@version" />)
          Analysis for
          <xsl:choose>
             <xsl:when test='string-length(/BugCollection/Project/@projectName)>0'><xsl:value-of select="/BugCollection/Project/@projectName" /></xsl:when>
@@ -310,7 +311,7 @@
    <body>
    <div id='content'>
       <h1>
-         FindBugs (<xsl:value-of select="/BugCollection/@version" />)
+         SpotBugs (<xsl:value-of select="/BugCollection/@version" />)
          Analysis for
          <xsl:choose>
             <xsl:when test='string-length(/BugCollection/Project/@projectName)>0'><xsl:value-of select="/BugCollection/Project/@projectName" /></xsl:when>
@@ -388,7 +389,7 @@
 <!-- generate summary report from stats -->
 <xsl:template name="generateSummary" >
 <div class='summary' id='bug-summary'>
-   <h2>FindBugs Analysis generated at: <xsl:value-of select="/BugCollection/FindBugsSummary/@timestamp" /></h2>
+   <h2>SpotBugs Analysis generated at: <xsl:value-of select="/BugCollection/FindBugsSummary/@timestamp" /></h2>
    <table>
       <tr>
          <th>Package</th>

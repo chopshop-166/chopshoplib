@@ -1,10 +1,8 @@
-import java.text.SimpleDateFormat
-
 plugins {
     id "java-library"
-    id "findbugs"
     id "pmd"
     id 'maven-publish'
+    id "com.github.spotbugs" version "1.6.6"
     id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
 }
 
@@ -35,14 +33,6 @@ compileJava {
     targetCompatibility = 1.8
 }
 
-tasks.withType(FindBugs) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/xsl/fancy.xsl')
-    }
-}
-
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
@@ -53,7 +43,19 @@ task javadocJar(type: Jar) {
     classifier = 'javadoc'
 }
 
-findbugs {
+ext {
+    SpotBugsTask = com.github.spotbugs.SpotBugsTask
+}
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/xsl/fancy.xsl')
+    }
+}
+
+spotbugs {
     ignoreFailures = true
     excludeFilter = file("$rootProject.projectDir/config/findbugs-ignore.xml")
 }
