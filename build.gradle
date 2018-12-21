@@ -7,7 +7,6 @@ plugins {
 }
 
 group = 'frc.team166'
-version = '2019.0.0-alpha3-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -34,13 +33,13 @@ compileJava {
 }
 
 task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
     classifier = 'sources'
+    from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar) {
-    from javadoc
     classifier = 'javadoc'
+    from javadoc
 }
 
 ext {
@@ -77,13 +76,6 @@ publishing {
             from components.java
             artifact sourceJar
             artifact javadocJar
-        }
-    }
-
-    repositories {
-        maven {
-            name = 'chopshoplib'
-            url = "file://${buildDir}/repo"
         }
     }
 }

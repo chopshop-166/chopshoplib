@@ -24,10 +24,13 @@ To use a local development version:
 
 ```groovy
 repositories {
-    maven {
-        name "Development ChopShopLib"
-        // This line should point to the location of chopshoplib
-        url "file://${projectDir}/../chopshoplib/build/repo"
-    }
+    mavenLocal()
+}
+
+dependencies {
+    // For now, these are separate groups
+    compile group: 'com.chopshop166', name: 'chopshoplib', version: 'unspecified'
 }
 ```
+
+Then run `./gradlew publishToMavenLocal` in this project before use in your robot project.
