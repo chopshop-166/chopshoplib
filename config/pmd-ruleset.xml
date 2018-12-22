@@ -27,6 +27,11 @@
         <exclude name="LoosePackageCoupling"/>
         <exclude name="TooManyMethods"/>
     </rule>
+    <rule ref="category/java/design.xml/TooManyFields">
+        <properties>
+            <property name="violationSuppressXPath" value=".[typeIs('com.chopshop166.chopshoplib.sensors.Lidar.Settings')]"/>
+        </properties>
+    </rule>
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentSize"/>
         <exclude name="CommentRequired"/>
