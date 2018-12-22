@@ -3,6 +3,10 @@ package com.chopshop166.chopshoplib.outputs;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * Mock speed controller that can be used to simulate a motor on a driver
+ * station.
+ */
 public class MockSpeedController extends SendableBase implements SendableSpeedController {
 
     private double speed;
