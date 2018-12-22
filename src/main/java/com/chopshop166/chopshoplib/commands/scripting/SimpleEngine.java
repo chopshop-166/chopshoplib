@@ -12,10 +12,14 @@ import com.chopshop166.chopshoplib.commands.CommandChain;
 import com.chopshop166.chopshoplib.commands.TimeoutCommand;
 
 /**
- * A simple language meant for creating series of commands Sets of commands are
- * separated with semicolons Commands to be run at the same time are separated
- * by pipes Command names are separated from their optional double arguments by
- * whitespace A command can be given a timeout with `timeout 5 mycommand`
+ * A simple language meant for creating series of commands.
+ * <ul>
+ * <li>Sets of commands are separated with semicolons.
+ * <li>Commands to be run at the same time are separated by pipes
+ * <li>Command names are separated from their optional double arguments by
+ * whitespace
+ * <li>A command can be given a timeout with {@code timeout 5 mycommand}
+ * </ul>
  */
 public class SimpleEngine implements Engine {
     private final Map<String, Function<String, Command>> handlers = new HashMap<String, Function<String, Command>>();
@@ -31,11 +35,9 @@ public class SimpleEngine implements Engine {
     /**
      * Register a command function with the given prefix
      * 
-     * @param prefix
-     *            The prefix for use in scripts
-     * @param func
-     *            The function that creates the given command, given a double
-     *            parameter
+     * @param prefix The prefix for use in scripts
+     * @param func   The function that creates the given command, given a double
+     *               parameter
      */
     @Override
     public void registerHandler(final String prefix, final Function<String, Command> func) {
@@ -48,8 +50,7 @@ public class SimpleEngine implements Engine {
      * If no new command is specified for this prefix, its usage in scripts will be
      * an error
      * 
-     * @param prefix
-     *            The prefix for use in scripts
+     * @param prefix The prefix for use in scripts
      */
     @Override
     public void unregister(final String prefix) {
@@ -63,12 +64,9 @@ public class SimpleEngine implements Engine {
     public Command parseScript(final String script) {
         final CommandChain result = new CommandChain(script);
         if (!"".equals(script)) {
-            for (final String groupStr : script.trim()
-                    .split(";")) {
-                final Command[] cmds = Arrays.stream(groupStr.split("\\|"))
-                        .map(String::trim)
-                        .map(this::parseSingleCommand)
-                        .toArray(Command[]::new);
+            for (final String groupStr : script.trim().split(";")) {
+                final Command[] cmds = Arrays.stream(groupStr.split("\\|")).map(String::trim)
+                        .map(this::parseSingleCommand).toArray(Command[]::new);
                 result.then(cmds);
             }
         }
@@ -78,8 +76,7 @@ public class SimpleEngine implements Engine {
     /**
      * Create a command from a string
      * 
-     * @param cmd
-     *            The name of the command to look up
+     * @param cmd The name of the command to look up
      */
     private Command parseSingleCommand(final String cmd) {
         Command resultCommand = null;
@@ -101,8 +98,7 @@ public class SimpleEngine implements Engine {
     /**
      * Create a command from a string
      * 
-     * @param args
-     *            The split arguments, including command name
+     * @param args The split arguments, including command name
      */
     private Command parseArgs(final String... args) {
         final Function<String, Command> constructor = handlers.get(args[0]);

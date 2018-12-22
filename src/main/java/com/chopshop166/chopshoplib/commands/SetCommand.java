@@ -6,8 +6,11 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * A declarative command class. Usable with a Consumer to create commands inside
- * the subsystems. Primary use is for assigning to "setter" functions.
+ * A declarative command class.
+ * <p>
+ * Usable with a Consumer to create commands inside the subsystems.
+ * <p>
+ * Primary use is for assigning to "setter" functions.
  */
 public class SetCommand<T> extends InstantCommand {
 

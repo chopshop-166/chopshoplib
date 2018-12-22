@@ -375,7 +375,7 @@ public class Lidar extends SendableBase implements PIDSource {
      * @param mode Which mode to change to
      */
     public void setMode(final Settings.OpMode mode) {
-        byte modeByte = mode.toByte();
+        final byte modeByte = mode.toByte();
         i2cDevice.writeBulk(new byte[] { 0x4d, modeByte });
     }
 

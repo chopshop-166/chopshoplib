@@ -5,31 +5,32 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitForChildren;
 
 /**
- * A declarative command sequence class. Allows creating command groups by
- * chaining calls to .then()
+ * A declarative command sequence class.
+ * <p>
+ * Allows creating command groups by chaining calls to {@link #then}
  */
 public class CommandChain extends CommandGroup {
 
     /**
-     * Create a CommandChain
+     * Create a CommandChain.
      */
     public CommandChain() {
         super();
     }
 
     /**
-     * Create a CommandChain with the given name
+     * Create a CommandChain with the given name.
      * 
-     * @param name The name of the command chain
+     * @param name The name of the command chain.
      */
     public CommandChain(final String name) {
         super(name);
     }
 
     /**
-     * Create a CommandChain preloaded with commands to be run in parallel
+     * Create a CommandChain preloaded with commands to be run in parallel.
      * 
-     * @param cmds The first commands to run
+     * @param cmds The first commands to run.
      */
     public CommandChain(final Command... cmds) {
         super();
@@ -37,10 +38,10 @@ public class CommandChain extends CommandGroup {
     }
 
     /**
-     * Create a CommandChain with a name and commands to run
+     * Create a CommandChain with a name and commands to run.
      * 
-     * @param name The name of the command chain
-     * @param cmds The first commands to run
+     * @param name The name of the command chain.
+     * @param cmds The first commands to run.
      */
     public CommandChain(final String name, final Command... cmds) {
         super(name);
@@ -48,10 +49,10 @@ public class CommandChain extends CommandGroup {
     }
 
     /**
-     * Do a set of commands after the ones already provided
+     * Do a set of commands after the ones already provided.
      * 
-     * @param cmds The commands to run next
-     * @return this for chaining calls
+     * @param cmds The commands to run next.
+     * @return {@code this} for chaining calls.
      */
     public CommandChain then(final Command... cmds) {
         addCommands(cmds);
@@ -59,12 +60,12 @@ public class CommandChain extends CommandGroup {
     }
 
     /**
-     * Do a set of commands after the ones already provided, with a timeout
+     * Do a set of commands after the ones already provided, with a timeout.
      * 
      * @param timeout The maximum amount of time before moving on to the next
-     *                commands
-     * @param cmds    The commands to run next
-     * @return this for chaining calls
+     *                commands.
+     * @param cmds    The commands to run next.
+     * @return {@code this} for chaining calls.
      */
     public CommandChain then(final double timeout, final Command... cmds) {
         addCommands(timeout, cmds);
@@ -72,9 +73,9 @@ public class CommandChain extends CommandGroup {
     }
 
     /**
-     * Add all provided commands as a group
+     * Add all provided commands as a group.
      * 
-     * @param cmds The commands to run next
+     * @param cmds The commands to run next.
      */
     private void addCommands(final Command... cmds) {
         if (cmds.length == 1) {
@@ -92,11 +93,11 @@ public class CommandChain extends CommandGroup {
     }
 
     /**
-     * Add all provided commands as a group with a timeout
+     * Add all provided commands as a group with a timeout.
      * 
      * @param timeout The maximum amount of time before moving on to the next
-     *                commands
-     * @param cmds    The commands to run next
+     *                commands.
+     * @param cmds    The commands to run next.
      */
     private void addCommands(final double timeout, final Command... cmds) {
         if (cmds.length == 1) {
