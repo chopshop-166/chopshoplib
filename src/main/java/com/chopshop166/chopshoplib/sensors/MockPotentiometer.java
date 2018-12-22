@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * A {@link Potentiometer} that can be controlled via the dashboard.
+ */
 public class MockPotentiometer extends SendableBase implements Potentiometer {
 
     private PIDSourceType sourceType;

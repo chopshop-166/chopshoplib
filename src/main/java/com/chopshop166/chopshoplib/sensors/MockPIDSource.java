@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * A {@link PIDSource} that can be controlled via the dashboard.
+ */
 public class MockPIDSource extends SendableBase implements PIDSource {
 
     private double value;

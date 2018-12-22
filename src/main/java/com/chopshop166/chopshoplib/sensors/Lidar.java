@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * LiDAR Sensor class.
+ */
 public class Lidar extends SendableBase implements PIDSource {
     private I2C i2cDevice;
     private Thread accessThread;
@@ -28,6 +31,9 @@ public class Lidar extends SendableBase implements PIDSource {
     private double stdDevValue;
     private double stdDevLimit = 100;
 
+    /**
+     * The scale to return measurements in.
+     */
     public enum MeasurementType {
         INCHES, MILLIMETERS;
     }
@@ -53,10 +59,27 @@ public class Lidar extends SendableBase implements PIDSource {
         }
     }
 
+    /**
+     * Settings received from the sensor.
+     */
     public static class Settings {
+        /**
+         * Mode of operation.
+         */
         public enum OpMode {
-            SINGLESTEP, CONTINOUS, INVALID;
+            /** Use pulsed wave. */
+            SINGLESTEP,
+            /** Use continuous wave. */
+            CONTINOUS,
+            /** Invalid state. */
+            INVALID;
 
+            /**
+             * Parse from the LiDAR's internal format.
+             * 
+             * @param value The raw byte to parse.
+             * @return The operation mode.
+             */
             public static OpMode fromByte(final byte value) {
                 if (value == 0x43) {
                     return CONTINOUS;
@@ -68,17 +91,35 @@ public class Lidar extends SendableBase implements PIDSource {
             }
         }
 
+        /**
+         * Preset configuration.
+         */
         public enum PresetConfiguration {
-            HIGHSPEED, LONGRANGE, HIGHACCURACY, TINYLIDAR, CUSTOM;
+            /** Optimized for high accuracy. */
+            HIGHACCURACY,
+            /** Optimized for long range measurements. */
+            LONGRANGE,
+            /** Optimized for high speed measurements. */
+            HIGHSPEED,
+            /** Preset is a tinyLIDAR. */
+            TINYLIDAR,
+            /** Custom settings. */
+            CUSTOM;
 
+            /**
+             * Parse from the LiDAR's internal format.
+             * 
+             * @param value The raw byte to parse.
+             * @return The preset in use.
+             */
             public static PresetConfiguration fromByte(final byte value) {
                 switch (value) {
-                case 0x53:
-                    return HIGHSPEED;
-                case 0x52:
-                    return LONGRANGE;
                 case 0x41:
                     return HIGHACCURACY;
+                case 0x52:
+                    return LONGRANGE;
+                case 0x53:
+                    return HIGHSPEED;
                 case 0x54:
                     return TINYLIDAR;
                 default:
@@ -87,9 +128,25 @@ public class Lidar extends SendableBase implements PIDSource {
             }
         }
 
+        /**
+         * The state of the LED indicator.
+         */
         public enum LedIndicator {
-            OFF, ON, MEASUREMENT, UNKNOWN;
+            /** The light is off. */
+            OFF,
+            /** The light is on. */
+            ON,
+            /** The light is used for measurement. */
+            MEASUREMENT,
+            /** The light is in an unknown state. */
+            UNKNOWN;
 
+            /**
+             * Parse from the LiDAR's internal format.
+             * 
+             * @param value The raw byte to parse.
+             * @return The preset in use.
+             */
             public static LedIndicator fromInt(final int value) {
                 switch (value) {
                 case 0:
@@ -104,8 +161,12 @@ public class Lidar extends SendableBase implements PIDSource {
             }
         }
 
+        /** Method of calculating the offset. */
         public enum OffsetCalFlag {
-            CUSTOM, DEFAULT;
+            /** Use custom calculation. */
+            CUSTOM,
+            /** Use default calculation. */
+            DEFAULT;
         }
 
         public OpMode operationMode;
@@ -289,6 +350,11 @@ public class Lidar extends SendableBase implements PIDSource {
         }
     }
 
+    /**
+     * Get the settings from the LiDAR.
+     * 
+     * @return A populated {@link Settings} object.
+     */
     public Settings querySettings() {
         final byte[] dataBuffer = new byte[23];
         i2cDevice.writeBulk(new byte[] { 0x51 });
@@ -296,6 +362,11 @@ public class Lidar extends SendableBase implements PIDSource {
         return new Settings(dataBuffer);
     }
 
+    /**
+     * Get the thread used for polling this LiDAR.
+     * 
+     * @return The {@link Thread} object.
+     */
     public Thread getAccessThread() {
         return accessThread;
     }

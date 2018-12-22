@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * A {@link Gyro} that can be controlled via the dashboard.
+ */
 public class MockGyro extends SendableBase implements Gyro {
 
     private double angle;

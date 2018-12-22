@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * A {@link DigitalInput} that acts as a {@link BooleanSupplier}.
+ */
 public interface DigitalInputSource extends Sendable, BooleanSupplier {
 
     static DigitalInputSource wrap(final DigitalInput input) {

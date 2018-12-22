@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * An {@link Accelerometer} that can be controlled via the dashboard.
+ */
 public class MockAccelerometer extends SendableBase implements Accelerometer {
 
     private double x;
@@ -11,18 +14,38 @@ public class MockAccelerometer extends SendableBase implements Accelerometer {
     private double z;
     private Range range;
 
+    /**
+     * Set the X value of the accelerometer.
+     * 
+     * @param newX The new value.
+     */
     public void setX(final double newX) {
         x = newX;
     }
 
+    /**
+     * Set the Y value of the accelerometer.
+     * 
+     * @param newY The new value.
+     */
     public void setY(final double newY) {
         y = newY;
     }
 
+    /**
+     * Set the Z value of the accelerometer.
+     * 
+     * @param newZ The new value.
+     */
     public void setZ(final double newZ) {
         z = newZ;
     }
 
+    /**
+     * Get the WPILib {@link Range} for this accelerometer.
+     * 
+     * @return The set range.
+     */
     public Range getRange() {
         return range;
     }
