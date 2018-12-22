@@ -38,23 +38,18 @@ public class Lidar extends SendableBase implements PIDSource {
         INCHES, MILLIMETERS;
     }
 
-    private class PollSensor implements Runnable {
-
-        public PollSensor() {
-            super();
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                /* Get the distance from the sensor */
-                readDistance();
-                /* Sensor updates at 60Hz, but we'll run this at 50 since the math is nicer */
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    /* We stop for nothing! */
-                }
+    /**
+     * Polling loop used by poll thread.
+     */
+    private void poll() {
+        while (true) {
+            /* Get the distance from the sensor */
+            readDistance();
+            /* Sensor updates at 60Hz, but we'll run this at 50 since the math is nicer */
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                /* We stop for nothing! */
             }
         }
     }
@@ -144,8 +139,8 @@ public class Lidar extends SendableBase implements PIDSource {
             /**
              * Parse from the LiDAR's internal format.
              * 
-             * @param value The raw byte to parse.
-             * @return The preset in use.
+             * @param value The raw int to parse.
+             * @return The LED state.
              */
             public static LedIndicator fromInt(final int value) {
                 switch (value) {
@@ -167,6 +162,20 @@ public class Lidar extends SendableBase implements PIDSource {
             CUSTOM,
             /** Use default calculation. */
             DEFAULT;
+
+            /**
+             * Parse from the LiDAR's internal format.
+             * 
+             * @param value The raw int to parse.
+             * @return The offset calculation being used.
+             */
+            public static OffsetCalFlag fromInt(final int value) {
+                if (value == 0) {
+                    return DEFAULT;
+                } else {
+                    return CUSTOM;
+                }
+            }
         }
 
         public OpMode operationMode;
@@ -216,11 +225,7 @@ public class Lidar extends SendableBase implements PIDSource {
             /* Process the 11th, 12th, & 13th bytes */
             stPalApi = String.format("%d.%d.%d", response[11], response[12], response[13]);
             /* Process the 14th byte */
-            if (((response[14] >> 3) & 1) == 0) {
-                offsetCalibration = OffsetCalFlag.DEFAULT;
-            } else {
-                offsetCalibration = OffsetCalFlag.CUSTOM;
-            }
+            offsetCalibration = OffsetCalFlag.fromInt((response[14] & 0x8) >> 3);
             ledIndicatorMode = LedIndicator.fromInt((response[14] & 0x6) >> 1);
             watchdogTimer = (response[14] & 1) != 0;
             /* Process the 15th, 16th, 17th, & 18th bytes */
@@ -246,7 +251,7 @@ public class Lidar extends SendableBase implements PIDSource {
         // Objects related to statistics
         samples = new double[averageOver];
 
-        accessThread = new Thread(new PollSensor());
+        accessThread = new Thread(this::poll);
         accessThread.setName(String.format("LiDAR-0x%x", kAddress));
         accessThread.start();
     }
@@ -329,11 +334,7 @@ public class Lidar extends SendableBase implements PIDSource {
             // If the standard deviation is really high then the sensor likely doesn't have
             // a valid reading.
             stdDevValue = stdDev.evaluate(samples, 0, isReset ? sampleIndex : samples.length);
-            if (stdDevValue >= stdDevLimit) {
-                isValid = false;
-            } else {
-                isValid = true;
-            }
+            isValid = (stdDevValue < stdDevLimit);
         }
     }
 
