@@ -3,6 +3,9 @@ package com.chopshop166.chopshoplib;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+/**
+ * A Robot that calls the command scheduler in its periodic functions.
+ */
 public class CommandRobot extends TimedRobot {
 
     @Override
