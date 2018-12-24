@@ -1,6 +1,4 @@
 /**
- * Additional {@link Command}s and related utilities.
+ * Additional utilities and classes for the command-based framework.
  */
 package com.chopshop166.chopshoplib.commands;
-
-import edu.wpi.first.wpilibj.command.Command;

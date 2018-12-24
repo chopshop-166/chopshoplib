@@ -42,7 +42,7 @@ public class MockAccelerometer extends SendableBase implements Accelerometer {
     }
 
     /**
-     * Get the WPILib {@link Range} for this accelerometer.
+     * Get the WPILib {@link Accelerometer.Range} for this accelerometer.
      * 
      * @return The set range.
      */
