@@ -2,6 +2,7 @@ package com.chopshop166.chopshoplib.sensors;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -42,7 +43,7 @@ public class MockAccelerometer extends SendableBase implements Accelerometer {
     }
 
     /**
-     * Get the WPILib {@link Accelerometer.Range} for this accelerometer.
+     * Get the WPILib {@link Range} for this accelerometer.
      * 
      * @return The set range.
      */
