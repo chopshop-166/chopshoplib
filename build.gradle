@@ -15,10 +15,12 @@ repositories {
     }
 }
 
+def wpiVersion = '2018.4.1-20181003000242-1213-gfd82153'
+
 dependencies {
     api wpilib()
-    implementation group: 'edu.wpi.first.ntcore', name: 'ntcore-java', version: '2018.4.1-20181003000242-1213-gfd82153'
-    api group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.4.1-20181003000242-1213-gfd82153'
+    implementation group: 'edu.wpi.first.ntcore', name: 'ntcore-java', version: wpiVersion
+    api group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: wpiVersion
     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
 }
 

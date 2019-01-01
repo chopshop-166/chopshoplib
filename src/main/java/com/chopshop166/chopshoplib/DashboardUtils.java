@@ -117,43 +117,8 @@ public final class DashboardUtils {
     /**
      * Put robot code build information onto the dashboard.
      * <p>
-     * This will fail without a Gradle task to generate build information. For
-     * instance:
-     * 
-     * <pre>
-     * {@code
-     * def runCommand = { String... args ->
-     *    def stdout = new ByteArrayOutputStream()
-     *    exec {
-     *        commandLine args
-     *        standardOutput = stdout
-     *    }
-     *    return stdout.toString().trim()
-     * }
-     *
-     * def getGitHash = { -> runCommand "git", "describe", "--always" }
-     *
-     * def getGitBranch = { -> runCommand "git", "rev-parse", "--abbrev-ref", "HEAD" }
-     *
-     * def getGitFilesChanged = { -> runCommand("git", "diff", "--name-only", "HEAD") }
-     *
-     * task versionTxt() {
-     *     doLast {
-     *         String resourcesDir = "$projectDir/src/main/resources"
-     *         def logDirBase = new File(resourcesDir)
-     *         logDirBase.mkdirs()
-     *         new File("$resourcesDir/branch.txt").text = getGitBranch()
-     *         new File("$resourcesDir/commit.txt").text = getGitHash()
-     *         new File("$resourcesDir/changes.txt").text = getGitFilesChanged()
-     *         new File("$resourcesDir/buildtime.txt").text =
-     *                  new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())
-     *     }
-     * }
-     *
-     * compileJava.dependsOn versionTxt
-     *
-     * }
-     * </pre>
+     * This will fail without a Gradle task to generate build information. See this
+     * ChopShopLib README for more information.
      */
     public static void logTelemetry() {
         final String branch = getResource("branch.txt");
