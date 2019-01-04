@@ -2,33 +2,22 @@ plugins {
     id "java-library"
     id "pmd"
     id 'maven-publish'
-    id "com.github.spotbugs" version "1.6.6"
-    id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
+    id "com.github.spotbugs" version "1.6.8"
+    id "edu.wpi.first.GradleRIO" version "2019.1.1"
 }
 
-group = 'frc.team166'
+group = 'com.chopshop166'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'http://first.wpi.edu/FRC/roborio/maven/development/'
-    }
 }
-
-def wpiVersion = '2018.4.1-20181003000242-1213-gfd82153'
 
 dependencies {
-    api wpilib()
-    implementation group: 'edu.wpi.first.ntcore', name: 'ntcore-java', version: wpiVersion
-    api group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: wpiVersion
+    api wpi.deps.wpilib()
+    api wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
-}
-
-// Force Java 8 Compatibility mode for deployed code,
-// in case the develoment system is using Java 10.
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 }
 
 task sourceJar(type: Jar) {
