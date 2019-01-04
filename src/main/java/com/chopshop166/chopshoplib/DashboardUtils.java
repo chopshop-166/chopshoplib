@@ -138,12 +138,16 @@ public final class DashboardUtils {
      * Get a resource as a string.
      */
     private static String getResource(final String path) {
-        try (InputStream stream = RobotUtils.class.getResourceAsStream("/" + path);
-                InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-                BufferedReader bufferedReader = new BufferedReader(reader)) {
-            return bufferedReader.lines().collect(Collectors.joining("\n"));
-        } catch (IOException e) {
-            return "";
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        final InputStream stream = loader.getResourceAsStream("/" + path);
+        if (stream != null) {
+            try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+                    BufferedReader bufferedReader = new BufferedReader(reader)) {
+                return bufferedReader.lines().collect(Collectors.joining("\n"));
+            } catch (IOException e) {
+                return "";
+            }
         }
+        return null;
     }
 }
