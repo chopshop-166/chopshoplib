@@ -93,6 +93,16 @@ public class Lidar extends SendableBase implements PIDSource {
                 }
                 return INVALID;
             }
+
+            /**
+             * Parse the LiDAR's internal format, including bitshifting.
+             * 
+             * @param value The raw byte to parse.
+             * @return The operation mode.
+             */
+            public static OpMode fromSettingsByte(final byte value) {
+                return fromByte(value);
+            }
         }
 
         /**
@@ -134,6 +144,16 @@ public class Lidar extends SendableBase implements PIDSource {
                 }
                 return CUSTOM;
             }
+
+            /**
+             * Parse the LiDAR's internal format, including bitshifting.
+             * 
+             * @param value The raw byte to parse.
+             * @return The operation mode.
+             */
+            public static PresetConfiguration fromSettingsByte(final byte value) {
+                return fromByte(value);
+            }
         }
 
         /**
@@ -173,6 +193,16 @@ public class Lidar extends SendableBase implements PIDSource {
                 }
                 return UNKNOWN;
             }
+
+            /**
+             * Parse from the LiDAR's internal format, including bitshifting.
+             * 
+             * @param value The raw int to parse.
+             * @return The LED state.
+             */
+            public static LedIndicator fromSensorByte(final byte value) {
+                return fromInt((value & 0x6) >> 1);
+            }
         }
 
         /**
@@ -206,6 +236,16 @@ public class Lidar extends SendableBase implements PIDSource {
                 } else {
                     return CUSTOM;
                 }
+            }
+
+            /**
+             * Parse from the LiDAR's internal format, including bitshifting.
+             * 
+             * @param value The raw int to parse.
+             * @return The offset calculation being used.
+             */
+            public static OffsetCalFlag fromSensorByte(final int value) {
+                return fromInt((value & 0x8) >> 3);
             }
         }
 
@@ -256,8 +296,8 @@ public class Lidar extends SendableBase implements PIDSource {
             /* Process the 11th, 12th, & 13th bytes */
             stPalApi = String.format("%d.%d.%d", response[11], response[12], response[13]);
             /* Process the 14th byte */
-            offsetCalibration = OffsetCalFlag.fromInt((response[14] & 0x8) >> 3);
-            ledIndicatorMode = LedIndicator.fromInt((response[14] & 0x6) >> 1);
+            offsetCalibration = OffsetCalFlag.fromSensorByte(response[14]);
+            ledIndicatorMode = LedIndicator.fromSensorByte(response[14]);
             watchdogTimer = (response[14] & 1) != 0;
             /* Process the 15th, 16th, 17th, & 18th bytes */
             offsetCalibrationValue = ByteBuffer.wrap(response, 15, 4).getInt() / 1000;
