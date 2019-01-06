@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Usable with a Consumer to create commands inside the subsystems.
  * <p>
  * Primary use is for assigning to "setter" functions.
+ * 
+ * @param T The type of the value to set.
  */
 public class SetCommand<T> extends InstantCommand {
 
