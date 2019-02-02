@@ -19,38 +19,73 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
     private CANPIDController controller;
 
     /**
-     * Create a wrapper object
+     * Create a wrapper object.
      * 
-     * @param encoder The encoder to wrap around
+     * @param encoder The encoder to wrap around.
      */
     public SparkMaxPID(final CANPIDController controller) {
         this.controller = controller;
     }
 
+    /**
+     * Set the control type of this controller.
+     * 
+     * @param controlType The control type to use.
+     */
     public void setControlType(ControlType controlType) {
         this.controlType = controlType;
     }
 
+    /**
+     * Get the control type of this controller.
+     * 
+     * @return The control type.
+     */
     public ControlType getControlType() {
         return controlType;
     }
 
+    /**
+     * Set the P value.
+     * 
+     * @param p The proportional value.
+     */
     public void setP(double p) {
         controller.setP(p);
     }
 
+    /**
+     * Set the I value.
+     * 
+     * @param i The integral value.
+     */
     public void setI(double i) {
         controller.setI(i);
     }
 
+    /**
+     * Set the D value.
+     * 
+     * @param d The derivative value.
+     */
     public void setD(double d) {
         controller.setD(d);
     }
 
+    /**
+     * Set the F value.
+     * 
+     * @param f The feed-forward value.
+     */
     public void setF(double f) {
         controller.setFF(f);
     }
 
+    /**
+     * Get the F value.
+     * 
+     * @return The feed-forward value.
+     */
     public double getF() {
         return controller.getFF();
     }
