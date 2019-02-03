@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * This class serves as a wrapper for a Joystick and all it's buttons.
  */
 public class ButtonXboxController extends XboxController {
-    private final Map<Integer, Button> buttons = new HashMap<Integer, Button>();
+    private final Map<Integer, Button> buttons = new HashMap<>();
 
     /**
      * Construct an instance of a joystick along with each button the joystick has.

@@ -22,7 +22,7 @@ import com.chopshop166.chopshoplib.commands.TimeoutCommand;
  * </ul>
  */
 public class SimpleEngine implements Engine {
-    private final Map<String, Function<String, Command>> handlers = new HashMap<String, Function<String, Command>>();
+    private final Map<String, Function<String, Command>> handlers = new HashMap<>();
 
     /**
      * Initialize the default handlers

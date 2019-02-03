@@ -16,7 +16,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
 
     private boolean isReversed;
     private double resetPoint;
-    private CANEncoder encoder;
+    private final CANEncoder encoder;
     private PIDSourceType pidSource;
 
     /**
@@ -25,6 +25,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
      * @param encoder The encoder to wrap around
      */
     public SparkMaxCounter(final CANEncoder encoder) {
+        super();
         this.encoder = encoder;
     }
 
@@ -33,8 +34,8 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
      * 
      * @return the distance in revolutions
      */
-    double getDistance() {
-        double position = (encoder.getPosition() - resetPoint);
+    public double getDistance() {
+        double position = encoder.getPosition() - resetPoint;
         if (isReversed) {
             position *= -1;
         }
@@ -46,7 +47,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
      * 
      * @return the velocity in rpm
      */
-    double getRate() {
+    public double getRate() {
         double velocity = encoder.getVelocity();
         if (isReversed) {
             velocity *= -1;
@@ -59,7 +60,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
      * 
      * @return true if reversed, otherwise false
      */
-    boolean getReverseDirection() {
+    public boolean isReverseDirection() {
         return isReversed;
     }
 
@@ -68,7 +69,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
      * 
      * @param isReversed true if the encoder is reversed, otherwise false
      */
-    void setReverseDirection(boolean isReversed) {
+    public void setReverseDirection(final boolean isReversed) {
         this.isReversed = isReversed;
     }
 
@@ -93,7 +94,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     }
 
     @Override
-    public void setMaxPeriod(double maxPeriod) {
+    public void setMaxPeriod(final double maxPeriod) {
         // This operation not supported, but needed for the interface
     }
 
@@ -104,7 +105,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     }
 
     @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
+    public void setPIDSourceType(final PIDSourceType pidSource) {
         this.pidSource = pidSource;
     }
 
@@ -126,7 +127,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
         builder.addDoubleProperty("Distance", this::get, null);

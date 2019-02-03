@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public interface PIDGyro extends Gyro, PIDSource, Sendable {
 
-    public static PIDGyro wrap(final PIDGyro encoder) {
+    static PIDGyro wrap(final PIDGyro encoder) {
         return encoder;
     }
 
-    public static <T extends Gyro & PIDSource & Sendable> PIDGyro wrap(final T gyro) {
+    static <T extends Gyro & PIDSource & Sendable> PIDGyro wrap(final T gyro) {
         return new PIDGyro() {
 
             @Override
@@ -88,18 +88,10 @@ public interface PIDGyro extends Gyro, PIDSource, Sendable {
         };
     }
 
-    public static PIDGyro mock() {
+    static PIDGyro mock() {
         return wrap(new GyroBase() {
             private double angle;
             private double rate;
-
-            public void setAngle(final double angle) {
-                this.angle = angle;
-            }
-
-            public void setRate(final double rate) {
-                this.rate = rate;
-            }
 
             @Override
             public double getAngle() {
@@ -118,17 +110,23 @@ public interface PIDGyro extends Gyro, PIDSource, Sendable {
 
             @Override
             public void calibrate() {
+                // Nothing to calibrate
             }
 
             @Override
             public void free() {
+                // Nothing to free (deprecated)
             }
 
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("Gyro");
-                builder.addDoubleProperty("Value", this::getAngle, this::setAngle);
-                builder.addDoubleProperty("Rate", this::getRate, this::setRate);
+                builder.addDoubleProperty("Value", this::getAngle, (angle) -> {
+                    this.angle = angle;
+                });
+                builder.addDoubleProperty("Rate", this::getRate, (rate) -> {
+                    this.rate = rate;
+                });
             }
         });
     }

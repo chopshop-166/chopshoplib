@@ -16,7 +16,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
 
     private double setpoint;
     private ControlType controlType;
-    private CANPIDController controller;
+    private final CANPIDController controller;
 
     /**
      * Create a wrapper object.
@@ -24,6 +24,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * @param encoder The encoder to wrap around.
      */
     public SparkMaxPID(final CANPIDController controller) {
+        super();
         this.controller = controller;
     }
 
@@ -32,7 +33,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * 
      * @param controlType The control type to use.
      */
-    public void setControlType(ControlType controlType) {
+    public void setControlType(final ControlType controlType) {
         this.controlType = controlType;
     }
 
@@ -50,7 +51,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * 
      * @param p The proportional value.
      */
-    public void setP(double p) {
+    public void setP(final double p) {
         controller.setP(p);
     }
 
@@ -59,7 +60,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * 
      * @param i The integral value.
      */
-    public void setI(double i) {
+    public void setI(final double i) {
         controller.setI(i);
     }
 
@@ -68,7 +69,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * 
      * @param d The derivative value.
      */
-    public void setD(double d) {
+    public void setD(final double d) {
         controller.setD(d);
     }
 
@@ -77,7 +78,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
      * 
      * @param f The feed-forward value.
      */
-    public void setF(double f) {
+    public void setF(final double f) {
         controller.setFF(f);
     }
 
@@ -91,7 +92,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
     }
 
     @Override
-    public void setPID(double p, double i, double d) {
+    public void setPID(final double p, final double i, final double d) {
         setP(p);
         setI(i);
         setD(d);
@@ -113,7 +114,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
     }
 
     @Override
-    public void setSetpoint(double setpoint) {
+    public void setSetpoint(final double setpoint) {
         this.setpoint = setpoint;
         controller.setReference(setpoint, controlType);
     }
@@ -130,10 +131,11 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
 
     @Override
     public void reset() {
+        // Nothing to reset
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("PIDController");
         builder.setSafeState(this::reset);
         builder.addDoubleProperty("p", this::getP, this::setP);
