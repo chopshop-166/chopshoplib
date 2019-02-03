@@ -21,7 +21,7 @@ public class SparkMaxPID extends SendableBase implements PIDInterface {
     /**
      * Create a wrapper object.
      * 
-     * @param encoder The encoder to wrap around.
+     * @param controller The PID controller to wrap around.
      */
     public SparkMaxPID(final CANPIDController controller) {
         super();
