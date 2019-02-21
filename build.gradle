@@ -3,7 +3,7 @@ plugins {
     id "pmd"
     id 'maven-publish'
     id "com.github.spotbugs" version "1.6.9"
-    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    id "edu.wpi.first.GradleRIO" version "2019.3.2"
 }
 
 group = 'com.chopshop166'

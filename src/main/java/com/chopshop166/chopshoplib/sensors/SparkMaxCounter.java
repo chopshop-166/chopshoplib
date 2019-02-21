@@ -17,7 +17,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     private boolean isReversed;
     private double resetPoint;
     private final CANEncoder encoder;
-    private PIDSourceType pidSource;
+    private PIDSourceType pidSource = PIDSourceType.kDisplacement;
 
     /**
      * Create a wrapper object
@@ -122,7 +122,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
         case kRate:
             return getRate();
         default:
-            return 0.0;
+            return Double.NaN;
         }
     }
 
