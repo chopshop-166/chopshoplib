@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public interface PIDGyro extends Gyro, PIDSource, Sendable {
 
-    static PIDGyro wrap(final PIDGyro encoder) {
-        return encoder;
+    static PIDGyro wrap(final PIDGyro gyro) {
+        return gyro;
     }
 
     static <T extends Gyro & PIDSource & Sendable> PIDGyro wrap(final T gyro) {
