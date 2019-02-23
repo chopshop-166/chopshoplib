@@ -1,9 +1,10 @@
 package com.chopshop166.chopshoplib.triggers;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * A trigger that responds to a function reference ({@link BooleanSupplier}).
@@ -45,6 +46,18 @@ public class XboxTrigger extends BooleanTrigger {
                 return controller.getRawAxis(axis) < -0.5;
             }
         });
+        this.controller = controller;
+    }
+
+    /**
+     * Create a trigger from a controller axis.
+     * 
+     * @param controller The controller to use.
+     * @param axis       The axis to check against.
+     * @param operation  The operation to run on the axis value.
+     */
+    public XboxTrigger(final XboxController controller, final int axis, final Function<Double, Boolean> operation) {
+        super(() -> operation.apply(controller.getRawAxis(axis)));
         this.controller = controller;
     }
 
