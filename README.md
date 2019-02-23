@@ -16,9 +16,11 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2019.0.0-alpha6'
+    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2019.2.1'
 }
 ```
+
+See [The release page](https://github.com/chopshop-166/chopshoplib/releases) for a list showing the latest tags.
 
 To use a local development version:
 
