@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.commands.buttons;
+package com.chopshop166.chopshoplib.triggers;
 
 import static java.util.Arrays.stream;
 
