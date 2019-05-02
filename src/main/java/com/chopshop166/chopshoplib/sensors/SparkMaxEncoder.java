@@ -2,8 +2,6 @@ package com.chopshop166.chopshoplib.sensors;
 
 import com.revrobotics.CANEncoder;
 
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -12,51 +10,54 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * A wrapper for the {@link CANEncoder} provided by REV Robotics, to implement
  * WPIlib interfaces.
  */
-public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSource {
+public class SparkMaxEncoder extends SendableBase implements EncoderInterface {
 
     private boolean isReversed;
     private double resetPoint;
+    private double scaleFactor;
     private final CANEncoder encoder;
     private PIDSourceType pidSource = PIDSourceType.kDisplacement;
 
     /**
-     * Create a wrapper object
+     * Create a wrapper object.
      * 
      * @param encoder The encoder to wrap around
      */
-    public SparkMaxCounter(final CANEncoder encoder) {
+    public SparkMaxEncoder(final CANEncoder encoder) {
         super();
         this.encoder = encoder;
     }
 
     /**
-     * Get the distance travelled
+     * Get the distance travelled.
      * 
      * @return the distance in revolutions
      */
+    @Override
     public double getDistance() {
         double position = encoder.getPosition() - resetPoint;
         if (isReversed) {
             position *= -1;
         }
-        return position;
+        return position * scaleFactor;
     }
 
     /**
-     * Get the velocity of the encoder
+     * Get the velocity of the encoder.
      * 
      * @return the velocity in rpm
      */
+    @Override
     public double getRate() {
         double velocity = encoder.getVelocity();
         if (isReversed) {
             velocity *= -1;
         }
-        return velocity;
+        return velocity * scaleFactor;
     }
 
     /**
-     * Get if the encoder is reversed
+     * Get if the encoder is reversed.
      * 
      * @return true if reversed, otherwise false
      */
@@ -65,7 +66,7 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     }
 
     /**
-     * Set if the encoder is reversed
+     * Set if the encoder is reversed.
      * 
      * @param isReversed true if the encoder is reversed, otherwise false
      */
@@ -79,29 +80,13 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
     }
 
     @Override
-    public boolean getStopped() {
+    public boolean isStopped() {
         return encoder.getVelocity() == 0;
     }
 
     @Override
-    public boolean getDirection() {
+    public boolean isMovingForward() {
         return encoder.getVelocity() >= 0.0;
-    }
-
-    @Override
-    public int get() {
-        return (int) pidGet();
-    }
-
-    @Override
-    public void setMaxPeriod(final double maxPeriod) {
-        // This operation not supported, but needed for the interface
-    }
-
-    @Override
-    public double getPeriod() {
-        // This operation not supported, but needed for the interface
-        return 0;
     }
 
     @Override
@@ -126,12 +111,29 @@ public class SparkMaxCounter extends SendableBase implements CounterBase, PIDSou
         }
     }
 
+    /**
+     * Sets the scale factor used to convert encoder values to useful units.
+     * 
+     * @param scaleFactor the scaleFactor to set
+     */
+    public void setScaleFactor(final double scaleFactor) {
+        this.scaleFactor = scaleFactor;
+    }
+
+    /**
+     * Return the scale factor used to convert the encoder values to useful units.
+     * 
+     * @return the scale factor
+     */
+    public double getScaleFactor() {
+        return scaleFactor;
+    }
+
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
-        builder.addDoubleProperty("Distance", this::get, null);
-        builder.addDoubleProperty("Distance per Tick", () -> 1.0, null);
+        builder.addDoubleProperty("Distance", this::getDistance, null);
+        builder.addDoubleProperty("Distance per Tick", this::getScaleFactor, this::setScaleFactor);
     }
-
 }
