@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib;
 
 import java.lang.reflect.Field;
+import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
 
 import edu.wpi.first.wpilibj.Preferences;
@@ -58,5 +59,63 @@ public final class RobotUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Clamp a value between bounds.
+     * 
+     * @param minBound The lowest possible value.
+     * @param maxBound The highest possible value
+     * @param value    The value to clamp.
+     * @return The provided value, clamped between minBound and maxBound.
+     */
+    public static double clamp(double minBound, double maxBound, double value) {
+        return Math.max(minBound, Math.min(value, maxBound));
+    }
+
+    /**
+     * Clamp a value between bounds.
+     * 
+     * @param minBound The lowest possible value.
+     * @param maxBound The highest possible value
+     * @param value    The value to clamp.
+     * @return The provided value, clamped between minBound and maxBound.
+     */
+    public static float clamp(float minBound, float maxBound, float value) {
+        return Math.max(minBound, Math.min(value, maxBound));
+    }
+
+    /**
+     * Clamp a value between bounds.
+     * 
+     * @param minBound The lowest possible value.
+     * @param maxBound The highest possible value
+     * @param value    The value to clamp.
+     * @return The provided value, clamped between minBound and maxBound.
+     */
+    public static int clamp(int minBound, int maxBound, int value) {
+        return Math.max(minBound, Math.min(value, maxBound));
+    }
+
+    /**
+     * Clamp a value between bounds.
+     * 
+     * @param minBound The lowest possible value.
+     * @param maxBound The highest possible value
+     * @param value    The value to clamp.
+     * @return The provided value, clamped between minBound and maxBound.
+     */
+    public static long clamp(long minBound, long maxBound, long value) {
+        return Math.max(minBound, Math.min(value, maxBound));
+    }
+
+    /**
+     * Negate a boolean supplier.
+     * 
+     * @param func The base function
+     * @return A function that returns true when func returns false, and vice versa.
+     */
+    public static BooleanSupplier not(BooleanSupplier func) {
+        return () -> !func.getAsBoolean();
     }
 }

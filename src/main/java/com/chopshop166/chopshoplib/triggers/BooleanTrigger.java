@@ -2,6 +2,8 @@ package com.chopshop166.chopshoplib.triggers;
 
 import java.util.function.BooleanSupplier;
 
+import com.chopshop166.chopshoplib.RobotUtils;
+
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
@@ -17,7 +19,7 @@ public class BooleanTrigger extends Trigger {
      * @return A trigger object.
      */
     public static BooleanTrigger not(final BooleanSupplier supplier) {
-        return new BooleanTrigger(() -> !supplier.getAsBoolean());
+        return new BooleanTrigger(RobotUtils.not(supplier));
     }
 
     /**
