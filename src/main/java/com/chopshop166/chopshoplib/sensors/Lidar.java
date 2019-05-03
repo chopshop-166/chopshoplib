@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
@@ -86,12 +87,7 @@ public class Lidar extends SendableBase implements PIDSource {
              * @return The operation mode.
              */
             public static OpMode fromByte(final byte value) {
-                for (final OpMode mode : values()) {
-                    if (value == mode.value) {
-                        return mode;
-                    }
-                }
-                return INVALID;
+                return Arrays.stream(values()).filter(v -> v.value == value).findFirst().orElse(INVALID);
             }
 
             /**
@@ -137,12 +133,7 @@ public class Lidar extends SendableBase implements PIDSource {
              * @return The preset in use.
              */
             public static PresetConfiguration fromByte(final byte value) {
-                for (final PresetConfiguration conf : values()) {
-                    if (value == conf.value) {
-                        return conf;
-                    }
-                }
-                return CUSTOM;
+                return Arrays.stream(values()).filter(conf -> conf.value == value).findFirst().orElse(CUSTOM);
             }
 
             /**
@@ -186,12 +177,7 @@ public class Lidar extends SendableBase implements PIDSource {
              * @return The LED state.
              */
             public static LedIndicator fromInt(final int value) {
-                for (final LedIndicator ind : values()) {
-                    if (value == ind.value) {
-                        return ind;
-                    }
-                }
-                return UNKNOWN;
+                return Arrays.stream(values()).filter(v -> v.value == value).findFirst().orElse(UNKNOWN);
             }
 
             /**
