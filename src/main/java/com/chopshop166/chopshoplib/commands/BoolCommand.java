@@ -12,12 +12,6 @@ public class BoolCommand extends Command {
 
     private final BooleanSupplier supplier;
 
-    public static BooleanSupplier not(final BooleanSupplier supplier) {
-        return () -> {
-            return !supplier.getAsBoolean();
-        };
-    }
-
     /**
      * Create the command.
      * 
