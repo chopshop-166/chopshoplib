@@ -1,6 +1,5 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Sendable;
@@ -86,49 +85,6 @@ public interface PIDGyro extends Gyro, PIDSource, Sendable {
                 gyro.initSendable(builder);
             }
         };
-    }
-
-    static PIDGyro mock() {
-        return wrap(new GyroBase() {
-            private double angle;
-            private double rate;
-
-            @Override
-            public double getAngle() {
-                return angle;
-            }
-
-            @Override
-            public double getRate() {
-                return rate;
-            }
-
-            @Override
-            public void reset() {
-                angle = 0;
-            }
-
-            @Override
-            public void calibrate() {
-                // Nothing to calibrate
-            }
-
-            @Override
-            public void free() {
-                // Nothing to free (deprecated)
-            }
-
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.setSmartDashboardType("Gyro");
-                builder.addDoubleProperty("Value", this::getAngle, (angle) -> {
-                    this.angle = angle;
-                });
-                builder.addDoubleProperty("Rate", this::getRate, (rate) -> {
-                    this.rate = rate;
-                });
-            }
-        });
     }
 
 }
