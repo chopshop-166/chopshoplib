@@ -50,6 +50,7 @@ public class MockSpeedController extends SendableBase implements SendableSpeedCo
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Speed Controller");
+        builder.setActuator(true);
         builder.setSafeState(this::disable);
         builder.addDoubleProperty("Value", this::get, this::set);
     }
