@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 /**
  * A {@link DigitalOutput} that records its PWM rate.
  */
-public class DigitalOutputDutyCycle extends DigitalOutput {
+public class DigitalOutputDutyCycle extends DigitalOutput implements DigitalOutputInterface {
 
     private double mRate;
 
@@ -48,6 +48,7 @@ public class DigitalOutputDutyCycle extends DigitalOutput {
      * 
      * @return The rate [0..1].
      */
+    @Override
     public double getPWMRate() {
         return mRate;
     }
