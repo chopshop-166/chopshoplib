@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public final class WrappedSolenoid extends Solenoid implements SolenoidInterface {
 
-    public WrappedSolenoid(int channel) {
+    public WrappedSolenoid(final int channel) {
         super(channel);
     }
 
-    public WrappedSolenoid(int modulenumber, int channel) {
+    public WrappedSolenoid(final int modulenumber, final int channel) {
         super(modulenumber, channel);
     }
 }

@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public final class WrappedDoubleSolenoid extends DoubleSolenoid implements DoubleSolenoidInterface {
 
-    public WrappedDoubleSolenoid(int forwardChannel, int reverseChannel) {
+    public WrappedDoubleSolenoid(final int forwardChannel, final int reverseChannel) {
         super(forwardChannel, reverseChannel);
     }
 
-    public WrappedDoubleSolenoid(int modulenumber, int forwardChannel, int reverseChannel) {
+    public WrappedDoubleSolenoid(final int modulenumber, final int forwardChannel, final int reverseChannel) {
         super(modulenumber, forwardChannel, reverseChannel);
     }
 }

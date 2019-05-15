@@ -14,7 +14,7 @@ public final class MockSolenoid extends SendableBase implements SolenoidInterfac
     private boolean value;
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Solenoid");
         builder.setActuator(true);
         builder.setSafeState(() -> set(false));
@@ -22,7 +22,7 @@ public final class MockSolenoid extends SendableBase implements SolenoidInterfac
     }
 
     @Override
-    public void set(boolean value) {
+    public void set(final boolean value) {
         this.value = value;
     }
 
@@ -37,7 +37,7 @@ public final class MockSolenoid extends SendableBase implements SolenoidInterfac
     }
 
     @Override
-    public void setPulseDuration(double durationSeconds) {
+    public void setPulseDuration(final double durationSeconds) {
         // Not implemented
     }
 

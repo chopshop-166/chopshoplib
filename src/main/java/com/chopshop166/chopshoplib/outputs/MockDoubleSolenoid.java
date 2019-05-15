@@ -13,7 +13,7 @@ public final class MockDoubleSolenoid extends SendableBase implements DoubleSole
     private Value value;
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Double Solenoid");
         builder.setActuator(true);
         builder.setSafeState(() -> set(Value.kOff));
@@ -29,7 +29,7 @@ public final class MockDoubleSolenoid extends SendableBase implements DoubleSole
     }
 
     @Override
-    public void set(Value value) {
+    public void set(final Value value) {
         this.value = value;
     }
 

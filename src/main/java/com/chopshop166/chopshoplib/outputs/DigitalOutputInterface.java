@@ -12,21 +12,21 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      *
      * @param value true is on, off is false.
      */
-    public void set(boolean value);
+    void set(boolean value);
 
     /**
      * Gets the value being output from the Digital Output.
      *
      * @return the state of the digital output.
      */
-    public boolean get();
+    boolean get();
 
     /**
      * Generate a single pulse. There can only be a single pulse going at any time.
      *
      * @param pulseLength The length of the pulse.
      */
-    public void pulse(final double pulseLength);
+    void pulse(final double pulseLength);
 
     /**
      * Determine if the pulse is still going. Determine if a previously started
@@ -34,7 +34,7 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      *
      * @return true if pulsing
      */
-    public boolean isPulsing();
+    boolean isPulsing();
 
     /**
      * Change the PWM frequency of the PWM output on a Digital Output line.
@@ -48,7 +48,7 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      *
      * @param rate The frequency to output all digital output PWM signals.
      */
-    public void setPWMRate(double rate);
+    void setPWMRate(double rate);
 
     /**
      * Enable a PWM Output on this line.
@@ -66,7 +66,7 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      *
      * @param initialDutyCycle The duty-cycle to start generating. [0..1]
      */
-    public void enablePWM(double initialDutyCycle);
+    void enablePWM(double initialDutyCycle);
 
     /**
      * Change this line from a PWM output back to a static Digital Output line.
@@ -74,7 +74,7 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      * <p>
      * Free up one of the 6 DO PWM generator resources that were in use.
      */
-    public void disablePWM();
+    void disablePWM();
 
     /**
      * Change the duty-cycle that is being generated on the line.
@@ -85,13 +85,13 @@ public interface DigitalOutputInterface extends Sendable, AutoCloseable {
      *
      * @param dutyCycle The duty-cycle to change to. [0..1]
      */
-    public void updateDutyCycle(double dutyCycle);
+    void updateDutyCycle(double dutyCycle);
 
     /**
      * Get the PWM rate (duty cycle) of the output.
      * 
      * @return The rate [0..1].
      */
-    public double getPWMRate();
+    double getPWMRate();
 
 }

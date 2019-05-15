@@ -13,6 +13,7 @@
     </rule>
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
+        <exclude name="BooleanGetMethodName"/>
         <exclude name="LongVariable"/>
         <exclude name="MethodNamingConventions"/>
         <exclude name="OnlyOneReturn"/>

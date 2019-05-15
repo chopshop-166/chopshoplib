@@ -15,26 +15,26 @@ public interface DoubleSolenoidInterface extends Sendable, AutoCloseable {
      * 
      * @param value The value to set.
      */
-    public void set(Value value);
+    void set(Value value);
 
     /**
      * Read the current value of the solenoid.
      * 
      * @return The current value.
      */
-    public Value get();
+    Value get();
 
     /**
      * Check if forward solenoid is blacklisted.
      * 
      * @return {@code true} if the solenoid is blacklisted.
      */
-    public boolean isFwdSolenoidBlackListed();
+    boolean isFwdSolenoidBlackListed();
 
     /**
      * Check if reverse solenoid is blacklisted.
      * 
      * @return {@code true} if the solenoid is blacklisted.
      */
-    public boolean isRevSolenoidBlackListed();
+    boolean isRevSolenoidBlackListed();
 }

@@ -16,11 +16,11 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2019.2.1'
+    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2019.3.1'
 }
 ```
 
-See [The release page](https://github.com/chopshop-166/chopshoplib/releases) for a list showing the latest tags.
+See [The release page](https://github.com/chopshop-166/chopshoplib/releases) for a list showing the latest tags, or use the latest located in the badge above.
 
 To use a local development version:
 
@@ -45,7 +45,7 @@ To generate version information in a format that can be read by `DashboardUtils.
 apply from: 'versioning.gradle'
 ```
 
-It's recommended that `src/main/resources` already exists, and contains the following gitconfig:
+It's recommended that `src/main/resources` already exists, and contains the following gitignore:
 
 ```gitconfig
 *.txt

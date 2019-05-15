@@ -8,11 +8,11 @@ public class MockGyro extends GyroBase implements PIDGyro {
     private double angle;
     private double rate;
 
-    public void setAngle(double angle) {
+    public void setAngle(final double angle) {
         this.angle = angle;
     }
 
-    public void setRate(double rate) {
+    public void setRate(final double rate) {
         this.rate = rate;
     }
 
@@ -42,7 +42,7 @@ public class MockGyro extends GyroBase implements PIDGyro {
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Gyro");
         builder.addDoubleProperty("Value", this::getAngle, this::setAngle);
         builder.addDoubleProperty("Rate", this::getRate, this::setRate);

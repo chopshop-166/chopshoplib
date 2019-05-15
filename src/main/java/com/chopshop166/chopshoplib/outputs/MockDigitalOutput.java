@@ -12,14 +12,6 @@ public class MockDigitalOutput extends SendableBase implements DigitalOutputInte
     private boolean value;
     private double rate;
 
-    /**
-     * Create an instance of a digital output.
-     * <p>
-     * Create an instance of a digital output given a channel.
-     */
-    public MockDigitalOutput() {
-    }
-
     @Override
     public void updateDutyCycle(final double rate) {
         this.rate = rate;
@@ -36,7 +28,7 @@ public class MockDigitalOutput extends SendableBase implements DigitalOutputInte
     }
 
     @Override
-    public void set(boolean value) {
+    public void set(final boolean value) {
         this.value = value;
     }
 
@@ -46,8 +38,8 @@ public class MockDigitalOutput extends SendableBase implements DigitalOutputInte
     }
 
     @Override
-    public void pulse(double pulseLength) {
-
+    public void pulse(final double pulseLength) {
+        // This does nothing
     }
 
     @Override
@@ -56,7 +48,7 @@ public class MockDigitalOutput extends SendableBase implements DigitalOutputInte
     }
 
     @Override
-    public void setPWMRate(double rate) {
+    public void setPWMRate(final double rate) {
         this.rate = rate;
     }
 
@@ -66,7 +58,7 @@ public class MockDigitalOutput extends SendableBase implements DigitalOutputInte
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
+    public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Digital Output");
         builder.addBooleanProperty("Value", this::get, this::set);
     }

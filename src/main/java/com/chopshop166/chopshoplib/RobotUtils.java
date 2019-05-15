@@ -69,7 +69,7 @@ public final class RobotUtils {
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
-    public static double clamp(double minBound, double maxBound, double value) {
+    public static double clamp(final double minBound, final double maxBound, final double value) {
         return Math.max(minBound, Math.min(value, maxBound));
     }
 
@@ -81,7 +81,7 @@ public final class RobotUtils {
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
-    public static float clamp(float minBound, float maxBound, float value) {
+    public static float clamp(final float minBound, final float maxBound, final float value) {
         return Math.max(minBound, Math.min(value, maxBound));
     }
 
@@ -93,7 +93,7 @@ public final class RobotUtils {
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
-    public static int clamp(int minBound, int maxBound, int value) {
+    public static int clamp(final int minBound, final int maxBound, final int value) {
         return Math.max(minBound, Math.min(value, maxBound));
     }
 
@@ -105,7 +105,7 @@ public final class RobotUtils {
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
-    public static long clamp(long minBound, long maxBound, long value) {
+    public static long clamp(final long minBound, final long maxBound, final long value) {
         return Math.max(minBound, Math.min(value, maxBound));
     }
 
@@ -115,7 +115,7 @@ public final class RobotUtils {
      * @param func The base function
      * @return A function that returns true when func returns false, and vice versa.
      */
-    public static BooleanSupplier not(BooleanSupplier func) {
+    public static BooleanSupplier not(final BooleanSupplier func) {
         return () -> !func.getAsBoolean();
     }
 }
