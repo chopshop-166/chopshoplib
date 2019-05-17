@@ -65,7 +65,7 @@ public final class RobotUtils {
      * Clamp a value between bounds.
      * 
      * @param minBound The lowest possible value.
-     * @param maxBound The highest possible value
+     * @param maxBound The highest possible value.
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
@@ -77,7 +77,7 @@ public final class RobotUtils {
      * Clamp a value between bounds.
      * 
      * @param minBound The lowest possible value.
-     * @param maxBound The highest possible value
+     * @param maxBound The highest possible value.
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
@@ -89,7 +89,7 @@ public final class RobotUtils {
      * Clamp a value between bounds.
      * 
      * @param minBound The lowest possible value.
-     * @param maxBound The highest possible value
+     * @param maxBound The highest possible value.
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
@@ -101,12 +101,22 @@ public final class RobotUtils {
      * Clamp a value between bounds.
      * 
      * @param minBound The lowest possible value.
-     * @param maxBound The highest possible value
+     * @param maxBound The highest possible value.
      * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
     public static long clamp(final long minBound, final long maxBound, final long value) {
         return Math.max(minBound, Math.min(value, maxBound));
+    }
+
+    /**
+     * Sign Preserving Square
+     * 
+     * @param value The value to multiply.
+     * @return The square of the given value, preserving sign.
+     */
+    public static double sps(final double value) {
+        return Math.copySign(value * value, value);
     }
 
     /**
