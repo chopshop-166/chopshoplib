@@ -13,11 +13,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public interface EncodedSpeedController extends SendableSpeedController, EncoderInterface {
 
-    static EncodedSpeedController wrap(CANSparkMax spark) {
+    /**
+     * Create an {@link EncodedSpeedController} out of a {@link CANSparkMax}.
+     * 
+     * The Spark Max has a built in encoder. For ease of use, this relies on the
+     * existing {@link #join(SendableSpeedController, EncoderInterface)} to create a
+     * wrapped object.
+     * 
+     * @param spark A Spark Max object with an associated encoder.
+     * @return A wrapped object.
+     */
+    static EncodedSpeedController wrap(final CANSparkMax spark) {
         return join(new SparkMaxSendable(spark), new SparkMaxEncoder(spark.getEncoder()));
     }
 
-    static EncodedSpeedController join(SendableSpeedController sc, EncoderInterface enc) {
+    /**
+     * Combine a speed controller and an encoder into a single object.
+     * 
+     * @param sc  The speed controller.
+     * @param enc The encoder.
+     * @return A wrapped object.
+     */
+    static EncodedSpeedController join(final SendableSpeedController sc, final EncoderInterface enc) {
         return new EncodedSpeedController() {
 
             @Override

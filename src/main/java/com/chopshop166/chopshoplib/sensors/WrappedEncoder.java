@@ -3,6 +3,11 @@ package com.chopshop166.chopshoplib.sensors;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.Encoder;
 
+/**
+ * An instance of {@link Encoder} that adheres to {@link EncoderInterface}.
+ * 
+ * The constructor arguments are the same as the ones in the base class.
+ */
 public class WrappedEncoder extends Encoder implements EncoderInterface {
 
     public WrappedEncoder(final int channelA, final int channelB, final boolean reverseDirection) {
