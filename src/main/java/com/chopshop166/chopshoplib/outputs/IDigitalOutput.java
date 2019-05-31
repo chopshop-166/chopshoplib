@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Sendable;
 /**
  * Interface to write digital outputs.
  */
-public interface DigitalOutputInterface extends Sendable, AutoCloseable {
+public interface IDigitalOutput extends Sendable, AutoCloseable {
 
     /**
      * Set the value of a digital output.

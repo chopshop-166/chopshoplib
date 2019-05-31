@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * An {@link EncoderInterface} that can be controlled via the dashboard.
+ * An {@link IEncoder} that can be controlled via the dashboard.
  */
-public class MockEncoder extends SendableBase implements EncoderInterface {
+public class MockEncoder extends SendableBase implements IEncoder {
 
     private PIDSourceType sourceType;
     private double distance;

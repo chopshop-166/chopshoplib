@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Sendable;
 /**
  * Interface for an Encoder
  */
-public interface EncoderInterface extends PIDSource, Sendable {
+public interface IEncoder extends PIDSource, Sendable {
 
     /**
      * Reset the encoder distance to zero.

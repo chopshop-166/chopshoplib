@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.Solenoid;
 /**
  * An instance of {@link Solenoid} that can be mocked.
  */
-public final class WrappedSolenoid extends Solenoid implements SolenoidInterface {
+public final class WSolenoid extends Solenoid implements ISolenoid {
 
-    public WrappedSolenoid(final int channel) {
+    public WSolenoid(final int channel) {
         super(channel);
     }
 
-    public WrappedSolenoid(final int modulenumber, final int channel) {
+    public WSolenoid(final int modulenumber, final int channel) {
         super(modulenumber, channel);
     }
 }

@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.outputs;
 
-import com.chopshop166.chopshoplib.sensors.EncoderInterface;
+import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANSparkMax;
 
@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * {@link SpeedController} that also acts as an {@link EncoderInterface}.
+ * {@link SpeedController} that also acts as an {@link IEncoder}.
  */
-public interface EncodedSpeedController extends SendableSpeedController, EncoderInterface {
+public interface EncodedSpeedController extends SendableSpeedController, IEncoder {
 
     /**
      * Create an {@link EncodedSpeedController} out of a {@link CANSparkMax}.
      * 
      * The Spark Max has a built in encoder. For ease of use, this relies on the
-     * existing {@link #join(SendableSpeedController, EncoderInterface)} to create a
-     * wrapped object.
+     * existing {@link #join(SendableSpeedController, IEncoder)} to create a wrapped
+     * object.
      * 
      * @param spark A Spark Max object with an associated encoder.
      * @return A wrapped object.
@@ -34,7 +34,7 @@ public interface EncodedSpeedController extends SendableSpeedController, Encoder
      * @param enc The encoder.
      * @return A wrapped object.
      */
-    static EncodedSpeedController join(final SendableSpeedController sc, final EncoderInterface enc) {
+    static EncodedSpeedController join(final SendableSpeedController sc, final IEncoder enc) {
         return new EncodedSpeedController() {
 
             @Override

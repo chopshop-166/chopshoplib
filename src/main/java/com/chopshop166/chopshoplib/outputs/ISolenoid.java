@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Sendable;
  * 
  * Unlike the WPIlib object, this interface can be extended for test values.
  */
-public interface SolenoidInterface extends Sendable, AutoCloseable {
+public interface ISolenoid extends Sendable, AutoCloseable {
 
     /**
      * Set the value of a solenoid.

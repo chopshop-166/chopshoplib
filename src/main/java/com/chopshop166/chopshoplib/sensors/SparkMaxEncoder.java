@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * A wrapper for the {@link CANEncoder} provided by REV Robotics, to implement
  * WPIlib interfaces.
  */
-public class SparkMaxEncoder extends SendableBase implements EncoderInterface {
+public class SparkMaxEncoder extends SendableBase implements IEncoder {
 
     private boolean isReversed;
     private double resetPoint;

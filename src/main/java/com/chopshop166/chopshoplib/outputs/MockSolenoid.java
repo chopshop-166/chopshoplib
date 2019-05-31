@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * 
  * It does not correlate with any real hardware.
  */
-public final class MockSolenoid extends SendableBase implements SolenoidInterface {
+public final class MockSolenoid extends SendableBase implements ISolenoid {
 
     private boolean value;
 

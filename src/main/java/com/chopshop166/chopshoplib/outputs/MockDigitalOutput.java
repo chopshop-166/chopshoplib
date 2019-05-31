@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 /**
  * A mock {@link DigitalOutput} that can be sent to the dashboard.
  */
-public class MockDigitalOutput extends SendableBase implements DigitalOutputInterface {
+public class MockDigitalOutput extends SendableBase implements IDigitalOutput {
 
     private boolean value;
     private double rate;

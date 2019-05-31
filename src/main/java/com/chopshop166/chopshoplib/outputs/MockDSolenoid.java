@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 /**
  * An instance of {@link DoubleSolenoid} that can be wrapped.
  */
-public final class MockDSolenoid extends SendableBase implements DSolenoidInterface {
+public final class MockDSolenoid extends SendableBase implements IDSolenoid {
 
     private Value value;
 
