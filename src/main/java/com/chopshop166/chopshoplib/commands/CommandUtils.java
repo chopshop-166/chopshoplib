@@ -47,7 +47,7 @@ final public class CommandUtils {
             }
 
             @Override
-            public void end(boolean interrupted) {
+            public void end(final boolean interrupted) {
                 numTimesRun = 0;
             }
         };
@@ -115,8 +115,8 @@ final public class CommandUtils {
      * @return The new command chain.
      */
     public static Command first(final Command... cmds) {
-        return (new SendableCommandBase() {
-        }).andThen(cmds);
+        return new SendableCommandBase() {
+        }.andThen(cmds);
     }
 
     /**
