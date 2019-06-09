@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.experimental.command.CommandScheduler;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
@@ -20,17 +20,17 @@ public class CommandRobot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
