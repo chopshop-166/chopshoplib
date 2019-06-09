@@ -3,9 +3,11 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.experimental.command.Command;
+import edu.wpi.first.wpilibj.experimental.command.CommandScheduler;
+import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
+import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
+import edu.wpi.first.wpilibj.experimental.command.WaitUntilCommand;
 
 /**
  * Utilities related to commands.
@@ -22,30 +24,30 @@ final public class CommandUtils {
      * @return A newly constructed command.
      */
     public static Command repeat(final int numTimesToRun, final Command cmd) {
-        return new Command() {
+        return new SendableCommandBase() {
             private int numTimesRun;
 
             @Override
-            protected void initialize() {
+            public void initialize() {
                 numTimesRun++;
-                cmd.start();
+                cmd.schedule();
             }
 
             @Override
-            protected void execute() {
-                if (cmd.isCompleted()) {
+            public void execute() {
+                if (!CommandScheduler.getInstance().isScheduled(cmd)) {
                     numTimesRun++;
-                    cmd.start();
+                    cmd.schedule();
                 }
             }
 
             @Override
-            protected boolean isFinished() {
+            public boolean isFinished() {
                 return numTimesRun >= numTimesToRun;
             }
 
             @Override
-            protected void end() {
+            public void end(boolean interrupted) {
                 numTimesRun = 0;
             }
         };
@@ -59,34 +61,12 @@ final public class CommandUtils {
      * @return A newly constructed command group.
      */
     public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        class RepeatedCommandGroup extends CommandGroup {
-            public RepeatedCommandGroup() {
-                super();
-                for (int i = 0; i < numTimesToRun; i++) {
-                    addSequential(cmd.get());
-                }
-            }
+        Command base = new SendableCommandBase() {
+        };
+        for (int i = 0; i < numTimesToRun; i++) {
+            base = base.andThen(cmd.get());
         }
-        return new RepeatedCommandGroup();
-    }
-
-    /**
-     * Repeat a {@link Command} a given number of times.
-     * 
-     * @param numTimesToRun The number of times to run the command.
-     * @param cmd           A way to create the command to repeat.
-     * @return A newly constructed command group.
-     */
-    public static Command repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
-        class RepeatedCommandGroup extends CommandGroup {
-            public RepeatedCommandGroup() {
-                super(name);
-                for (int i = 0; i < numTimesToRun; i++) {
-                    addSequential(cmd.get());
-                }
-            }
-        }
-        return new RepeatedCommandGroup();
+        return base;
     }
 
     /**
@@ -97,14 +77,14 @@ final public class CommandUtils {
      * @return A newly created command.
      */
     public static Command repeatWhile(final BooleanSupplier cond, final Command cmd) {
-        return new Command() {
+        return new SendableCommandBase() {
             private boolean shouldFinish;
 
             @Override
-            protected void execute() {
-                if (!cmd.isRunning()) {
+            public void execute() {
+                if (!CommandScheduler.getInstance().isScheduled(cmd)) {
                     if (cond.getAsBoolean()) {
-                        cmd.start();
+                        cmd.schedule();
                     } else {
                         shouldFinish = true;
                     }
@@ -112,7 +92,7 @@ final public class CommandUtils {
             }
 
             @Override
-            protected boolean isFinished() {
+            public boolean isFinished() {
                 return shouldFinish;
             }
         };
@@ -135,7 +115,8 @@ final public class CommandUtils {
      * @return The new command chain.
      */
     public static Command first(final Command... cmds) {
-        return new CommandChain(cmds);
+        return (new SendableCommandBase() {
+        }).andThen(cmds);
     }
 
     /**
@@ -145,11 +126,6 @@ final public class CommandUtils {
      * @return A new command.
      */
     public static Command waitUntil(final BooleanSupplier condition) {
-        return new Command("Wait Until Condition") {
-            @Override
-            protected boolean isFinished() {
-                return condition.getAsBoolean();
-            }
-        };
+        return new WaitUntilCommand(condition);
     }
 }

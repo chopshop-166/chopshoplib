@@ -2,8 +2,8 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
+import edu.wpi.first.wpilibj.experimental.command.SendableSubsystemBase;
 
 /**
  * A declarative command class.
@@ -39,36 +39,10 @@ public class SetCommand<T> extends InstantCommand {
      * @param value     The value to call the function with
      * @param consumer  The function to call with the given value
      */
-    public SetCommand(final Subsystem subsystem, final T value, final Consumer<T> consumer) {
+    public SetCommand(final SendableSubsystemBase subsystem, final T value, final Consumer<T> consumer) {
         this(value, consumer);
-        useSubsystem(subsystem);
-    }
-
-    /**
-     * Create a named command that calls the given action when run
-     * 
-     * @param name     The name of the command
-     * @param value    The value to call the function with
-     * @param consumer The function to call with the given value
-     */
-    public SetCommand(final String name, final T value, final Consumer<T> consumer) {
-        this(value, consumer);
-        setName(name);
-    }
-
-    /**
-     * Create a named command that depends on the given subsystem and calls the
-     * provided action when run
-     * 
-     * @param name      The name of the command
-     * @param subsystem The subsystem that the command depends on
-     * @param value     The value to call the function with
-     * @param consumer  The function to call with the given value
-     */
-    public SetCommand(final String name, final Subsystem subsystem, final T value, final Consumer<T> consumer) {
-        this(value, consumer);
-        setName(name);
-        useSubsystem(subsystem);
+        setSubsystem(subsystem.getName());
+        addRequirements(subsystem);
     }
 
     /**
@@ -76,19 +50,9 @@ public class SetCommand<T> extends InstantCommand {
      * time.
      */
     @Override
-    protected void initialize() {
+    public void initialize() {
         if (consumer != null) {
             consumer.accept(value);
         }
-    }
-
-    /**
-     * Use the given subsystem's name and mark it required
-     * 
-     * @param subsystem The subsystem to depend on
-     */
-    private void useSubsystem(final Subsystem subsystem) {
-        setSubsystem(subsystem.getName());
-        requires(subsystem);
     }
 }
