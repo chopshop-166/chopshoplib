@@ -59,13 +59,34 @@ final public class CommandUtils {
      * @return A newly constructed command group.
      */
     public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return new CommandGroup() {
-            {
+        class RepeatedCommandGroup extends CommandGroup {
+            public RepeatedCommandGroup() {
+                super();
                 for (int i = 0; i < numTimesToRun; i++) {
                     addSequential(cmd.get());
                 }
             }
-        };
+        }
+        return new RepeatedCommandGroup();
+    }
+
+    /**
+     * Repeat a {@link Command} a given number of times.
+     * 
+     * @param numTimesToRun The number of times to run the command.
+     * @param cmd           A way to create the command to repeat.
+     * @return A newly constructed command group.
+     */
+    public static Command repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
+        class RepeatedCommandGroup extends CommandGroup {
+            public RepeatedCommandGroup() {
+                super(name);
+                for (int i = 0; i < numTimesToRun; i++) {
+                    addSequential(cmd.get());
+                }
+            }
+        }
+        return new RepeatedCommandGroup();
     }
 
     /**
