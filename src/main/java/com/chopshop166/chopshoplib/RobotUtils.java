@@ -1,8 +1,11 @@
 package com.chopshop166.chopshoplib;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
+
+import com.google.common.reflect.ClassPath;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -127,5 +130,36 @@ public final class RobotUtils {
      */
     public static BooleanSupplier not(final BooleanSupplier func) {
         return () -> !func.getAsBoolean();
+    }
+
+    /**
+     * Reset all {@link Resettable} objects within a given robot.
+     * 
+     * @param robot The robot to set members from.
+     */
+    public static <T> T getMapForName(final String name, final Class<T> rootClass) {
+        try {
+            // scans the class path used by classloader
+            final ClassPath classpath = ClassPath.from(rootClass.getClassLoader());
+            // Get class info for all classes
+            for (final ClassPath.ClassInfo classInfo : classpath.getAllClasses()) {
+                final Class<?> clazz = classInfo.load();
+                // Make sure the class is derived from rootClass
+                if (rootClass.isAssignableFrom(clazz)) {
+                    // Cast the class to the derived type
+                    final Class<? extends T> theClass = clazz.asSubclass(rootClass);
+                    // Find all annotations that provide a name
+                    for (final RobotMapFor annotation : clazz.getAnnotationsByType(RobotMapFor.class)) {
+                        // Check to see if the name matches
+                        if (annotation.value().equals(name)) {
+                            return theClass.getDeclaredConstructor().newInstance();
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ReflectiveOperationException err) {
+            return null;
+        }
+        return null;
     }
 }
