@@ -2,6 +2,9 @@ package com.chopshop166.chopshoplib;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
 
@@ -133,16 +136,53 @@ public final class RobotUtils {
     }
 
     /**
-     * Reset all {@link Resettable} objects within a given robot.
+     * Get the MAC address
      * 
-     * @param robot The robot to set members from.
+     * @return The robot's MAC address as a string.
      */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass) {
+    public static String getMACAddress() {
+        try {
+            NetworkInterface iface = NetworkInterface.getByName("eth0");
+            byte[] mac = iface.getHardwareAddress();
+
+            if (mac == null) { // happens on windows sometimes
+                throw new SocketException();
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+            return sb.toString();
+        } catch (SocketException e) {
+            return "SocketException";
+        }
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param name      The name to match against in annotations.
+     * @param rootClass The root class object that the map derives from.
+     */
+    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
+        return getMapForName(name, rootClass, pkg, null);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param name         The name to match against in annotations.
+     * @param rootClass    The root class object that the map derives from.
+     * @param defaultValue The object to return if no match is found.
+     */
+    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
+            final T defaultValue) {
         try {
             // scans the class path used by classloader
             final ClassPath classpath = ClassPath.from(rootClass.getClassLoader());
             // Get class info for all classes
-            for (final ClassPath.ClassInfo classInfo : classpath.getAllClasses()) {
+            for (final ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(pkg)) {
                 final Class<?> clazz = classInfo.load();
                 // Make sure the class is derived from rootClass
                 if (rootClass.isAssignableFrom(clazz)) {
@@ -158,8 +198,8 @@ public final class RobotUtils {
                 }
             }
         } catch (IOException | ReflectiveOperationException err) {
-            return null;
+            return defaultValue;
         }
-        return null;
+        return defaultValue;
     }
 }
