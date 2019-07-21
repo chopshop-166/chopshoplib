@@ -18,7 +18,7 @@ dependencies {
     api wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
     api group: 'com.github.Oblarg', name: 'command-rewrite-jitpack', version: '1.5.1'
 }
 
