@@ -3,11 +3,11 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.experimental.command.Command;
-import edu.wpi.first.wpilibj.experimental.command.CommandScheduler;
-import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
-import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.experimental.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj.frc2.command.Command;
+import edu.wpi.first.wpilibj.frc2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.frc2.command.InstantCommand;
+import edu.wpi.first.wpilibj.frc2.command.SendableCommandBase;
+import edu.wpi.first.wpilibj.frc2.command.WaitUntilCommand;
 
 /**
  * Utilities related to commands.
@@ -109,7 +109,7 @@ final public class CommandUtils {
     }
 
     /**
-     * Fluent API to start a {@link CommandChain}.
+     * Fluent API to start a sequence of commands.
      * 
      * @param cmds Commands to run first.
      * @return The new command chain.

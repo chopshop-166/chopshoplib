@@ -2,8 +2,8 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
-import edu.wpi.first.wpilibj.experimental.command.SendableSubsystemBase;
+import edu.wpi.first.wpilibj.frc2.command.InstantCommand;
+import edu.wpi.first.wpilibj.frc2.command.SendableSubsystemBase;
 
 /**
  * A declarative command class.

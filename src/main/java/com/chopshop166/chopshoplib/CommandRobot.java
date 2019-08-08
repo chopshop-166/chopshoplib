@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.experimental.command.CommandScheduler;
+import edu.wpi.first.wpilibj.frc2.command.CommandScheduler;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
