@@ -65,8 +65,9 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SendableSubsyste
     /**
      * Constructor.
      * 
-     * @param name      The name of the subsystem.
-     * @param initState The state that the subsystem starts in.
+     * @param name                The name of the subsystem.
+     * @param initState           The state that the subsystem starts in.
+     * @param allowSameTransition Whether to allow transitions to the current state.
      */
     protected StateSubsystem(final String name, final S initState, final boolean allowSameTransition) {
         this(initState, allowSameTransition);
@@ -104,7 +105,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SendableSubsyste
      * Create a {@link Command} to change state when run.
      * 
      * @param newState The state to transition to.
-     * @return
+     * @return A command that will change the subsystem state.
      */
     public Command changeState(final S newState) {
         final StringBuilder cmdname = new StringBuilder(getName());
@@ -129,8 +130,8 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SendableSubsyste
      * 
      * Call this from {@link #defaultTransition(Enum, Enum)} to log.
      * 
-     * @param current   The current state.
-     * @param commanded The commanded state.
+     * @param currentState   The current state.
+     * @param commandedState The commanded state.
      */
     protected final void logTransition(final S currentState, final S commandedState) {
         final StringBuilder builder = new StringBuilder("Attempted transition from ");
