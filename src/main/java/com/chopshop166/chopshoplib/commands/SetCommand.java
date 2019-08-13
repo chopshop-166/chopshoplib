@@ -16,9 +16,6 @@ import edu.wpi.first.wpilibj.frc2.command.SendableSubsystemBase;
  */
 public class SetCommand<T> extends InstantCommand {
 
-    private final Consumer<T> consumer;
-    private final T value;
-
     /**
      * Create a command that calls the given action when run
      * 
@@ -26,9 +23,22 @@ public class SetCommand<T> extends InstantCommand {
      * @param consumer The function to call with the given value
      */
     public SetCommand(final T value, final Consumer<T> consumer) {
-        super();
-        this.value = value;
-        this.consumer = consumer;
+        super(() -> {
+            if (consumer != null) {
+                consumer.accept(value);
+            }
+        });
+    }
+
+    /**
+     * Create a command that calls the given action when run
+     * 
+     * @param value    The value to call the function with
+     * @param consumer The function to call with the given value
+     */
+    public SetCommand(final String name, final T value, final Consumer<T> consumer) {
+        this(value, consumer);
+        setName(name);
     }
 
     /**
@@ -40,19 +50,25 @@ public class SetCommand<T> extends InstantCommand {
      * @param consumer  The function to call with the given value
      */
     public SetCommand(final SendableSubsystemBase subsystem, final T value, final Consumer<T> consumer) {
-        this(value, consumer);
+        super(() -> {
+            if (consumer != null) {
+                consumer.accept(value);
+            }
+        }, subsystem);
         setSubsystem(subsystem.getName());
-        addRequirements(subsystem);
     }
 
     /**
-     * Trigger the stored action. Called just before this Command runs the first
-     * time.
+     * Create a command that depends on the given subsystem and calls the provided
+     * action when run
+     * 
+     * @param subsystem The subsystem that the command depends on
+     * @param value     The value to call the function with
+     * @param consumer  The function to call with the given value
      */
-    @Override
-    public void initialize() {
-        if (consumer != null) {
-            consumer.accept(value);
-        }
+    public SetCommand(final String name, final SendableSubsystemBase subsystem, final T value,
+            final Consumer<T> consumer) {
+        this(subsystem, value, consumer);
+        setName(name);
     }
 }
