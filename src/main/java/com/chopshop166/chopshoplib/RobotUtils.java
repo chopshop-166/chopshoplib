@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Enumeration;
+import java.util.StringJoiner;
 import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
 
@@ -142,16 +142,16 @@ public final class RobotUtils {
      */
     public static String getMACAddress() {
         try {
-            NetworkInterface iface = NetworkInterface.getByName("eth0");
-            byte[] mac = iface.getHardwareAddress();
+            final NetworkInterface iface = NetworkInterface.getByName("eth0");
+            final byte[] mac = iface.getHardwareAddress();
 
             if (mac == null) { // happens on windows sometimes
                 throw new SocketException();
             }
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            final StringJoiner sb = new StringJoiner("-");
+            for (final byte octet : mac) {
+                sb.add(String.format("%02X", octet));
             }
             return sb.toString();
         } catch (SocketException e) {
@@ -162,8 +162,29 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg       The package to look in.
+     */
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
+        return getMapForName(getMACAddress(), rootClass, pkg, null);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg       The package to look in.
+     */
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
+        return getMapForName(getMACAddress(), rootClass, pkg, defaultValue);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
      * @param name      The name to match against in annotations.
      * @param rootClass The root class object that the map derives from.
+     * @param pkg       The package to look in.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
         return getMapForName(name, rootClass, pkg, null);
@@ -174,6 +195,7 @@ public final class RobotUtils {
      * 
      * @param name         The name to match against in annotations.
      * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
      * @param defaultValue The object to return if no match is found.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
