@@ -149,7 +149,7 @@ public final class RobotUtils {
                 throw new SocketException();
             }
 
-            final StringJoiner sb = new StringJoiner("-");
+            final StringJoiner sb = new StringJoiner(":");
             for (final byte octet : mac) {
                 sb.add(String.format("%02X", octet));
             }
@@ -172,8 +172,9 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
+     * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
+     * @param defaultValue The object to return if no match is found.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
         return getMapForName(getMACAddress(), rootClass, pkg, defaultValue);

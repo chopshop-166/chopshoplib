@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.DoubleStream;
 
@@ -24,9 +25,7 @@ public class SampleBuffer implements Iterable<Double> {
      */
     public void reset() {
         synchronized (this) {
-            for (int i = 0; i < samples.length; i++) {
-                samples[i] = 0;
-            }
+            Arrays.fill(samples, 0);
             sampleIndex = 0;
             isReset = true;
         }
