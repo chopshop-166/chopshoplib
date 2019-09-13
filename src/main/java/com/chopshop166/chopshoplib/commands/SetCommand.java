@@ -2,8 +2,8 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj.frc2.command.InstantCommand;
-import edu.wpi.first.wpilibj.frc2.command.SendableSubsystemBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * A declarative command class.
@@ -49,7 +49,7 @@ public class SetCommand<T> extends InstantCommand {
      * @param value     The value to call the function with
      * @param consumer  The function to call with the given value
      */
-    public SetCommand(final SendableSubsystemBase subsystem, final T value, final Consumer<T> consumer) {
+    public SetCommand(final SubsystemBase subsystem, final T value, final Consumer<T> consumer) {
         super(() -> {
             if (consumer != null) {
                 consumer.accept(value);
@@ -66,8 +66,7 @@ public class SetCommand<T> extends InstantCommand {
      * @param value     The value to call the function with
      * @param consumer  The function to call with the given value
      */
-    public SetCommand(final String name, final SendableSubsystemBase subsystem, final T value,
-            final Consumer<T> consumer) {
+    public SetCommand(final String name, final SubsystemBase subsystem, final T value, final Consumer<T> consumer) {
         this(subsystem, value, consumer);
         setName(name);
     }

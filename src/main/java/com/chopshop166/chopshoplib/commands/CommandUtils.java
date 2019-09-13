@@ -3,11 +3,11 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.frc2.command.Command;
-import edu.wpi.first.wpilibj.frc2.command.CommandScheduler;
-import edu.wpi.first.wpilibj.frc2.command.InstantCommand;
-import edu.wpi.first.wpilibj.frc2.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.frc2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * Utilities related to commands.
@@ -24,7 +24,7 @@ final public class CommandUtils {
      * @return A newly constructed command.
      */
     public static Command repeat(final int numTimesToRun, final Command cmd) {
-        return new SendableCommandBase() {
+        return new CommandBase() {
             private int numTimesRun;
 
             @Override
@@ -61,7 +61,7 @@ final public class CommandUtils {
      * @return A newly constructed command group.
      */
     public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        Command base = new SendableCommandBase() {
+        Command base = new CommandBase() {
         };
         for (int i = 0; i < numTimesToRun; i++) {
             base = base.andThen(cmd.get());
@@ -77,7 +77,7 @@ final public class CommandUtils {
      * @return A newly created command.
      */
     public static Command repeatWhile(final BooleanSupplier cond, final Command cmd) {
-        return new SendableCommandBase() {
+        return new CommandBase() {
             private boolean shouldFinish;
 
             @Override
@@ -115,7 +115,7 @@ final public class CommandUtils {
      * @return The new command chain.
      */
     public static Command first(final Command... cmds) {
-        return new SendableCommandBase() {
+        return new CommandBase() {
         }.andThen(cmds);
     }
 

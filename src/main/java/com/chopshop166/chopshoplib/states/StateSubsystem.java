@@ -10,18 +10,18 @@ import java.util.function.Supplier;
 
 import com.chopshop166.chopshoplib.commands.SetCommand;
 
-import edu.wpi.first.wpilibj.frc2.command.Command;
-import edu.wpi.first.wpilibj.frc2.command.InstantCommand;
-import edu.wpi.first.wpilibj.frc2.command.PrintCommand;
-import edu.wpi.first.wpilibj.frc2.command.SendableSubsystemBase;
-import edu.wpi.first.wpilibj.frc2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * A {@link Subsystem} that represents a state machine.
  * 
  * @param <S> The enum of possible states.
  */
-public abstract class StateSubsystem<S extends Enum<S>> extends SendableSubsystemBase {
+public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
     private S currentState;
     private final Set<Transition<S>> transitions = new HashSet<>();
     private final Map<S, Runnable> onEntryHandlers = new HashMap<>();
