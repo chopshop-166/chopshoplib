@@ -1,0 +1,26 @@
+name: Deploy ChopShopLib to Github Package Registry
+
+on:
+  release:
+    types: [created]
+
+jobs:
+    deploy:
+        name: Deploy chopshoplib
+        runs-on: ubuntu-18.04
+        steps:
+          - uses: actions/checkout@v1
+            with:
+                fetch-depth: 1
+          - uses: actions/setup-java@v1
+            with:
+                java-version: '11.0.4'
+                architecture: x64
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          - name: Output Environment Info
+            run: echo $GITHUB_REF
+          - name: "Build Project"
+            run: ./gradlew build
+          - name: "Publish with Gradle"
+            run: ./gradlew publish -i

@@ -38,12 +38,28 @@ ext {
 
 apply from: 'checks.gradle'
 
+version = System.getenv("GITHUB_REF").tokenize('/').last()
+if (version.length() == 0) {
+    version = "Unknown"
+}
+
 publishing {
     publications {
         chopshoplib(MavenPublication) {
             from components.java
             artifact sourceJar
             artifact javadocJar
+            version = version
+        }
+    }
+    repositories {
+        maven {
+            name 'Github Bot190 Maven Packages'
+            url 'https://maven.pkg.github.com/bot190/chopshoplib'
+            credentials {
+                username = "bot190"
+                password = System.getenv('GITHUB_TOKEN')
+            }
         }
     }
 }
