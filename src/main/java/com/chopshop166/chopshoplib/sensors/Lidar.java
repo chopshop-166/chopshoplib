@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+import com.chopshop166.chopshoplib.SampleBuffer;
+import com.google.common.math.Stats;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.I2C;
@@ -24,11 +24,8 @@ public class Lidar extends SendableBase implements PIDSource {
     private double distanceMM;
 
     private boolean isValid;
-    private double samples[];
-    private int sampleIndex;
-    private boolean isReset;
+    private SampleBuffer samples;
 
-    private final StandardDeviation stdDev = new StandardDeviation();
     private double stdDevValue;
     private double stdDevLimit = 100;
 
@@ -306,7 +303,7 @@ public class Lidar extends SendableBase implements PIDSource {
         setName("Lidar", kAddress);
 
         // Objects related to statistics
-        samples = new double[averageOver];
+        samples = new SampleBuffer(averageOver);
 
         accessThread = new Thread(this::poll);
         accessThread.setName(String.format("LiDAR-0x%x", kAddress));
@@ -341,11 +338,7 @@ public class Lidar extends SendableBase implements PIDSource {
      */
     public void reset() {
         synchronized (this) {
-            for (int i = 0; i < samples.length; i++) {
-                samples[i] = 0;
-            }
-            sampleIndex = 0;
-            isReset = true;
+            samples.reset();
         }
     }
 
@@ -381,16 +374,12 @@ public class Lidar extends SendableBase implements PIDSource {
         i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
         synchronized (this) {
-            samples[sampleIndex] = bbConvert.getShort();
-            sampleIndex++;
-            if (sampleIndex == samples.length) {
-                isReset = false;
-                sampleIndex = 0;
-            }
-            distanceMM = new Mean().evaluate(samples, 0, isReset ? sampleIndex : samples.length);
+            samples.addSample(bbConvert.getShort());
+            final Stats stats = Stats.of(samples);
+            distanceMM = stats.mean();
             // If the standard deviation is really high then the sensor likely doesn't have
             // a valid reading.
-            stdDevValue = stdDev.evaluate(samples, 0, isReset ? sampleIndex : samples.length);
+            stdDevValue = stats.populationStandardDeviation();
             isValid = stdDevValue < stdDevLimit;
         }
     }

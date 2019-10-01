@@ -1,8 +1,14 @@
 package com.chopshop166.chopshoplib;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.StringJoiner;
 import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
+
+import com.google.common.reflect.ClassPath;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -127,5 +133,96 @@ public final class RobotUtils {
      */
     public static BooleanSupplier not(final BooleanSupplier func) {
         return () -> !func.getAsBoolean();
+    }
+
+    /**
+     * Get the MAC address
+     * 
+     * @return The robot's MAC address as a string.
+     */
+    public static String getMACAddress() {
+        try {
+            final NetworkInterface iface = NetworkInterface.getByName("eth0");
+            final byte[] mac = iface.getHardwareAddress();
+
+            if (mac == null) { // happens on windows sometimes
+                throw new SocketException();
+            }
+
+            final StringJoiner sb = new StringJoiner(":");
+            for (final byte octet : mac) {
+                sb.add(String.format("%02X", octet));
+            }
+            return sb.toString();
+        } catch (SocketException e) {
+            return "SocketException";
+        }
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg       The package to look in.
+     */
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
+        return getMapForName(getMACAddress(), rootClass, pkg, null);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
+     * @param defaultValue The object to return if no match is found.
+     */
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
+        return getMapForName(getMACAddress(), rootClass, pkg, defaultValue);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param name      The name to match against in annotations.
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg       The package to look in.
+     */
+    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
+        return getMapForName(name, rootClass, pkg, null);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param name         The name to match against in annotations.
+     * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
+     * @param defaultValue The object to return if no match is found.
+     */
+    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
+            final T defaultValue) {
+        try {
+            // scans the class path used by classloader
+            final ClassPath classpath = ClassPath.from(rootClass.getClassLoader());
+            // Get class info for all classes
+            for (final ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(pkg)) {
+                final Class<?> clazz = classInfo.load();
+                // Make sure the class is derived from rootClass
+                if (rootClass.isAssignableFrom(clazz)) {
+                    // Cast the class to the derived type
+                    final Class<? extends T> theClass = clazz.asSubclass(rootClass);
+                    // Find all annotations that provide a name
+                    for (final RobotMapFor annotation : clazz.getAnnotationsByType(RobotMapFor.class)) {
+                        // Check to see if the name matches
+                        if (annotation.value().equals(name)) {
+                            return theClass.getDeclaredConstructor().newInstance();
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ReflectiveOperationException err) {
+            return defaultValue;
+        }
+        return defaultValue;
     }
 }
