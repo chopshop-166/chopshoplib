@@ -18,11 +18,13 @@ dependencies {
     api wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+
+    implementation group: 'com.google.guava', name: 'guava', version: '28.1-jre'
     api group: 'com.github.Oblarg', name: 'command-rewrite-jitpack', version: '1.5.1'
+
     testImplementation 'junit:junit:4.12'
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
 
 test {
