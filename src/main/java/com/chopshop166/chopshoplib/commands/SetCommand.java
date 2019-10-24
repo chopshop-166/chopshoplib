@@ -33,6 +33,7 @@ public class SetCommand<T> extends InstantCommand {
     /**
      * Create a command that calls the given action when run
      * 
+     * @param name     The name of the command.
      * @param value    The value to call the function with
      * @param consumer The function to call with the given value
      */
@@ -62,6 +63,7 @@ public class SetCommand<T> extends InstantCommand {
      * Create a command that depends on the given subsystem and calls the provided
      * action when run
      * 
+     * @param name      The name of the command.
      * @param subsystem The subsystem that the command depends on
      * @param value     The value to call the function with
      * @param consumer  The function to call with the given value

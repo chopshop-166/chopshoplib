@@ -41,7 +41,8 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
     /**
      * Constructor.
      * 
-     * @param initState The state that the subsystem starts in.
+     * @param initState           The state that the subsystem starts in.
+     * @param allowSameTransition Whether to allow transitions to the current state.
      */
     protected StateSubsystem(final S initState, final boolean allowSameTransition) {
         super();

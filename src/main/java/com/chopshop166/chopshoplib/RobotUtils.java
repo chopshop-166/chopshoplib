@@ -162,8 +162,10 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
+     * @param           <T> The type to return.
      * @param rootClass The root class object that the map derives from.
      * @param pkg       The package to look in.
+     * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
         return getMapForName(getMACAddress(), rootClass, pkg, null);
@@ -172,9 +174,11 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
+     * @param              <T> The type to return.
      * @param rootClass    The root class object that the map derives from.
      * @param pkg          The package to look in.
      * @param defaultValue The object to return if no match is found.
+     * @return An instance of the given type, or the default value.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
         return getMapForName(getMACAddress(), rootClass, pkg, defaultValue);
@@ -183,9 +187,11 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
+     * @param           <T> The type to return.
      * @param name      The name to match against in annotations.
      * @param rootClass The root class object that the map derives from.
      * @param pkg       The package to look in.
+     * @return An instance of the given type, or null.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
         return getMapForName(name, rootClass, pkg, null);
@@ -194,10 +200,12 @@ public final class RobotUtils {
     /**
      * Get a RobotMap for the given name.
      * 
+     * @param              <T> The type to return.
      * @param name         The name to match against in annotations.
      * @param rootClass    The root class object that the map derives from.
      * @param pkg          The package to look in.
      * @param defaultValue The object to return if no match is found.
+     * @return An instance of the given type, or the default value.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
             final T defaultValue) {
