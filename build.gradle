@@ -31,14 +31,9 @@ test {
     useJUnitPlatform()
 }
 
-task sourceJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 ext {
@@ -46,13 +41,3 @@ ext {
 }
 
 apply from: 'checks.gradle'
-
-publishing {
-    publications {
-        chopshoplib(MavenPublication) {
-            from components.java
-            artifact sourceJar
-            artifact javadocJar
-        }
-    }
-}
