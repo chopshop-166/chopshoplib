@@ -61,4 +61,8 @@ public class ButtonXboxController extends XboxController {
             return value;
         }
     }
+
+    public double getTriggers() {
+        return (XboxTrigger.getTriggerAxis(Hand.kRight) - XboxTrigger.getTriggerAxis(Hand.kLeft));
+    }
 }
