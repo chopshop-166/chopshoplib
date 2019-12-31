@@ -5,13 +5,11 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * Represents a joystick along with it's associated buttons
- * <p>
- * This class serves as a wrapper for a Joystick and all it's buttons.
+ * Represents an XBox controller along with its associated buttons.
  */
 public class ButtonXboxController extends XboxController {
     private final Map<Integer, Button> buttons = new HashMap<>();
@@ -51,6 +49,15 @@ public class ButtonXboxController extends XboxController {
         return compositeTriggerValue;
     }
 
+    /**
+     * Get a button from this joystick
+     * <p>
+     * Returns the sepcified button of a joystick without having to explicitly
+     * create each button.
+     * 
+     * @param buttonId The index of the button to accesss
+     * @return The button object for the given ID
+     */
     public Button getButton(final XBoxButton buttonId) {
         return getButton(buttonId.get());
     }
