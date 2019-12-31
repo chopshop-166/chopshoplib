@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -40,10 +41,11 @@ public class ButtonXboxController extends XboxController {
         }
         return buttons.get(buttonId);
     }
-    public ButtonXboxController getTriggers(int kRight, int kLeft) {
-        kRight = getTriggerAxis(hand.kRight);
-        kLeft = getTriggerAxis(hand.kLeft);
-        int compositeTriggerValue = kRight - kLeft;
+    public double getTriggers() {
+        
+       double kRight = getTriggerAxis(Hand.kRight);
+       double kLeft = getTriggerAxis(Hand.kLeft);
+       double compositeTriggerValue = kRight - kLeft;
 
         return compositeTriggerValue;
     }
@@ -69,7 +71,5 @@ public class ButtonXboxController extends XboxController {
         }
     }
 
-    public double getTriggers() {
-        return (XboxTrigger.getTriggerAxis(Hand.kRight) - XboxTrigger.getTriggerAxis(Hand.kLeft));
-    }
+    
 }
