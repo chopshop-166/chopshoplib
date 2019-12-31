@@ -40,6 +40,13 @@ public class ButtonXboxController extends XboxController {
         }
         return buttons.get(buttonId);
     }
+    public ButtonXboxController getTriggers(int kRight, int kLeft) {
+        kRight = getTriggerAxis(hand.kRight);
+        kLeft = getTriggerAxis(hand.kLeft);
+        int compositeTriggerValue = kRight - kLeft;
+
+        return compositeTriggerValue;
+    }
 
     public Button getButton(final XBoxButton buttonId) {
         return getButton(buttonId.get());
