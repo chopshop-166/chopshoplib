@@ -4,15 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * Represents an XBox controller along with its associated buttons.
  */
 public class ButtonXboxController extends XboxController {
-    private final Map<Integer, Button> buttons = new HashMap<>();
+    private final Map<Integer, JoystickButton> buttons = new HashMap<>();
 
     /**
      * Construct an instance of a joystick along with each button the joystick has.
@@ -33,7 +31,7 @@ public class ButtonXboxController extends XboxController {
      * @param buttonId The index of the button to accesss
      * @return The button object for the given ID
      */
-    public Button getButton(final int buttonId) {
+    public JoystickButton getButton(final int buttonId) {
         if (!buttons.containsKey(buttonId)) {
             buttons.put(buttonId, new JoystickButton(this, buttonId));
         }
@@ -42,11 +40,9 @@ public class ButtonXboxController extends XboxController {
 
     public double getTriggers() {
 
-        double kRight = getTriggerAxis(Hand.kRight);
-        double kLeft = getTriggerAxis(Hand.kLeft);
-        double compositeTriggerValue = kRight - kLeft;
-
-        return compositeTriggerValue;
+        final double kRight = getTriggerAxis(Hand.kRight);
+        final double kLeft = getTriggerAxis(Hand.kLeft);
+        return kRight - kLeft;
     }
 
     /**
@@ -58,7 +54,7 @@ public class ButtonXboxController extends XboxController {
      * @param buttonId The index of the button to accesss
      * @return The button object for the given ID
      */
-    public Button getButton(final XBoxButton buttonId) {
+    public JoystickButton getButton(final XBoxButton buttonId) {
         return getButton(buttonId.get());
     }
 

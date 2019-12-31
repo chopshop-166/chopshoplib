@@ -4,7 +4,6 @@ import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -36,26 +35,6 @@ public interface EncodedSpeedController extends SendableSpeedController, IEncode
      */
     static EncodedSpeedController join(final SendableSpeedController sc, final IEncoder enc) {
         return new EncodedSpeedController() {
-
-            @Override
-            public String getName() {
-                return sc.getName();
-            }
-
-            @Override
-            public void setName(String name) {
-                sc.setName(name);
-            }
-
-            @Override
-            public String getSubsystem() {
-                return sc.getSubsystem();
-            }
-
-            @Override
-            public void setSubsystem(String subsystem) {
-                sc.setSubsystem(subsystem);
-            }
 
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -94,11 +73,6 @@ public interface EncodedSpeedController extends SendableSpeedController, IEncode
             }
 
             @Override
-            public void pidWrite(double output) {
-                sc.pidWrite(output);
-            }
-
-            @Override
             public void reset() {
                 enc.reset();
             }
@@ -114,20 +88,9 @@ public interface EncodedSpeedController extends SendableSpeedController, IEncode
             }
 
             @Override
-            public void setPIDSourceType(PIDSourceType pidSource) {
-                enc.setPIDSourceType(pidSource);
+            public void pidWrite(double output) {
+                sc.set(output);
             }
-
-            @Override
-            public PIDSourceType getPIDSourceType() {
-                return enc.getPIDSourceType();
-            }
-
-            @Override
-            public double pidGet() {
-                return enc.pidGet();
-            }
-
         };
     }
 

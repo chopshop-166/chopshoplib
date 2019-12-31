@@ -1,13 +1,12 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A {@link Sendable} that behaves as a boolean value.
  */
-public class MockDigitalInput extends SendableBase implements DigitalInputSource {
+public class MockDigitalInput implements DigitalInputSource {
 
     private boolean value;
 

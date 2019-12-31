@@ -20,28 +20,8 @@ public interface DigitalInputSource extends Sendable, BooleanSupplier {
             }
 
             @Override
-            public void setSubsystem(String subsystem) {
-                input.setSubsystem(subsystem);
-            }
-
-            @Override
-            public void setName(String name) {
-                input.setName(name);
-            }
-
-            @Override
             public void initSendable(SendableBuilder builder) {
                 input.initSendable(builder);
-            }
-
-            @Override
-            public String getSubsystem() {
-                return input.getSubsystem();
-            }
-
-            @Override
-            public String getName() {
-                return input.getName();
             }
         };
     }
