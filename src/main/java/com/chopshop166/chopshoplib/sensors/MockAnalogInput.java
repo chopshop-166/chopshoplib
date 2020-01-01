@@ -1,13 +1,14 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * A {@link Potentiometer} that can be controlled via the dashboard.
+ * A {@link Double} value that can be controlled via the dashboard.
+ * 
+ * <p>Pretends to be an Analog Input for dashboard purposes.
  */
-public class MockPIDSource implements Sendable {
+public class MockAnalogInput implements Sendable {
 
     private double value;
 
@@ -21,7 +22,7 @@ public class MockPIDSource implements Sendable {
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Potentiometer");
+        builder.setSmartDashboardType("Analog Input");
         builder.addDoubleProperty("Value", this::get, this::set);
     }
 }
