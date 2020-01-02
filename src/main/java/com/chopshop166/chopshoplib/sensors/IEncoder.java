@@ -1,12 +1,11 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Sendable;
 
 /**
  * Interface for an Encoder
  */
-public interface IEncoder extends PIDSource, Sendable {
+public interface IEncoder extends Sendable {
 
     /**
      * Reset the encoder distance to zero.

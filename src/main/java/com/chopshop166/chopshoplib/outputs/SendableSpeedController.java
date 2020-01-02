@@ -37,25 +37,6 @@ public interface SendableSpeedController extends Sendable, SpeedController {
      */
     static <T extends Sendable & SpeedController> SendableSpeedController wrap(T wrapped) {
         return new SendableSpeedController() {
-            @Override
-            public String getName() {
-                return wrapped.getName();
-            }
-
-            @Override
-            public void setName(String name) {
-                wrapped.setName(name);
-            }
-
-            @Override
-            public String getSubsystem() {
-                return wrapped.getSubsystem();
-            }
-
-            @Override
-            public void setSubsystem(String subsystem) {
-                wrapped.setSubsystem(subsystem);
-            }
 
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -94,7 +75,7 @@ public interface SendableSpeedController extends Sendable, SpeedController {
 
             @Override
             public void pidWrite(double output) {
-                wrapped.pidWrite(output);
+                wrapped.set(output);
             }
         };
     }

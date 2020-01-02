@@ -2,7 +2,6 @@ package com.chopshop166.chopshoplib.outputs;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -12,11 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * representation. This allows reading and setting the motor speed from the
  * dashboard.
  */
-public class SparkMaxSendable extends SendableBase implements SendableSpeedController {
+public class SparkMaxSendable implements SendableSpeedController {
     final private CANSparkMax sparkMax;
 
     public SparkMaxSendable(final CANSparkMax spark) {
-        super();
         this.sparkMax = spark;
     }
 

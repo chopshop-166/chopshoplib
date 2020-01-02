@@ -2,7 +2,6 @@ package com.chopshop166.chopshoplib.outputs;
 
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -15,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Some speed controllers have this behavior built in, but this wrapper exists
  * to add support for controllers that do not.
  */
-public class LimitedSpeedController extends SendableBase implements SendableSpeedController {
+public class LimitedSpeedController implements SendableSpeedController {
 
     final private SendableSpeedController wrapped;
     final private BooleanSupplier posLimit;
@@ -114,7 +113,7 @@ public class LimitedSpeedController extends SendableBase implements SendableSpee
 
     @Override
     public void pidWrite(final double output) {
-        wrapped.pidWrite(output);
+        wrapped.set(output);
     }
 
     @Override

@@ -2,13 +2,13 @@ package com.chopshop166.chopshoplib.outputs;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * An instance of {@link DoubleSolenoid} that can be wrapped.
  */
-public final class MockDSolenoid extends SendableBase implements IDSolenoid {
+public final class MockDSolenoid implements IDSolenoid, Sendable {
 
     private Value value;
 
@@ -46,6 +46,11 @@ public final class MockDSolenoid extends SendableBase implements IDSolenoid {
     @Override
     public boolean isRevSolenoidBlackListed() {
         return false;
+    }
+
+    @Override
+    public void close() throws Exception {
+        // Do nothing
     }
 
 }

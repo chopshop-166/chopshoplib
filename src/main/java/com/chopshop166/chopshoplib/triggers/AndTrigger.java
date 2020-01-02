@@ -2,7 +2,7 @@ package com.chopshop166.chopshoplib.triggers;
 
 import static java.util.Arrays.stream;
 
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * A {@link Trigger} that triggers if every trigger passed to it is triggered.

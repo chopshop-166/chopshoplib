@@ -37,8 +37,8 @@ public class MockGyro extends GyroBase implements PIDGyro {
     }
 
     @Override
-    public void free() {
-        // Nothing to free (deprecated)
+    public void close() {
+        // Nothing to close
     }
 
     @Override

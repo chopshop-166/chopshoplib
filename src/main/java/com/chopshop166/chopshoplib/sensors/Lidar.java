@@ -10,15 +10,13 @@ import com.google.common.math.Stats;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * LiDAR Sensor class.
  */
-public class Lidar extends SendableBase implements PIDSource {
+public class Lidar  implements Sendable {
     private I2C i2cDevice;
     private Thread accessThread;
     private double distanceMM;
@@ -300,7 +298,6 @@ public class Lidar extends SendableBase implements PIDSource {
     public Lidar(final Port port, final int kAddress, final int averageOver) {
         super();
         i2cDevice = new I2C(port, kAddress);
-        setName("Lidar", kAddress);
 
         // Objects related to statistics
         samples = new SampleBuffer(averageOver);
@@ -428,22 +425,5 @@ public class Lidar extends SendableBase implements PIDSource {
                 standardDeviation.setDouble(stdDevValue);
             }
         });
-    }
-
-    @Override
-    public void setPIDSourceType(final PIDSourceType pidSource) {
-        if (pidSource != PIDSourceType.kDisplacement) {
-            throw new IllegalArgumentException("Only displacement is supported");
-        }
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-    }
-
-    @Override
-    public double pidGet() {
-        return getDistance(MeasurementType.MILLIMETERS);
     }
 }

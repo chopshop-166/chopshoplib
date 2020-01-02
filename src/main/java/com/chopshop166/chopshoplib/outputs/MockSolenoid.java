@@ -1,6 +1,5 @@
 package com.chopshop166.chopshoplib.outputs;
 
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -9,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * 
  * It does not correlate with any real hardware.
  */
-public final class MockSolenoid extends SendableBase implements ISolenoid {
+public final class MockSolenoid implements ISolenoid {
 
     private boolean value;
 
@@ -44,6 +43,11 @@ public final class MockSolenoid extends SendableBase implements ISolenoid {
     @Override
     public void startPulse() {
         // Not implemented
+    }
+
+    @Override
+    public void close() throws Exception {
+        // Do nothing
     }
 
 }

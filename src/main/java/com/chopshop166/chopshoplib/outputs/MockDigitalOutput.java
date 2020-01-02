@@ -1,13 +1,13 @@
 package com.chopshop166.chopshoplib.outputs;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A mock {@link DigitalOutput} that can be sent to the dashboard.
  */
-public class MockDigitalOutput extends SendableBase implements IDigitalOutput {
+public class MockDigitalOutput implements IDigitalOutput, Sendable {
 
     private boolean value;
     private double rate;
@@ -61,5 +61,10 @@ public class MockDigitalOutput extends SendableBase implements IDigitalOutput {
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Digital Output");
         builder.addBooleanProperty("Value", this::get, this::set);
+    }
+
+    @Override
+    public void close() throws Exception {
+        // Do nothing (nothing to close)
     }
 }

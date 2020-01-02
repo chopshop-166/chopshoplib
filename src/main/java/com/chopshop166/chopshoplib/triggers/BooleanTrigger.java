@@ -4,7 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import com.chopshop166.chopshoplib.RobotUtils;
 
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * A trigger that responds to a function reference ({@link BooleanSupplier}).

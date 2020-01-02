@@ -1,39 +1,14 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * An {@link IEncoder} that can be controlled via the dashboard.
  */
-public class MockEncoder extends SendableBase implements IEncoder {
+public class MockEncoder implements IEncoder {
 
-    private PIDSourceType sourceType;
     private double distance;
     private double rate;
-
-    @Override
-    public void setPIDSourceType(final PIDSourceType pidSource) {
-        this.sourceType = pidSource;
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return this.sourceType;
-    }
-
-    @Override
-    public double pidGet() {
-        switch (sourceType) {
-        case kDisplacement:
-            return getDistance();
-        case kRate:
-            return getRate();
-        default:
-            return Double.NaN;
-        }
-    }
 
     @Override
     public void reset() {

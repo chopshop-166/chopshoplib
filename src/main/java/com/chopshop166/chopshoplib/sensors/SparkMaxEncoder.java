@@ -2,21 +2,19 @@ package com.chopshop166.chopshoplib.sensors;
 
 import com.revrobotics.CANEncoder;
 
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A wrapper for the {@link CANEncoder} provided by REV Robotics, to implement
  * WPIlib interfaces.
  */
-public class SparkMaxEncoder extends SendableBase implements IEncoder {
+public class SparkMaxEncoder implements IEncoder, Sendable {
 
     private boolean isReversed;
     private double resetPoint;
     private double scaleFactor;
     private final CANEncoder encoder;
-    private PIDSourceType pidSource = PIDSourceType.kDisplacement;
 
     /**
      * Create a wrapper object.
@@ -24,7 +22,6 @@ public class SparkMaxEncoder extends SendableBase implements IEncoder {
      * @param encoder The encoder to wrap around
      */
     public SparkMaxEncoder(final CANEncoder encoder) {
-        super();
         this.encoder = encoder;
     }
 
@@ -87,28 +84,6 @@ public class SparkMaxEncoder extends SendableBase implements IEncoder {
     @Override
     public boolean isMovingForward() {
         return encoder.getVelocity() >= 0.0;
-    }
-
-    @Override
-    public void setPIDSourceType(final PIDSourceType pidSource) {
-        this.pidSource = pidSource;
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return pidSource;
-    }
-
-    @Override
-    public double pidGet() {
-        switch (pidSource) {
-        case kDisplacement:
-            return getDistance();
-        case kRate:
-            return getRate();
-        default:
-            return Double.NaN;
-        }
     }
 
     /**

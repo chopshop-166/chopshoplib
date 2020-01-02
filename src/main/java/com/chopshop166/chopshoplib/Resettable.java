@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * Denote a class - usually a {@link Subsystem} - that can be reset to a default

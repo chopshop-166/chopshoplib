@@ -1,14 +1,13 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
-import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * An {@link Accelerometer} that can be controlled via the dashboard.
  */
-public class MockAccelerometer extends SendableBase implements Accelerometer {
+public class MockAccelerometer implements Accelerometer, Sendable {
 
     private double x;
     private double y;
