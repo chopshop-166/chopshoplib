@@ -42,6 +42,14 @@ java {
     withSourcesJar()
 }
 
+publishing {
+    publications {
+        chopshoplib(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
 ext {
     SpotBugsTask = com.github.spotbugs.SpotBugsTask
 }
