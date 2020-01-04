@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2019.3.1'
+    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2020.0.0'
 }
 ```
 
