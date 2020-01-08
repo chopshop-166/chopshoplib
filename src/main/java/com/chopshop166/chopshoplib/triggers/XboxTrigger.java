@@ -2,13 +2,14 @@ package com.chopshop166.chopshoplib.triggers;
 
 import java.util.function.Function;
 
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * A trigger that responds to the trigger of an Xbox controller.
  */
-public class XboxTrigger extends BooleanTrigger {
+public class XboxTrigger extends Trigger {
 
     private final XboxController controller;
 
