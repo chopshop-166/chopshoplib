@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * A trigger that responds to a function reference ({@link BooleanSupplier}).
  */
+@Deprecated(since = "2020", forRemoval = true)
 public class BooleanTrigger extends Trigger {
     private final BooleanSupplier supplier;
 

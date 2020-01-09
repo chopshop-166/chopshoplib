@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * A {@link Trigger} that triggers if any trigger passed to it is triggered.
  */
+@Deprecated(since = "2020", forRemoval = true)
 public class OrTrigger extends Trigger {
 
     private final Trigger[] triggers;
