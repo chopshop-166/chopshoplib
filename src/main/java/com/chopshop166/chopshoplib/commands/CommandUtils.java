@@ -1,13 +1,11 @@
 package com.chopshop166.chopshoplib.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 
 /**
  * Utilities related to commands.
@@ -25,6 +23,8 @@ final public class CommandUtils {
      */
     public static Command repeat(final int numTimesToRun, final Command cmd) {
         return new CommandBase() {
+
+            // Defaults to 0
             private int numTimesRun;
 
             @Override
@@ -35,7 +35,7 @@ final public class CommandUtils {
 
             @Override
             public void execute() {
-                if (!CommandScheduler.getInstance().isScheduled(cmd)) {
+                if (!cmd.isScheduled()) {
                     numTimesRun++;
                     cmd.schedule();
                 }
@@ -61,71 +61,6 @@ final public class CommandUtils {
      * @return A newly constructed command group.
      */
     public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        Command base = new CommandBase() {
-        };
-        for (int i = 0; i < numTimesToRun; i++) {
-            base = base.andThen(cmd.get());
-        }
-        return base;
-    }
-
-    /**
-     * Repeatedly run a {@link Command} until a condition becomes false.
-     * 
-     * @param cond The condition to check against.
-     * @param cmd  The command to run.
-     * @return A newly created command.
-     */
-    public static Command repeatWhile(final BooleanSupplier cond, final Command cmd) {
-        return new CommandBase() {
-            private boolean shouldFinish;
-
-            @Override
-            public void execute() {
-                if (!CommandScheduler.getInstance().isScheduled(cmd)) {
-                    if (cond.getAsBoolean()) {
-                        cmd.schedule();
-                    } else {
-                        shouldFinish = true;
-                    }
-                }
-            }
-
-            @Override
-            public boolean isFinished() {
-                return shouldFinish;
-            }
-        };
-    }
-
-    /**
-     * Promote a {@link Runnable} to a {@link Command}.
-     * 
-     * @param func The {@link Runnable} to promote.
-     * @return The command.
-     */
-    public static Command from(final Runnable func) {
-        return new InstantCommand(func);
-    }
-
-    /**
-     * Fluent API to start a sequence of commands.
-     * 
-     * @param cmds Commands to run first.
-     * @return The new command chain.
-     */
-    public static Command first(final Command... cmds) {
-        return new CommandBase() {
-        }.andThen(cmds);
-    }
-
-    /**
-     * Pause execution until a condition is true.
-     * 
-     * @param condition The case to check against.
-     * @return A new command.
-     */
-    public static Command waitUntil(final BooleanSupplier condition) {
-        return new WaitUntilCommand(condition);
+        return CommandGroupBase.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 }
