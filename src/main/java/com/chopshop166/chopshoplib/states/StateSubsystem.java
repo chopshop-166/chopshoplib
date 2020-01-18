@@ -53,31 +53,6 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
     }
 
     /**
-     * Constructor.
-     * 
-     * @param name      The name of the subsystem.
-     * @param initState The state that the subsystem starts in.
-     */
-    protected StateSubsystem(final String name, final S initState) {
-        this(initState, false);
-        setName(name);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param name                The name of the subsystem.
-     * @param initState           The state that the subsystem starts in.
-     * @param allowSameTransition Whether to allow transitions to the current state.
-     */
-    protected StateSubsystem(final String name, final S initState, final boolean allowSameTransition) {
-        this(initState, allowSameTransition);
-        setName(name);
-
-        setDefaultCommand(new InstantCommand(() -> handleState(currentState), this));
-    }
-
-    /**
      * Set the state of the subsystem, obeying transition rules.
      * 
      * @param newState The new state to transition to.
