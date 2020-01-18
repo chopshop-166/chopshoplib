@@ -3,7 +3,7 @@ package com.chopshop166.chopshoplib.sensors;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-public class MockGyro extends GyroBase implements PIDGyro {
+public class MockGyro extends GyroBase {
 
     private double angle;
     private double rate;

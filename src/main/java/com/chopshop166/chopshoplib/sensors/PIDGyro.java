@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+@Deprecated(since = "2020", forRemoval = true)
 public interface PIDGyro extends Gyro, Sendable {
 
     static PIDGyro wrap(final PIDGyro gyro) {
