@@ -7,13 +7,11 @@ tasks.withType(SpotBugsTask) {
 }
 
 spotbugs {
-    ignoreFailures = true
     excludeFilter = file("$rootProject.projectDir/config/findbugs-ignore.xml")
 }
 
 pmd {
     toolVersion = "6.20.0"
-    ignoreFailures = true
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
 }
