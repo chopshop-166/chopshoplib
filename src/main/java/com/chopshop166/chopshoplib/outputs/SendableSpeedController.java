@@ -85,7 +85,8 @@ public interface SendableSpeedController extends Sendable, SpeedController {
      * Create an instance of this interface that dispatches to the wrapped objects.
      * <p>
      * This can be used to wrap a group of objects that implements the two base
-     * interfaces separately, but not this interface.
+     * interfaces separately, but not this interface. Motors can be passed and a
+     * speed controller group is created automatically.
      * 
      * @param motor  Motor that will be wrapped, will be {@link Sendable} and put
      *               into a {@link SpeedControllerGroup}.
