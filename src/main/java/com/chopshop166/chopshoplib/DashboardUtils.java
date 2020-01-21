@@ -1,19 +1,20 @@
 package com.chopshop166.chopshoplib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
+import java.net.URL;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
+import com.google.common.io.Resources;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -23,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * Utility class for dashboard-related capabilities.
  */
 public final class DashboardUtils {
+
+    final private static String UNKNOWN_VALUE = "???";
+
     private DashboardUtils() {
     }
 
@@ -122,34 +126,30 @@ public final class DashboardUtils {
      * This will fail without a Gradle task to generate build information. See this
      * ChopShopLib README for more information.
      */
+    @SuppressWarnings("PMD.EmptyCatchBlock")
     public static void logTelemetry() {
-        final String branch = getResource("branch.txt");
-        SmartDashboard.putString("branch", branch);
+        final ShuffleboardTab tab = Shuffleboard.getTab("BuildData");
+        String hashString = UNKNOWN_VALUE;
+        String buildTime = UNKNOWN_VALUE;
+        String branchString = UNKNOWN_VALUE;
+        String fileString = UNKNOWN_VALUE;
 
-        final String commit = getResource("commit.txt");
-        SmartDashboard.putString("commit", commit);
+        try {
+            final URL manifestURL = Resources.getResource("META-INF/MANIFEST.MF");
+            final Manifest manifest = new Manifest(manifestURL.openStream());
+            final Attributes attrs = manifest.getMainAttributes();
 
-        final String changes = getResource("changes.txt");
-        SmartDashboard.putString("changes", changes);
-
-        final String buildtime = getResource("buildtime.txt");
-        SmartDashboard.putString("buildtime", buildtime);
-    }
-
-    /**
-     * Get a resource as a string.
-     */
-    private static String getResource(final String path) {
-        final ClassLoader loader = ClassLoader.getSystemClassLoader();
-        final InputStream stream = loader.getResourceAsStream("/" + path);
-        if (stream != null) {
-            try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-                    BufferedReader bufferedReader = new BufferedReader(reader)) {
-                return bufferedReader.lines().collect(Collectors.joining("\n"));
-            } catch (IOException e) {
-                return "";
-            }
+            hashString = attrs.getValue("Git-Hash");
+            buildTime = attrs.getValue("Build-Time");
+            branchString = attrs.getValue("Git-Branch");
+            fileString = attrs.getValue("Git-Files");
+        } catch (IOException ex) {
+            // Could not read the manifest, just send dummy values
+        } finally {
+            tab.add("Git Hash", hashString).withPosition(0, 0);
+            tab.add("Build Time", buildTime).withPosition(1, 0).withSize(2, 1);
+            tab.add("Git Branch", branchString).withPosition(3, 0);
+            tab.add("Git Files", fileString).withPosition(0, 1).withSize(4, 1);
         }
-        return null;
     }
 }
