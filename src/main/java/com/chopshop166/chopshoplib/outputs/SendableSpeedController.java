@@ -2,6 +2,7 @@ package com.chopshop166.chopshoplib.outputs;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -30,7 +31,7 @@ public interface SendableSpeedController extends Sendable, SpeedController {
      * This can be used to wrap an object that implements the two base interfaces
      * separately, but not this interface.
      * 
-     * @param         <T> A type that implements both {@link Sendable} and
+     * @param <T>     A type that implements both {@link Sendable} and
      *                {@link SpeedController}.
      * @param wrapped An object to wrap.
      * @return A thin wrapper around {@code wrapped}.
@@ -78,5 +79,23 @@ public interface SendableSpeedController extends Sendable, SpeedController {
                 wrapped.set(output);
             }
         };
+    }
+
+    /**
+     * Create an instance of this interface that dispatches to the wrapped objects.
+     * <p>
+     * This can be used to wrap a group of objects that implements the two base
+     * interfaces separately, but not this interface. Motors can be passed and a
+     * speed controller group is created automatically.
+     * 
+     * @param motor  Motor that will be wrapped, will be {@link Sendable} and put
+     *               into a {@link SpeedControllerGroup}.
+     * @param motors Continuation of motor.
+     * @return A wrapped Speed Controller Group.
+     */
+    static SendableSpeedController group(SpeedController motor, SpeedController... motors) {
+        SpeedControllerGroup motorGroup = new SpeedControllerGroup(motor, motors);
+
+        return SendableSpeedController.wrap(motorGroup);
     }
 }
