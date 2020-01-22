@@ -1,7 +1,5 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
