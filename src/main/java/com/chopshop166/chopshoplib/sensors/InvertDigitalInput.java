@@ -22,7 +22,7 @@ public class InvertDigitalInput extends DigitalInput implements DigitalInputSour
     /**
      * creates our input via the source interface
      */
-    public InvertDigitalInput(int channel) {
+    public InvertDigitalInput(final int channel) {
         super(channel);
     }
 
@@ -36,17 +36,19 @@ public class InvertDigitalInput extends DigitalInput implements DigitalInputSour
     /**
      * allows input to change the inverted variable
      */
-    public void setInverted(boolean invertValue) {
+    public void setInverted(final boolean invertValue) {
         inverted = invertValue;
     }
 
     /**
      * Uses exclusive or to invert the returned value based on the inverted variable
      */
+    @Override
     public boolean get() {
         return inverted ^ super.get();
     }
 
+    @Override
     public boolean getAsBoolean() {
         return get();
     }
