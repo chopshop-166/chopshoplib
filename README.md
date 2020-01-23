@@ -12,12 +12,24 @@ For documentation on classes, see the [javadocs](https://jitpack.io/com/github/c
 To use, in your `build.gradle` add the following:
 
 ```groovy
+plugins {
+    id "com.chopshop166.plugin" version "0.5"
+}
+
+dependencies {
+    implementation chopshop.deps()
+}
+```
+
+Or without the plugin:
+
+```groovy
 repositories {
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2020.0.0'
+    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2020.1.0'
 }
 ```
 
@@ -36,18 +48,3 @@ dependencies {
 ```
 
 Then run `./gradlew publishToMavenLocal` in this project before use in your robot project.
-
-Version Info
-------------
-
-To generate version information in a format that can be read by `DashboardUtils.logTelemetry`, copy the file `versioning.gradle` from this repository into your project directory. Then, add the following lines to your `build.gradle`:
-
-```groovy
-apply from: 'versioning.gradle'
-```
-
-It's recommended that `src/main/resources` already exists, and contains the following gitignore:
-
-```gitconfig
-*.txt
-```
