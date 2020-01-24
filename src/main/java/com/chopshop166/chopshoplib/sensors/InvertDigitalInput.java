@@ -20,28 +20,34 @@ public class InvertDigitalInput extends DigitalInput implements DigitalInputSour
     private boolean inverted;
 
     /**
-     * creates our input via the source interface
+     * Creates an input via the source interface.
+     * 
+     * @param channel The Digital I/O Channel to use.
      */
     public InvertDigitalInput(final int channel) {
         super(channel);
     }
 
     /**
-     * allows to check for inversion using the boolean created above
+     * Allows to check for inversion using the boolean created above.
+     * 
+     * @return True if the input is inverted.
      */
     public boolean getInverted() {
         return inverted;
     }
 
     /**
-     * allows input to change the inverted variable
+     * Allows input to change the inverted variable.
+     * 
+     * @param invertValue True if the input should be inverted.
      */
     public void setInverted(final boolean invertValue) {
         inverted = invertValue;
     }
 
     /**
-     * Uses exclusive or to invert the returned value based on the inverted variable
+     * Uses exclusive or to invert the returned value based on the inverted variable.
      */
     @Override
     public boolean get() {
