@@ -4,8 +4,8 @@ package com.chopshop166.chopshoplib.outputs;
  * PIDSpeedController
  * <p>
  * Create an Interface that will act as a sendablespeedcontroller. It will take
- * multiple types of controllers and allow for PID use but will have the
- * additional cappabilities of PID.
+ * multiple types of controllers and allow for PID use, but will have the
+ * additional capabilities of PID.
  * 
  * @author Andrew Martin
  * @since 2020-02-1
