@@ -13,12 +13,12 @@ package com.chopshop166.chopshoplib.outputs;
 
 public interface PIDSpeedController {
 
-    public void setP(double kp);
+    void setP(double kp);
 
-    public void setI(double ki);
+    void setI(double ki);
 
-    public void setD(double kd);
+    void setD(double kd);
 
-    public void setSetpoint(double setPoint);
+    void setSetpoint(double setPoint);
 
 }

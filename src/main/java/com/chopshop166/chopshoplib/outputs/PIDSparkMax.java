@@ -1,5 +1,9 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+
 /**
  * PIDSpeedController
  * <p>
@@ -12,25 +16,30 @@ package com.chopshop166.chopshoplib.outputs;
  */
 
 public class PIDSparkMax implements PIDSpeedController {
+    private final CANPIDController sparkPID;
 
-    @Override
-    public void setP(double kp) {
-
+    public PIDSparkMax(final CANSparkMax max) {
+        sparkPID = new CANPIDController(max);
     }
 
     @Override
-    public void setI(double ki) {
-
+    public void setP(final double kp) {
+        sparkPID.setP(kp);
     }
 
     @Override
-    public void setD(double kd) {
-
+    public void setI(final double ki) {
+        sparkPID.setI(ki);
     }
 
     @Override
-    public void setSetpoint(double setPoint) {
+    public void setD(final double kd) {
+        sparkPID.setD(kd);
+    }
 
+    @Override
+    public void setSetpoint(final double setPoint) {
+        sparkPID.setReference(setPoint, ControlType.kVelocity);
     }
 
 }
