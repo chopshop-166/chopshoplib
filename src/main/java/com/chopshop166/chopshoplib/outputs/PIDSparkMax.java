@@ -4,6 +4,8 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+
 /**
  * PIDSpeedController
  * <p>
@@ -17,9 +19,11 @@ import com.revrobotics.ControlType;
 
 public class PIDSparkMax implements PIDSpeedController {
     private final CANPIDController sparkPID;
+    private final CANSparkMax max;
 
     public PIDSparkMax(final CANSparkMax max) {
         sparkPID = new CANPIDController(max);
+        this.max = max;
     }
 
     @Override
@@ -40,6 +44,49 @@ public class PIDSparkMax implements PIDSpeedController {
     @Override
     public void setSetpoint(final double setPoint) {
         sparkPID.setReference(setPoint, ControlType.kVelocity);
+    }
+
+    @Override
+    public void initSendable(final SendableBuilder builder) {
+        builder.setSmartDashboardType("Speed Controller");
+        builder.setActuator(true);
+        builder.setSafeState(this::disable);
+        builder.addDoubleProperty("Value", this::get, this::set);
+    }
+
+    @Override
+    public void set(final double speed) {
+        max.set(speed);
+    }
+
+    @Override
+    public double get() {
+        return max.get();
+    }
+
+    @Override
+    public void setInverted(final boolean isInverted) {
+        max.setInverted(isInverted);
+    }
+
+    @Override
+    public boolean getInverted() {
+        return max.getInverted();
+    }
+
+    @Override
+    public void disable() {
+        max.disable();
+    }
+
+    @Override
+    public void stopMotor() {
+        max.stopMotor();
+    }
+
+    @Override
+    public void pidWrite(final double output) {
+        max.set(output);
     }
 
 }
