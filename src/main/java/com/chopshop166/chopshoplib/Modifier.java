@@ -2,12 +2,12 @@ package com.chopshop166.chopshoplib;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoublePredicate;
-import java.util.function.Function;
+import java.util.function.DoubleUnaryOperator;
 
 import com.google.common.math.Stats;
 
 @FunctionalInterface
-public interface Modifier extends Function<Double, Double> {
+public interface Modifier extends DoubleUnaryOperator {
 
     /**
      * Modifier to prevent going above a certain height.
@@ -51,7 +51,7 @@ public interface Modifier extends Function<Double, Double> {
             private SampleBuffer buffer = new SampleBuffer(numSamples);
 
             @Override
-            public Double apply(Double speed) {
+            public double applyAsDouble(double speed) {
                 buffer.addSample(speed);
                 return Stats.of(buffer).mean();
             }
@@ -67,11 +67,11 @@ public interface Modifier extends Function<Double, Double> {
      * @return The new speed.
      */
     public static Modifier power(final double exp) {
-        return (Double speed) -> Math.copySign(Math.pow(speed, exp), speed);
+        return (double speed) -> Math.copySign(Math.pow(speed, exp), speed);
     }
 
     /** A modifier that just inverts the speed. */
-    public static Modifier invert = (Double speed) -> -speed;
+    public static Modifier invert = (double speed) -> -speed;
 
     /**
      * Creates a modifier that sets speed to 0 if the condition is true.
@@ -80,6 +80,6 @@ public interface Modifier extends Function<Double, Double> {
      * @return The original speed, or 0 if the condition is true.
      */
     public static Modifier speedFilter(final DoublePredicate condition) {
-        return (Double speed) -> condition.test(speed) ? 0.0 : speed;
+        return (double speed) -> condition.test(speed) ? 0.0 : speed;
     }
 }
