@@ -1,8 +1,8 @@
 package com.chopshop166.chopshoplib;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoublePredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import com.google.common.math.Stats;
 
@@ -16,7 +16,7 @@ public interface Modifier extends Function<Double, Double> {
      * @return The new speed.
      */
     public static Modifier upperLimit(final BooleanSupplier limit) {
-        return speedFilter((Double speed) -> speed > 0.0 && limit.getAsBoolean());
+        return speedFilter((double speed) -> speed > 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -26,7 +26,7 @@ public interface Modifier extends Function<Double, Double> {
      * @return The new speed.
      */
     public static Modifier lowerLimit(final BooleanSupplier limit) {
-        return speedFilter((Double speed) -> speed < 0.0 && limit.getAsBoolean());
+        return speedFilter((double speed) -> speed < 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -36,7 +36,7 @@ public interface Modifier extends Function<Double, Double> {
      * @return The new speed.
      */
     public static Modifier deadband(final double band) {
-        return speedFilter((Double speed) -> Math.abs(speed) < band);
+        return speedFilter((double speed) -> Math.abs(speed) < band);
     }
 
     /**
@@ -70,13 +70,16 @@ public interface Modifier extends Function<Double, Double> {
         return (Double speed) -> Math.copySign(Math.pow(speed, exp), speed);
     }
 
+    /** A modifier that just inverts the speed. */
+    public static Modifier invert = (Double speed) -> -speed;
+
     /**
      * Creates a modifier that sets speed to 0 if the condition is true.
      * 
      * @param condition The condition to check.
      * @return The original speed, or 0 if the condition is true.
      */
-    public static Modifier speedFilter(final Predicate<Double> condition) {
+    public static Modifier speedFilter(final DoublePredicate condition) {
         return (Double speed) -> condition.test(speed) ? 0.0 : speed;
     }
 }
