@@ -59,6 +59,18 @@ public interface Modifier extends Function<Double, Double> {
     }
 
     /**
+     * Use an exponent for the given speed.
+     * 
+     * Behaves as sign-preserving-square for exponent of 2.
+     * 
+     * @param exp The exponent to raise the speed to.
+     * @return The new speed.
+     */
+    public static Modifier power(final double exp) {
+        return (Double speed) -> Math.copySign(Math.pow(speed, exp), speed);
+    }
+
+    /**
      * Creates a modifier that sets speed to 0 if the condition is true.
      * 
      * @param condition The condition to check.
