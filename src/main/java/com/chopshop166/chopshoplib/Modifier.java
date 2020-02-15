@@ -4,6 +4,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import com.google.common.math.Stats;
+
 @FunctionalInterface
 public interface Modifier extends Function<Double, Double> {
 
@@ -35,6 +37,25 @@ public interface Modifier extends Function<Double, Double> {
      */
     public static Modifier deadband(final double band) {
         return speedFilter((Double speed) -> Math.abs(speed) < band);
+    }
+
+    /**
+     * Modifier to set the speed based on a rolling average.
+     * 
+     * @param numSamples The number of samples to use.
+     * @return The average speed.
+     */
+    public static Modifier rollingAverage(final int numSamples) {
+        return new Modifier() {
+
+            private SampleBuffer buffer = new SampleBuffer(numSamples);
+
+            @Override
+            public Double apply(Double speed) {
+                buffer.addSample(speed);
+                return Stats.of(buffer).mean();
+            }
+        };
     }
 
     /**
