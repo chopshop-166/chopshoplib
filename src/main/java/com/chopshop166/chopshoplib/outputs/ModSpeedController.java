@@ -5,13 +5,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.chopshop166.chopshoplib.Modifier;
-
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * {@link SpeedController} that has attributes applied to it.
+ * {@link SpeedController} that has modifiers applied to it.
  *
  * This is a generic system that can support many changes to speed.
  */
@@ -23,9 +21,8 @@ public class ModSpeedController implements SendableSpeedController {
     /**
      * Wrap a speed controller in limits.
      * 
-     * @param wrapped  The speed controller to limit.
-     * @param posLimit The limiting condition for the positive direction.
-     * @param negLimit The limiting condition for the negative direction.
+     * @param wrapped   The speed controller to limit.
+     * @param modifiers Modifiers to use by default.
      */
     public ModSpeedController(final SendableSpeedController wrapped, final Modifier... modifiers) {
         super();
@@ -42,18 +39,18 @@ public class ModSpeedController implements SendableSpeedController {
         return wrapped;
     }
 
-    public void add(Modifier m, Modifier... ms) {
+    public void add(final Modifier m, final Modifier... ms) {
         modifiers.add(m);
         modifiers.addAll(Arrays.asList(ms));
     }
 
-    public void addAll(Collection<? extends Modifier> ms) {
+    public void addAll(final Collection<? extends Modifier> ms) {
         modifiers.addAll(ms);
     }
 
     @Override
     public void set(final double speed) {
-        set(calculate(speed));
+        wrapped.set(calculate(speed));
     }
 
     @Override
@@ -101,8 +98,8 @@ public class ModSpeedController implements SendableSpeedController {
      */
     private double calculate(final double rawSpeed) {
         double speed = rawSpeed;
-        for (Modifier m : modifiers) {
-            speed = m.apply(speed);
+        for (final Modifier m : modifiers) {
+            speed = m.applyAsDouble(speed);
         }
         return speed;
     }

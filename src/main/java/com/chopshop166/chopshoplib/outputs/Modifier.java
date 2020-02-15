@@ -1,9 +1,10 @@
-package com.chopshop166.chopshoplib;
+package com.chopshop166.chopshoplib.outputs;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoublePredicate;
 import java.util.function.DoubleUnaryOperator;
 
+import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
 @FunctionalInterface
@@ -15,7 +16,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param limit The trigger for being at max height.
      * @return The new speed.
      */
-    public static Modifier upperLimit(final BooleanSupplier limit) {
+    static Modifier upperLimit(final BooleanSupplier limit) {
         return speedFilter((double speed) -> speed > 0.0 && limit.getAsBoolean());
     }
 
@@ -25,7 +26,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param limit The trigger for being at min height.
      * @return The new speed.
      */
-    public static Modifier lowerLimit(final BooleanSupplier limit) {
+    static Modifier lowerLimit(final BooleanSupplier limit) {
         return speedFilter((double speed) -> speed < 0.0 && limit.getAsBoolean());
     }
 
@@ -35,7 +36,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param band The minimum value to allow the absolute value of.
      * @return The new speed.
      */
-    public static Modifier deadband(final double band) {
+    static Modifier deadband(final double band) {
         return speedFilter((double speed) -> Math.abs(speed) < band);
     }
 
@@ -45,7 +46,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param numSamples The number of samples to use.
      * @return The average speed.
      */
-    public static Modifier rollingAverage(final int numSamples) {
+    static Modifier rollingAverage(final int numSamples) {
         return new Modifier() {
 
             private SampleBuffer buffer = new SampleBuffer(numSamples);
@@ -66,12 +67,18 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param exp The exponent to raise the speed to.
      * @return The new speed.
      */
-    public static Modifier power(final double exp) {
+    static Modifier power(final double exp) {
         return (double speed) -> Math.copySign(Math.pow(speed, exp), speed);
     }
 
-    /** A modifier that just inverts the speed. */
-    public static Modifier invert = (double speed) -> -speed;
+    /**
+     * Modifier that inverts the given speed.
+     * 
+     * @return An inverter.
+     */
+    static Modifier invert() {
+        return (double speed) -> -speed;
+    }
 
     /**
      * Creates a modifier that sets speed to 0 if the condition is true.
@@ -79,7 +86,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @param condition The condition to check.
      * @return The original speed, or 0 if the condition is true.
      */
-    public static Modifier speedFilter(final DoublePredicate condition) {
+    static Modifier speedFilter(final DoublePredicate condition) {
         return (double speed) -> condition.test(speed) ? 0.0 : speed;
     }
 }
