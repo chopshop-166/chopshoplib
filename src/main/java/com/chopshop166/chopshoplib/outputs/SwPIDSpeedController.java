@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * Mock speed controller that can be used to simulate a motor on a driver
- * station, with "PID".
+ * Use a PID controller with a generic speed controller.
  */
 public class SwPIDSpeedController implements PIDSpeedController {
 
@@ -66,12 +65,12 @@ public class SwPIDSpeedController implements PIDSpeedController {
 
     @Override
     public void setI(final double ki) {
-        pid.setP(ki);
+        pid.setI(ki);
     }
 
     @Override
     public void setD(final double kd) {
-        pid.setP(kd);
+        pid.setD(kd);
     }
 
     @Override
