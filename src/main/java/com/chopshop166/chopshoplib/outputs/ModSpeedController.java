@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -31,6 +32,16 @@ public class ModSpeedController implements SendableSpeedController {
     }
 
     /**
+     * Wrap a speed controller in limits.
+     * 
+     * @param wrapped   The speed controller to limit.
+     * @param modifiers Modifiers to use by default.
+     */
+    public <T extends Sendable & SpeedController> ModSpeedController(final T wrapped, final Modifier... modifiers) {
+        this(SendableSpeedController.wrap(wrapped), modifiers);
+    }
+
+    /**
      * Get the original speed controller.
      * 
      * @return The wrapped object.
@@ -39,11 +50,22 @@ public class ModSpeedController implements SendableSpeedController {
         return wrapped;
     }
 
+    /**
+     * Add modifiers to the speed controller.
+     * 
+     * @param m  First modifier.
+     * @param ms Any extra modifiers (optional).
+     */
     public void add(final Modifier m, final Modifier... ms) {
         modifiers.add(m);
         modifiers.addAll(Arrays.asList(ms));
     }
 
+    /**
+     * Add all modifiers from a collection.
+     * 
+     * @param ms Collection of modifiers.
+     */
     public void addAll(final Collection<? extends Modifier> ms) {
         modifiers.addAll(ms);
     }
