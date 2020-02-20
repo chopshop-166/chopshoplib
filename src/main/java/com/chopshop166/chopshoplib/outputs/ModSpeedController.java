@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.chopshop166.chopshoplib.sensors.IEncoder;
+import com.chopshop166.chopshoplib.sensors.MockEncoder;
+
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -18,6 +21,8 @@ public class ModSpeedController implements SendableSpeedController {
 
     final private SendableSpeedController wrapped;
     final private List<Modifier> modifiers;
+
+    private IEncoder encoder = new MockEncoder();
 
     /**
      * Wrap a speed controller in limits.
@@ -34,7 +39,7 @@ public class ModSpeedController implements SendableSpeedController {
     /**
      * Wrap a speed controller in limits.
      * 
-     * @param <T> A speed controller type.
+     * @param <T>       A speed controller type.
      * @param wrapped   The speed controller to limit.
      * @param modifiers Modifiers to use by default.
      */
@@ -69,6 +74,15 @@ public class ModSpeedController implements SendableSpeedController {
      */
     public void addAll(final Collection<? extends Modifier> ms) {
         modifiers.addAll(ms);
+    }
+
+    /**
+     * Set the encoder that this speed controller uses.
+     * 
+     * @param enc The encoder.
+     */
+    public void setEncoder(final IEncoder enc) {
+        encoder = enc;
     }
 
     @Override
@@ -109,6 +123,11 @@ public class ModSpeedController implements SendableSpeedController {
     @Override
     public void initSendable(final SendableBuilder builder) {
         wrapped.initSendable(builder);
+    }
+
+    @Override
+    public IEncoder getEncoder() {
+        return encoder;
     }
 
     /**
