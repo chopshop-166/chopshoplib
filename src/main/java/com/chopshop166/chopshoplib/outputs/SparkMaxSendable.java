@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -16,6 +17,15 @@ public class SparkMaxSendable implements SendableSpeedController {
 
     public SparkMaxSendable(final CANSparkMax spark) {
         this.sparkMax = spark;
+    }
+
+    /**
+     * Get the wrapped encoder.
+     * 
+     * @return The encoder as the appropriate type.
+     */
+    public SparkMaxEncoder getEncoder() {
+        return new SparkMaxEncoder(sparkMax.getEncoder());
     }
 
     @Override

@@ -34,6 +34,7 @@ public class ModSpeedController implements SendableSpeedController {
     /**
      * Wrap a speed controller in limits.
      * 
+     * @param <T> A speed controller type.
      * @param wrapped   The speed controller to limit.
      * @param modifiers Modifiers to use by default.
      */
