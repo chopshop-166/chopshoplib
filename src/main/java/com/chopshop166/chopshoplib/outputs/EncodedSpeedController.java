@@ -93,5 +93,4 @@ public interface EncodedSpeedController extends SendableSpeedController, IEncode
             }
         };
     }
-
 }

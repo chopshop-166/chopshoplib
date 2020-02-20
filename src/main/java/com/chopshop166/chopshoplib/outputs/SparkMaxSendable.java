@@ -19,11 +19,7 @@ public class SparkMaxSendable implements SendableSpeedController {
         this.sparkMax = spark;
     }
 
-    /**
-     * Get the wrapped encoder.
-     * 
-     * @return The encoder as the appropriate type.
-     */
+    @Override
     public SparkMaxEncoder getEncoder() {
         return new SparkMaxEncoder(sparkMax.getEncoder());
     }
