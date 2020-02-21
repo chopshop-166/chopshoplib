@@ -48,6 +48,32 @@ public class ModSpeedController implements SendableSpeedController {
     }
 
     /**
+     * Wrap a speed controller in limits.
+     * 
+     * @param wrapped   The speed controller to limit.
+     * @param encoder   Encoder object attached to the speed controller.
+     * @param modifiers Modifiers to use by default.
+     */
+    public ModSpeedController(final SendableSpeedController wrapped, final IEncoder encoder,
+            final Modifier... modifiers) {
+        this(wrapped, modifiers);
+        this.encoder = encoder;
+    }
+
+    /**
+     * Wrap a speed controller in limits.
+     * 
+     * @param <T>       A speed controller type.
+     * @param wrapped   The speed controller to limit.
+     * @param encoder   Encoder object attached to the speed controller.
+     * @param modifiers Modifiers to use by default.
+     */
+    public <T extends Sendable & SpeedController> ModSpeedController(final T wrapped, final IEncoder encoder,
+            final Modifier... modifiers) {
+        this(SendableSpeedController.wrap(wrapped), encoder, modifiers);
+    }
+
+    /**
      * Get the original speed controller.
      * 
      * @return The wrapped object.
