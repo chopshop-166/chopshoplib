@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.sensors;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.GyroBase;
@@ -11,6 +12,10 @@ public class PigeonGyro extends GyroBase {
     public PigeonGyro(final PigeonIMU gyro) {
         super();
         this.gyro = gyro;
+    }
+
+    public PigeonGyro(final TalonSRX talon) {
+        this(new PigeonIMU(talon));
     }
 
     @Override
