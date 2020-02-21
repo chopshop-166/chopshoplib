@@ -27,9 +27,9 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getDistance());
     }
 
-    public <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor,
-            final PIDController pid) {
-        return position(SendableSpeedController.wrap(motor), pid);
+    public <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor, final PIDController pid,
+            final IEncoder encoder) {
+        return position(new ModSpeedController(motor, encoder), pid);
     }
 
     public SwPIDSpeedController velocity(final SendableSpeedController motor, final PIDController pid) {
@@ -38,9 +38,9 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getRate());
     }
 
-    public <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor,
-            final PIDController pid) {
-        return velocity(SendableSpeedController.wrap(motor), pid);
+    public <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor, final PIDController pid,
+            final IEncoder encoder) {
+        return velocity(new ModSpeedController(motor, encoder), pid);
     }
 
     public SwPIDSpeedController(final SendableSpeedController motor, final PIDController pid,
