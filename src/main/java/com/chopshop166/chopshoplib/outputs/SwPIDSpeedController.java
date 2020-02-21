@@ -2,6 +2,8 @@ package com.chopshop166.chopshoplib.outputs;
 
 import java.util.function.DoubleSupplier;
 
+import com.chopshop166.chopshoplib.sensors.IEncoder;
+
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -18,6 +20,28 @@ public class SwPIDSpeedController implements PIDSpeedController {
     final private DoubleSupplier measurement;
     final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculate);
     private boolean enabled = true;
+
+    public SwPIDSpeedController position(final SendableSpeedController motor, final PIDController pid) {
+        // Uses a lambda so that it always gets the current encoder, instead of the one
+        // assigned at creation time.
+        return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getDistance());
+    }
+
+    public <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor, final PIDController pid,
+            final IEncoder encoder) {
+        return position(new ModSpeedController(motor, encoder), pid);
+    }
+
+    public SwPIDSpeedController velocity(final SendableSpeedController motor, final PIDController pid) {
+        // Uses a lambda so that it always gets the current encoder, instead of the one
+        // assigned at creation time.
+        return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getRate());
+    }
+
+    public <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor, final PIDController pid,
+            final IEncoder encoder) {
+        return velocity(new ModSpeedController(motor, encoder), pid);
+    }
 
     public SwPIDSpeedController(final SendableSpeedController motor, final PIDController pid,
             final DoubleSupplier measurement) {
@@ -111,6 +135,11 @@ public class SwPIDSpeedController implements PIDSpeedController {
     @Override
     public void pidWrite(final double output) {
         motor.pidWrite(output);
+    }
+
+    @Override
+    public IEncoder getEncoder() {
+        return motor.getEncoder();
     }
 
     private void calculate() {

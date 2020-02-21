@@ -1,5 +1,8 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import com.chopshop166.chopshoplib.sensors.IEncoder;
+import com.chopshop166.chopshoplib.sensors.MockEncoder;
+
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -15,6 +18,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * disconnected interfaces.
  */
 public interface SendableSpeedController extends Sendable, SpeedController {
+
+    /**
+     * Get the encoder attached to the robot.
+     * 
+     * @return An encoder, or a mock if none is attached.
+     */
+    default IEncoder getEncoder() {
+        return new MockEncoder();
+    }
+
     /**
      * Pass through an instance of this interface.
      * 

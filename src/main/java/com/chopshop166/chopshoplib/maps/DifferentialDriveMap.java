@@ -1,42 +1,36 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.outputs.EncodedSpeedController;
+import com.chopshop166.chopshoplib.outputs.SendableSpeedController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
 import edu.wpi.first.wpilibj.GyroBase;
 
 /**
  * Differential Drive Map
- * <p>
- * Provides a base map for differential drive and the left and right
- * {@link EncodedSpeedController}. Also provides a {@link GyroBase}
+ * 
+ * Provides a base map for differential drive, using the left and right speed
+ * controllers. Also provides a gyro.
  * 
  * @author Jeffrey Burke
  * @since 2020-01-20
  */
 public interface DifferentialDriveMap {
     /**
-     * Get Left
-     * <p>
-     * Provides the left {@link EncodedSpeedController}.
+     * Provides the left speed controller.
      * 
-     * @return {@link EncodedSpeedController}
+     * @return A speed controller.
      */
-    EncodedSpeedController getLeft();
+    SendableSpeedController getLeft();
 
     /**
-     * Get Right
-     * <p>
-     * Provides the right {@link EncodedSpeedController}.
+     * Provides the right speed controller.
      * 
-     * @return {@link EncodedSpeedController}
+     * @return A speed controller.
      */
-    EncodedSpeedController getRight();
+    SendableSpeedController getRight();
 
     /**
-     * Geta a Gyro
-     * <p>
-     * Provides a mock gyro unless {@link EncodedSpeedController}.
+     * Gets a Gyro.
      * 
      * @return Returns a {@link MockGyro}
      */

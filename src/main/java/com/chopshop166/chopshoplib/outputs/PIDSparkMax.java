@@ -22,7 +22,7 @@ public class PIDSparkMax implements PIDSpeedController {
     private final CANSparkMax max;
 
     public PIDSparkMax(final CANSparkMax max) {
-        sparkPID = new CANPIDController(max);
+        sparkPID = max.getPIDController();
         this.max = max;
     }
 
