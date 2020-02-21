@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -19,16 +20,25 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Create a wrapper object.
      * 
-     * @param encoder The encoder to wrap around
+     * @param encoder The encoder to wrap around.
      */
     public SparkMaxEncoder(final CANEncoder encoder) {
         this.encoder = encoder;
     }
 
     /**
+     * Create a wrapper object.
+     * 
+     * @param max The Spark MAX to get the encoder for.
+     */
+    public SparkMaxEncoder(final CANSparkMax max) {
+        this.encoder = max.getEncoder();
+    }
+
+    /**
      * Get the distance travelled.
      * 
-     * @return the distance in revolutions
+     * @return The distance in revolutions.
      */
     @Override
     public double getDistance() {
@@ -42,7 +52,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Get the velocity of the encoder.
      * 
-     * @return the velocity in rpm
+     * @return The velocity in rpm.
      */
     @Override
     public double getRate() {
@@ -56,7 +66,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Get if the encoder is reversed.
      * 
-     * @return true if reversed, otherwise false
+     * @return true if reversed, otherwise false.
      */
     public boolean isReverseDirection() {
         return isReversed;
@@ -65,7 +75,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Set if the encoder is reversed.
      * 
-     * @param isReversed true if the encoder is reversed, otherwise false
+     * @param isReversed true if the encoder is reversed, otherwise false.
      */
     public void setReverseDirection(final boolean isReversed) {
         this.isReversed = isReversed;
@@ -89,7 +99,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Sets the scale factor used to convert encoder values to useful units.
      * 
-     * @param scaleFactor the scaleFactor to set
+     * @param scaleFactor The scaleFactor to set.
      */
     public void setScaleFactor(final double scaleFactor) {
         this.scaleFactor = scaleFactor;
@@ -98,7 +108,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     /**
      * Return the scale factor used to convert the encoder values to useful units.
      * 
-     * @return the scale factor
+     * @return The scale factor.
      */
     public double getScaleFactor() {
         return scaleFactor;
