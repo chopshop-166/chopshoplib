@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SparkMaxEncoder implements IEncoder, Sendable {
 
-    private boolean isReversed;
     private double resetPoint;
     private final CANEncoder encoder;
 
@@ -41,11 +40,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      */
     @Override
     public double getDistance() {
-        double position = encoder.getPosition() - resetPoint;
-        if (isReversed) {
-            position *= -1;
-        }
-        return position;
+        return encoder.getPosition() - resetPoint;
     }
 
     /**
@@ -55,11 +50,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      */
     @Override
     public double getRate() {
-        double velocity = encoder.getVelocity();
-        if (isReversed) {
-            velocity *= -1;
-        }
-        return velocity;
+        return encoder.getVelocity();
     }
 
     /**
@@ -68,7 +59,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * @return true if reversed, otherwise false.
      */
     public boolean isReverseDirection() {
-        return isReversed;
+        return encoder.getInverted();
     }
 
     /**
