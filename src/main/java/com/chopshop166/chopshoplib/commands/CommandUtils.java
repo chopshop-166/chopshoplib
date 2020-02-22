@@ -21,7 +21,7 @@ final public class CommandUtils {
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
      */
-    public static Command repeat(final int numTimesToRun, final Command cmd) {
+    public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
         return new CommandBase() {
 
             // Defaults to 0
@@ -60,7 +60,7 @@ final public class CommandUtils {
      * @param cmd           A way to create the command to repeat.
      * @return A newly constructed command group.
      */
-    public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
+    public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
         return CommandGroupBase.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 }
