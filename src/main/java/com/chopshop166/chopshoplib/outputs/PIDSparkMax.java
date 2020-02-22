@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -16,14 +17,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * @author Andrew Martin
  * @since 2020-02-7
  */
-
 public class PIDSparkMax implements PIDSpeedController {
     private final CANPIDController sparkPID;
     private final CANSparkMax max;
+    private final SparkMaxEncoder encoder;
 
     public PIDSparkMax(final CANSparkMax max) {
-        sparkPID = max.getPIDController();
+        this.sparkPID = max.getPIDController();
         this.max = max;
+        this.encoder = new SparkMaxEncoder(max.getEncoder());
+    }
+
+    @Override
+    public SparkMaxEncoder getEncoder() {
+        return encoder;
     }
 
     @Override
