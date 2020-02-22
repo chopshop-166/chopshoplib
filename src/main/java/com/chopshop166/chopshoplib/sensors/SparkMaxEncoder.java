@@ -14,7 +14,6 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
 
     private boolean isReversed;
     private double resetPoint;
-    private double scaleFactor;
     private final CANEncoder encoder;
 
     /**
@@ -46,7 +45,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
         if (isReversed) {
             position *= -1;
         }
-        return position * scaleFactor;
+        return position;
     }
 
     /**
@@ -60,7 +59,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
         if (isReversed) {
             velocity *= -1;
         }
-        return velocity * scaleFactor;
+        return velocity;
     }
 
     /**
@@ -78,7 +77,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * @param isReversed true if the encoder is reversed, otherwise false.
      */
     public void setReverseDirection(final boolean isReversed) {
-        this.isReversed = isReversed;
+        encoder.setInverted(isReversed);
     }
 
     @Override
@@ -101,8 +100,8 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * 
      * @param scaleFactor The scaleFactor to set.
      */
-    public void setScaleFactor(final double scaleFactor) {
-        this.scaleFactor = scaleFactor;
+    public void setPositionScaleFactor(final double scaleFactor) {
+        encoder.setPositionConversionFactor(scaleFactor);
     }
 
     /**
@@ -110,8 +109,26 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * 
      * @return The scale factor.
      */
-    public double getScaleFactor() {
-        return scaleFactor;
+    public double getPositionScaleFactor() {
+        return encoder.getPositionConversionFactor();
+    }
+
+    /**
+     * Sets the scale factor used to convert encoder values to useful units.
+     * 
+     * @param scaleFactor The scaleFactor to set.
+     */
+    public void setVelocityScaleFactor(final double scaleFactor) {
+        encoder.setVelocityConversionFactor(scaleFactor);
+    }
+
+    /**
+     * Return the scale factor used to convert the encoder values to useful units.
+     * 
+     * @return The scale factor.
+     */
+    public double getVelocityScaleFactor() {
+        return encoder.getVelocityConversionFactor();
     }
 
     @Override
@@ -119,6 +136,6 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
         builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", this::getScaleFactor, this::setScaleFactor);
+        builder.addDoubleProperty("Distance per Tick", this::getPositionScaleFactor, this::setPositionScaleFactor);
     }
 }
