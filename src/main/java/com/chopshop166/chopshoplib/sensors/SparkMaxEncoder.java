@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SparkMaxEncoder implements IEncoder, Sendable {
 
-    private double resetPoint;
     private final CANEncoder encoder;
 
     /**
@@ -40,7 +39,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      */
     @Override
     public double getDistance() {
-        return encoder.getPosition() - resetPoint;
+        return encoder.getPosition();
     }
 
     /**
@@ -73,7 +72,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
 
     @Override
     public void reset() {
-        resetPoint = encoder.getPosition();
+        encoder.setPosition(0.0);
     }
 
     @Override
