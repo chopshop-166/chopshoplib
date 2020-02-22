@@ -52,6 +52,7 @@ public class SparkMaxSendable implements SendableSpeedController {
     @Override
     public void setInverted(final boolean isInverted) {
         sparkMax.setInverted(isInverted);
+        encoder.setReverseDirection(isInverted);
     }
 
     @Override
