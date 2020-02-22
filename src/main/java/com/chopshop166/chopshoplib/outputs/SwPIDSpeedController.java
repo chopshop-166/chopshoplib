@@ -21,24 +21,24 @@ public class SwPIDSpeedController implements PIDSpeedController {
     final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculate);
     private boolean enabled = true;
 
-    public SwPIDSpeedController position(final SendableSpeedController motor, final PIDController pid) {
+    public static SwPIDSpeedController position(final SendableSpeedController motor, final PIDController pid) {
         // Uses a lambda so that it always gets the current encoder, instead of the one
         // assigned at creation time.
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getDistance());
     }
 
-    public <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor, final PIDController pid,
+    public static <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor, final PIDController pid,
             final IEncoder encoder) {
         return position(new ModSpeedController(motor, encoder), pid);
     }
 
-    public SwPIDSpeedController velocity(final SendableSpeedController motor, final PIDController pid) {
+    public static SwPIDSpeedController velocity(final SendableSpeedController motor, final PIDController pid) {
         // Uses a lambda so that it always gets the current encoder, instead of the one
         // assigned at creation time.
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getRate());
     }
 
-    public <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor, final PIDController pid,
+    public static <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor, final PIDController pid,
             final IEncoder encoder) {
         return velocity(new ModSpeedController(motor, encoder), pid);
     }
