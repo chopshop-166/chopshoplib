@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SparkMaxEncoder implements IEncoder, Sendable {
 
-    private boolean isReversed;
-    private double resetPoint;
-    private double scaleFactor;
     private final CANEncoder encoder;
 
     /**
@@ -42,11 +39,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      */
     @Override
     public double getDistance() {
-        double position = encoder.getPosition() - resetPoint;
-        if (isReversed) {
-            position *= -1;
-        }
-        return position * scaleFactor;
+        return encoder.getPosition();
     }
 
     /**
@@ -56,11 +49,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      */
     @Override
     public double getRate() {
-        double velocity = encoder.getVelocity();
-        if (isReversed) {
-            velocity *= -1;
-        }
-        return velocity * scaleFactor;
+        return encoder.getVelocity();
     }
 
     /**
@@ -69,7 +58,7 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * @return true if reversed, otherwise false.
      */
     public boolean isReverseDirection() {
-        return isReversed;
+        return encoder.getInverted();
     }
 
     /**
@@ -78,12 +67,12 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * @param isReversed true if the encoder is reversed, otherwise false.
      */
     public void setReverseDirection(final boolean isReversed) {
-        this.isReversed = isReversed;
+        encoder.setInverted(isReversed);
     }
 
     @Override
     public void reset() {
-        resetPoint = encoder.getPosition();
+        encoder.setPosition(0.0);
     }
 
     @Override
@@ -101,8 +90,8 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * 
      * @param scaleFactor The scaleFactor to set.
      */
-    public void setScaleFactor(final double scaleFactor) {
-        this.scaleFactor = scaleFactor;
+    public void setPositionScaleFactor(final double scaleFactor) {
+        encoder.setPositionConversionFactor(scaleFactor);
     }
 
     /**
@@ -110,8 +99,26 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
      * 
      * @return The scale factor.
      */
-    public double getScaleFactor() {
-        return scaleFactor;
+    public double getPositionScaleFactor() {
+        return encoder.getPositionConversionFactor();
+    }
+
+    /**
+     * Sets the scale factor used to convert encoder values to useful units.
+     * 
+     * @param scaleFactor The scaleFactor to set.
+     */
+    public void setVelocityScaleFactor(final double scaleFactor) {
+        encoder.setVelocityConversionFactor(scaleFactor);
+    }
+
+    /**
+     * Return the scale factor used to convert the encoder values to useful units.
+     * 
+     * @return The scale factor.
+     */
+    public double getVelocityScaleFactor() {
+        return encoder.getVelocityConversionFactor();
     }
 
     @Override
@@ -119,6 +126,6 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
         builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", this::getScaleFactor, this::setScaleFactor);
+        builder.addDoubleProperty("Distance per Tick", this::getPositionScaleFactor, this::setPositionScaleFactor);
     }
 }
