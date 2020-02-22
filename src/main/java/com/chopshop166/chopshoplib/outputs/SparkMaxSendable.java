@@ -14,14 +14,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SparkMaxSendable implements SendableSpeedController {
     final private CANSparkMax sparkMax;
+    final private SparkMaxEncoder encoder;
 
     public SparkMaxSendable(final CANSparkMax spark) {
         this.sparkMax = spark;
+        this.encoder = new SparkMaxEncoder(sparkMax.getEncoder());
     }
 
     @Override
     public SparkMaxEncoder getEncoder() {
-        return new SparkMaxEncoder(sparkMax.getEncoder());
+        return encoder;
     }
 
     @Override
