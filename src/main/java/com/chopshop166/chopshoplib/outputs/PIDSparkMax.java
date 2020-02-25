@@ -21,6 +21,7 @@ public class PIDSparkMax implements PIDSpeedController {
     private final CANSparkMax sparkMax;
     private final SparkMaxEncoder encoder;
     private final CANPIDController sparkPID;
+    private ControlType controlType = ControlType.kVelocity;
 
     public PIDSparkMax(final CANSparkMax max) {
         this.sparkMax = max;
@@ -34,6 +35,15 @@ public class PIDSparkMax implements PIDSpeedController {
 
     public CANPIDController getPidController() {
         return sparkPID;
+    }
+
+    /**
+     * Set the control type
+     * 
+     * @param controlType The controlType to set.
+     */
+    public void setControlType(final ControlType controlType) {
+        this.controlType = controlType;
     }
 
     @Override
@@ -63,7 +73,7 @@ public class PIDSparkMax implements PIDSpeedController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        sparkPID.setReference(setPoint, ControlType.kVelocity);
+        sparkPID.setReference(setPoint, controlType);
     }
 
     @Override
