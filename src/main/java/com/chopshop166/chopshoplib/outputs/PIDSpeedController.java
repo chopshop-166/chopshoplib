@@ -20,6 +20,7 @@ public interface PIDSpeedController extends SendableSpeedController {
     void setD(double kd);
 
     default void setF(double kf) {
+        // Ignore feed-forward by default
     }
 
     void setSetpoint(double setPoint);
