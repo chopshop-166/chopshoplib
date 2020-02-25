@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * representation. This allows reading and setting the motor speed from the
  * dashboard.
  */
+@Deprecated(since = "2020.7.0", forRemoval = true)
 public class SparkMaxSendable implements SendableSpeedController {
     private final CANSparkMax sparkMax;
     private final SparkMaxEncoder encoder;
