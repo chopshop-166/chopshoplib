@@ -18,6 +18,10 @@ public class PigeonGyro extends GyroBase {
         this(new PigeonIMU(talon));
     }
 
+    public PigeonIMU getRaw() {
+        return gyro;
+    }
+
     @Override
     public void close() throws Exception {
         // NoOp

@@ -32,6 +32,46 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
         this.encoder = max.getEncoder();
     }
 
+    public CANEncoder getRaw() {
+        return encoder;
+    }
+
+    /**
+     * Sets the scale factor used to convert encoder values to useful units.
+     * 
+     * @param scaleFactor The scaleFactor to set.
+     */
+    public void setPositionScaleFactor(final double scaleFactor) {
+        encoder.setPositionConversionFactor(scaleFactor);
+    }
+
+    /**
+     * Return the scale factor used to convert the encoder values to useful units.
+     * 
+     * @return The scale factor.
+     */
+    public double getPositionScaleFactor() {
+        return encoder.getPositionConversionFactor();
+    }
+
+    /**
+     * Sets the scale factor used to convert encoder values to useful units.
+     * 
+     * @param scaleFactor The scaleFactor to set.
+     */
+    public void setVelocityScaleFactor(final double scaleFactor) {
+        encoder.setVelocityConversionFactor(scaleFactor);
+    }
+
+    /**
+     * Return the scale factor used to convert the encoder values to useful units.
+     * 
+     * @return The scale factor.
+     */
+    public double getVelocityScaleFactor() {
+        return encoder.getVelocityConversionFactor();
+    }
+
     /**
      * Get the distance travelled.
      * 
@@ -83,42 +123,6 @@ public class SparkMaxEncoder implements IEncoder, Sendable {
     @Override
     public boolean isMovingForward() {
         return encoder.getVelocity() >= 0.0;
-    }
-
-    /**
-     * Sets the scale factor used to convert encoder values to useful units.
-     * 
-     * @param scaleFactor The scaleFactor to set.
-     */
-    public void setPositionScaleFactor(final double scaleFactor) {
-        encoder.setPositionConversionFactor(scaleFactor);
-    }
-
-    /**
-     * Return the scale factor used to convert the encoder values to useful units.
-     * 
-     * @return The scale factor.
-     */
-    public double getPositionScaleFactor() {
-        return encoder.getPositionConversionFactor();
-    }
-
-    /**
-     * Sets the scale factor used to convert encoder values to useful units.
-     * 
-     * @param scaleFactor The scaleFactor to set.
-     */
-    public void setVelocityScaleFactor(final double scaleFactor) {
-        encoder.setVelocityConversionFactor(scaleFactor);
-    }
-
-    /**
-     * Return the scale factor used to convert the encoder values to useful units.
-     * 
-     * @return The scale factor.
-     */
-    public double getVelocityScaleFactor() {
-        return encoder.getVelocityConversionFactor();
     }
 
     @Override

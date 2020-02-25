@@ -1,13 +1,12 @@
 package com.chopshop166.chopshoplib.outputs;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A mock {@link DigitalOutput} that can be sent to the dashboard.
  */
-public class MockDigitalOutput implements IDigitalOutput, Sendable {
+public class MockDigitalOutput implements IDigitalOutput {
 
     private boolean value;
     private double rate;
