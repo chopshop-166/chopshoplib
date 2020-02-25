@@ -19,6 +19,9 @@ public interface PIDSpeedController extends SendableSpeedController {
 
     void setD(double kd);
 
+    default void setF(double kf) {
+    }
+
     void setSetpoint(double setPoint);
 
 }

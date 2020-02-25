@@ -57,6 +57,11 @@ public class PIDSparkMax implements PIDSpeedController {
     }
 
     @Override
+    public void setF(final double kf) {
+        sparkPID.setFF(kf);
+    }
+
+    @Override
     public void setSetpoint(final double setPoint) {
         sparkPID.setReference(setPoint, ControlType.kVelocity);
     }
