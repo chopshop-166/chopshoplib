@@ -19,6 +19,8 @@ public class SwPIDSpeedController implements PIDSpeedController {
     final private PIDController pid;
     final private DoubleSupplier measurement;
     final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculate);
+    private double feedforward;
+    private double setpoint;
     private boolean enabled = true;
 
     public static SwPIDSpeedController position(final SendableSpeedController motor, final PIDController pid) {
@@ -27,8 +29,8 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getDistance());
     }
 
-    public static <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor, final PIDController pid,
-            final IEncoder encoder) {
+    public static <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor,
+            final PIDController pid, final IEncoder encoder) {
         return position(new ModSpeedController(motor, encoder), pid);
     }
 
@@ -38,8 +40,8 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getRate());
     }
 
-    public static <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor, final PIDController pid,
-            final IEncoder encoder) {
+    public static <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor,
+            final PIDController pid, final IEncoder encoder) {
         return velocity(new ModSpeedController(motor, encoder), pid);
     }
 
@@ -98,8 +100,14 @@ public class SwPIDSpeedController implements PIDSpeedController {
     }
 
     @Override
+    public void setF(final double kf) {
+        feedforward = kf;
+    }
+
+    @Override
     public void setSetpoint(final double setPoint) {
         pid.setSetpoint(setPoint);
+        this.setpoint = setPoint;
     }
 
     @Override
@@ -143,7 +151,10 @@ public class SwPIDSpeedController implements PIDSpeedController {
     }
 
     private void calculate() {
-        set(pid.calculate(measurement.getAsDouble()));
+        final double ff = feedforward * setpoint;
+        final double meas = measurement.getAsDouble();
+        final double calc = pid.calculate(meas);
+        set(ff + calc);
         dog.reset();
     }
 }
