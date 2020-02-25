@@ -9,23 +9,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * PIDSpeedController
- * <p>
- * Derives PIDSpeedController to allow for use on a SparkMax Speed Controller It
- * will act as a normal SparkMax with encoders, but will also be able to use
+ *
+ * Derives PIDSpeedController to allow for use on a SparkMax Speed Controller.
+ * It will act as a normal SparkMax with encoders, but will also be able to use
  * PID.
  * 
  * @author Andrew Martin
  * @since 2020-02-7
  */
 public class PIDSparkMax implements PIDSpeedController {
-    private final CANPIDController sparkPID;
-    private final CANSparkMax max;
+    private final CANSparkMax sparkMax;
     private final SparkMaxEncoder encoder;
+    private final CANPIDController sparkPID;
+    private ControlType controlType = ControlType.kVelocity;
 
     public PIDSparkMax(final CANSparkMax max) {
-        this.sparkPID = max.getPIDController();
-        this.max = max;
+        this.sparkMax = max;
         this.encoder = new SparkMaxEncoder(max.getEncoder());
+        this.sparkPID = max.getPIDController();
+    }
+
+    public CANSparkMax getMotorController() {
+        return sparkMax;
+    }
+
+    public CANPIDController getPidController() {
+        return sparkPID;
+    }
+
+    /**
+     * Set the control type
+     * 
+     * @param controlType The controlType to set.
+     */
+    public void setControlType(final ControlType controlType) {
+        this.controlType = controlType;
     }
 
     @Override
@@ -49,8 +67,13 @@ public class PIDSparkMax implements PIDSpeedController {
     }
 
     @Override
+    public void setF(final double kf) {
+        sparkPID.setFF(kf);
+    }
+
+    @Override
     public void setSetpoint(final double setPoint) {
-        sparkPID.setReference(setPoint, ControlType.kVelocity);
+        sparkPID.setReference(setPoint, controlType);
     }
 
     @Override
@@ -63,37 +86,37 @@ public class PIDSparkMax implements PIDSpeedController {
 
     @Override
     public void set(final double speed) {
-        max.set(speed);
+        sparkMax.set(speed);
     }
 
     @Override
     public double get() {
-        return max.get();
+        return sparkMax.get();
     }
 
     @Override
     public void setInverted(final boolean isInverted) {
-        max.setInverted(isInverted);
+        sparkMax.setInverted(isInverted);
+        encoder.setReverseDirection(isInverted);
     }
 
     @Override
     public boolean getInverted() {
-        return max.getInverted();
+        return sparkMax.getInverted();
     }
 
     @Override
     public void disable() {
-        max.disable();
+        sparkMax.disable();
     }
 
     @Override
     public void stopMotor() {
-        max.stopMotor();
+        sparkMax.stopMotor();
     }
 
     @Override
     public void pidWrite(final double output) {
-        max.set(output);
+        sparkMax.pidWrite(output);
     }
-
 }
