@@ -17,9 +17,7 @@ public class RepeatWhileCommand extends CommandBase {
 
     public RepeatWhileCommand(final BooleanSupplier cond, final Command cmd) {
         super();
-        for (final Subsystem sys : cmd.getRequirements()) {
-            addRequirements(sys);
-        }
+        addRequirements(cmd.getRequirements().toArray(Subsystem[]::new));
         this.cond = cond;
         this.cmd = cmd;
     }
