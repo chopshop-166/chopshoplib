@@ -11,7 +11,7 @@ package com.chopshop166.chopshoplib.outputs;
  * @since 2020-02-1
  */
 
-public interface PIDSpeedController extends SendableSpeedController {
+public interface PIDSpeedController extends SmartSpeedController {
 
     void setP(double kp);
 

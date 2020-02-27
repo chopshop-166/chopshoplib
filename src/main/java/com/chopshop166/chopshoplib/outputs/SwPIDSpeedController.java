@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SwPIDSpeedController implements PIDSpeedController {
 
-    final private SendableSpeedController motor;
+    final private SmartSpeedController motor;
     final private PIDController pid;
     final private DoubleSupplier measurement;
     final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculate);
@@ -23,7 +23,7 @@ public class SwPIDSpeedController implements PIDSpeedController {
     private double setpoint;
     private boolean enabled = true;
 
-    public static SwPIDSpeedController position(final SendableSpeedController motor, final PIDController pid) {
+    public static SwPIDSpeedController position(final SmartSpeedController motor, final PIDController pid) {
         // Uses a lambda so that it always gets the current encoder, instead of the one
         // assigned at creation time.
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getDistance());
@@ -34,7 +34,7 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return position(new ModSpeedController(motor, encoder), pid);
     }
 
-    public static SwPIDSpeedController velocity(final SendableSpeedController motor, final PIDController pid) {
+    public static SwPIDSpeedController velocity(final SmartSpeedController motor, final PIDController pid) {
         // Uses a lambda so that it always gets the current encoder, instead of the one
         // assigned at creation time.
         return new SwPIDSpeedController(motor, pid, () -> motor.getEncoder().getRate());
@@ -45,7 +45,7 @@ public class SwPIDSpeedController implements PIDSpeedController {
         return velocity(new ModSpeedController(motor, encoder), pid);
     }
 
-    public SwPIDSpeedController(final SendableSpeedController motor, final PIDController pid,
+    public SwPIDSpeedController(final SmartSpeedController motor, final PIDController pid,
             final DoubleSupplier measurement) {
         this.motor = motor;
         this.pid = pid;
@@ -56,10 +56,10 @@ public class SwPIDSpeedController implements PIDSpeedController {
 
     public <T extends Sendable & SpeedController> SwPIDSpeedController(final T motor, final PIDController pid,
             final DoubleSupplier measurement) {
-        this(SendableSpeedController.wrap(motor), pid, measurement);
+        this(SmartSpeedController.wrap(motor), pid, measurement);
     }
 
-    public SendableSpeedController getMotor() {
+    public SmartSpeedController getMotor() {
         return motor;
     }
 

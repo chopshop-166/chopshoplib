@@ -9,15 +9,13 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * An object that is both a Sendable and a SpeedController.
- * <p>
- * Provides a single utility method to wrap an appropriate object.
- * <p>
+ * A SpeedController with features attached.
+ * 
  * This is used in a few select scenarios, when we want to keep the exact type
  * of an object general, but at the same time want to access it as one of two
  * disconnected interfaces.
  */
-public interface SendableSpeedController extends Sendable, SpeedController {
+public interface SmartSpeedController extends Sendable, SpeedController {
 
     /**
      * Get the encoder attached to the robot.
@@ -34,7 +32,7 @@ public interface SendableSpeedController extends Sendable, SpeedController {
      * @param wrapped An already wrapped {@link SendableSpeedController}.
      * @return {@code wrapped}.
      */
-    static SendableSpeedController wrap(SendableSpeedController wrapped) {
+    static SmartSpeedController wrap(SmartSpeedController wrapped) {
         return wrapped;
     }
 
@@ -49,8 +47,8 @@ public interface SendableSpeedController extends Sendable, SpeedController {
      * @param wrapped An object to wrap.
      * @return A thin wrapper around {@code wrapped}.
      */
-    static <T extends Sendable & SpeedController> SendableSpeedController wrap(T wrapped) {
-        return new SendableSpeedController() {
+    static <T extends Sendable & SpeedController> SmartSpeedController wrap(T wrapped) {
+        return new SmartSpeedController() {
 
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -97,18 +95,15 @@ public interface SendableSpeedController extends Sendable, SpeedController {
     /**
      * Create an instance of this interface that dispatches to the wrapped objects.
      * <p>
-     * This can be used to wrap a group of objects that implements the two base
-     * interfaces separately, but not this interface. Motors can be passed and a
-     * speed controller group is created automatically.
+     * This can be used to wrap a group of speed controllers. Motors can be passed
+     * and a speed controller group is created automatically.
      * 
      * @param motor  Motor that will be wrapped, will be {@link Sendable} and put
      *               into a {@link SpeedControllerGroup}.
      * @param motors Continuation of motor.
      * @return A wrapped Speed Controller Group.
      */
-    static SendableSpeedController group(SpeedController motor, SpeedController... motors) {
-        SpeedControllerGroup motorGroup = new SpeedControllerGroup(motor, motors);
-
-        return SendableSpeedController.wrap(motorGroup);
+    static SmartSpeedController group(SpeedController motor, SpeedController... motors) {
+        return wrap(new SpeedControllerGroup(motor, motors));
     }
 }
