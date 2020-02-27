@@ -29,7 +29,7 @@ public interface SmartSpeedController extends Sendable, SpeedController {
     /**
      * Pass through an instance of this interface.
      * 
-     * @param wrapped An already wrapped {@link SendableSpeedController}.
+     * @param wrapped An already wrapped {@link SmartSpeedController}.
      * @return {@code wrapped}.
      */
     static SmartSpeedController wrap(SmartSpeedController wrapped) {

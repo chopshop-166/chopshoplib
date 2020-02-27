@@ -47,7 +47,7 @@ public class RepeatWhileCommand extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end(final boolean interrupted) {
         if (interrupted) {
             cmd.end(interrupted);
         }

@@ -10,7 +10,6 @@ package com.chopshop166.chopshoplib.outputs;
  * @author Andrew Martin
  * @since 2020-02-1
  */
-
 public interface PIDSpeedController extends SmartSpeedController {
 
     void setP(double kp);
