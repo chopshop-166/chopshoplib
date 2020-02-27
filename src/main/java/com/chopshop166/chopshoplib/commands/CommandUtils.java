@@ -30,14 +30,18 @@ final public class CommandUtils {
             @Override
             public void initialize() {
                 numTimesRun++;
-                cmd.schedule();
+                cmd.initialize();
             }
 
             @Override
             public void execute() {
-                if (!cmd.isScheduled()) {
+                cmd.execute();
+                if (cmd.isFinished()) {
+                    cmd.end(false);
                     numTimesRun++;
-                    cmd.schedule();
+                    if (!isFinished()) {
+                        cmd.initialize();
+                    }
                 }
             }
 
@@ -48,6 +52,9 @@ final public class CommandUtils {
 
             @Override
             public void end(final boolean interrupted) {
+                if (interrupted) {
+                    cmd.end(true);
+                }
                 numTimesRun = 0;
             }
         };
