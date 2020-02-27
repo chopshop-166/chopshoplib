@@ -25,11 +25,14 @@ public class RepeatWhileCommand extends CommandBase {
     @Override
     public void initialize() {
         shouldFinish = false;
+        cmd.initialize();
     }
 
     @Override
     public void execute() {
-        if (!cmd.isScheduled()) {
+        cmd.execute();
+        if (cmd.isFinished()) {
+            cmd.end(false);
             if (cond.getAsBoolean()) {
                 cmd.schedule();
             } else {
@@ -41,5 +44,12 @@ public class RepeatWhileCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return shouldFinish;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (interrupted) {
+            cmd.end(interrupted);
+        }
     }
 }
