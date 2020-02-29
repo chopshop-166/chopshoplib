@@ -3,14 +3,13 @@ package com.chopshop166.chopshoplib.sensors;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A wrapper for the {@link CANEncoder} provided by REV Robotics, to implement
  * WPIlib interfaces.
  */
-public class SparkMaxEncoder implements IEncoder, Sendable {
+public class SparkMaxEncoder implements IEncoder {
 
     private final CANEncoder encoder;
 
