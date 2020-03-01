@@ -18,21 +18,40 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * @since 2020-02-7
  */
 public class PIDSparkMax implements PIDSpeedController {
+    /** The unwrapped Spark MAX object. */
     private final CANSparkMax sparkMax;
+    /** The encoder for the Spark MAX. */
     private final SparkMaxEncoder encoder;
+    /** The PID controller from the Spark MAX. */
     private final CANPIDController sparkPID;
+    /** The control type for the PID controller. */
     private ControlType controlType = ControlType.kVelocity;
 
+    /**
+     * Create a PID Spark MAX from an unwrapped Spark MAX object.
+     * 
+     * @param max The Spark MAX oject.
+     */
     public PIDSparkMax(final CANSparkMax max) {
         this.sparkMax = max;
         this.encoder = new SparkMaxEncoder(max.getEncoder());
         this.sparkPID = max.getPIDController();
     }
 
+    /**
+     * Get the wrapped speed controller.
+     * 
+     * @return The raw Spark MAX object.
+     */
     public CANSparkMax getMotorController() {
         return sparkMax;
     }
 
+    /**
+     * Get the wrapped PID controller.
+     * 
+     * @return The CAN PID object.
+     */
     public CANPIDController getPidController() {
         return sparkPID;
     }

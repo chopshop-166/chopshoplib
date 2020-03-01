@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 public class REVColorSensor extends ColorSensorV3 implements IColorSensor {
 
+    /**
+     * Create the REV color sensor.
+     * 
+     * @param port The I2C port to use.
+     */
     public REVColorSensor(final Port port) {
         super(port);
     }

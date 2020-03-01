@@ -7,6 +7,9 @@ import java.util.function.DoubleUnaryOperator;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
+/**
+ * A function from double to double, converting and limiting speeds.
+ */
 @FunctionalInterface
 public interface Modifier extends DoubleUnaryOperator {
 
@@ -49,6 +52,7 @@ public interface Modifier extends DoubleUnaryOperator {
     static Modifier rollingAverage(final int numSamples) {
         return new Modifier() {
 
+            /** The samples to average. */
             private SampleBuffer buffer = new SampleBuffer(numSamples);
 
             @Override

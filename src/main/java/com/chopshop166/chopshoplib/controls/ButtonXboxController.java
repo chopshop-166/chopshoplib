@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * Represents an XBox controller along with its associated buttons.
  */
 public class ButtonXboxController extends XboxController {
+
+    /** The mapping of button ID to command button. */
     private final Map<Button, JoystickButton> buttons = new EnumMap<>(Button.class);
 
     /**
@@ -38,6 +40,11 @@ public class ButtonXboxController extends XboxController {
         return buttons.get(buttonId);
     }
 
+    /**
+     * Get the triggers as a convenient axis.
+     * 
+     * @return A double in {@code [-1, 1]}
+     */
     public double getTriggers() {
         final double kRight = getTriggerAxis(Hand.kRight);
         final double kLeft = getTriggerAxis(Hand.kLeft);

@@ -8,11 +8,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockPIDSpeedController implements PIDSpeedController {
 
+    /** The last set speed. */
     private double speed;
+    /** The last set setpoint. */
     private double setpoint;
+    /** Whether the speed controller is inverted. */
     private boolean isInverted;
+    /** Proportional coefficient. */
     private double p;
+    /** Integral coefficient. */
     private double i;
+    /** Derivative coefficient. */
     private double d;
 
     @Override

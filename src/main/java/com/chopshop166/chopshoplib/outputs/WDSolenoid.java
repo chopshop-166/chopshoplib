@@ -7,10 +7,23 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public final class WDSolenoid extends DoubleSolenoid implements IDSolenoid {
 
+    /**
+     * Construct the Double Solenoid.
+     * 
+     * @param forwardChannel The forward trigger channel.
+     * @param reverseChannel The reverse trigger channel.
+     */
     public WDSolenoid(final int forwardChannel, final int reverseChannel) {
         super(forwardChannel, reverseChannel);
     }
 
+    /**
+     * Construct the Double Solenoid.
+     * 
+     * @param modulenumber   The module to use.
+     * @param forwardChannel The forward trigger channel.
+     * @param reverseChannel The reverse trigger channel.
+     */
     public WDSolenoid(final int modulenumber, final int forwardChannel, final int reverseChannel) {
         super(modulenumber, forwardChannel, reverseChannel);
     }

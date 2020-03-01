@@ -18,9 +18,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
+ * 
+ * Contains convenient wrappers for the commands that are often used in groups.
  */
 public class CommandRobot extends TimedRobot {
 
+    /** The value to display on Shuffleboard if Git data isn't found. */
     final private static String UNKNOWN_VALUE = "???";
 
     @Override
@@ -40,24 +43,53 @@ public class CommandRobot extends TimedRobot {
         RobotUtils.resetAll(this);
     }
 
-    public static CommandBase sequence(final String name, final Command... first) {
-        final CommandBase cmd = CommandGroupBase.sequence(first);
+    /**
+     * Create a sequential command group with a name.
+     * 
+     * @param name The name of the command group.
+     * @param cmds The commands to sequence.
+     * @return A new command group.
+     */
+    public static CommandBase sequence(final String name, final Command... cmds) {
+        final CommandBase cmd = CommandGroupBase.sequence(cmds);
         cmd.setName(name);
         return cmd;
     }
 
+    /**
+     * Create a parallel command group with a name.
+     * 
+     * @param name The name of the command group.
+     * @param cmds The commands to run in parallel.
+     * @return A new command group.
+     */
     public static CommandBase parallel(final String name, final Command... cmds) {
         final CommandBase cmd = CommandGroupBase.parallel(cmds);
         cmd.setName(name);
         return cmd;
     }
 
-    public static CommandBase race(final String name, final Command racers) {
+    /**
+     * Create a racing command group with a name.
+     * 
+     * @param name   The name of the command group.
+     * @param racers The commands to race.
+     * @return A new command group.
+     */
+    public static CommandBase race(final String name, final Command... racers) {
         final CommandBase cmd = CommandGroupBase.race(racers);
         cmd.setName(name);
         return cmd;
     }
 
+    /**
+     * Create a deadline-limited command group with a name.
+     * 
+     * @param name    The name of the command group.
+     * @param limiter The deadline command.
+     * @param cmds    The commands to run until the deadline ends.
+     * @return A new command group.
+     */
     public static CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
         final CommandBase cmd = CommandGroupBase.deadline(limiter, cmds);
         cmd.setName(name);

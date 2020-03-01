@@ -3,19 +3,15 @@ package com.chopshop166.chopshoplib.sensors;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
- * Invert Digital Input
- * <p>
- * creates boolean that is used to create a Digital Input {@link DigitalInput}
- * that can be inverted based on the value passed into the boolean, adds
- * functions that send and retrieve the inverted boolean
+ * Invertable Digital Input
  * 
  * @author Andrew Martin
  * @since 2020-01-20
  */
-public class InvertDigitalInput extends DigitalInput implements DigitalInputSource {
+public class WDigitalInput extends DigitalInput implements DigitalInputSource {
 
     /**
-     * creates inverted boolean to be used for logic later
+     * True if the reading should be inverted.
      */
     private boolean inverted;
 
@@ -24,7 +20,7 @@ public class InvertDigitalInput extends DigitalInput implements DigitalInputSour
      * 
      * @param channel The Digital I/O Channel to use.
      */
-    public InvertDigitalInput(final int channel) {
+    public WDigitalInput(final int channel) {
         super(channel);
     }
 
@@ -47,7 +43,8 @@ public class InvertDigitalInput extends DigitalInput implements DigitalInputSour
     }
 
     /**
-     * Uses exclusive or to invert the returned value based on the inverted variable.
+     * Uses exclusive or to invert the returned value based on the inverted
+     * variable.
      */
     @Override
     public boolean get() {

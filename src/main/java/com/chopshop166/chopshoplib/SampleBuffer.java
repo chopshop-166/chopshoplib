@@ -8,14 +8,23 @@ import java.util.stream.DoubleStream;
  * Implements a circular sample buffer.
  */
 public class SampleBuffer implements Iterable<Double> {
+    /** The samples that are tracked. */
     private final double samples[];
+    /** The index of the next sample to add. */
     private int sampleIndex;
+    /** True if the buffer has been reset. */
     private boolean isReset;
 
+    /** Create a Sample Buffer with 25 elements. */
     public SampleBuffer() {
         this(25);
     }
 
+    /**
+     * Create a Sample Buffer.
+     * 
+     * @param numSamples The number of samples to use
+     */
     public SampleBuffer(final int numSamples) {
         samples = new double[numSamples];
     }
@@ -31,6 +40,11 @@ public class SampleBuffer implements Iterable<Double> {
         }
     }
 
+    /**
+     * Add a new sample to the buffer.
+     * 
+     * @param sample The value to add.
+     */
     public void addSample(final double sample) {
         samples[sampleIndex] = sample;
         sampleIndex++;

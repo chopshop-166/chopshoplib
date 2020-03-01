@@ -22,11 +22,17 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * @param <S> The enum of possible states.
  */
 public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
+    /** The current subsystem state. */
     private S currentState;
+    /** The valid transitions. */
     private final Set<Transition<S>> transitions = new HashSet<>();
+    /** The handlers when entering a state. */
     private final Map<S, Runnable> onEntryHandlers = new HashMap<>();
+    /** The handlers when exiting a state. */
     private final Map<S, Runnable> onExitHandlers = new HashMap<>();
+    /** The handlers when inside a state. */
     private final Map<S, Runnable> handlers = new HashMap<>();
+    /** Allow all transitions to the same state. */
     private final boolean allowSameTransition;
 
     /**
@@ -190,9 +196,17 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
      * @param <State> The state enum type.
      */
     private static final class Transition<State> {
+        /** The state to transition from. */
         private final State startState;
+        /** The state to transition to. */
         private final State endState;
 
+        /**
+         * Create a transition.
+         * 
+         * @param startState The state to transition from.
+         * @param endState   The state to transition to.
+         */
         public Transition(final State startState, final State endState) {
             this.startState = startState;
             this.endState = endState;

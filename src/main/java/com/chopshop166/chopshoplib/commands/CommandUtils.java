@@ -24,7 +24,7 @@ final public class CommandUtils {
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
         return new CommandBase() {
 
-            // Defaults to 0
+            /** Defaults to 0. */
             private int numTimesRun;
 
             @Override

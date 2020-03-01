@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class SparkMaxEncoder implements IEncoder {
 
+    /** The wrapped encoder. */
     private final CANEncoder encoder;
 
     /**
@@ -31,6 +32,11 @@ public class SparkMaxEncoder implements IEncoder {
         this.encoder = max.getEncoder();
     }
 
+    /**
+     * Get the wrapped encoder.
+     * 
+     * @return The wrapped encoder.
+     */
     public CANEncoder getRaw() {
         return encoder;
     }

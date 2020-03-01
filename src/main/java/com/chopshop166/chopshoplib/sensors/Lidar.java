@@ -16,15 +16,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 /**
  * LiDAR Sensor class.
  */
-public class Lidar  implements Sendable {
+public class Lidar implements Sendable {
+
+    /** Communication device. */
     private I2C i2cDevice;
+    /** Thread for getting measurements. */
     private Thread accessThread;
+    /** The measured distance, in mm. */
     private double distanceMM;
 
+    /** True if the measurement is valid. */
     private boolean isValid;
+    /** The measurement samples, for averaging. */
     private SampleBuffer samples;
 
+    /** The standard deviation of the measurements. */
     private double stdDevValue;
+    /** The limit for standard deviation. */
     private double stdDevLimit = 100;
 
     /**
@@ -67,10 +75,20 @@ public class Lidar  implements Sendable {
 
             final byte value;
 
+            /**
+             * Create the enum.
+             * 
+             * @param value The value to use.
+             */
             OpMode(final byte value) {
                 this.value = value;
             }
 
+            /**
+             * Get the enum value as a byte.
+             * 
+             * @return The enum value.
+             */
             public byte toByte() {
                 return value;
             }
@@ -113,10 +131,20 @@ public class Lidar  implements Sendable {
 
             byte value;
 
+            /**
+             * Create the enum value.
+             * 
+             * @param value The value to use.
+             */
             PresetConfiguration(final byte value) {
                 this.value = value;
             }
 
+            /**
+             * Get the enum value as a byte.
+             * 
+             * @return The enum value.
+             */
             public byte toByte() {
                 return value;
             }
@@ -157,10 +185,20 @@ public class Lidar  implements Sendable {
 
             int value;
 
+            /**
+             * Create the enum.
+             * 
+             * @param value The enum value.
+             */
             LedIndicator(final int value) {
                 this.value = value;
             }
 
+            /**
+             * Get the enum value as an int.
+             * 
+             * @return The enum value.
+             */
             public int toInt() {
                 return value;
             }
@@ -197,10 +235,20 @@ public class Lidar  implements Sendable {
 
             int value;
 
+            /**
+             * Create the enum.
+             * 
+             * @param value The enum value.
+             */
             OffsetCalFlag(final int value) {
                 this.value = value;
             }
 
+            /**
+             * Get the enum value as an int.
+             * 
+             * @return The enum value.
+             */
             public int toInt() {
                 return value;
             }
@@ -230,19 +278,33 @@ public class Lidar  implements Sendable {
             }
         }
 
+        /** The operation mode. */
         public OpMode operationMode;
+        /** The presets. */
         public PresetConfiguration preset;
+        /** The rate limit for the signal. */
         public double signalRateLimit;
+        /** Sigma Estimate Limate. */
         public int sigmaEstimateLimate;
+        /** Timing budget. */
         public int timingBudgetInMS;
+        /** Pre range VC selection period. */
         public int preRangeVcselPeriod;
+        /** Final range VC selection period. */
         public int finalRangeVcselPeriod;
+        /** Firmware version. */
         public String fwVersion;
+        /** API */
         public String stPalApi;
+        /** Offset calibration. */
         public OffsetCalFlag offsetCalibration;
+        /** LED indicator status. */
         public LedIndicator ledIndicatorMode;
+        /** Whether the watchdog timer is running. */
         public boolean watchdogTimer;
+        /** Offset calibration value. */
         public int offsetCalibrationValue;
+        /** Crosstalk calibration value. */
         public int crosstalkCalibrationValue;
 
         /**

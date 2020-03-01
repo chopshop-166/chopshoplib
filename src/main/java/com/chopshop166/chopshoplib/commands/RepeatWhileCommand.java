@@ -11,10 +11,19 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  */
 public class RepeatWhileCommand extends CommandBase {
 
+    /** True if the command should finish. */
     private boolean shouldFinish;
+    /** The condition to test. */
     private final BooleanSupplier cond;
+    /** The command to repeat. */
     private final Command cmd;
 
+    /**
+     * Create a command that repeats a command while a condition is true.
+     * 
+     * @param cond The condition to test.
+     * @param cmd  The command to repeat.
+     */
     public RepeatWhileCommand(final BooleanSupplier cond, final Command cmd) {
         super();
         addRequirements(cmd.getRequirements().toArray(Subsystem[]::new));

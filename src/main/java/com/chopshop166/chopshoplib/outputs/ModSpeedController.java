@@ -19,9 +19,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class ModSpeedController implements SmartSpeedController {
 
+    /** The wrapped up speed controller. */
     final private SmartSpeedController wrapped;
+    /** All the modifiers to apply to the speed controller. */
     final private List<Modifier> modifiers;
-
+    /** The encoder that this speed controller uses. */
     private IEncoder encoder = new MockEncoder();
 
     /**
@@ -34,6 +36,7 @@ public class ModSpeedController implements SmartSpeedController {
         super();
         this.wrapped = wrapped;
         this.modifiers = new ArrayList<>(Arrays.asList(modifiers));
+        this.encoder = wrapped.getEncoder();
     }
 
     /**

@@ -12,26 +12,31 @@ import junit.framework.TestCase;
  */
 public final class MapGetterTest extends TestCase {
 
+    /** The package to use. */
     static private final String PACKAGE = "com.chopshop166";
 
+    /** Get the map for A. */
     @Test
     public void testMapA() {
         final RobotMap map = CommandRobot.getMapForName("A", RobotMap.class, PACKAGE);
         assertThat("Found Map A", map.doStuff(), is("MapA"));
     }
 
+    /** Get the map for B. */
     @Test
     public void testMapB() {
         final RobotMap map = CommandRobot.getMapForName("B", RobotMap.class, PACKAGE);
         assertThat("Found Map B", map.doStuff(), is("MapB"));
     }
 
+    /** Check handling of an invalid name. */
     @Test
     public void testBadName() {
         final RobotMap map = CommandRobot.getMapForName("C", RobotMap.class, PACKAGE);
         assertNull("Map is null", map);
     }
 
+    /** Check handling of an invalid name with a default. */
     @Test
     public void testBadNameDefault() {
         final RobotMap defMap = new MapA();

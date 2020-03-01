@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockSpeedController implements SmartSpeedController {
 
+    /** The last set speed. */
     private double speed;
+    /** Whether it's inverted. */
     private boolean isInverted;
 
     @Override
