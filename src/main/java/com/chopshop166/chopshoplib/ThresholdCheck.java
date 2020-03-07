@@ -7,9 +7,9 @@ import java.util.function.BooleanSupplier;
  * row.
  */
 public class ThresholdCheck implements BooleanSupplier {
-    final int nTimes;
-    final BooleanSupplier source;
-    int numSuccesses;
+    private final int nTimes;
+    private final BooleanSupplier source;
+    private int numSuccesses;
 
     /**
      * Returns true if the given source is true a specified number of times in a
@@ -18,10 +18,10 @@ public class ThresholdCheck implements BooleanSupplier {
      * @param nTimes The number of times for a match.
      * @param source The operation to check.
      */
-    public ThresholdCheck(int nTimes, BooleanSupplier source) {
+    public ThresholdCheck(final int nTimes, final BooleanSupplier source) {
         this.nTimes = nTimes;
         this.source = source;
-        reset();
+        numSuccesses = 0;
     }
 
     public void reset() {
