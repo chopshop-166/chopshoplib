@@ -17,7 +17,6 @@ public class ThresholdCheck implements BooleanSupplier {
      * 
      * @param nTimes The number of times for a match.
      * @param source The operation to check.
-     * @return A function for use with isFinished.
      */
     public ThresholdCheck(int nTimes, BooleanSupplier source) {
         this.nTimes = nTimes;
