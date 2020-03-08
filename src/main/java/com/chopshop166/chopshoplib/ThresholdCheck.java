@@ -7,8 +7,12 @@ import java.util.function.BooleanSupplier;
  * row.
  */
 public class ThresholdCheck implements BooleanSupplier {
+
+    /** The number of times required to pass. */
     private final int nTimes;
+    /** The condition to check. */
     private final BooleanSupplier source;
+    /** The number of successes so far. */
     private int numSuccesses;
 
     /**
@@ -24,6 +28,7 @@ public class ThresholdCheck implements BooleanSupplier {
         numSuccesses = 0;
     }
 
+    /** Reset the number of passed attempts. */
     public void reset() {
         numSuccesses = 0;
     }
