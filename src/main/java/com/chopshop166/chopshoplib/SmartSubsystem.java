@@ -4,12 +4,14 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link Subsystem} that is {@link Resettable} and that provides convenience
@@ -73,8 +75,22 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public StartEndCommand startend(final String name, final Runnable onStart, final Runnable onEnd) {
+    public StartEndCommand startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         final StartEndCommand cmd = new StartEndCommand(onStart, onEnd, this);
+        cmd.setName(name);
+        return cmd;
+    }
+
+    /**
+     * Run a {@link Runnable} and then wait until a condition is true.
+     * 
+     * @param name  The name of the command.
+     * @param init  The action to take.
+     * @param until The condition to wait until.
+     * @return A new command.
+     */
+    public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+        final CommandBase cmd = CommandGroupBase.parallel(new InstantCommand(init, this), new WaitUntilCommand(until));
         cmd.setName(name);
         return cmd;
     }
