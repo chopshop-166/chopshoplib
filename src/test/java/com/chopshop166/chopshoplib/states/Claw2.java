@@ -17,4 +17,9 @@ public class Claw2 extends StateSubsystem<Direction> {
       // Solenoid reverse
     });
   }
+
+  @Override
+  public void reset() {
+    // No-op
+  }
 }

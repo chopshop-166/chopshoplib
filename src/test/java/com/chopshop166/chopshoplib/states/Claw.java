@@ -24,4 +24,9 @@ public class Claw extends StateSubsystem<OpenClose> {
   protected void defaultTransition(final OpenClose currentState, final OpenClose commandedState) {
     logTransition(currentState, commandedState);
   }
+
+  @Override
+  public void reset() {
+    // No-op
+  }
 }

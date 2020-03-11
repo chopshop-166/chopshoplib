@@ -96,11 +96,38 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
     }
 
     /**
+     * Create a command to call a consumer function.
+     * 
+     * @param <T>   The type to wrap.
+     * @param name  The name of the command.
+     * @param value The value to call the function with.
+     * @param func  The function to call.
+     * @return A new command.
+     */
+    public <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
+        final InstantCommand cmd = new InstantCommand(() -> {
+            func.accept(value);
+        }, this);
+        cmd.setName(name);
+        return cmd;
+    }
+
+    /**
      * Create a command to reset the subsystem.
      * 
-     * @return A new command.
+     * @return A reset command.
      */
     public CommandBase resetCmd() {
         return instant("Reset " + getName(), this::reset);
+    }
+
+    /**
+     * Cancel the currently running command.
+     * 
+     * @return A cancel command.
+     */
+    public CommandBase cancel() {
+        return instant("Cancel " + getName(), () -> {
+        });
     }
 }

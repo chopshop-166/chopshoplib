@@ -125,6 +125,23 @@ public class CommandRobot extends TimedRobot {
     }
 
     /**
+     * Create a command to call a consumer function.
+     * 
+     * @param <T>   The type to wrap.
+     * @param name  The name of the command.
+     * @param value The value to call the function with.
+     * @param func  The function to call.
+     * @return A new command.
+     */
+    public <T> InstantCommand setter(final String name, final T value, final Consumer<T> func) {
+        final InstantCommand cmd = new InstantCommand(() -> {
+            func.accept(value);
+        });
+        cmd.setName(name);
+        return cmd;
+    }
+
+    /**
      * Create a sequential command group with a name.
      * 
      * @param name The name of the command group.

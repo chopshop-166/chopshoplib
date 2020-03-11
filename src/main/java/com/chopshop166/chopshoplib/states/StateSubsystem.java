@@ -8,12 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.chopshop166.chopshoplib.commands.SetCommand;
+import com.chopshop166.chopshoplib.SmartSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * 
  * @param <S> The enum of possible states.
  */
-public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
+public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystem {
     /** The current subsystem state. */
     private S currentState;
     /** The valid transitions. */
@@ -89,10 +89,10 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SubsystemBase {
      * @param newState The state to transition to.
      * @return A command that will change the subsystem state.
      */
-    public Command changeState(final S newState) {
+    public CommandBase changeState(final S newState) {
         final StringBuilder cmdname = new StringBuilder(getName());
         cmdname.append(" -> ").append(newState.name());
-        return new SetCommand<>(cmdname.toString(), this, newState, this::setState);
+        return setter(cmdname.toString(), newState, this::setState);
     }
 
     /**
