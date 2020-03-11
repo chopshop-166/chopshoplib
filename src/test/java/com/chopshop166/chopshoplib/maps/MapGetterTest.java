@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib;
+package com.chopshop166.chopshoplib.maps;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

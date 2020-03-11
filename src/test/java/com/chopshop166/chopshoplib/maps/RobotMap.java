@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib;
+package com.chopshop166.chopshoplib.maps;
 
 /**
  * Sample RobotMap base interface.

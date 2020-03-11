@@ -7,8 +7,8 @@ import java.util.function.Consumer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import com.chopshop166.chopshoplib.RobotMapFor;
 import com.chopshop166.chopshoplib.RobotUtils;
+import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 
