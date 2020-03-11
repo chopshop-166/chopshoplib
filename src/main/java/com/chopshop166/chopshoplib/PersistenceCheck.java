@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
  * Returns true if the given source is true a specified number of times in a
  * row.
  */
-public class ThresholdCheck implements BooleanSupplier {
+public class PersistenceCheck implements BooleanSupplier {
 
     /** The number of times required to pass. */
     private final int nTimes;
@@ -22,7 +22,7 @@ public class ThresholdCheck implements BooleanSupplier {
      * @param nTimes The number of times for a match.
      * @param source The operation to check.
      */
-    public ThresholdCheck(final int nTimes, final BooleanSupplier source) {
+    public PersistenceCheck(final int nTimes, final BooleanSupplier source) {
         this.nTimes = nTimes;
         this.source = source;
         numSuccesses = 0;
