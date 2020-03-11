@@ -3,6 +3,8 @@ package com.chopshop166.chopshoplib;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import com.chopshop166.chopshoplib.commands.CommandRobot;
+
 import org.junit.jupiter.api.Test;
 
 import junit.framework.TestCase;

@@ -1,7 +1,9 @@
-package com.chopshop166.chopshoplib;
+package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+
+import com.chopshop166.chopshoplib.Resettable;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;

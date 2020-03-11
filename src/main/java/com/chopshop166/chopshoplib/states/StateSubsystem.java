@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.chopshop166.chopshoplib.SmartSubsystem;
+import com.chopshop166.chopshoplib.commands.SmartSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
