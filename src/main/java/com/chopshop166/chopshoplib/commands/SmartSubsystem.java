@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import com.chopshop166.chopshoplib.Resettable;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -92,9 +91,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @return A new command.
      */
     public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        final CommandBase cmd = CommandGroupBase.parallel(new InstantCommand(init, this), new WaitUntilCommand(until));
-        cmd.setName(name);
-        return cmd;
+        return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
     /**
