@@ -1,4 +1,4 @@
-tasks.withType(SpotBugsTask) {
+spotbugsMain {
     reports {
         xml.enabled false
         html.enabled true
@@ -7,11 +7,12 @@ tasks.withType(SpotBugsTask) {
 }
 
 spotbugs {
+    toolVersion = '4.0.1'
     excludeFilter = file("$rootProject.projectDir/config/findbugs-ignore.xml")
 }
 
 pmd {
-    toolVersion = "6.20.0"
+    toolVersion = "6.22.0"
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
 }

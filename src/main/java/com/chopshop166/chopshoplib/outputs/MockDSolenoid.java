@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public final class MockDSolenoid implements IDSolenoid {
 
+    /** The last commanded value. */
     private Value value;
 
     @Override

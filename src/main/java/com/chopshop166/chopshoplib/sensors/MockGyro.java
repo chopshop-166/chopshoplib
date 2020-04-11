@@ -3,15 +3,30 @@ package com.chopshop166.chopshoplib.sensors;
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+/**
+ * A mock Gyro implementation.
+ */
 public class MockGyro extends GyroBase {
 
+    /** The angle it's rotated to. */
     private double angle;
+    /** The rate of rotation. */
     private double rate;
 
+    /**
+     * Set the angle.
+     * 
+     * @param angle The new angle.
+     */
     public void setAngle(final double angle) {
         this.angle = angle;
     }
 
+    /**
+     * Set the rate.
+     * 
+     * @param rate The new rate.
+     */
     public void setRate(final double rate) {
         this.rate = rate;
     }

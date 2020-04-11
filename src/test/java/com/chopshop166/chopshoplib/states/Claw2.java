@@ -1,6 +1,8 @@
 package com.chopshop166.chopshoplib.states;
 
+/** Sample Claw class using states. */
 public class Claw2 extends StateSubsystem<Direction> {
+  /** Create a Claw and set up state transitions. */
   public Claw2() {
     super(Direction.NEUTRAL);
 
@@ -14,5 +16,10 @@ public class Claw2 extends StateSubsystem<Direction> {
     onEntry(Direction.REVERSE, () -> {
       // Solenoid reverse
     });
+  }
+
+  @Override
+  public void reset() {
+    // No-op
   }
 }

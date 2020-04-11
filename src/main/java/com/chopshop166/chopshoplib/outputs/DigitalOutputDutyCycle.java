@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
  */
 public class DigitalOutputDutyCycle extends DigitalOutput implements IDigitalOutput {
 
+    /** The last set duty cycle rate. */
     private double mRate;
 
     /**

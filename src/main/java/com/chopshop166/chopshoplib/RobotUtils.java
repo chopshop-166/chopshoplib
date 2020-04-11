@@ -1,14 +1,11 @@
 package com.chopshop166.chopshoplib;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.StringJoiner;
 import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
-
-import com.google.common.reflect.ClassPath;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -157,80 +154,5 @@ public final class RobotUtils {
         } catch (SocketException e) {
             return "SocketException";
         }
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param           <T> The type to return.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
-     * @return An instance of the given type, or null.
-     */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return getMapForName(getMACAddress(), rootClass, pkg, null);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param              <T> The type to return.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
-     * @param defaultValue The object to return if no match is found.
-     * @return An instance of the given type, or the default value.
-     */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
-        return getMapForName(getMACAddress(), rootClass, pkg, defaultValue);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param           <T> The type to return.
-     * @param name      The name to match against in annotations.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
-     * @return An instance of the given type, or null.
-     */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
-        return getMapForName(name, rootClass, pkg, null);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param              <T> The type to return.
-     * @param name         The name to match against in annotations.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
-     * @param defaultValue The object to return if no match is found.
-     * @return An instance of the given type, or the default value.
-     */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
-            final T defaultValue) {
-        try {
-            // scans the class path used by classloader
-            final ClassPath classpath = ClassPath.from(rootClass.getClassLoader());
-            // Get class info for all classes
-            for (final ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(pkg)) {
-                final Class<?> clazz = classInfo.load();
-                // Make sure the class is derived from rootClass
-                if (rootClass.isAssignableFrom(clazz)) {
-                    // Cast the class to the derived type
-                    final Class<? extends T> theClass = clazz.asSubclass(rootClass);
-                    // Find all annotations that provide a name
-                    for (final RobotMapFor annotation : clazz.getAnnotationsByType(RobotMapFor.class)) {
-                        // Check to see if the name matches
-                        if (annotation.value().equals(name)) {
-                            return theClass.getDeclaredConstructor().newInstance();
-                        }
-                    }
-                }
-            }
-        } catch (IOException | ReflectiveOperationException err) {
-            return defaultValue;
-        }
-        return defaultValue;
     }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockDigitalInput implements DigitalInputSource {
 
+    /** The value set. */
     private boolean value;
 
     /**

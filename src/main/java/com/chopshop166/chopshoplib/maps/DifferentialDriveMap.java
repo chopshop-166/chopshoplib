@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.outputs.SendableSpeedController;
+import com.chopshop166.chopshoplib.outputs.SmartSpeedController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
 import edu.wpi.first.wpilibj.GyroBase;
@@ -20,14 +20,14 @@ public interface DifferentialDriveMap {
      * 
      * @return A speed controller.
      */
-    SendableSpeedController getLeft();
+    SmartSpeedController getLeft();
 
     /**
      * Provides the right speed controller.
      * 
      * @return A speed controller.
      */
-    SendableSpeedController getRight();
+    SmartSpeedController getRight();
 
     /**
      * Gets a Gyro.

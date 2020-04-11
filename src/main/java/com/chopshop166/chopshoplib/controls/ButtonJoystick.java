@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * This class serves as a wrapper for a Joystick and all it's buttons.
  */
 public class ButtonJoystick extends Joystick {
+
+    /** The mapping of integer to command button. */
     private final Map<Integer, Button> buttons = new HashMap<>();
 
     /**

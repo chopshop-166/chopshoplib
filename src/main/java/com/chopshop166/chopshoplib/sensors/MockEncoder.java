@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockEncoder implements IEncoder {
 
+    /** The distance rotated. */
     private double distance;
+    /** The rate of rotation. */
     private double rate;
 
     @Override

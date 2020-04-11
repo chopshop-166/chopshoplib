@@ -12,8 +12,19 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public interface Resettable {
 
     /**
-     * The function to reset this object.
+     * Reset this object.
      */
     void reset();
+
+    /**
+     * Reset this object.
+     * 
+     * Ignores its parameter - useful for passing as the end function of a command.
+     * 
+     * @param interrupted Ignored.
+     */
+    default void reset(boolean interrupted) {
+        reset();
+    }
 
 }

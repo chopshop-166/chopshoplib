@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class XboxTrigger extends Trigger {
 
+    /** The controller to check. */
     private final XboxController controller;
 
     /**
@@ -20,13 +21,7 @@ public class XboxTrigger extends Trigger {
      * @param hand       The hand to use.
      */
     public XboxTrigger(final XboxController controller, final Hand hand) {
-        super(() -> {
-            if (hand == Hand.kLeft) {
-                return controller.getTriggerAxis(hand) < -0.5;
-            } else {
-                return controller.getTriggerAxis(hand) > 0.5;
-            }
-        });
+        super(() -> controller.getTriggerAxis(hand) > 0.5);
         this.controller = controller;
     }
 

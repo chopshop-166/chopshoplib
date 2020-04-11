@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockDigitalOutput implements IDigitalOutput {
 
+    /** The last set value. */
     private boolean value;
+    /** The last set pwm rate. */
     private double rate;
 
     @Override

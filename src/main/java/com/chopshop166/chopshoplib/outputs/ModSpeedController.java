@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  *
  * This is a generic system that can support many changes to speed.
  */
-public class ModSpeedController implements SendableSpeedController {
+public class ModSpeedController implements SmartSpeedController {
 
-    final private SendableSpeedController wrapped;
+    /** The wrapped up speed controller. */
+    final private SmartSpeedController wrapped;
+    /** All the modifiers to apply to the speed controller. */
     final private List<Modifier> modifiers;
-
+    /** The encoder that this speed controller uses. */
     private IEncoder encoder = new MockEncoder();
 
     /**
@@ -30,10 +32,11 @@ public class ModSpeedController implements SendableSpeedController {
      * @param wrapped   The speed controller to limit.
      * @param modifiers Modifiers to use by default.
      */
-    public ModSpeedController(final SendableSpeedController wrapped, final Modifier... modifiers) {
+    public ModSpeedController(final SmartSpeedController wrapped, final Modifier... modifiers) {
         super();
         this.wrapped = wrapped;
         this.modifiers = new ArrayList<>(Arrays.asList(modifiers));
+        this.encoder = wrapped.getEncoder();
     }
 
     /**
@@ -44,7 +47,7 @@ public class ModSpeedController implements SendableSpeedController {
      * @param modifiers Modifiers to use by default.
      */
     public <T extends Sendable & SpeedController> ModSpeedController(final T wrapped, final Modifier... modifiers) {
-        this(SendableSpeedController.wrap(wrapped), modifiers);
+        this(SmartSpeedController.wrap(wrapped), modifiers);
     }
 
     /**
@@ -54,8 +57,7 @@ public class ModSpeedController implements SendableSpeedController {
      * @param encoder   Encoder object attached to the speed controller.
      * @param modifiers Modifiers to use by default.
      */
-    public ModSpeedController(final SendableSpeedController wrapped, final IEncoder encoder,
-            final Modifier... modifiers) {
+    public ModSpeedController(final SmartSpeedController wrapped, final IEncoder encoder, final Modifier... modifiers) {
         this(wrapped, modifiers);
         this.encoder = encoder;
     }
@@ -70,7 +72,7 @@ public class ModSpeedController implements SendableSpeedController {
      */
     public <T extends Sendable & SpeedController> ModSpeedController(final T wrapped, final IEncoder encoder,
             final Modifier... modifiers) {
-        this(SendableSpeedController.wrap(wrapped), encoder, modifiers);
+        this(SmartSpeedController.wrap(wrapped), encoder, modifiers);
     }
 
     /**
@@ -78,7 +80,7 @@ public class ModSpeedController implements SendableSpeedController {
      * 
      * @return The wrapped object.
      */
-    public SendableSpeedController getWrapped() {
+    public SmartSpeedController getWrapped() {
         return wrapped;
     }
 

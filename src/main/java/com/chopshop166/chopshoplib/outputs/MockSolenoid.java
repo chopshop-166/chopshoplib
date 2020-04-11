@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public final class MockSolenoid implements ISolenoid {
 
+    /** Whether it's triggered or not. */
     private boolean value;
 
     @Override

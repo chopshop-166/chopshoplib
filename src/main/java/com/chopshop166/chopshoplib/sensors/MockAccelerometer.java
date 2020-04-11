@@ -9,9 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  */
 public class MockAccelerometer implements Accelerometer, Sendable {
 
+    /** The X value. */
     private double x;
+    /** The Y value. */
     private double y;
+    /** The Z value. */
     private double z;
+    /** The accelerometer range.. */
     private Range range;
 
     /**

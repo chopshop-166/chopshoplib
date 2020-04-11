@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib;
+package com.chopshop166.chopshoplib.maps;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;

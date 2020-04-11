@@ -2,7 +2,7 @@ plugins {
     id "java-library"
     id "pmd"
     id 'maven-publish'
-    id "com.github.spotbugs" version "3.0.0"
+    id "com.github.spotbugs" version "4.0.5"
     id "edu.wpi.first.GradleRIO" version "2020.2.2"
 }
 
@@ -48,10 +48,6 @@ publishing {
             from components.java
         }
     }
-}
-
-ext {
-    SpotBugsTask = com.github.spotbugs.SpotBugsTask
 }
 
 apply from: 'checks.gradle'

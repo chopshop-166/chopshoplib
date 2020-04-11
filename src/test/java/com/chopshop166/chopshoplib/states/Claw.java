@@ -1,6 +1,8 @@
 package com.chopshop166.chopshoplib.states;
 
+/** Sample Claw class using states. */
 public class Claw extends StateSubsystem<OpenClose> {
+  /** Create a Claw and set up state transitions. */
   public Claw() {
     super(OpenClose.OPEN);
 
@@ -21,5 +23,10 @@ public class Claw extends StateSubsystem<OpenClose> {
   @Override
   protected void defaultTransition(final OpenClose currentState, final OpenClose commandedState) {
     logTransition(currentState, commandedState);
+  }
+
+  @Override
+  public void reset() {
+    // No-op
   }
 }
