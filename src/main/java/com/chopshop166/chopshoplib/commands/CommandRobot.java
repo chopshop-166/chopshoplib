@@ -264,8 +264,9 @@ public class CommandRobot extends TimedRobot {
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
             final T defaultValue) {
         try {
+            final ClassLoader loader = Thread.currentThread().getContextClassLoader();
             // scans the class path used by classloader
-            final ClassPath classpath = ClassPath.from(rootClass.getClassLoader());
+            final ClassPath classpath = ClassPath.from(loader);
             // Get class info for all classes
             for (final ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(pkg)) {
                 final Class<?> clazz = classInfo.load();
