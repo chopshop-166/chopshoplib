@@ -24,6 +24,17 @@ public class RepeatWhileCommand extends CommandBase {
      * @param cond The condition to test.
      * @param cmd  The command to repeat.
      */
+    public RepeatWhileCommand(final String name, final BooleanSupplier cond, final Command cmd) {
+        this(cond, cmd);
+        setName(name);
+    }
+
+    /**
+     * Create a command that repeats a command while a condition is true.
+     * 
+     * @param cond The condition to test.
+     * @param cmd  The command to repeat.
+     */
     public RepeatWhileCommand(final BooleanSupplier cond, final Command cmd) {
         super();
         addRequirements(cmd.getRequirements().toArray(Subsystem[]::new));

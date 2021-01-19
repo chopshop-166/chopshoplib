@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import com.chopshop166.chopshoplib.Resettable;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,14 +33,12 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public FunctionalCommand functional(final String name, final Runnable onInit, final Runnable onExecute,
+    public Command functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        final FunctionalCommand cmd = new FunctionalCommand(onInit == null ? () -> {
+        return new FunctionalCommand(onInit == null ? () -> {
         } : onInit, onExecute == null ? () -> {
         } : onExecute, onEnd == null ? interrupted -> {
-        } : onEnd, isFinished, this);
-        cmd.setName(name);
-        return cmd;
+        } : onEnd, isFinished, this).withName(name);
     }
 
     /**
@@ -49,10 +48,8 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public InstantCommand instant(final String name, final Runnable action) {
-        final InstantCommand cmd = new InstantCommand(action, this);
-        cmd.setName(name);
-        return cmd;
+    public Command instant(final String name, final Runnable action) {
+        return new InstantCommand(action, this).withName(name);
     }
 
     /**
@@ -62,10 +59,8 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public RunCommand running(final String name, final Runnable action) {
-        final RunCommand cmd = new RunCommand(action, this);
-        cmd.setName(name);
-        return cmd;
+    public Command running(final String name, final Runnable action) {
+        return new RunCommand(action, this).withName(name);
     }
 
     /**
@@ -76,10 +71,8 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public StartEndCommand startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
-        final StartEndCommand cmd = new StartEndCommand(onStart, onEnd, this);
-        cmd.setName(name);
-        return cmd;
+    public Command startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+        return new StartEndCommand(onStart, onEnd, this).withName(name);
     }
 
     /**
@@ -90,7 +83,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    public Command initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
@@ -103,12 +96,10 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param func  The function to call.
      * @return A new command.
      */
-    public <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        final InstantCommand cmd = new InstantCommand(() -> {
+    public <T> Command setter(final String name, final T value, final Consumer<T> func) {
+        return new InstantCommand(() -> {
             func.accept(value);
-        }, this);
-        cmd.setName(name);
-        return cmd;
+        }, this).withName(name);
     }
 
     /**
@@ -121,7 +112,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
+    public <T> Command callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
@@ -133,7 +124,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A reset command.
      */
-    public CommandBase resetCmd() {
+    public Command resetCmd() {
         return instant("Reset " + getName(), this::reset);
     }
 
@@ -142,7 +133,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A cancel command.
      */
-    public CommandBase cancel() {
+    public Command cancel() {
         return instant("Cancel " + getName(), () -> {
         });
     }
