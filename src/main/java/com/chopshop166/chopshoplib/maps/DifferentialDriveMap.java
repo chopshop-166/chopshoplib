@@ -4,6 +4,7 @@ import com.chopshop166.chopshoplib.outputs.SmartSpeedController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
 import edu.wpi.first.wpilibj.GyroBase;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
  * Differential Drive Map
@@ -37,4 +38,14 @@ public interface DifferentialDriveMap {
     default GyroBase getGyro() {
         return new MockGyro();
     };
+
+    /**
+     * Gets Drive Kinematics
+     * 
+     * @return Returns a description of differential drive in terms of drivetrain
+     *         dimentions
+     */
+    default DifferentialDriveKinematics getDriveKinematics() {
+        return new DifferentialDriveKinematics(1);
+    }
 }
