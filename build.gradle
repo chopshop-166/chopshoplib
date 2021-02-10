@@ -2,8 +2,8 @@ plugins {
     id "java-library"
     id "pmd"
     id 'maven-publish'
-    id "com.github.spotbugs" version "4.6.0"
-    id "edu.wpi.first.GradleRIO" version "2021.2.1"
+    id "com.github.spotbugs" version "4.6.2"
+    id "edu.wpi.first.GradleRIO" version "2021.2.2"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -64,11 +64,11 @@ spotbugs {
 }
 
 pmd {
-    toolVersion = "6.30.0"
+    toolVersion = "6.31.0"
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
 }
 
 wrapper {
-    gradleVersion = '6.7.1'
+    gradleVersion = '6.8.3'
 }
