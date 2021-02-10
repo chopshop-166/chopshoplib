@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
@@ -34,10 +36,14 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      */
     public Command functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        return new FunctionalCommand(onInit == null ? () -> {
-        } : onInit, onExecute == null ? () -> {
-        } : onExecute, onEnd == null ? interrupted -> {
-        } : onEnd, isFinished, this).withName(name);
+        final Runnable realOnInit = getValueOrDefault(onInit, () -> {
+        });
+        final Runnable realOnExec = getValueOrDefault(onExecute, () -> {
+        });
+        final Consumer<Boolean> realOnEnd = getValueOrDefault(onEnd, interrupted -> {
+        });
+        final BooleanSupplier realIsFinished = getValueOrDefault(isFinished, () -> true);
+        return new FunctionalCommand(realOnInit, realOnExec, realOnEnd, realIsFinished, this).withName(name);
     }
 
     /**

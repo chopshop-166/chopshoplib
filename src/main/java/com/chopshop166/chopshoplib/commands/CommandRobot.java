@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.function.BooleanSupplier;
@@ -63,12 +65,16 @@ public class CommandRobot extends TimedRobot {
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public Command functional(final String name, final Runnable onInit, final Runnable onExecute,
+    public static Command functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        return new FunctionalCommand(onInit == null ? () -> {
-        } : onInit, onExecute == null ? () -> {
-        } : onExecute, onEnd == null ? interrupted -> {
-        } : onEnd, isFinished).withName(name);
+        final Runnable realOnInit = getValueOrDefault(onInit, () -> {
+        });
+        final Runnable realOnExec = getValueOrDefault(onExecute, () -> {
+        });
+        final Consumer<Boolean> realOnEnd = getValueOrDefault(onEnd, interrupted -> {
+        });
+        final BooleanSupplier realIsFinished = getValueOrDefault(isFinished, () -> true);
+        return new FunctionalCommand(realOnInit, realOnExec, realOnEnd, realIsFinished).withName(name);
     }
 
     /**
@@ -78,7 +84,7 @@ public class CommandRobot extends TimedRobot {
      * @param action The action to take.
      * @return A new command.
      */
-    public Command instant(final String name, final Runnable action) {
+    public static Command instant(final String name, final Runnable action) {
         return new InstantCommand(action).withName(name);
     }
 
@@ -89,7 +95,7 @@ public class CommandRobot extends TimedRobot {
      * @param action The action to take.
      * @return A new command.
      */
-    public Command running(final String name, final Runnable action) {
+    public static Command running(final String name, final Runnable action) {
         return new RunCommand(action).withName(name);
     }
 
@@ -101,7 +107,7 @@ public class CommandRobot extends TimedRobot {
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public Command startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+    public static Command startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd).withName(name);
     }
 
@@ -113,7 +119,7 @@ public class CommandRobot extends TimedRobot {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public Command initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    public static Command initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return parallel(name, new InstantCommand(init), new WaitUntilCommand(until));
     }
 
@@ -126,7 +132,7 @@ public class CommandRobot extends TimedRobot {
      * @param func  The function to call.
      * @return A new command.
      */
-    public <T> Command setter(final String name, final T value, final Consumer<T> func) {
+    public static <T> Command setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
         }).withName(name);
@@ -142,7 +148,7 @@ public class CommandRobot extends TimedRobot {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public <T> Command callAndWait(final String name, final T value, final Consumer<T> func,
+    public static <T> Command callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
