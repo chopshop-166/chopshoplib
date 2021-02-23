@@ -54,6 +54,16 @@ public class CommandRobot extends TimedRobot {
     }
 
     /**
+     * Create a command builder with a given name.
+     * 
+     * @param name The command name.
+     * @return A new command builder.
+     */
+    public static CommandBuilder cmd(final String name) {
+        return new CommandBuilder(name);
+    }
+
+    /**
      * Create a {@link FunctionalCommand} with a name.
      * 
      * @param name       The command name.
