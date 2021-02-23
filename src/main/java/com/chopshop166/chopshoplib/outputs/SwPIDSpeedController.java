@@ -206,6 +206,7 @@ public class SwPIDSpeedController implements PIDSpeedController {
         motor.stopMotor();
     }
 
+    @SuppressWarnings("removal")
     @Override
     public void pidWrite(final double output) {
         motor.pidWrite(output);

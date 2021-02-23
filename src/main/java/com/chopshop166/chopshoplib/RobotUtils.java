@@ -18,6 +18,18 @@ public final class RobotUtils {
     }
 
     /**
+     * Get a value if it exists, or a default value if it's null.
+     * 
+     * @param <T>          The type to get.
+     * @param value        The value to test.
+     * @param defaultValue The default value for if value is null.
+     * @return A null safe value
+     */
+    public static <T> T getValueOrDefault(final T value, final T defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
+    /**
      * Clear all preferences from the robot.
      * <p>
      * This is a destructive operation.

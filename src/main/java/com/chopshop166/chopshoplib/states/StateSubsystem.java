@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import com.chopshop166.chopshoplib.commands.SmartSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -89,7 +88,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystem {
      * @param newState The state to transition to.
      * @return A command that will change the subsystem state.
      */
-    public CommandBase changeState(final S newState) {
+    public Command changeState(final S newState) {
         final StringBuilder cmdname = new StringBuilder(getName());
         cmdname.append(" -> ").append(newState.name());
         return setter(cmdname.toString(), newState, this::setState);

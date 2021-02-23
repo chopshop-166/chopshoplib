@@ -17,6 +17,18 @@ final public class CommandUtils {
     /**
      * Repeat a {@link Command} a given number of times.
      * 
+     * @param name          The name of the command.
+     * @param numTimesToRun The number of times to run the command.
+     * @param cmd           The command to repeat.
+     * @return A newly constructed command.
+     */
+    public static Command repeat(final String name, final int numTimesToRun, final Command cmd) {
+        return repeat(numTimesToRun, cmd).withName(name);
+    }
+
+    /**
+     * Repeat a {@link Command} a given number of times.
+     * 
      * @param numTimesToRun The number of times to run the command.
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
@@ -58,6 +70,18 @@ final public class CommandUtils {
                 numTimesRun = 0;
             }
         };
+    }
+
+    /**
+     * Repeat a {@link Command} a given number of times.
+     * 
+     * @param name          The name of the command.
+     * @param numTimesToRun The number of times to run the command.
+     * @param cmd           A way to create the command to repeat.
+     * @return A newly constructed command group.
+     */
+    public static Command repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
+        return repeat(numTimesToRun, cmd).withName(name);
     }
 
     /**
