@@ -23,6 +23,16 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 public abstract class SmartSubsystem extends SubsystemBase implements Resettable {
 
     /**
+     * Create a command builder with a given name.
+     * 
+     * @param name The command name.
+     * @return A new command builder.
+     */
+    public CommandBuilder cmd(final String name) {
+        return new CommandBuilder(name, this);
+    }
+
+    /**
      * Create a {@link FunctionalCommand} with a name.
      * 
      * @param name       The command name.
