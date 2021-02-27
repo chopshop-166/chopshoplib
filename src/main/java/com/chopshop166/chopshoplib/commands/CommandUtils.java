@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 
 /**
  * Utilities related to commands.
@@ -34,42 +35,7 @@ final public class CommandUtils {
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return new CommandBase() {
-
-            /** Defaults to 0. */
-            private int numTimesRun;
-
-            @Override
-            public void initialize() {
-                numTimesRun++;
-                cmd.initialize();
-            }
-
-            @Override
-            public void execute() {
-                cmd.execute();
-                if (cmd.isFinished()) {
-                    cmd.end(false);
-                    numTimesRun++;
-                    if (!isFinished()) {
-                        cmd.initialize();
-                    }
-                }
-            }
-
-            @Override
-            public boolean isFinished() {
-                return numTimesRun >= numTimesToRun;
-            }
-
-            @Override
-            public void end(final boolean interrupted) {
-                if (interrupted) {
-                    cmd.end(true);
-                }
-                numTimesRun = 0;
-            }
-        };
+        return repeat(numTimesToRun, () -> new ProxyScheduleCommand(cmd));
     }
 
     /**
