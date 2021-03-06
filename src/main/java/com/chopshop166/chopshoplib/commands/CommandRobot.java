@@ -306,10 +306,10 @@ public class CommandRobot extends TimedRobot {
             final Manifest manifest = new Manifest(manifestURL.openStream());
             final Attributes attrs = manifest.getMainAttributes();
 
-            hashString = attrs.getValue("Git-Hash");
-            buildTime = attrs.getValue("Build-Time");
-            branchString = attrs.getValue("Git-Branch");
-            fileString = attrs.getValue("Git-Files");
+            hashString = getAttr(attrs, "Git-Hash");
+            buildTime = getAttr(attrs, "Build-Time");
+            branchString = getAttr(attrs, "Git-Branch");
+            fileString = getAttr(attrs, "Git-Files");
         } catch (IOException ex) {
             // Could not read the manifest, just send dummy values
         } finally {
@@ -317,6 +317,21 @@ public class CommandRobot extends TimedRobot {
             tab.add("Build Time", buildTime).withPosition(1, 0).withSize(2, 1);
             tab.add("Git Branch", branchString).withPosition(3, 0);
             tab.add("Git Files", fileString).withPosition(0, 1).withSize(4, 1);
+        }
+    }
+
+    /**
+     * Get an attribute, safely
+     * 
+     * @param attrs Attributes to load from
+     * @param key   Key to load
+     * @return An attribute, or UNKNOWN_VALUE.
+     */
+    private static String getAttr(final Attributes attrs, final String key) {
+        if (attrs.containsKey(key)) {
+            return attrs.getValue(key);
+        } else {
+            return UNKNOWN_VALUE;
         }
     }
 
