@@ -135,6 +135,17 @@ public final class RobotUtils {
     }
 
     /**
+     * Sign Preserving Power
+     * 
+     * @param value The value to multiply.
+     * @param exp   The value to exponentiate by.
+     * @return The square of the given value, preserving sign.
+     */
+    public static double sppow(final double value, final double exp) {
+        return Math.copySign(Math.pow(value, exp), value);
+    }
+
+    /**
      * Negate a boolean supplier.
      * 
      * @param func The base function
