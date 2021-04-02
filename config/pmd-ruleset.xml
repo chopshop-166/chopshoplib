@@ -15,6 +15,7 @@
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="BooleanGetMethodName"/>
         <exclude name="EmptyMethodInAbstractClassShouldBeAbstract"/>
+        <exclude name="FieldNamingConventions"/>
         <exclude name="LongVariable"/>
         <exclude name="MethodNamingConventions"/>
         <exclude name="OnlyOneReturn"/>
