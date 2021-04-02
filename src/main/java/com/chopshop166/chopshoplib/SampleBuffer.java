@@ -33,11 +33,9 @@ public class SampleBuffer implements Iterable<Double> {
      * Clear the samples
      */
     public void reset() {
-        synchronized (this) {
-            Arrays.fill(samples, 0);
-            sampleIndex = 0;
-            isReset = true;
-        }
+        Arrays.fill(samples, 0);
+        sampleIndex = 0;
+        isReset = true;
     }
 
     /**
