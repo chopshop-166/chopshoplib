@@ -23,7 +23,7 @@ final public class CommandUtils {
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
      */
-    public static Command repeat(final String name, final int numTimesToRun, final Command cmd) {
+    public static CommandBase repeat(final String name, final int numTimesToRun, final Command cmd) {
         return repeat(numTimesToRun, cmd).withName(name);
     }
 
@@ -46,7 +46,7 @@ final public class CommandUtils {
      * @param cmd           A way to create the command to repeat.
      * @return A newly constructed command group.
      */
-    public static Command repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
+    public static CommandBase repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
         return repeat(numTimesToRun, cmd).withName(name);
     }
 

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -75,7 +76,7 @@ public class CommandRobot extends TimedRobot {
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public static Command functional(final String name, final Runnable onInit, final Runnable onExecute,
+    public static CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
         final Runnable realOnInit = getValueOrDefault(onInit, () -> {
         });
@@ -94,7 +95,7 @@ public class CommandRobot extends TimedRobot {
      * @param action The action to take.
      * @return A new command.
      */
-    public static Command instant(final String name, final Runnable action) {
+    public static CommandBase instant(final String name, final Runnable action) {
         return new InstantCommand(action).withName(name);
     }
 
@@ -105,7 +106,7 @@ public class CommandRobot extends TimedRobot {
      * @param action The action to take.
      * @return A new command.
      */
-    public static Command running(final String name, final Runnable action) {
+    public static CommandBase running(final String name, final Runnable action) {
         return new RunCommand(action).withName(name);
     }
 
@@ -117,7 +118,7 @@ public class CommandRobot extends TimedRobot {
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public static Command startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+    public static CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd).withName(name);
     }
 
@@ -129,7 +130,7 @@ public class CommandRobot extends TimedRobot {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static Command initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    public static CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return parallel(name, new InstantCommand(init), new WaitUntilCommand(until));
     }
 
@@ -142,7 +143,7 @@ public class CommandRobot extends TimedRobot {
      * @param func  The function to call.
      * @return A new command.
      */
-    public static <T> Command setter(final String name, final T value, final Consumer<T> func) {
+    public static <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
         }).withName(name);
@@ -158,7 +159,7 @@ public class CommandRobot extends TimedRobot {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static <T> Command callAndWait(final String name, final T value, final Consumer<T> func,
+    public static <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
@@ -172,7 +173,7 @@ public class CommandRobot extends TimedRobot {
      * @param cmds The commands to sequence.
      * @return A new command group.
      */
-    public static Command sequence(final String name, final Command... cmds) {
+    public static CommandBase sequence(final String name, final Command... cmds) {
         return CommandGroupBase.sequence(cmds).withName(name);
     }
 
@@ -183,7 +184,7 @@ public class CommandRobot extends TimedRobot {
      * @param cmds The commands to run in parallel.
      * @return A new command group.
      */
-    public static Command parallel(final String name, final Command... cmds) {
+    public static CommandBase parallel(final String name, final Command... cmds) {
         return CommandGroupBase.parallel(cmds).withName(name);
     }
 
@@ -194,7 +195,7 @@ public class CommandRobot extends TimedRobot {
      * @param racers The commands to race.
      * @return A new command group.
      */
-    public static Command race(final String name, final Command... racers) {
+    public static CommandBase race(final String name, final Command... racers) {
         return CommandGroupBase.race(racers).withName(name);
     }
 
@@ -206,7 +207,7 @@ public class CommandRobot extends TimedRobot {
      * @param cmds    The commands to run until the deadline ends.
      * @return A new command group.
      */
-    public static Command deadline(final String name, final Command limiter, final Command... cmds) {
+    public static CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
         return CommandGroupBase.deadline(limiter, cmds).withName(name);
     }
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -89,7 +89,7 @@ public class CommandBuilder {
      * 
      * @return The built command.
      */
-    public Command build() {
+    public CommandBase build() {
         return new FunctionalCommand(onInitialize, onExecute, onEndHandler, checkIsFinished, dependencies)
                 .withName(name);
     }

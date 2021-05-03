@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import com.chopshop166.chopshoplib.Resettable;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -44,7 +44,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public Command functional(final String name, final Runnable onInit, final Runnable onExecute,
+    public CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
         final Runnable realOnInit = getValueOrDefault(onInit, () -> {
         });
@@ -63,7 +63,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public Command instant(final String name, final Runnable action) {
+    public CommandBase instant(final String name, final Runnable action) {
         return new InstantCommand(action, this).withName(name);
     }
 
@@ -74,7 +74,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public Command running(final String name, final Runnable action) {
+    public CommandBase running(final String name, final Runnable action) {
         return new RunCommand(action, this).withName(name);
     }
 
@@ -86,7 +86,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public Command startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+    public CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd, this).withName(name);
     }
 
@@ -98,7 +98,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public Command initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
@@ -111,7 +111,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param func  The function to call.
      * @return A new command.
      */
-    public <T> Command setter(final String name, final T value, final Consumer<T> func) {
+    public <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
         }, this).withName(name);
@@ -127,7 +127,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public <T> Command callAndWait(final String name, final T value, final Consumer<T> func,
+    public <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
@@ -139,7 +139,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A reset command.
      */
-    public Command resetCmd() {
+    public CommandBase resetCmd() {
         return instant("Reset " + getName(), this::reset);
     }
 
@@ -148,7 +148,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A cancel command.
      */
-    public Command cancel() {
+    public CommandBase cancel() {
         return instant("Cancel " + getName(), () -> {
         });
     }
