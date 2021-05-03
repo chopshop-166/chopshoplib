@@ -54,7 +54,7 @@ public class DifferentialDriveMap {
     /**
      * Provides the left speed controller.
      * 
-     * @return A speed controller.
+     * @return A {@link SmartSpeedController}.
      */
     public SmartSpeedController getLeft() {
         return left;
@@ -63,7 +63,7 @@ public class DifferentialDriveMap {
     /**
      * Provides the right speed controller.
      * 
-     * @return A speed controller.
+     * @return A {@link SmartSpeedController}.
      */
     public SmartSpeedController getRight() {
         return right;
@@ -72,7 +72,7 @@ public class DifferentialDriveMap {
     /**
      * Gets a Gyro.
      * 
-     * @return The gyro object.
+     * @return The gyro object as a {@link GyroBase}.
      */
     public GyroBase getGyro() {
         return gyro;
