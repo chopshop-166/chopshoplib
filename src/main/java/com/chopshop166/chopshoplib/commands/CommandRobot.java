@@ -3,17 +3,20 @@ package com.chopshop166.chopshoplib.commands;
 import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import com.chopshop166.chopshoplib.Resettable;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -51,7 +54,30 @@ public class CommandRobot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        RobotUtils.resetAll(this);
+        resetAll();
+    }
+
+    /**
+     * Reset all {@link Resettable} objects within this robot.
+     */
+    public void resetAll() {
+        final Class<? extends RobotBase> clazz = getClass();
+
+        for (final Field field : clazz.getDeclaredFields()) {
+            // Make the field accessible, because apparently we're allowed to do that
+            field.setAccessible(true);
+            try {
+                // See if the returned object implements resettable.
+                // If it does, then reset it.
+                // This should help prevent the robot from taking off unexpectedly
+                if (Resettable.class.isAssignableFrom(field.getType())) {
+                    final Resettable resettable = (Resettable) field.get(this);
+                    resettable.reset();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

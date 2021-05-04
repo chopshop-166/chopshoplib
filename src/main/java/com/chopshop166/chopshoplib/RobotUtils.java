@@ -1,6 +1,5 @@
 package com.chopshop166.chopshoplib;
 
-import java.lang.reflect.Field;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.StringJoiner;
@@ -8,7 +7,6 @@ import java.util.function.BooleanSupplier;
 import java.util.stream.DoubleStream;
 
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * Utilities that are related to overall robot functionality.
@@ -49,31 +47,6 @@ public final class RobotUtils {
      */
     public static Double[] toBoxed(final double... args) {
         return DoubleStream.of(args).boxed().toArray(Double[]::new);
-    }
-
-    /**
-     * Reset all {@link Resettable} objects within a given robot.
-     * 
-     * @param robot The robot to set members from.
-     */
-    public static void resetAll(final RobotBase robot) {
-        final Class<? extends RobotBase> clazz = robot.getClass();
-
-        for (final Field field : clazz.getDeclaredFields()) {
-            // Make the field accessible, because apparently we're allowed to do that
-            field.setAccessible(true);
-            try {
-                // See if the returned object implements resettable.
-                // If it does, then reset it.
-                // This should help prevent the robot from taking off unexpectedly
-                if (Resettable.class.isAssignableFrom(field.getType())) {
-                    final Resettable resettable = (Resettable) field.get(robot);
-                    resettable.reset();
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -132,6 +105,17 @@ public final class RobotUtils {
      */
     public static double sps(final double value) {
         return Math.copySign(value * value, value);
+    }
+
+    /**
+     * Sign Preserving Power
+     * 
+     * @param value The value to multiply.
+     * @param exp   The value to exponentiate by.
+     * @return The square of the given value, preserving sign.
+     */
+    public static double sppow(final double value, final double exp) {
+        return Math.copySign(Math.pow(value, exp), value);
     }
 
     /**
