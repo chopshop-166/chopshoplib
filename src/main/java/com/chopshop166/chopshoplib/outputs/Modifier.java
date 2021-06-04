@@ -56,7 +56,7 @@ public interface Modifier extends DoubleUnaryOperator {
             private SampleBuffer buffer = new SampleBuffer(numSamples);
 
             @Override
-            public double applyAsDouble(double speed) {
+            public double applyAsDouble(final double speed) {
                 buffer.addSample(speed);
                 return Stats.of(buffer).mean();
             }

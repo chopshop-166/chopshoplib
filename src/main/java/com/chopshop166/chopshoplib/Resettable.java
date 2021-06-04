@@ -23,7 +23,7 @@ public interface Resettable {
      * 
      * @param interrupted Ignored.
      */
-    default void reset(boolean interrupted) {
+    default void reset(final boolean interrupted) {
         reset();
     }
 

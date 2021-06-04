@@ -1,5 +1,4 @@
 jdk:
   - openjdk11
-install:
-  - export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2"
-  - ./gradlew build publishToMavenLocal
+env:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8 -Dhttps.protocols=TLSv1.2"

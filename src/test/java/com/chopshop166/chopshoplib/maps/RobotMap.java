@@ -4,10 +4,16 @@ package com.chopshop166.chopshoplib.maps;
  * Sample RobotMap base interface.
  */
 public interface RobotMap {
+
+    /** Enum for denoting different map values. */
+    enum MapType {
+        A, B, C
+    }
+
     /**
-     * Example command to get a string.
+     * Example function to get the map type.
      * 
-     * @return Some string.
+     * @return A key value.
      */
-    String doStuff();
+    MapType getType();
 }
