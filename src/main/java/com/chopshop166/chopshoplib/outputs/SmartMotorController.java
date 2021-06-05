@@ -102,7 +102,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     @Override
     public void set(final double speed) {
-        wrapped.set(calculate(speed));
+        wrapped.set(calculateModifiers(speed));
     }
 
     @Override
@@ -110,6 +110,12 @@ public class SmartMotorController implements Sendable, SpeedController {
         return wrapped.get();
     }
 
+    /**
+     * Warning: Do not use in a subsystem.
+     * 
+     * This is intended for configuration in the map only, but the SpeedController
+     * requires it to exist.
+     */
     @Override
     public void setInverted(final boolean isInverted) {
         wrapped.setInverted(isInverted);
@@ -130,6 +136,7 @@ public class SmartMotorController implements Sendable, SpeedController {
         wrapped.stopMotor();
     }
 
+    /** TODO: Remove when WPIlib does. */
     @Override
     public void pidWrite(final double output) {
         set(output);
@@ -148,7 +155,7 @@ public class SmartMotorController implements Sendable, SpeedController {
      * @param rawSpeed The base speed to run
      * @return The new speed
      */
-    private double calculate(final double rawSpeed) {
+    private double calculateModifiers(final double rawSpeed) {
         double speed = rawSpeed;
         for (final Modifier m : modifiers) {
             speed = m.applyAsDouble(speed);

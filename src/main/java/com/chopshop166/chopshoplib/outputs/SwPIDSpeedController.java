@@ -20,7 +20,7 @@ public class SwPIDSpeedController extends SmartMotorController {
     /** The measurement source. */
     final private DoubleSupplier measurement;
     /** The watchdog to repeatedly trigger the calculation. */
-    final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculate);
+    final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculatePID);
     /** The feedforward coefficient. */
     private double feedforward;
     /** The setpoint to move to. */
@@ -119,7 +119,7 @@ public class SwPIDSpeedController extends SmartMotorController {
     }
 
     /** Calculate the PID value, and set the speed controler to the result. */
-    private void calculate() {
+    private void calculatePID() {
         final double ff = feedforward * setpoint;
         final double meas = measurement.getAsDouble();
         final double calc = pid.calculate(meas);
