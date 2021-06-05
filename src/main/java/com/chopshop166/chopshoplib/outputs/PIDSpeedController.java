@@ -38,7 +38,7 @@ public interface PIDSpeedController extends SmartSpeedController {
      * 
      * @param kf The coefficient.
      */
-    default void setF(double kf) {
+    default void setF(final double kf) {
         // Ignore feed-forward by default
     }
 

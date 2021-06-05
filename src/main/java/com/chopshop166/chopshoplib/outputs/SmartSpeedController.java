@@ -32,7 +32,7 @@ public interface SmartSpeedController extends Sendable, SpeedController {
      * @param wrapped An already wrapped {@link SmartSpeedController}.
      * @return {@code wrapped}.
      */
-    static SmartSpeedController wrap(SmartSpeedController wrapped) {
+    static SmartSpeedController wrap(final SmartSpeedController wrapped) {
         return wrapped;
     }
 
@@ -47,16 +47,16 @@ public interface SmartSpeedController extends Sendable, SpeedController {
      * @param wrapped An object to wrap.
      * @return A thin wrapper around {@code wrapped}.
      */
-    static <T extends Sendable & SpeedController> SmartSpeedController wrap(T wrapped) {
+    static <T extends Sendable & SpeedController> SmartSpeedController wrap(final T wrapped) {
         return new SmartSpeedController() {
 
             @Override
-            public void initSendable(SendableBuilder builder) {
+            public void initSendable(final SendableBuilder builder) {
                 wrapped.initSendable(builder);
             }
 
             @Override
-            public void set(double speed) {
+            public void set(final double speed) {
                 wrapped.set(speed);
             }
 
@@ -66,7 +66,7 @@ public interface SmartSpeedController extends Sendable, SpeedController {
             }
 
             @Override
-            public void setInverted(boolean isInverted) {
+            public void setInverted(final boolean isInverted) {
                 wrapped.setInverted(isInverted);
             }
 
@@ -86,7 +86,7 @@ public interface SmartSpeedController extends Sendable, SpeedController {
             }
 
             @Override
-            public void pidWrite(double output) {
+            public void pidWrite(final double output) {
                 wrapped.set(output);
             }
         };
@@ -103,7 +103,7 @@ public interface SmartSpeedController extends Sendable, SpeedController {
      * @param motors Continuation of motor.
      * @return A wrapped Speed Controller Group.
      */
-    static SmartSpeedController group(SpeedController motor, SpeedController... motors) {
+    static SmartSpeedController group(final SpeedController motor, final SpeedController... motors) {
         return wrap(new SpeedControllerGroup(motor, motors));
     }
 }

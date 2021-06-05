@@ -6,7 +6,7 @@ package com.chopshop166.chopshoplib.maps;
 @RobotMapFor("B")
 public class MapB implements RobotMap {
     @Override
-    public String doStuff() {
-        return "MapB";
+    public MapType getType() {
+        return MapType.B;
     }
 }
