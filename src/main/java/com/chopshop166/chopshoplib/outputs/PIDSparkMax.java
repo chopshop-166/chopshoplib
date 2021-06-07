@@ -10,18 +10,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 /**
  * PIDSpeedController
  *
- * Derives PIDSpeedController to allow for use on a SparkMax Speed Controller.
+ * Derives SmartMotorController to allow for use on a SparkMax Speed Controller.
  * It will act as a normal SparkMax with encoders, but will also be able to use
  * PID.
  * 
  * @author Andrew Martin
  * @since 2020-02-7
  */
-public class PIDSparkMax implements PIDSpeedController {
+public class PIDSparkMax extends SmartMotorController {
     /** The unwrapped Spark MAX object. */
     private final CANSparkMax sparkMax;
-    /** The encoder for the Spark MAX. */
-    private final SparkMaxEncoder encoder;
     /** The PID controller from the Spark MAX. */
     private final CANPIDController sparkPID;
     /** The control type for the PID controller. */
@@ -33,8 +31,8 @@ public class PIDSparkMax implements PIDSpeedController {
      * @param max The Spark MAX oject.
      */
     public PIDSparkMax(final CANSparkMax max) {
+        super(new MockSpeedController(), new SparkMaxEncoder(max.getEncoder()));
         this.sparkMax = max;
-        this.encoder = new SparkMaxEncoder(max.getEncoder());
         this.sparkPID = max.getPIDController();
     }
 
@@ -67,27 +65,8 @@ public class PIDSparkMax implements PIDSpeedController {
 
     @Override
     public SparkMaxEncoder getEncoder() {
-        return encoder;
-    }
-
-    @Override
-    public void setP(final double kp) {
-        sparkPID.setP(kp);
-    }
-
-    @Override
-    public void setI(final double ki) {
-        sparkPID.setI(ki);
-    }
-
-    @Override
-    public void setD(final double kd) {
-        sparkPID.setD(kd);
-    }
-
-    @Override
-    public void setF(final double kf) {
-        sparkPID.setFF(kf);
+        // This cast is safe because we're the ones setting it in the first place.
+        return (SparkMaxEncoder) super.getEncoder();
     }
 
     @Override
@@ -116,7 +95,7 @@ public class PIDSparkMax implements PIDSpeedController {
     @Override
     public void setInverted(final boolean isInverted) {
         sparkMax.setInverted(isInverted);
-        encoder.setReverseDirection(isInverted);
+        getEncoder().setReverseDirection(isInverted);
     }
 
     @Override
@@ -132,10 +111,5 @@ public class PIDSparkMax implements PIDSpeedController {
     @Override
     public void stopMotor() {
         sparkMax.stopMotor();
-    }
-
-    @Override
-    public void pidWrite(final double output) {
-        sparkMax.pidWrite(output);
     }
 }

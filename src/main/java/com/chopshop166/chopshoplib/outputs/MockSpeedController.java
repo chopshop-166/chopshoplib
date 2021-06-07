@@ -1,12 +1,14 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * Mock speed controller that can be used to simulate a motor on a driver
  * station.
  */
-public class MockSpeedController implements SmartSpeedController {
+public class MockSpeedController implements Sendable, SpeedController {
 
     /** The last set speed. */
     private double speed;

@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.outputs.SmartSpeedController;
+import com.chopshop166.chopshoplib.outputs.SmartMotorController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
 import edu.wpi.first.wpilibj.GyroBase;
@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public class DifferentialDriveMap {
 
     /** Left speed controller (or group) */
-    private final SmartSpeedController left;
+    private final SmartMotorController left;
     /** Right speed controller (or group) */
-    private final SmartSpeedController right;
+    private final SmartMotorController right;
     /** Kinematics information */
     private final DifferentialDriveKinematics kinematics;
     /** The gyro */
@@ -30,7 +30,7 @@ public class DifferentialDriveMap {
      * @param right            Right speed controller.
      * @param trackWidthMeters Width of robot.
      */
-    public DifferentialDriveMap(final SmartSpeedController left, final SmartSpeedController right,
+    public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
             final double trackWidthMeters) {
         this(left, right, trackWidthMeters, new MockGyro());
     }
@@ -43,7 +43,7 @@ public class DifferentialDriveMap {
      * @param trackWidthMeters Width of robot.
      * @param gyro             The gyro.
      */
-    public DifferentialDriveMap(final SmartSpeedController left, final SmartSpeedController right,
+    public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
             final double trackWidthMeters, final GyroBase gyro) {
         this.left = left;
         this.right = right;
@@ -54,18 +54,18 @@ public class DifferentialDriveMap {
     /**
      * Provides the left speed controller.
      * 
-     * @return A {@link SmartSpeedController}.
+     * @return A {@link SmartMotorController}.
      */
-    public SmartSpeedController getLeft() {
+    public SmartMotorController getLeft() {
         return left;
     }
 
     /**
      * Provides the right speed controller.
      * 
-     * @return A {@link SmartSpeedController}.
+     * @return A {@link SmartMotorController}.
      */
-    public SmartSpeedController getRight() {
+    public SmartMotorController getRight() {
         return right;
     }
 
