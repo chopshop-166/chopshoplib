@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.chopshop166.chopshoplib.commands.SmartSubsystem;
+import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * 
  * @param <S> The enum of possible states.
  */
-public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystem {
+public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBase {
     /** The current subsystem state. */
     private S currentState;
     /** The valid transitions. */
