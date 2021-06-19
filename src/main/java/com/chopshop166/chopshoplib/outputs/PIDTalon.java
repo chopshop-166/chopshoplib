@@ -14,7 +14,7 @@ public class PIDTalon extends SmartMotorController {
     /** Reference to the wrapped Talon. */
     private final WPI_TalonSRX wrapped;
     /** The Talon control mode. */
-    private ControlMode controlMode = ControlMode.PercentOutput;
+    private ControlMode savedControlType = ControlMode.PercentOutput;
 
     /**
      * Create a Talon.
@@ -40,8 +40,17 @@ public class PIDTalon extends SmartMotorController {
      * 
      * @param controlMode The mode to use.
      */
-    public void setControlMode(final ControlMode controlMode) {
-        this.controlMode = controlMode;
+    public void setControlType(final ControlMode controlMode) {
+        this.savedControlType = controlMode;
+    }
+
+    /**
+     * Get the control mode of the Talon.
+     * 
+     * @return The control mode.
+     */
+    public ControlMode getControlType() {
+        return savedControlType;
     }
 
     @Override
@@ -52,7 +61,7 @@ public class PIDTalon extends SmartMotorController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        wrapped.set(controlMode, setPoint);
+        wrapped.set(savedControlType, setPoint);
     }
 
     @Override
