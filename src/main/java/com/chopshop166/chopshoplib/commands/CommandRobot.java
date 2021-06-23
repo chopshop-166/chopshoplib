@@ -246,7 +246,7 @@ public class CommandRobot extends TimedRobot {
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, null);
+        return getRobotMap(rootClass, pkg, null);
     }
 
     /**
