@@ -25,6 +25,7 @@
         <exclude name="VariableNamingConventions"/>
     </rule>
     <rule ref="category/java/design.xml">
+        <exclude name="AbstractClassWithoutAnyMethod"/>
         <exclude name="DataClass"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>

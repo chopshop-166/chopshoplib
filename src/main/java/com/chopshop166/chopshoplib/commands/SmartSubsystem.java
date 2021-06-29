@@ -7,20 +7,23 @@ import java.util.function.Consumer;
 
 import com.chopshop166.chopshoplib.Resettable;
 
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link Subsystem} that is {@link Resettable} and that provides convenience
  * functions for common commands.
+ * 
+ * @see SmartSubsystemBase For class that provides wpilib-style defaults.
  */
-public abstract class SmartSubsystem extends SubsystemBase implements Resettable {
+public interface SmartSubsystem extends Subsystem, Resettable, Sendable {
 
     /**
      * Create a command builder with a given name.
@@ -28,7 +31,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param name The command name.
      * @return A new command builder.
      */
-    public CommandBuilder cmd(final String name) {
+    default CommandBuilder cmd(final String name) {
         return new CommandBuilder(name, this);
     }
 
@@ -44,7 +47,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
+    default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
         final Runnable realOnInit = getValueOrDefault(onInit, () -> {
         });
@@ -63,7 +66,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public CommandBase instant(final String name, final Runnable action) {
+    default CommandBase instant(final String name, final Runnable action) {
         return new InstantCommand(action, this).withName(name);
     }
 
@@ -74,7 +77,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param action The action to take.
      * @return A new command.
      */
-    public CommandBase running(final String name, final Runnable action) {
+    default CommandBase running(final String name, final Runnable action) {
         return new RunCommand(action, this).withName(name);
     }
 
@@ -86,7 +89,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+    default CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd, this).withName(name);
     }
 
@@ -98,7 +101,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    default CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
@@ -111,7 +114,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param func  The function to call.
      * @return A new command.
      */
-    public <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
+    default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
         }, this).withName(name);
@@ -127,7 +130,7 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
+    default <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
@@ -139,8 +142,8 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A reset command.
      */
-    public CommandBase resetCmd() {
-        return instant("Reset " + getName(), this::reset);
+    default CommandBase resetCmd() {
+        return instant("Reset " + SendableRegistry.getName(this), this::reset);
     }
 
     /**
@@ -148,8 +151,8 @@ public abstract class SmartSubsystem extends SubsystemBase implements Resettable
      * 
      * @return A cancel command.
      */
-    public CommandBase cancel() {
-        return instant("Cancel " + getName(), () -> {
+    default CommandBase cancel() {
+        return instant("Cancel " + SendableRegistry.getName(this), () -> {
         });
     }
 }
