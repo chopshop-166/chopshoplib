@@ -44,4 +44,17 @@ final class MapGetterTest {
         final RobotMap map = CommandRobot.getMapForName("C", RobotMap.class, PACKAGE, defMap);
         assertEquals(defMap, map, "Gets the default map");
     }
+
+    @Test
+    /* package */ void testNewMapper() {
+        final RobotMap map = new RobotMapper<RobotMap>().maybe("A", MapA::new).maybe("B", MapB::new).get("A");
+        assertEquals(MapType.A, map.getType(), "Gets a map of type A");
+    }
+
+    @Test
+    /* package */ void testNewMapperDefault() {
+        final RobotMap defMap = new MapA();
+        final RobotMap map = new RobotMapper<RobotMap>().maybe("B", MapB::new).get("A", defMap);
+        assertEquals(MapType.A, map.getType(), "Gets a map of type A");
+    }
 }

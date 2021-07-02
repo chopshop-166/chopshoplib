@@ -13,6 +13,7 @@ import java.util.jar.Manifest;
 import com.chopshop166.chopshoplib.Resettable;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
+import com.chopshop166.chopshoplib.maps.RobotMapper;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 
@@ -128,6 +129,16 @@ public abstract class CommandRobot extends TimedRobot {
      */
     public void addAutonomous(final String name, final Command auto) {
         autoChooser.addOption(name, auto);
+    }
+
+    /**
+     * Factory for robot mappers.
+     * 
+     * @param <T> The root type for the mapper.
+     * @return The mapper.
+     */
+    public static <T> RobotMapper<T> mapper() {
+        return new RobotMapper<T>();
     }
 
     /**
