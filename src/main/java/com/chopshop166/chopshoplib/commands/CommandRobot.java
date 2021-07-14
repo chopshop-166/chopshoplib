@@ -246,7 +246,7 @@ public class CommandRobot extends TimedRobot {
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, null);
+        return getRobotMap(rootClass, pkg, null);
     }
 
     /**
@@ -327,6 +327,7 @@ public class CommandRobot extends TimedRobot {
         String buildTime = UNKNOWN_VALUE;
         String branchString = UNKNOWN_VALUE;
         String fileString = UNKNOWN_VALUE;
+        String macAddress = UNKNOWN_VALUE;
 
         try {
             final URL manifestURL = Resources.getResource("META-INF/MANIFEST.MF");
@@ -337,6 +338,7 @@ public class CommandRobot extends TimedRobot {
             buildTime = getAttr(attrs, "Build-Time");
             branchString = getAttr(attrs, "Git-Branch");
             fileString = getAttr(attrs, "Git-Files");
+            macAddress = RobotUtils.getMACAddress();
         } catch (IOException ex) {
             // Could not read the manifest, just send dummy values
         } finally {
@@ -344,6 +346,7 @@ public class CommandRobot extends TimedRobot {
             tab.add("Build Time", buildTime).withPosition(1, 0).withSize(2, 1);
             tab.add("Git Branch", branchString).withPosition(3, 0);
             tab.add("Git Files", fileString).withPosition(0, 1).withSize(4, 1);
+            tab.add("MAC Address", macAddress).withPosition(4, 0);
         }
     }
 
