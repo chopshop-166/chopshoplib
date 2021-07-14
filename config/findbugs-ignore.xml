@@ -5,5 +5,8 @@
         <Class name="com.chopshop166.chopshoplib.sensors.Lidar$Settings"/>
         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
 
 </FindBugsFilter>

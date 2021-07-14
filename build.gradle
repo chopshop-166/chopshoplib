@@ -2,7 +2,7 @@ plugins {
     id "java-library"
     id "pmd"
     id 'maven-publish'
-    id "com.github.spotbugs" version "4.7.1"
+    id "com.github.spotbugs" version "4.7.2"
     id "edu.wpi.first.GradleRIO" version "2021.3.1"
 }
 
@@ -26,8 +26,8 @@ dependencies {
 
     implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
 }
 
 test {
@@ -49,9 +49,13 @@ publishing {
 
 spotbugsMain {
     reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/xsl/fancy.xsl')
+        xml {
+            enabled = false
+        }
+        html {
+            enabled = true
+            stylesheet = 'fancy-hist.xsl'
+        }
     }
 }
 
@@ -60,11 +64,11 @@ spotbugs {
 }
 
 pmd {
-    toolVersion = "6.35.0"
+    toolVersion = "6.36.0"
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
 }
 
 wrapper {
-    gradleVersion = '6.8.3'
+    gradleVersion = '6.9'
 }
