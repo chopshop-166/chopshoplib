@@ -2,7 +2,7 @@ chopshoplib
 ===========
 
 [![Chopshoplib on jitpack](https://jitpack.io/v/com.chopshop166/chopshoplib.svg)](https://jitpack.io/#com.chopshop166/chopshoplib)
-[![Build Status](https://travis-ci.com/chopshop-166/chopshoplib.svg?branch=master)](https://travis-ci.com/chopshop-166/chopshoplib)
+[![example branch parameter](https://github.com/chopshop-166/chopshoplib/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/chopshop-166/chopshoplib/actions)
 
 Usage
 -----
