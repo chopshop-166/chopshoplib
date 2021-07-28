@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
@@ -35,15 +36,37 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-public class CommandRobot extends TimedRobot {
+public abstract class CommandRobot extends TimedRobot {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
     final private static String UNKNOWN_VALUE = "???";
+    /** Chooser for the autonomous mode. */
+    final private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    /** Currently running autonomous command. */
+    private Command autoCmd;
+
+    /** Set up the button bindings. */
+    public abstract void configureButtonBindings();
+
+    /** Send commands and data to Shuffleboard. */
+    public abstract void populateDashboard();
+
+    /** Set the default commands for each subsystem. */
+    public abstract void setDefaultCommands();
+
+    /** Add all the autonomous modes to the chooser. */
+    public abstract void populateAutonomous();
 
     @Override
     public void robotInit() {
         super.robotInit();
         logBuildData();
+        configureButtonBindings();
+        populateDashboard();
+        setDefaultCommands();
+
+        populateAutonomous();
+        Shuffleboard.getTab("Shuffleboard").add("Autonomous", autoChooser);
     }
 
     @Override
@@ -55,6 +78,56 @@ public class CommandRobot extends TimedRobot {
     @Override
     public void disabledInit() {
         resetAll();
+        CommandScheduler.getInstance().cancelAll();
+    }
+
+    /**
+     * This autonomous runs the autonomous command selected by the chooser.
+     */
+    @Override
+    public void autonomousInit() {
+        autoCmd = getAutoCommand();
+
+        // schedule the autonomous command (example)
+        if (autoCmd != null) {
+            autoCmd.schedule();
+        }
+    }
+
+    @Override
+    public void teleopInit() {
+        if (autoCmd != null) {
+            autoCmd.cancel();
+        }
+    }
+
+    @Override
+    public void testInit() {
+        // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
+
+    /**
+     * Get the autonomous command to run.]
+     * 
+     * By default, this is from a SendableChooser.
+     * 
+     * @return A {@link Command} object
+     */
+    public Command getAutoCommand() {
+        return autoChooser.getSelected();
+    }
+
+    /**
+     * Add an autonomous option.
+     * 
+     * By default, this adds to the internal Chooser.
+     * 
+     * @param name The name to give the autonomous.
+     * @param auto The command to run.
+     */
+    public void addAutonomous(final String name, final Command auto) {
+        autoChooser.addOption(name, auto);
     }
 
     /**
