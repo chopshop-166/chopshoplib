@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 public class TalonEncoder implements IEncoder {
 
     /** Reference to the base Talon SRX. */
-    private final TalonSRX talon;
+    private final BaseTalon talon;
 
     /**
      * Construct the encoder from the Talon.
      * 
      * @param talon The Talon SRX to connect to.
      */
-    public TalonEncoder(final TalonSRX talon) {
+    public TalonEncoder(final BaseTalon talon) {
         this.talon = talon;
         talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     }
