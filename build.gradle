@@ -64,7 +64,7 @@ spotbugs {
 }
 
 pmd {
-    toolVersion = "6.36.0"
+    toolVersion = "6.37.0"
     ruleSets = []
     ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
 }

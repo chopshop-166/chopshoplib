@@ -11,7 +11,7 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
      * @param talon The Talon object to wrap.
      */
     public PIDTalonFX(final WPI_TalonFX talon) {
-        super(talon);
+        super(talon, 2048);
     }
 
     /**

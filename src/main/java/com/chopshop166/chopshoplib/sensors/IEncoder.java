@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Sendable;
 /**
  * Interface for an Encoder
  */
-public interface IEncoder extends Sendable {
+public interface IEncoder extends Sendable, IAbsolutePosition {
 
     /**
      * Reset the encoder distance to zero.
@@ -27,6 +27,16 @@ public interface IEncoder extends Sendable {
      * @return the current rate of rotation
      */
     double getRate();
+
+    /**
+     * Gets the absolute position in rotations.
+     * 
+     * @return Rotations.
+     */
+    @Override
+    default double getAbsolutePosition() {
+        return 0;
+    }
 
     /**
      * Determine if the counter is not moving.
