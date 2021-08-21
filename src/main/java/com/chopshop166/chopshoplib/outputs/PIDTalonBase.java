@@ -21,10 +21,11 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
     /**
      * Create a Talon.
      * 
-     * @param wrapped The raw object to wrap.
+     * @param wrapped    The raw object to wrap.
+     * @param resolution The number of ticks per revolution.
      */
-    public PIDTalonBase(final T wrapped) {
-        super(new MockSpeedController(), new TalonEncoder(wrapped));
+    public PIDTalonBase(final T wrapped, final double resolution) {
+        super(new MockSpeedController(), new TalonEncoder(wrapped, resolution));
         this.wrapped = wrapped;
     }
 
