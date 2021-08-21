@@ -2,17 +2,19 @@ package com.chopshop166.chopshoplib.outputs;
 
 import com.chopshop166.chopshoplib.sensors.TalonEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * Talon SRX that is compatible with the Smart Motor Controller.
  */
-public class PIDTalon extends SmartMotorController {
+public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> extends SmartMotorController {
 
     /** Reference to the wrapped Talon. */
-    private final WPI_TalonSRX wrapped;
+    private final T wrapped;
     /** The Talon control mode. */
     private ControlMode savedControlType = ControlMode.PercentOutput;
 
@@ -21,7 +23,7 @@ public class PIDTalon extends SmartMotorController {
      * 
      * @param wrapped The raw object to wrap.
      */
-    public PIDTalon(final WPI_TalonSRX wrapped) {
+    public PIDTalonBase(final T wrapped) {
         super(new MockSpeedController(), new TalonEncoder(wrapped));
         this.wrapped = wrapped;
     }
@@ -31,7 +33,7 @@ public class PIDTalon extends SmartMotorController {
      * 
      * @return The raw Talon SRX object.
      */
-    public WPI_TalonSRX getMotorController() {
+    public T getMotorController() {
         return wrapped;
     }
 
@@ -54,7 +56,7 @@ public class PIDTalon extends SmartMotorController {
     }
 
     @Override
-    public void set(double speed) {
+    public void set(final double speed) {
         wrapped.set(speed);
     }
 
