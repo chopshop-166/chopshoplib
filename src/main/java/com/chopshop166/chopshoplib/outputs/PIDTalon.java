@@ -54,6 +54,16 @@ public class PIDTalon extends SmartMotorController {
     }
 
     @Override
+    public void set(double speed) {
+        wrapped.set(speed);
+    }
+
+    @Override
+    public double get() {
+        return wrapped.get();
+    }
+
+    @Override
     public TalonEncoder getEncoder() {
         // This cast is safe because we're the ones setting it in the first place.
         return (TalonEncoder) super.getEncoder();
