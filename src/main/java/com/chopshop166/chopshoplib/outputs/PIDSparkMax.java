@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.outputs;
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -34,6 +35,19 @@ public class PIDSparkMax extends SmartMotorController {
         super(new MockSpeedController(), new SparkMaxEncoder(max.getEncoder()));
         this.sparkMax = max;
         this.sparkPID = max.getPIDController();
+    }
+
+    /**
+     * Create a new wrapped SPARK MAX Controller.
+     *
+     * @param deviceID The device ID.
+     * @param type     The motor type connected to the controller. Brushless motors
+     *                 must be connected to their matching color and the hall sensor
+     *                 plugged in. Brushed motors must be connected to the Red and
+     *                 Black terminals only.
+     */
+    public PIDSparkMax(final int deviceID, final MotorType type) {
+        this(new CANSparkMax(deviceID, type));
     }
 
     /**
