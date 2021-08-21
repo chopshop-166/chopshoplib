@@ -14,4 +14,13 @@ public class PIDTalonSRX extends PIDTalonBase<WPI_TalonSRX> {
         super(talon);
     }
 
+    /**
+     * Convenience constructor.
+     * 
+     * @param deviceNumber The device number to construct with.
+     */
+    public PIDTalonSRX(final int deviceNumber) {
+        this(new WPI_TalonSRX(deviceNumber));
+    }
+
 }

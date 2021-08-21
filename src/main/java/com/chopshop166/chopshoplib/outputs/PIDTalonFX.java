@@ -14,4 +14,13 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
         super(talon);
     }
 
+    /**
+     * Convenience constructor.
+     * 
+     * @param deviceNumber The device number to construct with.
+     */
+    public PIDTalonFX(final int deviceNumber) {
+        this(new WPI_TalonFX(deviceNumber));
+    }
+
 }
