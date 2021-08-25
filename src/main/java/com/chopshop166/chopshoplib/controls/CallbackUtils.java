@@ -5,6 +5,7 @@ import java.util.function.DoubleConsumer;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.networktables.TableEntryListener;
 
@@ -15,6 +16,17 @@ public final class CallbackUtils {
     public static final int ON_UPDATE = EntryListenerFlags.kImmediate | EntryListenerFlags.kUpdate;
 
     private CallbackUtils() {
+    }
+
+    /**
+     * Register a callback for a key on a network table.
+     * 
+     * @param tableName The table to check in.
+     * @param key       The key to trigger the callback.
+     * @param cons      The callback.
+     */
+    public static void register(final String tableName, final String key, final DoubleConsumer cons) {
+        NetworkTableInstance.getDefault().getTable(tableName).addEntryListener(key, configureFromNT(cons), ON_UPDATE);
     }
 
     /**
