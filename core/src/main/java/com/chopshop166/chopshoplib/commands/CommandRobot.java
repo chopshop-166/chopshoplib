@@ -157,11 +157,12 @@ public abstract class CommandRobot extends TimedRobot {
     /**
      * Create a command builder with a given name.
      * 
-     * @param name The command name.
+     * @param name         The command name.
+     * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.
      */
-    public static CommandBuilder cmd(final String name, final Subsystem... requirements) {
-        return new CommandBuilder(name, requirements);
+    public static BuildCommand cmd(final String name, final Subsystem... requirements) {
+        return new BuildCommand(name, requirements);
     }
 
     /**
