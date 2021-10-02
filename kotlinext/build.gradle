@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.30"
     id 'com.chopshop166.chopshoplib.java-library-conventions'
@@ -5,7 +7,7 @@ plugins {
     id 'edu.wpi.first.GradleRIO' version '2021.3.1'
 }
 
-compileKotlin {
+tasks.withType(KotlinCompile) {
     kotlinOptions {
         jvmTarget = "11"
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
