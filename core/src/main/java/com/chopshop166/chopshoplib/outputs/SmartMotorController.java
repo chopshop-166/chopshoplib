@@ -32,7 +32,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /** Construct with mocks for everything */
     public SmartMotorController() {
-        this(new MockSpeedController(), new MockEncoder());
+        this(new MockMotorController(), new MockEncoder());
     }
 
     /**

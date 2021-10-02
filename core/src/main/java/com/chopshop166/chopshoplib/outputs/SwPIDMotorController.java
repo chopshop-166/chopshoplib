@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 /**
  * Use a PID controller with a generic speed controller.
  */
-public class SwPIDSpeedController extends SmartMotorController {
+public class SwPIDMotorController extends SmartMotorController {
 
     /** The PID controller for calculations. */
     final private PIDController pid;
@@ -37,9 +37,9 @@ public class SwPIDSpeedController extends SmartMotorController {
      * @param encoder The encoder to use for measurement.
      * @return The new PID controller.
      */
-    public static <T extends Sendable & SpeedController> SwPIDSpeedController position(final T motor,
+    public static <T extends Sendable & SpeedController> SwPIDMotorController position(final T motor,
             final PIDController pid, final IEncoder encoder) {
-        return new SwPIDSpeedController(motor, encoder, pid, encoder::getDistance);
+        return new SwPIDMotorController(motor, encoder, pid, encoder::getDistance);
     }
 
     /**
@@ -51,9 +51,9 @@ public class SwPIDSpeedController extends SmartMotorController {
      * @param encoder The encoder to use for measurement.
      * @return The new PID controller.
      */
-    public static <T extends Sendable & SpeedController> SwPIDSpeedController velocity(final T motor,
+    public static <T extends Sendable & SpeedController> SwPIDMotorController velocity(final T motor,
             final PIDController pid, final IEncoder encoder) {
-        return new SwPIDSpeedController(motor, encoder, pid, encoder::getRate);
+        return new SwPIDMotorController(motor, encoder, pid, encoder::getRate);
     }
 
     /**
@@ -65,7 +65,7 @@ public class SwPIDSpeedController extends SmartMotorController {
      * @param measurement The measurement source.
      * @param modifiers   Any output modifiers.
      */
-    public <T extends Sendable & SpeedController> SwPIDSpeedController(final T motor, final PIDController pid,
+    public <T extends Sendable & SpeedController> SwPIDMotorController(final T motor, final PIDController pid,
             final DoubleSupplier measurement, final Modifier... modifiers) {
         this(motor, new MockEncoder(), pid, measurement, modifiers);
     }
@@ -80,7 +80,7 @@ public class SwPIDSpeedController extends SmartMotorController {
      * @param measurement The measurement source.
      * @param modifiers   Any output modifiers.
      */
-    public <T extends Sendable & SpeedController> SwPIDSpeedController(final T motor, final IEncoder encoder,
+    public <T extends Sendable & SpeedController> SwPIDMotorController(final T motor, final IEncoder encoder,
             final PIDController pid, final DoubleSupplier measurement, final Modifier... modifiers) {
         super(motor, encoder, modifiers);
         this.measurement = measurement;

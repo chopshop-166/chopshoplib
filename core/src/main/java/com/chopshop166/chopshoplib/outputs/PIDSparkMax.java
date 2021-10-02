@@ -32,7 +32,7 @@ public class PIDSparkMax extends SmartMotorController {
      * @param max The Spark MAX oject.
      */
     public PIDSparkMax(final CANSparkMax max) {
-        super(new MockSpeedController(), new SparkMaxEncoder(max.getEncoder()));
+        super(new MockMotorController(), new SparkMaxEncoder(max.getEncoder()));
         this.sparkMax = max;
         this.sparkPID = max.getPIDController();
     }
