@@ -21,7 +21,7 @@ public class BuildCommand extends CommandBase {
     private Consumer<Boolean> onEndHandler = interrupted -> {
     };
     /** The finished check. */
-    private BooleanSupplier isFinishedHandler = () -> true;
+    private BooleanSupplier finishedHandler = () -> true;
 
     /**
      * Create the command builder.
@@ -75,7 +75,7 @@ public class BuildCommand extends CommandBase {
      * @return this for chaining.
      */
     public BuildCommand finishedWhen(final BooleanSupplier check) {
-        this.isFinishedHandler = check;
+        this.finishedHandler = check;
         return this;
     }
 
@@ -91,11 +91,11 @@ public class BuildCommand extends CommandBase {
 
     @Override
     final public boolean isFinished() {
-        return this.isFinishedHandler.getAsBoolean();
+        return this.finishedHandler.getAsBoolean();
     }
 
     @Override
-    final public void end(boolean interrupted) {
+    final public void end(final boolean interrupted) {
         this.onEndHandler.accept(interrupted);
     }
 }
