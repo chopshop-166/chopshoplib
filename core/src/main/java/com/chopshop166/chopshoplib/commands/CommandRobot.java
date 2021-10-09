@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
@@ -78,8 +79,9 @@ public abstract class CommandRobot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        resetAll();
         CommandScheduler.getInstance().cancelAll();
+        safeStateAll();
+        resetAll();
     }
 
     /**
@@ -132,7 +134,7 @@ public abstract class CommandRobot extends TimedRobot {
     }
 
     /**
-     * Reset all {@link Resettable} objects within this robot.
+     * Reset all objects' states within this robot.
      */
     public void resetAll() {
         final Class<? extends RobotBase> clazz = getClass();
@@ -141,12 +143,35 @@ public abstract class CommandRobot extends TimedRobot {
             // Make the field accessible, because apparently we're allowed to do that
             field.setAccessible(true);
             try {
-                // See if the returned object implements resettable.
-                // If it does, then reset it.
+                // See if the returned object has a safe state.
+                // If it does, then go to it.
                 // This should help prevent the robot from taking off unexpectedly
                 if (Resettable.class.isAssignableFrom(field.getType())) {
                     final Resettable resettable = (Resettable) field.get(this);
                     resettable.reset();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Set all objects with a safe state within this robot to that state.
+     */
+    public void safeStateAll() {
+        final Class<? extends RobotBase> clazz = getClass();
+
+        for (final Field field : clazz.getDeclaredFields()) {
+            // Make the field accessible, because apparently we're allowed to do that
+            field.setAccessible(true);
+            try {
+                // See if the returned object has a safe state.
+                // If it does, then go to it.
+                // This should help prevent the robot from taking off unexpectedly
+                if (HasSafeState.class.isAssignableFrom(field.getType())) {
+                    final HasSafeState resettable = (HasSafeState) field.get(this);
+                    resettable.safeState();
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

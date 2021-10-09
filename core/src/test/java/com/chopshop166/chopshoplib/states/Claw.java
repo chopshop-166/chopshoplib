@@ -26,7 +26,7 @@ public class Claw extends StateSubsystem<OpenClose> {
   }
 
   @Override
-  public void reset() {
-    // No-op
+  public void safeState() {
+    setState(OpenClose.OPEN);
   }
 }
