@@ -12,7 +12,8 @@ public class PigeonGyro extends GyroBase {
 
     /** The wrapped object. */
     final private PigeonIMU gyro;
-    private boolean inverted = false;
+    /** Boolean to control inverted output */
+    private boolean inverted;
 
     /**
      * Create the wrapper.
@@ -42,10 +43,6 @@ public class PigeonGyro extends GyroBase {
         return gyro;
     }
 
-    
-    /** 
-     * @throws Exception
-     */
     @Override
     public void close() throws Exception {
         // NoOp
@@ -91,7 +88,7 @@ public class PigeonGyro extends GyroBase {
 	 *
 	 * @param isInverted The state of inversion, true is inverted.
 	 */
-    public void setInverted(boolean isInverted) {
-        inverted = isInverted;
+    public void setInverted(final boolean isInverted) {
+        this.inverted = isInverted;
     }
 }
