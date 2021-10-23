@@ -91,7 +91,6 @@ public class PigeonGyro extends GyroBase {
 	 *
 	 * @param isInverted The state of inversion, true is inverted.
 	 */
-    @Override
     public void setInverted(boolean isInverted) {
         inverted = isInverted;
     }
