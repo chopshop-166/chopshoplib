@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
@@ -156,11 +157,12 @@ public abstract class CommandRobot extends TimedRobot {
     /**
      * Create a command builder with a given name.
      * 
-     * @param name The command name.
+     * @param name         The command name.
+     * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.
      */
-    public static CommandBuilder cmd(final String name) {
-        return new CommandBuilder(name);
+    public static BuildCommand cmd(final String name, final Subsystem... requirements) {
+        return new BuildCommand(name, requirements);
     }
 
     /**

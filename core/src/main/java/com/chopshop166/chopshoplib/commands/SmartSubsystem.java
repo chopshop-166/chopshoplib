@@ -31,8 +31,8 @@ public interface SmartSubsystem extends Subsystem, Resettable, Sendable {
      * @param name The command name.
      * @return A new command builder.
      */
-    default CommandBuilder cmd(final String name) {
-        return new CommandBuilder(name, this);
+    default BuildCommand cmd(final String name) {
+        return new BuildCommand(name, this);
     }
 
     /**
