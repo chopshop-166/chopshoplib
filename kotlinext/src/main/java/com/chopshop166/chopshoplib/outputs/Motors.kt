@@ -68,9 +68,9 @@ fun <T> T.withPID(
         pid: PIDController,
         encoder: IEncoder,
         controlType: PIDControlType = PIDControlType.Velocity,
-        block: SwPIDSpeedController.() -> Unit = {}
+        block: SwPIDMotorController.() -> Unit = {}
 ) where T : SpeedController, T : Sendable =
         when (controlType) {
-            PIDControlType.Position -> SwPIDSpeedController.position(this, pid, encoder)
-            PIDControlType.Velocity -> SwPIDSpeedController.velocity(this, pid, encoder)
+            PIDControlType.Position -> SwPIDMotorController.position(this, pid, encoder)
+            PIDControlType.Velocity -> SwPIDMotorController.velocity(this, pid, encoder)
         }.apply(block)

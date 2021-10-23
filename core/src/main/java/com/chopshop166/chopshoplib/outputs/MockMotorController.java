@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Mock speed controller that can be used to simulate a motor on a driver
  * station.
  */
-public class MockSpeedController implements Sendable, SpeedController {
+public class MockMotorController implements Sendable, SpeedController {
 
     /** The last set speed. */
     private double speed;

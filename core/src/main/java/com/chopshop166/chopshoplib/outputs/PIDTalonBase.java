@@ -25,7 +25,7 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
      * @param resolution The number of ticks per revolution.
      */
     public PIDTalonBase(final T wrapped, final double resolution) {
-        super(new MockSpeedController(), new TalonEncoder(wrapped, resolution));
+        super(new MockMotorController(), new TalonEncoder(wrapped, resolution));
         this.wrapped = wrapped;
     }
 
