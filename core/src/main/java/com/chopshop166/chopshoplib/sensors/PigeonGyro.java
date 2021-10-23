@@ -12,6 +12,7 @@ public class PigeonGyro extends GyroBase {
 
     /** The wrapped object. */
     final private PigeonIMU gyro;
+    private boolean inverted = false;
 
     /**
      * Create the wrapper.
@@ -41,27 +42,43 @@ public class PigeonGyro extends GyroBase {
         return gyro;
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Override
     public void close() throws Exception {
         // NoOp
     }
 
+
+    /**
+    * Sets the gyro's heading back to zero
+    */
     @Override
     public void reset() {
         gyro.setFusedHeading(0);
 
     }
 
+    
+    /** 
+     * @return The rate in which we have traveled in degrees per second
+     */
     @Override
     public double getRate() {
         final double[] xyz = new double[3];
         gyro.getRawGyro(xyz);
-        return xyz[2];
+        return inverted ? -xyz[2] : xyz[2]; 
     }
 
+    
+    /** 
+     * @return The current angle of the gyro
+     */
     @Override
     public double getAngle() {
-        return gyro.getFusedHeading();
+        return inverted ? -gyro.getFusedHeading() : gyro.getFusedHeading();
     }
 
     @Override
@@ -69,4 +86,13 @@ public class PigeonGyro extends GyroBase {
         // NoOp
     }
 
+    /**
+	 * Inverts the angle and rate of the Pigeon
+	 *
+	 * @param isInverted The state of inversion, true is inverted.
+	 */
+    @Override
+    public void setInverted(boolean isInverted) {
+        inverted = isInverted;
+    }
 }
