@@ -43,6 +43,15 @@ public class PigeonGyro extends GyroBase {
         return gyro;
     }
 
+    /**
+	 * Inverts the angle and rate of the Pigeon
+	 *
+	 * @param isInverted The state of inversion, true is inverted.
+	 */
+    public void setInverted(final boolean isInverted) {
+        this.inverted = isInverted;
+    }
+
     @Override
     public void close() throws Exception {
         // NoOp
@@ -52,7 +61,7 @@ public class PigeonGyro extends GyroBase {
     /**
     * Sets the gyro's heading back to zero
     */
-    @Override
+    @Override   
     public void reset() {
         gyro.setFusedHeading(0);
 
@@ -60,7 +69,7 @@ public class PigeonGyro extends GyroBase {
 
     
     /** 
-     * @return The rate in which we have traveled in degrees per second
+     * @return The rate of rotation of the gyro.
      */
     @Override
     public double getRate() {
@@ -81,14 +90,5 @@ public class PigeonGyro extends GyroBase {
     @Override
     public void calibrate() {
         // NoOp
-    }
-
-    /**
-	 * Inverts the angle and rate of the Pigeon
-	 *
-	 * @param isInverted The state of inversion, true is inverted.
-	 */
-    public void setInverted(final boolean isInverted) {
-        this.inverted = isInverted;
     }
 }
