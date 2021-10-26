@@ -44,10 +44,10 @@ public class PigeonGyro extends GyroBase {
     }
 
     /**
-	 * Inverts the angle and rate of the Pigeon
-	 *
-	 * @param isInverted The state of inversion, true is inverted.
-	 */
+     * Inverts the angle and rate of the Pigeon
+     *
+     * @param isInverted The state of inversion, true is inverted.
+     */
     public void setInverted(final boolean isInverted) {
         this.inverted = isInverted;
     }
@@ -57,29 +57,25 @@ public class PigeonGyro extends GyroBase {
         // NoOp
     }
 
-
     /**
-    * Sets the gyro's heading back to zero
-    */
-    @Override   
+     * Sets the gyro's heading back to zero
+     */
+    @Override
     public void reset() {
         gyro.setFusedHeading(0);
-
     }
 
-    
-    /** 
+    /**
      * @return The rate of rotation of the gyro.
      */
     @Override
     public double getRate() {
         final double[] xyz = new double[3];
         gyro.getRawGyro(xyz);
-        return inverted ? -xyz[2] : xyz[2]; 
+        return inverted ? -xyz[2] : xyz[2];
     }
 
-    
-    /** 
+    /**
      * @return The current angle of the gyro
      */
     @Override
