@@ -16,6 +16,13 @@ public final class RobotUtils {
     }
 
     /**
+     * Enumeration to represent direction of rotation 
+     */
+    public enum spinDirection {
+        CLOCKWISE, COUNTERCLOCKWISE
+    }
+
+    /**
      * Get a value if it exists, or a default value if it's null.
      * 
      * @param <T>          The type to get.
