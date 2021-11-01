@@ -14,14 +14,7 @@ import edu.wpi.first.wpilibj.Preferences;
 public final class RobotUtils {
     private RobotUtils() {
     }
-
-    /**
-     * Enumeration to represent direction of rotation 
-     */
-    public enum spinDirection {
-        CLOCKWISE, COUNTERCLOCKWISE
-    }
-
+    
     /**
      * Get a value if it exists, or a default value if it's null.
      * 
