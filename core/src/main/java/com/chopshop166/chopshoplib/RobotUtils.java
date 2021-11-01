@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Preferences;
 public final class RobotUtils {
     private RobotUtils() {
     }
-    
+
     /**
      * Get a value if it exists, or a default value if it's null.
      * 
