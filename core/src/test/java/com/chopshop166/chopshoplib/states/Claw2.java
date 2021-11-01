@@ -1,19 +1,19 @@
 package com.chopshop166.chopshoplib.states;
 
 /** Sample Claw class using states. */
-public class Claw2 extends StateSubsystem<Direction> {
+public class Claw2 extends StateSubsystem<LinearDirection> {
   /** Create a Claw and set up state transitions. */
   public Claw2() {
-    super(Direction.NEUTRAL);
+    super(LinearDirection.NEUTRAL);
 
-    transition(Direction.NEUTRAL, Direction.FORWARD);
-    transition(Direction.NEUTRAL, Direction.REVERSE);
-    transition(Direction.REVERSE, Direction.FORWARD);
-    transition(Direction.FORWARD, Direction.REVERSE);
-    onEntry(Direction.FORWARD, () -> {
+    transition(LinearDirection.NEUTRAL, LinearDirection.FORWARD);
+    transition(LinearDirection.NEUTRAL, LinearDirection.REVERSE);
+    transition(LinearDirection.REVERSE, LinearDirection.FORWARD);
+    transition(LinearDirection.FORWARD, LinearDirection.REVERSE);
+    onEntry(LinearDirection.FORWARD, () -> {
       // Solenoid forward
     });
-    onEntry(Direction.REVERSE, () -> {
+    onEntry(LinearDirection.REVERSE, () -> {
       // Solenoid reverse
     });
   }
