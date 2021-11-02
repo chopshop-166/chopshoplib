@@ -3,23 +3,20 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.DoubleSupplier;
 
 import com.chopshop166.chopshoplib.PersistenceCheck;
-import com.chopshop166.chopshoplib.Resettable;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
- * A {@link Subsystem} that is {@link Resettable} and that provides convenience
- * functions for common commands.
+ * A {@link PIDSubsystem} that has several presets that it can go to.
  */
 public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extends PIDSubsystem
         implements SmartSubsystem {
 
-    /** Check to make sure it's at the setpoint for enough time */
+    /** Check to make sure it's at the setpoint for enough time. */
     private final PersistenceCheck persistenceCheck;
 
     /**
@@ -76,6 +73,11 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      */
     public CommandBase presetWait(final T value) {
         return CommandRobot.sequence("Set to " + value.name(), presetCmd(value), waitForSetpoint());
+    }
+
+    @Override
+    public void safeState() {
+        setSetpoint(getMeasurement());
     }
 
     @Override

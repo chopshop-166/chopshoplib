@@ -19,7 +19,7 @@ public class Claw2 extends StateSubsystem<LinearDirection> {
   }
 
   @Override
-  public void reset() {
+  public void safeState() {
     // No-op
   }
 }

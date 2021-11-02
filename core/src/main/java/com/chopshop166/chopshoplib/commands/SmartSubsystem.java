@@ -5,6 +5,7 @@ import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
+import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
 
 import edu.wpi.first.wpilibj.Sendable;
@@ -18,12 +19,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
- * A {@link Subsystem} that is {@link Resettable} and that provides convenience
- * functions for common commands.
+ * A {@link Subsystem} that provides convenience functions for common commands.
  * 
  * @see SmartSubsystemBase For class that provides wpilib-style defaults.
  */
-public interface SmartSubsystem extends Subsystem, Resettable, Sendable {
+public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sendable {
 
     /**
      * Create a command builder with a given name.
@@ -144,6 +144,15 @@ public interface SmartSubsystem extends Subsystem, Resettable, Sendable {
      */
     default CommandBase resetCmd() {
         return instant("Reset " + SendableRegistry.getName(this), this::reset);
+    }
+
+    /**
+     * Create a command to reset the subsystem.
+     * 
+     * @return A reset command.
+     */
+    default CommandBase safeStateCmd() {
+        return instant("Safe " + SendableRegistry.getName(this), this::safeState);
     }
 
     /**

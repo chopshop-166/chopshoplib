@@ -9,24 +9,24 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * This is useful for resetting all subsystems to a "not moving" state when
  * entering a disabled mode.
  */
-public interface Resettable {
+@FunctionalInterface
+public interface HasSafeState {
 
     /**
-     * Reset this object.
+     * Go to a safe state.
      */
-    default void reset() {
-        // Default to not resetting state
-    }
+    void safeState();
 
     /**
-     * Reset this object.
+     * Go to a safe state.
      * 
-     * Ignores its parameter - useful for passing as the end function of a command.
+     * Ignores its parameter by default - useful for passing as the end function of
+     * a command.
      * 
      * @param interrupted Ignored.
      */
-    default void reset(final boolean interrupted) {
-        reset();
+    default void stop(final boolean interrupted) {
+        safeState();
     }
 
 }

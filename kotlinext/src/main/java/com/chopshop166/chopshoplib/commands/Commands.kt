@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.commands
 
+import com.chopshop166.chopshoplib.HasSafeState
 import com.chopshop166.chopshoplib.Resettable
 import com.chopshop166.chopshoplib.commands.CommandRobot
 import com.chopshop166.chopshoplib.commands.CommandUtils
@@ -213,12 +214,20 @@ fun <T> callAndWait(name : String, value : T, func : (T) -> Unit, until : () -> 
     }, until);
 
 /**
- * Create a command to reset the subsystem.
+ * Create a command to reset the subsystem sensors.
  * 
- * @return A reset command.
+ * @return A command.
  */
 fun <T> T.resetCmd() where T : SubsystemBase, T : Resettable =
     instant("Reset " + this.name, this::reset)
+
+/**
+ * Create a command to set the subsystem to a safe state.
+ * 
+ * @return A command.
+ */
+fun <T> T.safeStateCmd() where T : SubsystemBase, T : HasSafeState =
+    instant("Reset " + this.name, this::safeState)
 
 /**
  * Cancel the currently running command.
