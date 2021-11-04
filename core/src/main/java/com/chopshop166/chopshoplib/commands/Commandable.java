@@ -21,9 +21,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 /**
  * Utilities related to commands.
  */
-final public class CommandUtils {
-    private CommandUtils() {
-    }
+interface Commandable {
 
     /**
      * Repeat a {@link Command} a given number of times.
@@ -33,7 +31,7 @@ final public class CommandUtils {
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
      */
-    public static CommandBase repeat(final String name, final int numTimesToRun, final Command cmd) {
+    default CommandBase repeat(final String name, final int numTimesToRun, final Command cmd) {
         return repeat(numTimesToRun, cmd).withName(name);
     }
 
@@ -44,7 +42,7 @@ final public class CommandUtils {
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
      */
-    public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
+    default CommandBase repeat(final int numTimesToRun, final Command cmd) {
         return repeat(numTimesToRun, () -> new ProxyScheduleCommand(cmd));
     }
 
@@ -56,7 +54,7 @@ final public class CommandUtils {
      * @param cmd           A way to create the command to repeat.
      * @return A newly constructed command group.
      */
-    public static CommandBase repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
+    default CommandBase repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
         return repeat(numTimesToRun, cmd).withName(name);
     }
 
@@ -67,7 +65,7 @@ final public class CommandUtils {
      * @param cmd           A way to create the command to repeat.
      * @return A newly constructed command group.
      */
-    public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
+    default CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
         return CommandGroupBase.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
@@ -78,7 +76,7 @@ final public class CommandUtils {
      * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.
      */
-    public static BuildCommand cmd(final String name, final Subsystem... requirements) {
+    default BuildCommand cmd(final String name, final Subsystem... requirements) {
         return new BuildCommand(name, requirements);
     }
 
@@ -94,7 +92,7 @@ final public class CommandUtils {
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
-    public static CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
+    default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
         final Runnable realOnInit = getValueOrDefault(onInit, () -> {
         });
@@ -113,7 +111,7 @@ final public class CommandUtils {
      * @param action The action to take.
      * @return A new command.
      */
-    public static CommandBase instant(final String name, final Runnable action) {
+    default CommandBase instant(final String name, final Runnable action) {
         return new InstantCommand(action).withName(name);
     }
 
@@ -124,7 +122,7 @@ final public class CommandUtils {
      * @param action The action to take.
      * @return A new command.
      */
-    public static CommandBase running(final String name, final Runnable action) {
+    default CommandBase running(final String name, final Runnable action) {
         return new RunCommand(action).withName(name);
     }
 
@@ -136,7 +134,7 @@ final public class CommandUtils {
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
-    public static CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
+    default CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd).withName(name);
     }
 
@@ -148,7 +146,7 @@ final public class CommandUtils {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
+    default CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return parallel(name, new InstantCommand(init), new WaitUntilCommand(until));
     }
 
@@ -161,7 +159,7 @@ final public class CommandUtils {
      * @param func  The function to call.
      * @return A new command.
      */
-    public static <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
+    default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
         }).withName(name);
@@ -177,7 +175,7 @@ final public class CommandUtils {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
+    default <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {
             func.accept(value);
@@ -191,7 +189,7 @@ final public class CommandUtils {
      * @param cmds The commands to sequence.
      * @return A new command group.
      */
-    public static CommandBase sequence(final String name, final Command... cmds) {
+    default CommandBase sequence(final String name, final Command... cmds) {
         return CommandGroupBase.sequence(cmds).withName(name);
     }
 
@@ -202,7 +200,7 @@ final public class CommandUtils {
      * @param cmds The commands to run in parallel.
      * @return A new command group.
      */
-    public static CommandBase parallel(final String name, final Command... cmds) {
+    default CommandBase parallel(final String name, final Command... cmds) {
         return CommandGroupBase.parallel(cmds).withName(name);
     }
 
@@ -213,7 +211,7 @@ final public class CommandUtils {
      * @param racers The commands to race.
      * @return A new command group.
      */
-    public static CommandBase race(final String name, final Command... racers) {
+    default CommandBase race(final String name, final Command... racers) {
         return CommandGroupBase.race(racers).withName(name);
     }
 
@@ -225,7 +223,7 @@ final public class CommandUtils {
      * @param cmds    The commands to run until the deadline ends.
      * @return A new command group.
      */
-    public static CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
+    default CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
         return CommandGroupBase.deadline(limiter, cmds).withName(name);
     }
 }
