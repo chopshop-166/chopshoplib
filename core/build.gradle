@@ -1,5 +1,6 @@
 plugins {
     id 'com.chopshop166.chopshoplib.java-library-conventions'
+    id 'com.chopshop166.chopshoplib.spotbugs-conventions'
 }
 
 dependencies {

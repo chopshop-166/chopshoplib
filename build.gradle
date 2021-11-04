@@ -5,7 +5,6 @@ plugins {
 
 subprojects {
     apply plugin: 'java-library'
-    apply plugin: 'com.github.spotbugs'
     apply plugin: 'edu.wpi.first.GradleRIO'
 
     dependencies {
