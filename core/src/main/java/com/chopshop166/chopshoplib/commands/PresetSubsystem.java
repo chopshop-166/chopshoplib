@@ -72,7 +72,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetWait(final T value) {
-        return CommandRobot.sequence("Set to " + value.name(), presetCmd(value), waitForSetpoint());
+        return CommandUtils.sequence("Set to " + value.name(), presetCmd(value), waitForSetpoint());
     }
 
     @Override

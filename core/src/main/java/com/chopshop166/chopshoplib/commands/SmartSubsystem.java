@@ -102,7 +102,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @return A new command.
      */
     default CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
+        return CommandUtils.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
     /**
