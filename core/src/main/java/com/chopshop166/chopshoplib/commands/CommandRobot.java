@@ -101,7 +101,7 @@ public abstract class CommandRobot extends TimedRobot {
     }
 
     /**
-     * Get the autonomous command to run.]
+     * Get the autonomous command to run.
      * 
      * By default, this is from a SendableChooser.
      * 
@@ -115,31 +115,42 @@ public abstract class CommandRobot extends TimedRobot {
     public void populateAutonomous() {
         final Class<? extends CommandRobot> clazz = getClass();
 
-        Arrays.stream(clazz.getDeclaredMethods()).filter(method -> {
-            method.setAccessible(true);
-            return Command.class.isAssignableFrom(method.getReturnType());
-        }).map(method -> {
-            try {
-                return new Pair<Command, Method>((Command) method.invoke(this), method);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }).filter(p -> p != null).forEach(p -> {
-            final Command result = p.getFirst();
-            final Method method = p.getSecond();
-            for (final Autonomous annotation : method.getAnnotationsByType(Autonomous.class)) {
-                String name = annotation.name();
-                if (name.isEmpty()) {
-                    name = result.getName();
-                }
-                if (annotation.defaultAuto()) {
-                    autoChooser.setDefaultOption(name, result);
-                } else {
-                    autoChooser.addOption(name, result);
-                }
-            }
-        });
+        // Get all methods of the class
+        Arrays.stream(clazz.getDeclaredMethods())
+                // Filter for the ones that return a Command-derived type
+                .filter(method -> {
+                    method.setAccessible(true);
+                    return Command.class.isAssignableFrom(method.getReturnType());
+                })
+                // Make sure it has the annotation
+                .filter(method -> method.getAnnotation(Autonomous.class) != null)
+                // Call each method and return a pair of (Result, Method)
+                .map(method -> {
+                    try {
+                        return new Pair<Command, Method>((Command) method.invoke(this), method);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                // Remove the ones that aren't valid
+                .filter(p -> p != null)
+                // Add each one to the selector
+                .forEach(p -> {
+                    final Command result = p.getFirst();
+                    final Method method = p.getSecond();
+                    for (final Autonomous annotation : method.getAnnotationsByType(Autonomous.class)) {
+                        String name = annotation.name();
+                        if (name.isEmpty()) {
+                            name = result.getName();
+                        }
+                        if (annotation.defaultAuto()) {
+                            autoChooser.setDefaultOption(name, result);
+                        } else {
+                            autoChooser.addOption(name, result);
+                        }
+                    }
+                });
     }
 
     /**
