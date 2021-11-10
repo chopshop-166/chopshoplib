@@ -3,8 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.30"
     id 'com.chopshop166.chopshoplib.java-library-conventions'
-    id 'com.github.spotbugs' version '4.7.3'
-    id 'edu.wpi.first.GradleRIO' version '2021.3.1'
 }
 
 tasks.withType(KotlinCompile) {
@@ -15,11 +13,6 @@ tasks.withType(KotlinCompile) {
 }
 
 dependencies {
-    // WPIlib core
-    api wpi.deps.wpilib()
-    // Vendor dependencies
-    wpi.deps.vendor.loadFrom(project(":core"))
-    api wpi.deps.vendor.java()
     // Core dependencies
     api project(':core')
 }

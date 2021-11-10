@@ -1,0 +1,27 @@
+plugins {
+    // Apply the common convention plugin for shared build configuration between library and application projects.
+    id 'com.chopshop166.chopshoplib.java-common-conventions'
+
+    // Apply the java-library plugin for API and implementation separation.
+    id 'java-library'
+
+    id 'pmd'
+    id 'com.github.spotbugs'
+    id 'maven-publish'
+}
+
+spotbugsMain {
+    reports {
+        xml {
+            enabled = false
+        }
+        html {
+            enabled = true
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
+spotbugs {
+    excludeFilter = file("$rootProject.projectDir/config/findbugs-ignore.xml")
+}
