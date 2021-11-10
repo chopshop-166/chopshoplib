@@ -2,10 +2,14 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import com.chopshop166.chopshoplib.Autonomous;
 import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
 import com.chopshop166.chopshoplib.RobotUtils;
@@ -20,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpiutil.math.Pair;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
@@ -43,9 +48,6 @@ public abstract class CommandRobot extends TimedRobot {
 
     /** Set the default commands for each subsystem. */
     public abstract void setDefaultCommands();
-
-    /** Add all the autonomous modes to the chooser. */
-    public abstract void populateAutonomous();
 
     @Override
     public void robotInit() {
@@ -109,16 +111,35 @@ public abstract class CommandRobot extends TimedRobot {
         return autoChooser.getSelected();
     }
 
-    /**
-     * Add an autonomous option.
-     * 
-     * By default, this adds to the internal Chooser.
-     * 
-     * @param name The name to give the autonomous.
-     * @param auto The command to run.
-     */
-    public void addAutonomous(final String name, final Command auto) {
-        autoChooser.addOption(name, auto);
+    /** Add all the autonomous modes to the chooser. */
+    public void populateAutonomous() {
+        final Class<? extends CommandRobot> clazz = getClass();
+
+        Arrays.stream(clazz.getDeclaredMethods()).filter(method -> {
+            method.setAccessible(true);
+            return Command.class.isAssignableFrom(method.getReturnType());
+        }).map(method -> {
+            try {
+                return new Pair<Command, Method>((Command) method.invoke(this), method);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }).filter(p -> p != null).forEach(p -> {
+            final Command result = p.getFirst();
+            final Method method = p.getSecond();
+            for (final Autonomous annotation : method.getAnnotationsByType(Autonomous.class)) {
+                String name = annotation.name();
+                if (name.isEmpty()) {
+                    name = result.getName();
+                }
+                if (annotation.defaultAuto()) {
+                    autoChooser.setDefaultOption(name, result);
+                } else {
+                    autoChooser.addOption(name, result);
+                }
+            }
+        });
     }
 
     /**
