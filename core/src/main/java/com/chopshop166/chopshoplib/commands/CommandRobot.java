@@ -31,7 +31,7 @@ import edu.wpi.first.wpiutil.math.Pair;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-public abstract class CommandRobot extends TimedRobot {
+public abstract class CommandRobot extends TimedRobot implements Commandable {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
     final private static String UNKNOWN_VALUE = "???";
