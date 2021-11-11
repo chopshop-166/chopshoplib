@@ -125,7 +125,8 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 // Access each field and return a pair of (Command, Field)
                 .map(field -> {
                     try {
-                        return new Pair<Command, Field>((Command) field.get(this), field);
+                        return new Pair<Command, Autonomous>((Command) field.get(this),
+                                field.getAnnotation(Autonomous.class));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         return null;
@@ -136,17 +137,17 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 // Add each one to the selector
                 .forEach(p -> {
                     final Command cmd = p.getFirst();
-                    final Field field = p.getSecond();
-                    for (final Autonomous annotation : field.getAnnotationsByType(Autonomous.class)) {
-                        String name = annotation.name();
-                        if (name.isEmpty()) {
-                            name = cmd.getName();
-                        }
-                        if (annotation.defaultAuto()) {
-                            autoChooser.setDefaultOption(name, cmd);
-                        } else {
-                            autoChooser.addOption(name, cmd);
-                        }
+                    final Autonomous annotation = p.getSecond();
+
+                    String name = annotation.name();
+                    if (name.isEmpty()) {
+                        name = cmd.getName();
+                    }
+
+                    if (annotation.defaultAuto()) {
+                        autoChooser.setDefaultOption(name, cmd);
+                    } else {
+                        autoChooser.addOption(name, cmd);
                     }
                 });
     }
