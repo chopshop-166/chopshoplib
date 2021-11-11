@@ -151,6 +151,43 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                         }
                     }
                 });
+
+        // Get all fields of the class
+        Arrays.stream(clazz.getDeclaredFields())
+                // Filter for the ones that return a Command-derived type
+                .filter(field -> {
+                    field.setAccessible(true);
+                    return Command.class.isAssignableFrom(field.getType());
+                })
+                // Make sure it has the annotation
+                .filter(field -> field.getAnnotation(Autonomous.class) != null)
+                // Call each method and return a pair of (Result, Method)
+                .map(field -> {
+                    try {
+                        return new Pair<Command, Field>((Command) field.get(this), field);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                // Remove the ones that aren't valid
+                .filter(p -> p != null)
+                // Add each one to the selector
+                .forEach(p -> {
+                    final Command result = p.getFirst();
+                    final Field field = p.getSecond();
+                    for (final Autonomous annotation : field.getAnnotationsByType(Autonomous.class)) {
+                        String name = annotation.name();
+                        if (name.isEmpty()) {
+                            name = result.getName();
+                        }
+                        if (annotation.defaultAuto()) {
+                            autoChooser.setDefaultOption(name, result);
+                        } else {
+                            autoChooser.addOption(name, result);
+                        }
+                    }
+                });
     }
 
     /**
