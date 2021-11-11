@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 public @interface Autonomous {
     // The name of the autonomous.
     String name() default "";

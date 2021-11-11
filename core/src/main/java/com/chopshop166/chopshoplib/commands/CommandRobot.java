@@ -2,8 +2,6 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.jar.Attributes;
@@ -115,43 +113,6 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
     public void populateAutonomous() {
         final Class<? extends CommandRobot> clazz = getClass();
 
-        // Get all methods of the class
-        Arrays.stream(clazz.getDeclaredMethods())
-                // Filter for the ones that return a Command-derived type
-                .filter(method -> {
-                    method.setAccessible(true);
-                    return Command.class.isAssignableFrom(method.getReturnType());
-                })
-                // Make sure it has the annotation
-                .filter(method -> method.getAnnotation(Autonomous.class) != null)
-                // Call each method and return a pair of (Result, Method)
-                .map(method -> {
-                    try {
-                        return new Pair<Command, Method>((Command) method.invoke(this), method);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                })
-                // Remove the ones that aren't valid
-                .filter(p -> p != null)
-                // Add each one to the selector
-                .forEach(p -> {
-                    final Command result = p.getFirst();
-                    final Method method = p.getSecond();
-                    for (final Autonomous annotation : method.getAnnotationsByType(Autonomous.class)) {
-                        String name = annotation.name();
-                        if (name.isEmpty()) {
-                            name = result.getName();
-                        }
-                        if (annotation.defaultAuto()) {
-                            autoChooser.setDefaultOption(name, result);
-                        } else {
-                            autoChooser.addOption(name, result);
-                        }
-                    }
-                });
-
         // Get all fields of the class
         Arrays.stream(clazz.getDeclaredFields())
                 // Filter for the ones that return a Command-derived type
@@ -161,7 +122,7 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 })
                 // Make sure it has the annotation
                 .filter(field -> field.getAnnotation(Autonomous.class) != null)
-                // Call each method and return a pair of (Result, Method)
+                // Access each field and return a pair of (Command, Field)
                 .map(field -> {
                     try {
                         return new Pair<Command, Field>((Command) field.get(this), field);
@@ -174,17 +135,17 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 .filter(p -> p != null)
                 // Add each one to the selector
                 .forEach(p -> {
-                    final Command result = p.getFirst();
+                    final Command cmd = p.getFirst();
                     final Field field = p.getSecond();
                     for (final Autonomous annotation : field.getAnnotationsByType(Autonomous.class)) {
                         String name = annotation.name();
                         if (name.isEmpty()) {
-                            name = result.getName();
+                            name = cmd.getName();
                         }
                         if (annotation.defaultAuto()) {
-                            autoChooser.setDefaultOption(name, result);
+                            autoChooser.setDefaultOption(name, cmd);
                         } else {
-                            autoChooser.addOption(name, result);
+                            autoChooser.addOption(name, cmd);
                         }
                     }
                 });
