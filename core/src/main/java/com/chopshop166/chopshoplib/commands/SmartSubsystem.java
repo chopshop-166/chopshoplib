@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
  * 
  * @see SmartSubsystemBase For class that provides wpilib-style defaults.
  */
-public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sendable {
+public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sendable, Commandable {
 
     /**
      * Create a command builder with a given name.
@@ -47,6 +47,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param isFinished The condition to end the command.
      * @return A new command.
      */
+    @Override
     default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
             final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
         final Runnable realOnInit = getValueOrDefault(onInit, () -> {
@@ -66,6 +67,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param action The action to take.
      * @return A new command.
      */
+    @Override
     default CommandBase instant(final String name, final Runnable action) {
         return new InstantCommand(action, this).withName(name);
     }
@@ -77,6 +79,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param action The action to take.
      * @return A new command.
      */
+    @Override
     default CommandBase running(final String name, final Runnable action) {
         return new RunCommand(action, this).withName(name);
     }
@@ -89,6 +92,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param onEnd   The action to take on end.
      * @return A new command.
      */
+    @Override
     default CommandBase startEnd(final String name, final Runnable onStart, final Runnable onEnd) {
         return new StartEndCommand(onStart, onEnd, this).withName(name);
     }
@@ -101,8 +105,9 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param until The condition to wait until.
      * @return A new command.
      */
+    @Override
     default CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return CommandRobot.parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
+        return parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
     }
 
     /**
@@ -114,6 +119,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param func  The function to call.
      * @return A new command.
      */
+    @Override
     default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
         return new InstantCommand(() -> {
             func.accept(value);
@@ -130,6 +136,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @param until The condition to wait until.
      * @return A new command.
      */
+    @Override
     default <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(name, () -> {

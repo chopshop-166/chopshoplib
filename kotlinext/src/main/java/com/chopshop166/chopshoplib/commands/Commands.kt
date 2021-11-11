@@ -3,7 +3,6 @@ package com.chopshop166.chopshoplib.commands
 import com.chopshop166.chopshoplib.HasSafeState
 import com.chopshop166.chopshoplib.Resettable
 import com.chopshop166.chopshoplib.commands.CommandRobot
-import com.chopshop166.chopshoplib.commands.CommandUtils
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.CommandGroupBase
@@ -22,11 +21,7 @@ fun wait(until: () -> Boolean) = WaitUntilCommand(until)
 fun exec(block: () -> Unit) = InstantCommand(block)
 
 fun repeat(name: String = "", num: Int, block: () -> Command) =
-    CommandUtils.repeat(num, Supplier<Command>(block)).apply {
-        if (name != "") {
-            this.name = name
-        }
-    }
+    sequence(name, *(0..num).map {block()}.toTypedArray())
 
 @DslMarker
 annotation class CommandBuilderMarker
