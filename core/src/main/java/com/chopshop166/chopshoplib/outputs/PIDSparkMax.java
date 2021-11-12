@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Derives SmartMotorController to allow for use on a SparkMax Speed Controller.
  * It will act as a normal SparkMax with encoders, but will also be able to use
  * PID.
- * 
+ *
  * @author Andrew Martin
  * @since 2020-02-7
  */
@@ -28,7 +28,7 @@ public class PIDSparkMax extends SmartMotorController {
 
     /**
      * Create a PID Spark MAX from an unwrapped Spark MAX object.
-     * 
+     *
      * @param max The Spark MAX oject.
      */
     public PIDSparkMax(final CANSparkMax max) {
@@ -52,7 +52,7 @@ public class PIDSparkMax extends SmartMotorController {
 
     /**
      * Get the wrapped speed controller.
-     * 
+     *
      * @return The raw Spark MAX object.
      */
     public CANSparkMax getMotorController() {
@@ -61,7 +61,7 @@ public class PIDSparkMax extends SmartMotorController {
 
     /**
      * Get the wrapped PID controller.
-     * 
+     *
      * @return The CAN PID object.
      */
     public CANPIDController getPidController() {
@@ -70,7 +70,7 @@ public class PIDSparkMax extends SmartMotorController {
 
     /**
      * Set the control type
-     * 
+     *
      * @param controlType The controlType to set.
      */
     public void setControlType(final ControlType controlType) {
@@ -79,7 +79,7 @@ public class PIDSparkMax extends SmartMotorController {
 
     /**
      * Get the control type
-     * 
+     *
      * @return The controlType.
      */
     public ControlType getControlType() {
@@ -108,6 +108,11 @@ public class PIDSparkMax extends SmartMotorController {
     @Override
     public void set(final double speed) {
         sparkMax.set(speed);
+    }
+
+    @Override
+    public void setVoltage(final double outputVolts) {
+        sparkMax.setVoltage(outputVolts);
     }
 
     @Override
