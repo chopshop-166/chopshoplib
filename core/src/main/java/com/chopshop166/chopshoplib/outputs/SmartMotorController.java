@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A SpeedController with features attached.
- * 
+ *
  * This is used in a few select scenarios, when we want to keep the exact type
  * of an object general, but at the same time want to access it as one of two
  * disconnected interfaces.
@@ -37,7 +37,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Wrap a motor controller.
-     * 
+     *
      * @param <T>       The base type to wrap
      * @param wrapped   The wrapped motor controller.
      * @param modifiers Any output modifiers.
@@ -48,7 +48,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Wrap a motor controller with an encoder.
-     * 
+     *
      * @param <T>       The base type to wrap
      * @param wrapped   The wrapped motor controller.
      * @param encoder   The encoder attached to the motor controller.
@@ -64,7 +64,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Get the encoder attached to the robot.
-     * 
+     *
      * @return An encoder, or a mock if none is attached.
      */
     public IEncoder getEncoder() {
@@ -73,7 +73,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Add modifiers to the speed controller.
-     * 
+     *
      * @param m  First modifier.
      * @param ms Any extra modifiers (optional).
      */
@@ -84,7 +84,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Add all modifiers from a collection.
-     * 
+     *
      * @param ms Collection of modifiers.
      */
     public void addAllModifiers(final Collection<? extends Modifier> ms) {
@@ -93,10 +93,19 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Set the setpoint.
-     * 
+     *
      * @param setPoint The new setpoint.
      */
     public void setSetpoint(final double setPoint) {
+        // Do nothing for this class
+    }
+
+    /**
+     * Change what set of PID parameters are used
+     *
+     * @param slotId The id of the PID parameters to use
+     */
+    public void setPidSlot(final int slotId) {
         // Do nothing for this class
     }
 
@@ -112,7 +121,7 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Warning: Do not use in a subsystem.
-     * 
+     *
      * This is intended for configuration in the map only, but the SpeedController
      * requires it to exist.
      */
@@ -149,9 +158,9 @@ public class SmartMotorController implements Sendable, SpeedController {
 
     /**
      * Run all modifiers.
-     * 
+     *
      * As modifiers could have side effects, this is private.
-     * 
+     *
      * @param rawSpeed The base speed to run
      * @return The new speed
      */

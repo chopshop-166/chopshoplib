@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 
 import com.chopshop166.chopshoplib.sensors.IEncoder;
@@ -28,9 +30,29 @@ public class SwPIDMotorController extends SmartMotorController {
     /** Whether the PID controller is enabled. */
     private boolean pidEnabled = true;
 
+    /** List of PID Parameters */
+    final private List<PIDParams> configs = new ArrayList<>(4);
+
+    /**
+     * Class to represent PID parameters
+     */
+    static public class PIDParams {
+        /** Factor for "proportional" control */
+        private double kP;
+
+        /** Factor for "integral" control */
+        private double kI;
+
+        /** Factor for "derivative" control */
+        private double kD;
+
+        /** Factor for "feedforward" control */
+        private double kF;
+    }
+
     /**
      * Use a PID controller with the position of an encoder.
-     * 
+     *
      * @param <T>     A type that's a Speed Controller and also Sendable.
      * @param motor   The speed controller to move.
      * @param pid     The PID controller to use for calculation.
@@ -44,7 +66,7 @@ public class SwPIDMotorController extends SmartMotorController {
 
     /**
      * Use a PID controller with the velocity of an encoder.
-     * 
+     *
      * @param <T>     A type that's a Speed Controller and also Sendable.
      * @param motor   The speed controller to move.
      * @param pid     The PID controller to use for calculation.
@@ -58,7 +80,7 @@ public class SwPIDMotorController extends SmartMotorController {
 
     /**
      * Create a PID speed controller using software PID.
-     * 
+     *
      * @param <T>         The unwrapped type of a motor controller
      * @param motor       The motor controller to use.
      * @param pid         The PID controller for calculation.
@@ -72,7 +94,7 @@ public class SwPIDMotorController extends SmartMotorController {
 
     /**
      * Create a PID speed controller using software PID.
-     * 
+     *
      * @param <T>         The unwrapped type of a motor controller
      * @param motor       The motor controller to use.
      * @param encoder     The encoder to use.
@@ -91,7 +113,7 @@ public class SwPIDMotorController extends SmartMotorController {
 
     /**
      * Get the PID controller.
-     * 
+     *
      * @return The PID controller.
      */
     public PIDController getController() {
@@ -112,10 +134,38 @@ public class SwPIDMotorController extends SmartMotorController {
         dog.disable();
     }
 
+    /**
+     * Add the defaul configuration to the list of configurations and update the
+     * PIDController
+     *
+     * @param config Configuration to add to the list of stored configs
+     */
+    public void addDefaultConfiguration(final PIDParams config) {
+        this.configs.add(config);
+        this.feedforward = config.kF;
+        this.pid.setPID(config.kP, config.kI, config.kD);
+    }
+
+    /**
+     * Add a configuration to the list of configurations we can swap to
+     *
+     * @param config Configuration to add to the list of stored configs
+     */
+    public void addConfiguration(final PIDParams config) {
+        this.configs.add(config);
+    }
+
     @Override
     public void setSetpoint(final double setPoint) {
         pid.setSetpoint(setPoint);
         this.setpoint = setPoint;
+    }
+
+    @Override
+    public void setPidSlot(final int slotId) {
+        final var config = this.configs.get(slotId);
+        this.feedforward = config.kF;
+        this.pid.setPID(config.kP, config.kI, config.kD);
     }
 
     /** Calculate the PID value, and set the speed controler to the result. */

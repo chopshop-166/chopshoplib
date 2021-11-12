@@ -25,6 +25,8 @@ public class PIDSparkMax extends SmartMotorController {
     private final CANPIDController sparkPID;
     /** The control type for the PID controller. */
     private ControlType savedControlType = ControlType.kVelocity;
+    /** The PID Slot to send along with all setReference commands */
+    private int pidSlot;
 
     /**
      * Create a PID Spark MAX from an unwrapped Spark MAX object.
@@ -94,7 +96,17 @@ public class PIDSparkMax extends SmartMotorController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        sparkPID.setReference(setPoint, savedControlType);
+        sparkPID.setReference(setPoint, savedControlType, pidSlot);
+    }
+
+    /**
+     * Change what set of PID parameters are used
+     *
+     * @param slotId The id of the PID parameters to use
+     */
+    @Override
+    public void setPidSlot(final int slotId) {
+        this.pidSlot = slotId;
     }
 
     @Override
