@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * Talon SRX that is compatible with the Smart Motor Controller.
+ * Talon that is compatible with the Smart Motor Controller.
  */
 public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> extends SmartMotorController {
 
@@ -20,7 +20,7 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
 
     /**
      * Create a Talon.
-     * 
+     *
      * @param wrapped    The raw object to wrap.
      * @param resolution The number of ticks per revolution.
      */
@@ -31,8 +31,8 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
 
     /**
      * Get the wrapped speed controller.
-     * 
-     * @return The raw Talon SRX object.
+     *
+     * @return The raw Talon object.
      */
     public T getMotorController() {
         return wrapped;
@@ -40,7 +40,7 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
 
     /**
      * Set the control mode of the Talon.
-     * 
+     *
      * @param controlMode The mode to use.
      */
     public void setControlType(final ControlMode controlMode) {
@@ -49,7 +49,7 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
 
     /**
      * Get the control mode of the Talon.
-     * 
+     *
      * @return The control mode.
      */
     public ControlMode getControlType() {
