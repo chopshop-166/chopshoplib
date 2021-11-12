@@ -29,8 +29,7 @@ public class SwPIDMotorController extends SmartMotorController {
     private double setpoint;
     /** Whether the PID controller is enabled. */
     private boolean pidEnabled = true;
-
-    /** List of PID Parameters */
+    /** List of PID Parameters that we can switch between. */
     final private List<PIDParams> configs = new ArrayList<>(4);
 
     /**
@@ -135,10 +134,10 @@ public class SwPIDMotorController extends SmartMotorController {
     }
 
     /**
-     * Add the defaul configuration to the list of configurations and update the
-     * PIDController
+     * Add the default configuration to the list of configurations and update the
+     * PIDController.
      *
-     * @param config Configuration to add to the list of stored configs
+     * @param config Configuration to add to the list of stored configs.
      */
     public void addDefaultConfiguration(final PIDParams config) {
         this.configs.add(config);
@@ -147,9 +146,9 @@ public class SwPIDMotorController extends SmartMotorController {
     }
 
     /**
-     * Add a configuration to the list of configurations we can swap to
+     * Add a configuration to the list of configurations we can swap to.
      *
-     * @param config Configuration to add to the list of stored configs
+     * @param config Configuration to add to the list of stored configs.
      */
     public void addConfiguration(final PIDParams config) {
         this.configs.add(config);

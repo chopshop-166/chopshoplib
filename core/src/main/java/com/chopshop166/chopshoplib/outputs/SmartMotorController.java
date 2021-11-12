@@ -101,9 +101,9 @@ public class SmartMotorController implements Sendable, SpeedController {
     }
 
     /**
-     * Change what set of PID parameters are used
+     * Change what set of PID parameters are used.
      *
-     * @param slotId The id of the PID parameters to use
+     * @param slotId The id of the PID parameters to use.
      */
     public void setPidSlot(final int slotId) {
         // Do nothing for this class
