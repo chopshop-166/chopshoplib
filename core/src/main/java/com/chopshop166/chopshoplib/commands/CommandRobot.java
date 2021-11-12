@@ -2,8 +2,6 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.jar.Attributes;
@@ -115,20 +113,21 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
     public void populateAutonomous() {
         final Class<? extends CommandRobot> clazz = getClass();
 
-        // Get all methods of the class
-        Arrays.stream(clazz.getDeclaredMethods())
+        // Get all fields of the class
+        Arrays.stream(clazz.getDeclaredFields())
                 // Filter for the ones that return a Command-derived type
-                .filter(method -> {
-                    method.setAccessible(true);
-                    return Command.class.isAssignableFrom(method.getReturnType());
+                .filter(field -> {
+                    field.setAccessible(true);
+                    return Command.class.isAssignableFrom(field.getType());
                 })
                 // Make sure it has the annotation
-                .filter(method -> method.getAnnotation(Autonomous.class) != null)
-                // Call each method and return a pair of (Result, Method)
-                .map(method -> {
+                .filter(field -> field.getAnnotation(Autonomous.class) != null)
+                // Access each field and return a pair of (Command, Field)
+                .map(field -> {
                     try {
-                        return new Pair<Command, Method>((Command) method.invoke(this), method);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        return new Pair<Command, Autonomous>((Command) field.get(this),
+                                field.getAnnotation(Autonomous.class));
+                    } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         return null;
                     }
@@ -137,18 +136,18 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 .filter(p -> p != null)
                 // Add each one to the selector
                 .forEach(p -> {
-                    final Command result = p.getFirst();
-                    final Method method = p.getSecond();
-                    for (final Autonomous annotation : method.getAnnotationsByType(Autonomous.class)) {
-                        String name = annotation.name();
-                        if (name.isEmpty()) {
-                            name = result.getName();
-                        }
-                        if (annotation.defaultAuto()) {
-                            autoChooser.setDefaultOption(name, result);
-                        } else {
-                            autoChooser.addOption(name, result);
-                        }
+                    final Command cmd = p.getFirst();
+                    final Autonomous annotation = p.getSecond();
+
+                    String name = annotation.name();
+                    if (name.isEmpty()) {
+                        name = cmd.getName();
+                    }
+
+                    if (annotation.defaultAuto()) {
+                        autoChooser.setDefaultOption(name, cmd);
+                    } else {
+                        autoChooser.addOption(name, cmd);
                     }
                 });
     }
