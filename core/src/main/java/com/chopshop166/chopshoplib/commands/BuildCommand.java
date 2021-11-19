@@ -21,7 +21,7 @@ public class BuildCommand extends CommandBase {
     private Consumer<Boolean> onEndHandler = interrupted -> {
     };
     /** The finished check. */
-    private BooleanSupplier finishedHandler = () -> true;
+    private BooleanSupplier finishedHandler = () -> false;
 
     /**
      * Create the command builder.
