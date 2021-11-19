@@ -16,7 +16,7 @@ public class ButtonXboxController extends XboxController {
     private final Map<Button, JoystickButton> buttons = new EnumMap<>(Button.class);
 
     /** The mapping of POV Button direction and command button */
-    private final Map<Direction, POVButton> povButtons = new EnumMap<>(Direction.class);
+    private final Map<POVDirection, POVButton> povButtons = new EnumMap<>(POVDirection.class);
 
     /**
      * Construct an instance of a Xbox Controller along with each button the
@@ -65,7 +65,7 @@ public class ButtonXboxController extends XboxController {
      * @param angle The index of the button to accesss
      * @return The button object for the given ID
      */
-    public POVButton getPovButton(final Direction angle) {
+    public POVButton getPovButton(final POVDirection angle) {
         if (!povButtons.containsKey(angle)) {
             povButtons.put(angle, new POVButton(this, angle.getAngle()));
         }
@@ -75,8 +75,8 @@ public class ButtonXboxController extends XboxController {
     /**
      * Enum of POV HAT directions
      */
-    public enum Direction {
-        Up(0), UpRight(45), Right(90), DownRight(135), Down(180), DownLeft(225), Left(270), LeftUp(315);
+    public enum POVDirection {
+        UP(0), UP_RIGHT(45), RIGHT(90), DOWN_RIGHT(135), DOWN(180), DOWN_LEFT(225), LEFT(270), UP_LEFT(315);
 
         /** The angle of the direction enum */
         private int dPadRotation;
@@ -87,7 +87,7 @@ public class ButtonXboxController extends XboxController {
         }
 
         // Returning the level the lift is at (top middle or bottom)
-        Direction(final int rotation) {
+        POVDirection(final int rotation) {
             this.dPadRotation = rotation;
         }
     }
