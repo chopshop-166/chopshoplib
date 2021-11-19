@@ -139,6 +139,17 @@ interface Commandable {
     }
 
     /**
+     * Wait until a condition is true.
+     * 
+     * @param name  The name of the command.
+     * @param until The condition to wait until.
+     * @return A new command.
+     */
+    default CommandBase waitUntil(final String name, final BooleanSupplier until) {
+        return new WaitUntilCommand(until).withName(name);
+    }
+
+    /**
      * Run a {@link Runnable} and then wait until a condition is true.
      * 
      * @param name  The name of the command.
