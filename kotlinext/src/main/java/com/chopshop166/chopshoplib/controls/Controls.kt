@@ -7,15 +7,12 @@ import edu.wpi.first.wpilibj.XboxController.Button
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
-typealias TriggerSetup = Trigger.() -> Unit
-typealias ButtonSetup = JoystickButton.() -> Unit
-
 class ControllerConfigurer(val controller : ButtonXboxController) {
 
     private fun button(btn : Button) = JoystickButton(controller, btn.value)
 
-    operator fun JoystickButton.invoke(block : ButtonSetup) = block()
-    operator fun XboxTrigger.invoke(block : TriggerSetup) = block()
+    operator fun JoystickButton.invoke(block : JoystickButton.() -> Unit) = block()
+    operator fun XboxTrigger.invoke(block : Trigger.() -> Unit) = block()
 
     val a = button(Button.kA)
     val b = button(Button.kB)
@@ -33,4 +30,4 @@ class ControllerConfigurer(val controller : ButtonXboxController) {
     )
 }
 
-fun ButtonXboxController.configure(block : ControllerConfigurer.() -> Unit) = ControllerConfigurer(this).block()
+operator fun ButtonXboxController.invoke(block : ControllerConfigurer.() -> Unit) = ControllerConfigurer(this).apply(block)

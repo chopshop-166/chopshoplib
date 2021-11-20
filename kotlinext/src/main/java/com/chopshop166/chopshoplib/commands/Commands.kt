@@ -129,6 +129,16 @@ fun startEnd(name : String, onStart : () -> Unit, onEnd : () -> Unit) =
     StartEndCommand(onStart, onEnd,).withName(name)
 
 /**
+ * Wait until a condition is true.
+ * 
+ * @param name  The name of the command.
+ * @param until The condition to wait until.
+ * @return A new command.
+ */
+fun waitUntil(name : String, until : () -> Boolean) =
+    parallel(name, wait(until))
+
+/**
  * Run a {@link Runnable} and then wait until a condition is true.
  * 
  * @param name  The name of the command.
