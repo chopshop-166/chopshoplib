@@ -15,20 +15,20 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 public class ButtonXboxController extends XboxController {
 
     /**
-     * Enum of POV HAT directions
+     * Enum of POV HAT directions.
      */
     public enum POVDirection {
         UP(0), UP_RIGHT(45), RIGHT(90), DOWN_RIGHT(135), DOWN(180), DOWN_LEFT(225), LEFT(270), UP_LEFT(315);
 
-        /** The angle of the direction enum */
+        /** The angle of the direction enum. */
         private int dPadRotation;
 
-        // Returning an interger to compare whether we're in the right place or not
+        // Returns an integer representing the angle on the POV.
         private int getAngle() {
             return this.dPadRotation;
         }
 
-        // Returning the level the lift is at (top middle or bottom)
+        // Constructor.
         POVDirection(final int rotation) {
             this.dPadRotation = rotation;
         }
@@ -60,15 +60,13 @@ public class ButtonXboxController extends XboxController {
      * @return A double in {@code [-1, 1]}
      */
     public double getTriggers() {
-        final double kRight = getTriggerAxis(Hand.kRight);
-        final double kLeft = getTriggerAxis(Hand.kLeft);
-        return kRight - kLeft;
+        return getTriggerAxis(Hand.kRight) - getTriggerAxis(Hand.kLeft);
     }
 
     /**
      * Get a button from this Xbox Controller.
      * <p>
-     * Returns the sepcified button of a Xbox Controller without having to
+     * Returns the specified button of a Xbox Controller without having to
      * explicitly create each button.
      * 
      * @param buttonId The index of the button to access.
@@ -81,7 +79,7 @@ public class ButtonXboxController extends XboxController {
     /**
      * Get a trigger from this Xbox Controller.
      * <p>
-     * Returns the sepcified trigger of a Xbox Controller without having to
+     * Returns the specified trigger of a Xbox Controller without having to
      * explicitly create each one.
      * 
      * @param hand The hand of the trigger to access.
@@ -94,7 +92,7 @@ public class ButtonXboxController extends XboxController {
     /**
      * Get a button from the POV hat on this Xbox Controller.
      * <p>
-     * Returns the sepcified POV Hat button of an Xbox controller without having to
+     * Returns the specified POV Hat button of an Xbox controller without having to
      * explicitly create each button.
      * 
      * @param angle The index of the button to access.
