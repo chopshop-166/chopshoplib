@@ -1,7 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.jar.Attributes;
@@ -115,10 +114,10 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
 
         // Get all fields of the class
         Arrays.stream(clazz.getDeclaredFields())
-                // Filter for the ones that return a Command-derived type
-                .filter(field -> Command.class.isAssignableFrom(field.getType()))
                 // Filter for the ones that are accessible
                 .filter(field -> field.canAccess(this))
+                // Filter for the ones that return a Command-derived type
+                .filter(field -> Command.class.isAssignableFrom(field.getType()))
                 // Make sure it has the annotation
                 .filter(field -> field.getAnnotation(Autonomous.class) != null)
                 // Access each field and return a pair of (Command, Field)
@@ -157,44 +156,44 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
     public void resetAll() {
         final Class<? extends RobotBase> clazz = getClass();
 
-        for (final Field field : clazz.getDeclaredFields()) {
-            if (field.canAccess(this)) {
-                try {
-                    // See if the returned object has a safe state.
-                    // If it does, then go to it.
-                    // This should help prevent the robot from taking off unexpectedly
-                    if (Resettable.class.isAssignableFrom(field.getType())) {
+        // Get all fields of the class
+        Arrays.stream(clazz.getDeclaredFields())
+                // Filter for the ones that are accessible
+                .filter(field -> field.canAccess(this))
+                // Filter for the ones that are Resettable
+                .filter(field -> Resettable.class.isAssignableFrom(field.getType()))
+                // Call reset on them
+                .forEach(field -> {
+                    try {
                         final Resettable resettable = (Resettable) field.get(this);
                         resettable.reset();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+                });
     }
 
     /**
-     * Set all objects with a safe state within this robot to that state.
+     * Set all objects within this robot with a safe state to that state.
      */
     public void safeStateAll() {
         final Class<? extends RobotBase> clazz = getClass();
 
-        for (final Field field : clazz.getDeclaredFields()) {
-            if (field.canAccess(this)) {
-                try {
-                    // See if the returned object has a safe state.
-                    // If it does, then go to it.
-                    // This should help prevent the robot from taking off unexpectedly
-                    if (HasSafeState.class.isAssignableFrom(field.getType())) {
+        // Get all fields of the class
+        Arrays.stream(clazz.getDeclaredFields())
+                // Filter for the ones that are accessible
+                .filter(field -> field.canAccess(this))
+                // Filter for the ones that have safe states
+                .filter(field -> HasSafeState.class.isAssignableFrom(field.getType()))
+                // Trigger the safe state on them
+                .forEach(field -> {
+                    try {
                         final HasSafeState resettable = (HasSafeState) field.get(this);
                         resettable.safeState();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+                });
     }
 
     /**
