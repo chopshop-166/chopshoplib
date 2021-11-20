@@ -116,10 +116,9 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
         // Get all fields of the class
         Arrays.stream(clazz.getDeclaredFields())
                 // Filter for the ones that return a Command-derived type
-                .filter(field -> {
-                    field.setAccessible(true);
-                    return Command.class.isAssignableFrom(field.getType());
-                })
+                .filter(field -> Command.class.isAssignableFrom(field.getType()))
+                // Filter for the ones that are accessible
+                .filter(field -> field.canAccess(this))
                 // Make sure it has the annotation
                 .filter(field -> field.getAnnotation(Autonomous.class) != null)
                 // Access each field and return a pair of (Command, Field)
@@ -159,18 +158,18 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
         final Class<? extends RobotBase> clazz = getClass();
 
         for (final Field field : clazz.getDeclaredFields()) {
-            // Make the field accessible, because apparently we're allowed to do that
-            field.setAccessible(true);
-            try {
-                // See if the returned object has a safe state.
-                // If it does, then go to it.
-                // This should help prevent the robot from taking off unexpectedly
-                if (Resettable.class.isAssignableFrom(field.getType())) {
-                    final Resettable resettable = (Resettable) field.get(this);
-                    resettable.reset();
+            if (field.canAccess(this)) {
+                try {
+                    // See if the returned object has a safe state.
+                    // If it does, then go to it.
+                    // This should help prevent the robot from taking off unexpectedly
+                    if (Resettable.class.isAssignableFrom(field.getType())) {
+                        final Resettable resettable = (Resettable) field.get(this);
+                        resettable.reset();
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -182,18 +181,18 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
         final Class<? extends RobotBase> clazz = getClass();
 
         for (final Field field : clazz.getDeclaredFields()) {
-            // Make the field accessible, because apparently we're allowed to do that
-            field.setAccessible(true);
-            try {
-                // See if the returned object has a safe state.
-                // If it does, then go to it.
-                // This should help prevent the robot from taking off unexpectedly
-                if (HasSafeState.class.isAssignableFrom(field.getType())) {
-                    final HasSafeState resettable = (HasSafeState) field.get(this);
-                    resettable.safeState();
+            if (field.canAccess(this)) {
+                try {
+                    // See if the returned object has a safe state.
+                    // If it does, then go to it.
+                    // This should help prevent the robot from taking off unexpectedly
+                    if (HasSafeState.class.isAssignableFrom(field.getType())) {
+                        final HasSafeState resettable = (HasSafeState) field.get(this);
+                        resettable.safeState();
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
         }
     }

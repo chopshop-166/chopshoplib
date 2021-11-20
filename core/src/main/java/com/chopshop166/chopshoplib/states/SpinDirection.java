@@ -12,6 +12,7 @@ public enum SpinDirection {
          * @param value The input value.
          * @return The same value.
          */
+        @Override
         public double get(final double value) {
             return value;
         }
@@ -24,6 +25,7 @@ public enum SpinDirection {
          * @param value The input value.
          * @return The inverted value.
          */
+        @Override
         public double get(final double value) {
             return -value;
         }
