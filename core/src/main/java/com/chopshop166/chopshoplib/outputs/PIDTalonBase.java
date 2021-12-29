@@ -39,12 +39,17 @@ public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> exte
     }
 
     /**
-     * Set the control mode of the Talon.
+     * Set the control type.
      *
-     * @param controlMode The mode to use.
+     * @param controlType The controlType to set.
      */
-    public void setControlType(final ControlMode controlMode) {
-        this.savedControlType = controlMode;
+    @Override
+    public void setControlType(final PIDControlType controlType) {
+        if (controlType == PIDControlType.Position) {
+            this.savedControlType = ControlMode.Position;
+        } else if (controlType == PIDControlType.Velocity) {
+            this.savedControlType = ControlMode.Velocity;
+        }
     }
 
     /**

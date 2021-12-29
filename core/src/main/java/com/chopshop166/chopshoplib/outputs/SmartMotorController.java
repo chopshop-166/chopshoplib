@@ -132,6 +132,15 @@ public class SmartMotorController implements Sendable, MotorController {
         // Do nothing for this class
     }
 
+    /**
+     * Set the control type.
+     *
+     * @param controlType The controlType to set.
+     */
+    public void setControlType(final PIDControlType controlType) {
+        // Do nothing for this class
+    }
+
     @Override
     public void set(final double speed) {
         wrapped.set(calculateModifiers(speed));
