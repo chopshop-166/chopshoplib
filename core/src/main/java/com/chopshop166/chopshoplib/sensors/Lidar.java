@@ -37,6 +37,9 @@ public class Lidar implements Sendable {
     /** The limit for standard deviation. */
     private double stdDevLimit = 100;
 
+    /** Synchronization object. */
+    private final Object syncObject = new Object();
+
     /**
      * The scale to return measurements in.
      */
@@ -389,7 +392,7 @@ public class Lidar implements Sendable {
      * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
-        synchronized (this) {
+        synchronized (syncObject) {
             stdDevLimit = sdLimit;
         }
     }
@@ -398,7 +401,7 @@ public class Lidar implements Sendable {
      * Clear the samples
      */
     public void reset() {
-        synchronized (this) {
+        synchronized (syncObject) {
             samples.reset();
         }
     }
@@ -410,7 +413,7 @@ public class Lidar implements Sendable {
      * @return An Optional containing the distance if it exists
      */
     public Optional<Double> getDistanceOptional(final MeasurementType meas) {
-        synchronized (this) {
+        synchronized (syncObject) {
             if (!isValid) {
                 return Optional.empty();
             }
@@ -434,7 +437,7 @@ public class Lidar implements Sendable {
         i2cDevice.write(0x44, 0x1);
         i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
-        synchronized (this) {
+        synchronized (syncObject) {
             samples.addSample(bbConvert.getShort());
             final Stats stats = Stats.of(samples);
             distanceMM = stats.mean();
@@ -486,7 +489,7 @@ public class Lidar implements Sendable {
             final NetworkTableEntry validityEntry = ntbuilder.getEntry("isValid");
             ntbuilder.setUpdateTable(() -> {
                 mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
-                synchronized (this) {
+                synchronized (syncObject) {
                     validityEntry.setBoolean(isValid);
                     standardDeviation.setDouble(stdDevValue);
                 }
