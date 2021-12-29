@@ -10,6 +10,7 @@ import com.chopshop166.chopshoplib.sensors.MockEncoder;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -60,6 +61,28 @@ public class SmartMotorController implements Sendable, SpeedController {
         this.wrapped = wrapped;
         this.encoder = encoder;
         this.modifiers = new ArrayList<>(Arrays.asList(modifiers));
+    }
+
+    /**
+     * Construct for a group.
+     * 
+     * @param controller  The first controller.
+     * @param controllers Subsequent controllers.
+     */
+    public SmartMotorController(final SpeedController controller, final SpeedController... controllers) {
+        this(new MockEncoder(), controller, controllers);
+    }
+
+    /**
+     * Construct for a group with an encoder.
+     * 
+     * @param encoder     The encoder to measure with.
+     * @param controller  The first controller.
+     * @param controllers Subsequent controllers.
+     */
+    public SmartMotorController(final IEncoder encoder, final SpeedController controller,
+            final SpeedController... controllers) {
+        this(new SpeedControllerGroup(controller, controllers), encoder);
     }
 
     /**

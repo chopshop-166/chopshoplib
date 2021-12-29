@@ -24,6 +24,13 @@ public class DifferentialDriveMap {
     private final GyroBase gyro;
 
     /**
+     * Default constructor.
+     */
+    public DifferentialDriveMap() {
+        this(new SmartMotorController(), new SmartMotorController(), 1.0, new MockGyro());
+    }
+
+    /**
      * Constructor.
      * 
      * @param left             Left speed controller.
