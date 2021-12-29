@@ -2,7 +2,7 @@ chopshoplib
 ===========
 
 [![Chopshoplib on jitpack](https://jitpack.io/v/com.chopshop166/chopshoplib.svg)](https://jitpack.io/#com.chopshop166/chopshoplib)
-[![example branch parameter](https://github.com/chopshop-166/chopshoplib/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/chopshop-166/chopshoplib/actions)
+[![Build Status](https://github.com/chopshop-166/chopshoplib/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/chopshop-166/chopshoplib/actions)
 
 Usage
 -----
@@ -13,7 +13,7 @@ To use, in your `build.gradle` add the following:
 
 ```groovy
 plugins {
-    id "com.chopshop166.plugin" version "0.5"
+    id "com.chopshop166.plugin" version "0.7"
 }
 
 dependencies {

@@ -1,10 +1,10 @@
 @file:OptIn(kotlin.experimental.ExperimentalTypeInference::class)
 package com.chopshop166.chopshoplib
 
-import edu.wpi.cscore.VideoSink
-import edu.wpi.cscore.VideoSource
+import edu.wpi.first.cscore.VideoSink
+import edu.wpi.first.cscore.VideoSource
 import edu.wpi.first.cameraserver.CameraServer
-import edu.wpi.first.wpilibj.Sendable
+import edu.wpi.first.util.sendable.Sendable
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
@@ -73,21 +73,21 @@ class VideoSinkWrapper(val sink: VideoSink) {
     operator fun set(name: String, value: Int) = sink.getProperty(name).set(value)
 }
 
-class CameraServerWrapper(private val base: CameraServer) {
+class CameraServerWrapper {
     fun server(block: VideoSinkWrapper.() -> Unit = {}) =
-        base.getServer().apply { VideoSinkWrapper(this).block() }
+        CameraServer.getServer().apply { VideoSinkWrapper(this).block() }
     fun server(name: String, block: VideoSinkWrapper.() -> Unit = {}) =
-        base.getServer(name).apply { VideoSinkWrapper(this).block() }
+        CameraServer.getServer(name).apply { VideoSinkWrapper(this).block() }
     fun source(block: VideoSourceWrapper.() -> Unit = {}) =
-        base.startAutomaticCapture().apply { VideoSourceWrapper(this).block() }
+        CameraServer.startAutomaticCapture().apply { VideoSourceWrapper(this).block() }
     fun source(dev: Int, block: VideoSourceWrapper.() -> Unit = {}) =
-        base.startAutomaticCapture(dev).apply { VideoSourceWrapper(this).block() }
+        CameraServer.startAutomaticCapture(dev).apply { VideoSourceWrapper(this).block() }
     fun source(camera: VideoSource, block: VideoSinkWrapper.() -> Unit = {}) =
-        base.startAutomaticCapture(camera).apply { VideoSinkWrapper(this).block() }
+        CameraServer.startAutomaticCapture(camera).apply { VideoSinkWrapper(this).block() }
     fun source(name: String, dev: Int, block: VideoSourceWrapper.() -> Unit = {}) =
-        base.startAutomaticCapture(name, dev).apply { VideoSourceWrapper(this).block() }
+        CameraServer.startAutomaticCapture(name, dev).apply { VideoSourceWrapper(this).block() }
     fun source(name: String, path: String, block: VideoSourceWrapper.() -> Unit = {}) =
-        base.startAutomaticCapture(name, path).apply { VideoSourceWrapper(this).block() }
+        CameraServer.startAutomaticCapture(name, path).apply { VideoSourceWrapper(this).block() }
 }
 
-val cameraServer = CameraServerWrapper(CameraServer.getInstance())
+val cameraServer = CameraServerWrapper()

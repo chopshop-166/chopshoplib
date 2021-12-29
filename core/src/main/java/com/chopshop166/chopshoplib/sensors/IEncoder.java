@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.util.sendable.Sendable;
 
 /**
  * Interface for an Encoder

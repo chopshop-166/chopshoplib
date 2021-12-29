@@ -6,10 +6,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.revrobotics.CANSparkMax
-import com.revrobotics.ControlType
-import edu.wpi.first.wpilibj.Sendable
-import edu.wpi.first.wpilibj.SpeedController
-import edu.wpi.first.wpilibj.controller.PIDController
+import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.util.sendable.Sendable
+import edu.wpi.first.wpilibj.motorcontrol.MotorController
 
 enum class PIDControlType {
     Velocity,
@@ -20,7 +19,7 @@ fun SmartMotorController.toSmart() = this
 
 fun <T> T.toSmart(encoder: IEncoder = MockEncoder(), vararg mods: Modifier) where
 T : Sendable,
-T : SpeedController = SmartMotorController(this, encoder, *mods)
+T : MotorController = SmartMotorController(this, encoder, *mods)
 
 fun CANSparkMax.follow(thisObj: PIDSparkMax, inverted: Boolean = false) =
         follow(thisObj.motorController, inverted)
@@ -32,8 +31,8 @@ fun CANSparkMax.withPID(
         PIDSparkMax(this).apply {
             this.controlType =
                     when (controlType) {
-                        PIDControlType.Position -> ControlType.kPosition
-                        PIDControlType.Velocity -> ControlType.kVelocity
+                        PIDControlType.Position -> CANSparkMax.ControlType.kPosition
+                        PIDControlType.Velocity -> CANSparkMax.ControlType.kVelocity
                     }
             block()
         }
@@ -69,7 +68,7 @@ fun <T> T.withPID(
         encoder: IEncoder,
         controlType: PIDControlType = PIDControlType.Velocity,
         block: SwPIDMotorController.() -> Unit = {}
-) where T : SpeedController, T : Sendable =
+) where T : MotorController, T : Sendable =
         when (controlType) {
             PIDControlType.Position -> SwPIDMotorController.position(this, pid, encoder)
             PIDControlType.Velocity -> SwPIDMotorController.velocity(this, pid, encoder)

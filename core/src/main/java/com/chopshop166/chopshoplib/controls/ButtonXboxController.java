@@ -3,7 +3,7 @@ package com.chopshop166.chopshoplib.controls;
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.chopshop166.chopshoplib.triggers.XboxTrigger;
+import com.chopshop166.chopshoplib.triggers.AxisButton;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -40,8 +40,8 @@ public class ButtonXboxController extends XboxController {
     /** The mapping of POV Button direction to command button. */
     private final Map<POVDirection, POVButton> povButtons = new EnumMap<>(POVDirection.class);
 
-    /** The mapping of hand to command button. */
-    private final Map<Hand, XboxTrigger> triggerButtons = new EnumMap<>(Hand.class);
+    /** The mapping of axis to command button. */
+    private final Map<Axis, AxisButton> triggerButtons = new EnumMap<>(Axis.class);
 
     /**
      * Construct an instance of a Xbox Controller along with each button the
@@ -60,7 +60,7 @@ public class ButtonXboxController extends XboxController {
      * @return A double in {@code [-1, 1]}
      */
     public double getTriggers() {
-        return getTriggerAxis(Hand.kRight) - getTriggerAxis(Hand.kLeft);
+        return getRightTriggerAxis() - getLeftTriggerAxis();
     }
 
     /**
@@ -77,16 +77,16 @@ public class ButtonXboxController extends XboxController {
     }
 
     /**
-     * Get a trigger from this Xbox Controller.
+     * Get an axis from this Xbox Controller.
      * <p>
      * Returns the specified trigger of a Xbox Controller without having to
      * explicitly create each one.
      * 
-     * @param hand The hand of the trigger to access.
+     * @param axis The axis to access.
      * @return The trigger object for the given hand.
      */
-    public XboxTrigger getTrigger(final Hand hand) {
-        return triggerButtons.computeIfAbsent(hand, h -> new XboxTrigger(this, hand));
+    public AxisButton getAxis(final Axis axis) {
+        return triggerButtons.computeIfAbsent(axis, h -> new AxisButton(this, axis));
     }
 
     /**

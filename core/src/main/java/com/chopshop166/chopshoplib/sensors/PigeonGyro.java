@@ -3,12 +3,14 @@ package com.chopshop166.chopshoplib.sensors;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.wpilibj.GyroBase;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * Gyro Base wrapper for the Pigeon IMU
  */
-public class PigeonGyro extends GyroBase {
+public class PigeonGyro implements Gyro, Sendable {
 
     /** The wrapped object. */
     final private PigeonIMU gyro;
@@ -86,5 +88,12 @@ public class PigeonGyro extends GyroBase {
     @Override
     public void calibrate() {
         // NoOp
+    }
+
+    @Override
+    public void initSendable(final SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Value", this::getAngle, null);
+        builder.addDoubleProperty("Rate", this::getRate, null);
     }
 }

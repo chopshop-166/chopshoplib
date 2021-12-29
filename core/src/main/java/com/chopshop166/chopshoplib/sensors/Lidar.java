@@ -7,11 +7,13 @@ import java.util.Optional;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
+import edu.wpi.first.networktables.NTSendableBuilder;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * LiDAR Sensor class.
@@ -477,15 +479,18 @@ public class Lidar implements Sendable {
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("LiDAR");
-        final NetworkTableEntry mmDistance = builder.getEntry("Distance");
-        final NetworkTableEntry standardDeviation = builder.getEntry("Standard Deviation");
-        final NetworkTableEntry validityEntry = builder.getEntry("isValid");
-        builder.setUpdateTable(() -> {
-            mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
-            synchronized (this) {
-                validityEntry.setBoolean(isValid);
-                standardDeviation.setDouble(stdDevValue);
-            }
-        });
+        if (builder.getBackendKind() == BackendKind.kNetworkTables) {
+            final NTSendableBuilder ntbuilder = (NTSendableBuilder) builder;
+            final NetworkTableEntry mmDistance = ntbuilder.getEntry("Distance");
+            final NetworkTableEntry standardDeviation = ntbuilder.getEntry("Standard Deviation");
+            final NetworkTableEntry validityEntry = ntbuilder.getEntry("isValid");
+            ntbuilder.setUpdateTable(() -> {
+                mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
+                synchronized (this) {
+                    validityEntry.setBoolean(isValid);
+                    standardDeviation.setDouble(stdDevValue);
+                }
+            });
+        }
     }
 }

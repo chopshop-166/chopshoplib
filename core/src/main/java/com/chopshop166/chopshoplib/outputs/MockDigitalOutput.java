@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib.outputs;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A mock {@link DigitalOutput} that can be sent to the dashboard.

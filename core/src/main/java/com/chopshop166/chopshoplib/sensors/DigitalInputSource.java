@@ -2,9 +2,9 @@ package com.chopshop166.chopshoplib.sensors;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * A {@link DigitalInput} that acts as a {@link BooleanSupplier}.
