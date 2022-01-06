@@ -64,6 +64,96 @@ public class ButtonXboxController extends XboxController {
     }
 
     /**
+     * Get the A button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton a() {
+        return getButton(Button.kA);
+    }
+
+    /**
+     * Get the B button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton b() {
+        return getButton(Button.kB);
+    }
+
+    /**
+     * Get the X button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton x() {
+        return getButton(Button.kX);
+    }
+
+    /**
+     * Get the Y button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton y() {
+        return getButton(Button.kY);
+    }
+
+    /**
+     * Get the back button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton back() {
+        return getButton(Button.kBack);
+    }
+
+    /**
+     * Get the start button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton start() {
+        return getButton(Button.kStart);
+    }
+
+    /**
+     * Get the left bumper.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton lbumper() {
+        return getButton(Button.kLeftBumper);
+    }
+
+    /**
+     * Get the left stick click.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton lstick() {
+        return getButton(Button.kLeftStick);
+    }
+
+    /**
+     * Get the right bumper.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton rbumper() {
+        return getButton(Button.kRightBumper);
+    }
+
+    /**
+     * Get the right stick click.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton rstick() {
+        return getButton(Button.kRightStick);
+    }
+
+    /**
      * Get a button from this Xbox Controller.
      * <p>
      * Returns the specified button of a Xbox Controller without having to
@@ -72,7 +162,7 @@ public class ButtonXboxController extends XboxController {
      * @param buttonId The index of the button to access.
      * @return The button object for the given ID.
      */
-    public JoystickButton getButton(final Button buttonId) {
+    private JoystickButton getButton(final Button buttonId) {
         return buttons.computeIfAbsent(buttonId, b -> new JoystickButton(this, b.value));
     }
 
