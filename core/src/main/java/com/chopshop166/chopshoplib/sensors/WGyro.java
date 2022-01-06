@@ -13,6 +13,27 @@ public class WGyro implements Gyro, Sendable {
     private final Sendable sendable;
 
     /**
+     * Factory method.
+     * 
+     * @param <GyroBase> A type that is both a {@link Gyro} and {@link Sendable}
+     * @param gyro       The gyro object.
+     * @return The object passed in, wrapped up.
+     */
+    public static <GyroBase extends Gyro & Sendable> WGyro from(final GyroBase gyro) {
+        return new WGyro(gyro);
+    }
+
+    /**
+     * Factory method.
+     * 
+     * @param gyro The gyro object.
+     * @return The already wrapped object passed in.
+     */
+    public static WGyro from(final WGyro gyro) {
+        return gyro;
+    }
+
+    /**
      * Constructor.
      * 
      * @param <GyroBase> A type that is both a {@link Gyro} and {@link Sendable}

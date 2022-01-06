@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.pneumatics;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;

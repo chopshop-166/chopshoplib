@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.outputs.SmartMotorController;
 import com.chopshop166.chopshoplib.sensors.WGyro;
+import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -58,7 +58,7 @@ public class DifferentialDriveMap {
             final double trackWidthMeters, final GyroBase gyro) {
         this.left = left;
         this.right = right;
-        this.gyro = new WGyro(gyro);
+        this.gyro = WGyro.from(gyro);
         this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
     }
 

@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.sensors;
 
+import com.chopshop166.chopshoplib.digital.DigitalInputSource;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**

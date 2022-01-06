@@ -3,4 +3,4 @@
  * 
  * Contains mocked versions of most actuators.
  */
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;

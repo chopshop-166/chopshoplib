@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.sensors;
+package com.chopshop166.chopshoplib.digital;
 
 import java.util.function.BooleanSupplier;
 

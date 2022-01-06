@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;

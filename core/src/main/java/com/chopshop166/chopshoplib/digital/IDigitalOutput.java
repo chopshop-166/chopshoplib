@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.digital;
 
 import edu.wpi.first.util.sendable.Sendable;
 

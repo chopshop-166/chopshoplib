@@ -7,7 +7,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 /**
  * An Encoder on the CAN bus.
  */
-public class CTREEncoder implements IEncoder {
+public class CtreEncoder implements IEncoder {
 
     /** Reference to the base encoder. */
     private final CANCoder enc;
@@ -17,7 +17,7 @@ public class CTREEncoder implements IEncoder {
      * 
      * @param enc The CANCoder to connect to.
      */
-    public CTREEncoder(final CANCoder enc) {
+    public CtreEncoder(final CANCoder enc) {
         this.enc = enc;
     }
 
@@ -26,7 +26,7 @@ public class CTREEncoder implements IEncoder {
      * 
      * @param deviceId The device ID on the CAN bus.
      */
-    public CTREEncoder(final int deviceId) {
+    public CtreEncoder(final int deviceId) {
         this(new CANCoder(deviceId));
     }
 

@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs
+package com.chopshop166.chopshoplib.motors
 
 import com.chopshop166.chopshoplib.sensors.IEncoder
 import com.chopshop166.chopshoplib.sensors.MockEncoder

@@ -2,7 +2,7 @@ package com.chopshop166.chopshoplib;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.chopshop166.chopshoplib.sensors.DigitalInputSource;
+import com.chopshop166.chopshoplib.digital.DigitalInputSource;
 
 import org.junit.jupiter.api.Test;
 
