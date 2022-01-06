@@ -1,6 +1,4 @@
 /**
- * Classes related to motors and digital outputs.
- * 
- * Contains mocked versions of most actuators.
+ * Classes related to motors.
  */
 package com.chopshop166.chopshoplib.motors;
