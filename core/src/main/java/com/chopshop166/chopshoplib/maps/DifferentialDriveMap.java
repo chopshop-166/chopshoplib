@@ -58,7 +58,23 @@ public class DifferentialDriveMap {
             final double trackWidthMeters, final GyroBase gyro) {
         this.left = left;
         this.right = right;
-        this.gyro = WGyro.from(gyro);
+        this.gyro = new WGyro(gyro);
+        this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param left             Left speed controller.
+     * @param right            Right speed controller.
+     * @param trackWidthMeters Width of robot.
+     * @param gyro             The gyro.
+     */
+    public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
+            final double trackWidthMeters, final WGyro gyro) {
+        this.left = left;
+        this.right = right;
+        this.gyro = gyro;
         this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
     }
 
