@@ -123,8 +123,7 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 // Access each field and return a pair of (Command, Field)
                 .map(field -> {
                     try {
-                        return new Pair<Command, Autonomous>((Command) field.get(this),
-                                field.getAnnotation(Autonomous.class));
+                        return Pair.of((Command) field.get(this), field.getAnnotation(Autonomous.class));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         return null;
