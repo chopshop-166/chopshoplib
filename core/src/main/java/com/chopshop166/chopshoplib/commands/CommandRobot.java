@@ -14,6 +14,7 @@ import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -21,7 +22,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpiutil.math.Pair;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
@@ -123,8 +123,7 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                 // Access each field and return a pair of (Command, Field)
                 .map(field -> {
                     try {
-                        return new Pair<Command, Autonomous>((Command) field.get(this),
-                                field.getAnnotation(Autonomous.class));
+                        return Pair.of((Command) field.get(this), field.getAnnotation(Autonomous.class));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         return null;

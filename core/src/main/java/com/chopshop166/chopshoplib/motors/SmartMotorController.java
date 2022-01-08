@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,24 +8,24 @@ import java.util.List;
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
 
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 /**
- * A SpeedController with features attached.
+ * A MotorController with features attached.
  *
  * This is used in a few select scenarios, when we want to keep the exact type
  * of an object general, but at the same time want to access it as one of two
  * disconnected interfaces.
  */
-public class SmartMotorController implements Sendable, SpeedController {
+public class SmartMotorController implements Sendable, MotorController {
 
     /** The wrapped motor controller, as a sendable object. */
     private final Sendable sendable;
     /** The wrapped motor controller. */
-    private final SpeedController wrapped;
+    private final MotorController wrapped;
     /** An encoder, if one is attached and supplied. */
     private final IEncoder encoder;
     /** All the modifiers to apply to the speed controller. */
@@ -43,7 +43,7 @@ public class SmartMotorController implements Sendable, SpeedController {
      * @param wrapped   The wrapped motor controller.
      * @param modifiers Any output modifiers.
      */
-    public <T extends Sendable & SpeedController> SmartMotorController(final T wrapped, final Modifier... modifiers) {
+    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final Modifier... modifiers) {
         this(wrapped, new MockEncoder(), modifiers);
     }
 
@@ -55,7 +55,7 @@ public class SmartMotorController implements Sendable, SpeedController {
      * @param encoder   The encoder attached to the motor controller.
      * @param modifiers Any output modifiers.
      */
-    public <T extends Sendable & SpeedController> SmartMotorController(final T wrapped, final IEncoder encoder,
+    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final IEncoder encoder,
             final Modifier... modifiers) {
         sendable = wrapped;
         this.wrapped = wrapped;
@@ -69,7 +69,7 @@ public class SmartMotorController implements Sendable, SpeedController {
      * @param controller  The first controller.
      * @param controllers Subsequent controllers.
      */
-    public SmartMotorController(final SpeedController controller, final SpeedController... controllers) {
+    public SmartMotorController(final MotorController controller, final MotorController... controllers) {
         this(new MockEncoder(), controller, controllers);
     }
 
@@ -80,9 +80,9 @@ public class SmartMotorController implements Sendable, SpeedController {
      * @param controller  The first controller.
      * @param controllers Subsequent controllers.
      */
-    public SmartMotorController(final IEncoder encoder, final SpeedController controller,
-            final SpeedController... controllers) {
-        this(new SpeedControllerGroup(controller, controllers), encoder);
+    public SmartMotorController(final IEncoder encoder, final MotorController controller,
+            final MotorController... controllers) {
+        this(new MotorControllerGroup(controller, controllers), encoder);
     }
 
     /**
@@ -132,6 +132,15 @@ public class SmartMotorController implements Sendable, SpeedController {
         // Do nothing for this class
     }
 
+    /**
+     * Set the control type.
+     *
+     * @param controlType The controlType to set.
+     */
+    public void setControlType(final PIDControlType controlType) {
+        // Do nothing for this class
+    }
+
     @Override
     public void set(final double speed) {
         wrapped.set(calculateModifiers(speed));
@@ -145,7 +154,7 @@ public class SmartMotorController implements Sendable, SpeedController {
     /**
      * Warning: Do not use in a subsystem.
      *
-     * This is intended for configuration in the map only, but the SpeedController
+     * This is intended for configuration in the map only, but the MotorController
      * requires it to exist.
      */
     @Override
@@ -166,12 +175,6 @@ public class SmartMotorController implements Sendable, SpeedController {
     @Override
     public void stopMotor() {
         wrapped.stopMotor();
-    }
-
-    /** TODO: Remove when WPIlib does. */
-    @Override
-    public void pidWrite(final double output) {
-        set(output);
     }
 
     @Override

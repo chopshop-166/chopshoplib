@@ -4,11 +4,10 @@ import java.util.function.DoubleSupplier;
 
 import com.chopshop166.chopshoplib.PersistenceCheck;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link PIDSubsystem} that has several presets that it can go to.
@@ -60,9 +59,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The wait command.
      */
     public CommandBase waitForSetpoint() {
-        final CommandBase ret = new WaitUntilCommand(persistenceCheck).withName("Wait For Setpoint");
-        ret.addRequirements(this);
-        return ret;
+        return waitUntil("Wait For Setpoint", persistenceCheck);
     }
 
     /**

@@ -1,24 +1,24 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** Convenience alias for a Talon SRX */
-public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
+public class PIDTalonSRX extends PIDTalonBase<WPI_TalonSRX> {
 
     /** List of Configurations that we can switch between. */
-    final private List<TalonFXConfiguration> config = new ArrayList<>(4);
+    final private List<TalonSRXConfiguration> config = new ArrayList<>(4);
 
     /**
      * Constructor.
      *
      * @param talon The Talon object to wrap.
      */
-    public PIDTalonFX(final WPI_TalonFX talon) {
-        super(talon, 2048);
+    public PIDTalonSRX(final WPI_TalonSRX talon) {
+        super(talon, 4096);
     }
 
     /**
@@ -26,17 +26,17 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
      *
      * @param deviceNumber The device number to construct with.
      */
-    public PIDTalonFX(final int deviceNumber) {
-        this(new WPI_TalonFX(deviceNumber));
+    public PIDTalonSRX(final int deviceNumber) {
+        this(new WPI_TalonSRX(deviceNumber));
     }
 
     /**
      * Add the default configuration to the list of configurations and set it in the
-     * TalonFX.
+     * TalonSRX.
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addDefaultConfiguration(final TalonFXConfiguration config) {
+    public void addDefaultConfiguration(final TalonSRXConfiguration config) {
         this.config.add(config);
         getMotorController().configAllSettings(config);
     }
@@ -46,7 +46,7 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addConfiguration(final TalonFXConfiguration config) {
+    public void addConfiguration(final TalonSRXConfiguration config) {
         this.config.add(config);
     }
 
@@ -54,4 +54,5 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
     public void setPidSlot(final int slotId) {
         getMotorController().configAllSettings(this.config.get(slotId));
     }
+
 }

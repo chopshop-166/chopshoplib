@@ -1,7 +1,7 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.pneumatics;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * An instance of {@link Solenoid} that can be controlled via the dashboard.
@@ -32,7 +32,7 @@ public final class MockSolenoid implements ISolenoid {
     }
 
     @Override
-    public boolean isBlackListed() {
+    public boolean isDisabled() {
         return false;
     }
 

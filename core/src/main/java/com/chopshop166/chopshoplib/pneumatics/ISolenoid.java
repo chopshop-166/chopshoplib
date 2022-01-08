@@ -1,6 +1,6 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.pneumatics;
 
-import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.util.sendable.Sendable;
 
 /**
  * An interface representing a Solenoid.
@@ -24,11 +24,11 @@ public interface ISolenoid extends Sendable, AutoCloseable {
     boolean get();
 
     /**
-     * Check if solenoid is blacklisted.
+     * Check if solenoid is disabled.
      * 
-     * @return {@code true} if the solenoid is blacklisted.
+     * @return {@code true} if the solenoid is disabled.
      */
-    boolean isBlackListed();
+    boolean isDisabled();
 
     /**
      * Set the pulse duration in the PCM.

@@ -1,7 +1,7 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.pneumatics;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Sendable;
 
 /**
  * An interface representing a DoubleSolenoid.
@@ -29,12 +29,12 @@ public interface IDSolenoid extends Sendable, AutoCloseable {
      * 
      * @return {@code true} if the solenoid is blacklisted.
      */
-    boolean isFwdSolenoidBlackListed();
+    boolean isFwdSolenoidDisabled();
 
     /**
      * Check if reverse solenoid is blacklisted.
      * 
      * @return {@code true} if the solenoid is blacklisted.
      */
-    boolean isRevSolenoidBlackListed();
+    boolean isRevSolenoidDisabled();
 }

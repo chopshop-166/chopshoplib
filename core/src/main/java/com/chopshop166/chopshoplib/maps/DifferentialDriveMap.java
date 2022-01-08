@@ -1,10 +1,12 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.outputs.SmartMotorController;
+import com.chopshop166.chopshoplib.sensors.WGyro;
+import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import com.chopshop166.chopshoplib.sensors.MockGyro;
 
-import edu.wpi.first.wpilibj.GyroBase;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * Differential Drive Map
@@ -21,7 +23,7 @@ public class DifferentialDriveMap {
     /** Kinematics information */
     private final DifferentialDriveKinematics kinematics;
     /** The gyro */
-    private final GyroBase gyro;
+    private final WGyro gyro;
 
     /**
      * Default constructor.
@@ -45,13 +47,31 @@ public class DifferentialDriveMap {
     /**
      * Constructor.
      * 
+     * @param <GyroBase>       A gyro type.
+     * @param left             Left speed controller.
+     * @param right            Right speed controller.
+     * @param trackWidthMeters Width of robot.
+     * @param gyro             The gyro.
+     */
+    public <GyroBase extends Gyro & Sendable> DifferentialDriveMap(final SmartMotorController left,
+            final SmartMotorController right,
+            final double trackWidthMeters, final GyroBase gyro) {
+        this.left = left;
+        this.right = right;
+        this.gyro = new WGyro(gyro);
+        this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
+    }
+
+    /**
+     * Constructor.
+     * 
      * @param left             Left speed controller.
      * @param right            Right speed controller.
      * @param trackWidthMeters Width of robot.
      * @param gyro             The gyro.
      */
     public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
-            final double trackWidthMeters, final GyroBase gyro) {
+            final double trackWidthMeters, final WGyro gyro) {
         this.left = left;
         this.right = right;
         this.gyro = gyro;
@@ -79,9 +99,9 @@ public class DifferentialDriveMap {
     /**
      * Gets a Gyro.
      * 
-     * @return The gyro object as a {@link GyroBase}.
+     * @return The gyro object as a {@link WGyro}.
      */
-    public GyroBase getGyro() {
+    public WGyro getGyro() {
         return gyro;
     }
 

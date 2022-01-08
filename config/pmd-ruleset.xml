@@ -20,6 +20,7 @@
         <exclude name="MethodNamingConventions"/>
         <exclude name="OnlyOneReturn"/>
         <exclude name="ShortClassName"/>
+        <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="UseUnderscoresInNumericLiterals"/>
         <exclude name="VariableNamingConventions"/>

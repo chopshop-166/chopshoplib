@@ -1,12 +1,12 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.ControlType;
+import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * PIDSpeedController
@@ -22,7 +22,7 @@ public class PIDSparkMax extends SmartMotorController {
     /** The unwrapped Spark MAX object. */
     private final CANSparkMax sparkMax;
     /** The PID controller from the Spark MAX. */
-    private final CANPIDController sparkPID;
+    private final SparkMaxPIDController sparkPID;
     /** The control type for the PID controller. */
     private ControlType savedControlType = ControlType.kVelocity;
     /** The PID Slot to send along with all setReference commands. */
@@ -66,17 +66,22 @@ public class PIDSparkMax extends SmartMotorController {
      *
      * @return The CAN PID object.
      */
-    public CANPIDController getPidController() {
+    public SparkMaxPIDController getPidController() {
         return sparkPID;
     }
 
     /**
-     * Set the control type
+     * Set the control type.
      *
      * @param controlType The controlType to set.
      */
-    public void setControlType(final ControlType controlType) {
-        this.savedControlType = controlType;
+    @Override
+    public void setControlType(final PIDControlType controlType) {
+        if (controlType == PIDControlType.Position) {
+            this.savedControlType = CANSparkMax.ControlType.kPosition;
+        } else if (controlType == PIDControlType.Velocity) {
+            this.savedControlType = CANSparkMax.ControlType.kVelocity;
+        }
     }
 
     /**

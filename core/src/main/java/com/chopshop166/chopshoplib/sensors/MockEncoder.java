@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * An {@link IEncoder} that can be controlled via the dashboard.

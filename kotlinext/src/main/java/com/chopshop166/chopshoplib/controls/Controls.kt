@@ -1,33 +1,30 @@
 package com.chopshop166.chopshoplib.controls
 
 import com.chopshop166.chopshoplib.controls.ButtonXboxController
-import com.chopshop166.chopshoplib.triggers.XboxTrigger
-import edu.wpi.first.wpilibj.GenericHID.Hand
+import com.chopshop166.chopshoplib.triggers.AxisButton
+import edu.wpi.first.wpilibj.XboxController.Axis
 import edu.wpi.first.wpilibj.XboxController.Button
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
 class ControllerConfigurer(val controller : ButtonXboxController) {
 
-    private fun button(btn : Button) = JoystickButton(controller, btn.value)
-
+    operator fun AxisButton.invoke(block : AxisButton.() -> Unit) = block()
     operator fun JoystickButton.invoke(block : JoystickButton.() -> Unit) = block()
-    operator fun XboxTrigger.invoke(block : Trigger.() -> Unit) = block()
 
-    val a = button(Button.kA)
-    val b = button(Button.kB)
-    val x = button(Button.kX)
-    val y = button(Button.kY)
-    val start = button(Button.kStart)
-    val back = button(Button.kBack)
-    val l = button(Button.kBumperLeft)
-    val r = button(Button.kBumperRight)
-    val stickLeft = button(Button.kStickLeft)
-    val stickRight = button(Button.kStickRight)
-    val trigger = mapOf(
-        Hand.kLeft to XboxTrigger(controller, Hand.kLeft),
-        Hand.kRight to XboxTrigger(controller, Hand.kRight)
-    )
+    val a = controller.a()
+    val b = controller.b()
+    val x = controller.x()
+    val y = controller.y()
+    val start = controller.start()
+    val back = controller.back()
+    val l = controller.lbumper()
+    val r = controller.rbumper()
+    val leftStick = controller.lstick()
+    val rightStick = controller.rstick()
+    val axis = object {
+        fun get(axis : Axis) = controller.getAxis(axis)
+    }
 }
 
 operator fun ButtonXboxController.invoke(block : ControllerConfigurer.() -> Unit) = ControllerConfigurer(this).apply(block)

@@ -1,25 +1,26 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
- * A wrapper for the {@link CANEncoder} provided by REV Robotics, to implement
+ * A wrapper for the {@link RelativeEncoder} provided by REV Robotics,
+ * to implement
  * WPIlib interfaces.
  */
 public class SparkMaxEncoder implements IEncoder {
 
     /** The wrapped encoder. */
-    private final CANEncoder encoder;
+    private final RelativeEncoder encoder;
 
     /**
      * Create a wrapper object.
      * 
      * @param encoder The encoder to wrap around.
      */
-    public SparkMaxEncoder(final CANEncoder encoder) {
+    public SparkMaxEncoder(final RelativeEncoder encoder) {
         this.encoder = encoder;
     }
 
@@ -37,7 +38,7 @@ public class SparkMaxEncoder implements IEncoder {
      * 
      * @return The wrapped encoder.
      */
-    public CANEncoder getRaw() {
+    public RelativeEncoder getRaw() {
         return encoder;
     }
 

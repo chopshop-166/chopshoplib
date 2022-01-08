@@ -33,9 +33,8 @@ public final class RobotUtils {
      * This is a destructive operation.
      */
     public static void clearPreferences() {
-        final Preferences prefs = Preferences.getInstance();
-        for (final String key : prefs.getKeys()) {
-            prefs.remove(key);
+        for (final String key : Preferences.getKeys()) {
+            Preferences.remove(key);
         }
     }
 

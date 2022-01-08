@@ -1,12 +1,13 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.GyroBase;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * A mock Gyro implementation.
  */
-public class MockGyro extends GyroBase {
+public class MockGyro implements Gyro, Sendable {
 
     /** The angle it's rotated to. */
     private double angle;

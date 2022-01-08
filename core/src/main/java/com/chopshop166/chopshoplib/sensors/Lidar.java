@@ -7,11 +7,13 @@ import java.util.Optional;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
+import edu.wpi.first.networktables.NTSendableBuilder;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * LiDAR Sensor class.
@@ -34,6 +36,9 @@ public class Lidar implements Sendable {
     private double stdDevValue;
     /** The limit for standard deviation. */
     private double stdDevLimit = 100;
+
+    /** Synchronization object. */
+    private final Object syncObject = new Object();
 
     /**
      * The scale to return measurements in.
@@ -387,7 +392,7 @@ public class Lidar implements Sendable {
      * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
-        synchronized (this) {
+        synchronized (syncObject) {
             stdDevLimit = sdLimit;
         }
     }
@@ -396,7 +401,7 @@ public class Lidar implements Sendable {
      * Clear the samples
      */
     public void reset() {
-        synchronized (this) {
+        synchronized (syncObject) {
             samples.reset();
         }
     }
@@ -408,7 +413,7 @@ public class Lidar implements Sendable {
      * @return An Optional containing the distance if it exists
      */
     public Optional<Double> getDistanceOptional(final MeasurementType meas) {
-        synchronized (this) {
+        synchronized (syncObject) {
             if (!isValid) {
                 return Optional.empty();
             }
@@ -432,7 +437,7 @@ public class Lidar implements Sendable {
         i2cDevice.write(0x44, 0x1);
         i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
-        synchronized (this) {
+        synchronized (syncObject) {
             samples.addSample(bbConvert.getShort());
             final Stats stats = Stats.of(samples);
             distanceMM = stats.mean();
@@ -477,15 +482,18 @@ public class Lidar implements Sendable {
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("LiDAR");
-        final NetworkTableEntry mmDistance = builder.getEntry("Distance");
-        final NetworkTableEntry standardDeviation = builder.getEntry("Standard Deviation");
-        final NetworkTableEntry validityEntry = builder.getEntry("isValid");
-        builder.setUpdateTable(() -> {
-            mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
-            synchronized (this) {
-                validityEntry.setBoolean(isValid);
-                standardDeviation.setDouble(stdDevValue);
-            }
-        });
+        if (builder.getBackendKind() == BackendKind.kNetworkTables) {
+            final NTSendableBuilder ntbuilder = (NTSendableBuilder) builder;
+            final NetworkTableEntry mmDistance = ntbuilder.getEntry("Distance");
+            final NetworkTableEntry standardDeviation = ntbuilder.getEntry("Standard Deviation");
+            final NetworkTableEntry validityEntry = ntbuilder.getEntry("isValid");
+            ntbuilder.setUpdateTable(() -> {
+                mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
+                synchronized (syncObject) {
+                    validityEntry.setBoolean(isValid);
+                    standardDeviation.setDouble(stdDevValue);
+                }
+            });
+        }
     }
 }

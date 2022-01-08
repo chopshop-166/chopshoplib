@@ -1,17 +1,17 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import com.chopshop166.chopshoplib.sensors.TalonEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
  * Talon that is compatible with the Smart Motor Controller.
  */
-public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> extends SmartMotorController {
+public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> extends SmartMotorController {
 
     /** Reference to the wrapped Talon. */
     private final T wrapped;
@@ -39,12 +39,17 @@ public class PIDTalonBase<T extends BaseTalon & SpeedController & Sendable> exte
     }
 
     /**
-     * Set the control mode of the Talon.
+     * Set the control type.
      *
-     * @param controlMode The mode to use.
+     * @param controlType The controlType to set.
      */
-    public void setControlType(final ControlMode controlMode) {
-        this.savedControlType = controlMode;
+    @Override
+    public void setControlType(final PIDControlType controlType) {
+        if (controlType == PIDControlType.Position) {
+            this.savedControlType = ControlMode.Position;
+        } else if (controlType == PIDControlType.Velocity) {
+            this.savedControlType = ControlMode.Velocity;
+        }
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import com.chopshop166.chopshoplib.digital.DigitalInputSource;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * A {@link Sendable} that behaves as a boolean value.

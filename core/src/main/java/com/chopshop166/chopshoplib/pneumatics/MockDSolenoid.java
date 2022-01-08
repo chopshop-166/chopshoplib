@@ -1,8 +1,8 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.pneumatics;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * An instance of {@link DoubleSolenoid} that can be wrapped.
@@ -39,12 +39,12 @@ public final class MockDSolenoid implements IDSolenoid {
     }
 
     @Override
-    public boolean isFwdSolenoidBlackListed() {
+    public boolean isFwdSolenoidDisabled() {
         return false;
     }
 
     @Override
-    public boolean isRevSolenoidBlackListed() {
+    public boolean isRevSolenoidDisabled() {
         return false;
     }
 

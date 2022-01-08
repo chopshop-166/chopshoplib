@@ -1,4 +1,4 @@
-package com.chopshop166.chopshoplib.outputs;
+package com.chopshop166.chopshoplib.motors;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoublePredicate;

@@ -3,7 +3,7 @@ package com.chopshop166.chopshoplib.controls;
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.chopshop166.chopshoplib.triggers.XboxTrigger;
+import com.chopshop166.chopshoplib.triggers.AxisButton;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -40,8 +40,8 @@ public class ButtonXboxController extends XboxController {
     /** The mapping of POV Button direction to command button. */
     private final Map<POVDirection, POVButton> povButtons = new EnumMap<>(POVDirection.class);
 
-    /** The mapping of hand to command button. */
-    private final Map<Hand, XboxTrigger> triggerButtons = new EnumMap<>(Hand.class);
+    /** The mapping of axis to command button. */
+    private final Map<Axis, AxisButton> triggerButtons = new EnumMap<>(Axis.class);
 
     /**
      * Construct an instance of a Xbox Controller along with each button the
@@ -60,7 +60,97 @@ public class ButtonXboxController extends XboxController {
      * @return A double in {@code [-1, 1]}
      */
     public double getTriggers() {
-        return getTriggerAxis(Hand.kRight) - getTriggerAxis(Hand.kLeft);
+        return getRightTriggerAxis() - getLeftTriggerAxis();
+    }
+
+    /**
+     * Get the A button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton a() {
+        return getButton(Button.kA);
+    }
+
+    /**
+     * Get the B button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton b() {
+        return getButton(Button.kB);
+    }
+
+    /**
+     * Get the X button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton x() {
+        return getButton(Button.kX);
+    }
+
+    /**
+     * Get the Y button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton y() {
+        return getButton(Button.kY);
+    }
+
+    /**
+     * Get the back button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton back() {
+        return getButton(Button.kBack);
+    }
+
+    /**
+     * Get the start button.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton start() {
+        return getButton(Button.kStart);
+    }
+
+    /**
+     * Get the left bumper.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton lbumper() {
+        return getButton(Button.kLeftBumper);
+    }
+
+    /**
+     * Get the left stick click.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton lstick() {
+        return getButton(Button.kLeftStick);
+    }
+
+    /**
+     * Get the right bumper.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton rbumper() {
+        return getButton(Button.kRightBumper);
+    }
+
+    /**
+     * Get the right stick click.
+     * 
+     * @return A joystick button.
+     */
+    public JoystickButton rstick() {
+        return getButton(Button.kRightStick);
     }
 
     /**
@@ -72,21 +162,21 @@ public class ButtonXboxController extends XboxController {
      * @param buttonId The index of the button to access.
      * @return The button object for the given ID.
      */
-    public JoystickButton getButton(final Button buttonId) {
+    private JoystickButton getButton(final Button buttonId) {
         return buttons.computeIfAbsent(buttonId, b -> new JoystickButton(this, b.value));
     }
 
     /**
-     * Get a trigger from this Xbox Controller.
+     * Get an axis from this Xbox Controller.
      * <p>
      * Returns the specified trigger of a Xbox Controller without having to
      * explicitly create each one.
      * 
-     * @param hand The hand of the trigger to access.
+     * @param axis The axis to access.
      * @return The trigger object for the given hand.
      */
-    public XboxTrigger getTrigger(final Hand hand) {
-        return triggerButtons.computeIfAbsent(hand, h -> new XboxTrigger(this, hand));
+    public AxisButton getAxis(final Axis axis) {
+        return triggerButtons.computeIfAbsent(axis, h -> new AxisButton(this, axis));
     }
 
     /**
