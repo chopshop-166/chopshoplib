@@ -64,6 +64,17 @@ public class SwPIDMotorController extends SmartMotorController {
     }
 
     /**
+     * Use a PID controller with the position of an encoder.
+     *
+     * @param motor The speed controller to move.
+     * @param pid   The PID controller to use for calculation.
+     * @return The new PID controller.
+     */
+    public static SwPIDMotorController position(final SmartMotorController motor, final PIDController pid) {
+        return position(motor, pid, motor.getEncoder());
+    }
+
+    /**
      * Use a PID controller with the velocity of an encoder.
      *
      * @param <T>     A type that's a Speed Controller and also Sendable.
@@ -75,6 +86,17 @@ public class SwPIDMotorController extends SmartMotorController {
     public static <T extends Sendable & MotorController> SwPIDMotorController velocity(final T motor,
             final PIDController pid, final IEncoder encoder) {
         return new SwPIDMotorController(motor, encoder, pid, encoder::getRate);
+    }
+
+    /**
+     * Use a PID controller with the velocity of an encoder.
+     *
+     * @param motor The speed controller to move.
+     * @param pid   The PID controller to use for calculation.
+     * @return The new PID controller.
+     */
+    public static SwPIDMotorController velocity(final SmartMotorController motor, final PIDController pid) {
+        return velocity(motor, pid, motor.getEncoder());
     }
 
     /**
