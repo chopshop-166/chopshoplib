@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController
 
 fun SmartMotorController.toSmart() = this
 
-fun <T> T.toSmart(encoder: IEncoder = MockEncoder(), vararg mods: Modifier) where
+fun <T> T.toSmart(encoder: IEncoder = MockEncoder()) where
 T : Sendable,
-T : MotorController = SmartMotorController(this, encoder, *mods)
+T : MotorController = SmartMotorController(this, encoder)
 
 fun CANSparkMax.follow(thisObj: PIDSparkMax, inverted: Boolean = false) =
     follow(thisObj.motorController, inverted)

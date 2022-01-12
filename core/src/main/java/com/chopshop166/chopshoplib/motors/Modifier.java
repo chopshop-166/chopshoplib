@@ -14,9 +14,9 @@ import com.google.common.math.Stats;
 public interface Modifier extends DoubleUnaryOperator {
 
     /**
-     * Modifier to prevent going above a certain height.
+     * Modifier to prevent going above a certain value.
      * 
-     * @param limit The trigger for being at max height.
+     * @param limit The trigger for being at max value.
      * @return The new speed.
      */
     static Modifier upperLimit(final BooleanSupplier limit) {
@@ -24,9 +24,9 @@ public interface Modifier extends DoubleUnaryOperator {
     }
 
     /**
-     * Modifier to prevent going below a certain height.
+     * Modifier to prevent going below a certain value.
      * 
-     * @param limit The trigger for being at min height.
+     * @param limit The trigger for being at min value.
      * @return The new speed.
      */
     static Modifier lowerLimit(final BooleanSupplier limit) {
