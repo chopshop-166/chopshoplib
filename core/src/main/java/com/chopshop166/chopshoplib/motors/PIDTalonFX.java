@@ -2,6 +2,7 @@ package com.chopshop166.chopshoplib.motors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -48,6 +49,17 @@ public class PIDTalonFX extends PIDTalonBase<WPI_TalonFX> {
      */
     public void addConfiguration(final TalonFXConfiguration config) {
         this.config.add(config);
+    }
+
+    /**
+     * Configure base type parameters inline.
+     * 
+     * @param conf The configuration function.
+     * @return This object.
+     */
+    public PIDTalonFX configure(final Consumer<WPI_TalonFX> conf) {
+        conf.accept(getMotorController());
+        return this;
     }
 
     @Override

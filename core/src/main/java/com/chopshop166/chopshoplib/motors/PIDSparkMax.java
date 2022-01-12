@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.motors;
 
+import java.util.function.Consumer;
+
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -68,6 +70,17 @@ public class PIDSparkMax extends SmartMotorController {
      */
     public SparkMaxPIDController getPidController() {
         return sparkPID;
+    }
+
+    /**
+     * Configure base type parameters inline.
+     * 
+     * @param conf The configuration function.
+     * @return This object.
+     */
+    public PIDSparkMax configure(final Consumer<CANSparkMax> conf) {
+        conf.accept(sparkMax);
+        return this;
     }
 
     /**
