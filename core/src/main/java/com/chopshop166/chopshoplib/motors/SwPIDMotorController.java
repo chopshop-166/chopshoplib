@@ -106,11 +106,10 @@ public class SwPIDMotorController extends SmartMotorController {
      * @param motor       The motor controller to use.
      * @param pid         The PID controller for calculation.
      * @param measurement The measurement source.
-     * @param modifiers   Any output modifiers.
      */
     public <T extends Sendable & MotorController> SwPIDMotorController(final T motor, final PIDController pid,
-            final DoubleSupplier measurement, final Modifier... modifiers) {
-        this(motor, new MockEncoder(), pid, measurement, modifiers);
+            final DoubleSupplier measurement) {
+        this(motor, new MockEncoder(), pid, measurement);
     }
 
     /**
@@ -121,11 +120,10 @@ public class SwPIDMotorController extends SmartMotorController {
      * @param encoder     The encoder to use.
      * @param pid         The PID controller for calculation.
      * @param measurement The measurement source.
-     * @param modifiers   Any output modifiers.
      */
     public <T extends Sendable & MotorController> SwPIDMotorController(final T motor, final IEncoder encoder,
-            final PIDController pid, final DoubleSupplier measurement, final Modifier... modifiers) {
-        super(motor, encoder, modifiers);
+            final PIDController pid, final DoubleSupplier measurement) {
+        super(motor, encoder);
         this.measurement = measurement;
         this.pid = pid;
         dog.suppressTimeoutMessage(true);

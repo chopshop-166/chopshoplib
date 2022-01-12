@@ -1,10 +1,5 @@
 package com.chopshop166.chopshoplib.motors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
 
@@ -28,8 +23,6 @@ public class SmartMotorController implements Sendable, MotorController {
     private final MotorController wrapped;
     /** An encoder, if one is attached and supplied. */
     private final IEncoder encoder;
-    /** All the modifiers to apply to the speed controller. */
-    final private List<Modifier> modifiers;
 
     /** Construct with mocks for everything */
     public SmartMotorController() {
@@ -39,28 +32,24 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Wrap a motor controller.
      *
-     * @param <T>       The base type to wrap
-     * @param wrapped   The wrapped motor controller.
-     * @param modifiers Any output modifiers.
+     * @param <T>     The base type to wrap
+     * @param wrapped The wrapped motor controller.
      */
-    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final Modifier... modifiers) {
-        this(wrapped, new MockEncoder(), modifiers);
+    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped) {
+        this(wrapped, new MockEncoder());
     }
 
     /**
      * Wrap a motor controller with an encoder.
      *
-     * @param <T>       The base type to wrap
-     * @param wrapped   The wrapped motor controller.
-     * @param encoder   The encoder attached to the motor controller.
-     * @param modifiers Any output modifiers.
+     * @param <T>     The base type to wrap
+     * @param wrapped The wrapped motor controller.
+     * @param encoder The encoder attached to the motor controller.
      */
-    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final IEncoder encoder,
-            final Modifier... modifiers) {
+    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final IEncoder encoder) {
         sendable = wrapped;
         this.wrapped = wrapped;
         this.encoder = encoder;
-        this.modifiers = new ArrayList<>(Arrays.asList(modifiers));
     }
 
     /**
@@ -99,26 +88,6 @@ public class SmartMotorController implements Sendable, MotorController {
     }
 
     /**
-     * Add modifiers to the speed controller.
-     *
-     * @param m  First modifier.
-     * @param ms Any extra modifiers (optional).
-     */
-    public void addModifiers(final Modifier m, final Modifier... ms) {
-        modifiers.add(m);
-        modifiers.addAll(Arrays.asList(ms));
-    }
-
-    /**
-     * Add all modifiers from a collection.
-     *
-     * @param ms Collection of modifiers.
-     */
-    public void addAllModifiers(final Collection<? extends Modifier> ms) {
-        modifiers.addAll(ms);
-    }
-
-    /**
      * Set the setpoint.
      *
      * @param setPoint The new setpoint.
@@ -147,7 +116,7 @@ public class SmartMotorController implements Sendable, MotorController {
 
     @Override
     public void set(final double speed) {
-        wrapped.set(calculateModifiers(speed));
+        wrapped.set(speed);
     }
 
     @Override
@@ -184,22 +153,6 @@ public class SmartMotorController implements Sendable, MotorController {
     @Override
     public void initSendable(final SendableBuilder builder) {
         sendable.initSendable(builder);
-    }
-
-    /**
-     * Run all modifiers.
-     *
-     * As modifiers could have side effects, this is private.
-     *
-     * @param rawSpeed The base speed to run
-     * @return The new speed
-     */
-    private double calculateModifiers(final double rawSpeed) {
-        double speed = rawSpeed;
-        for (final Modifier m : modifiers) {
-            speed = m.applyAsDouble(speed);
-        }
-        return speed;
     }
 
     private static MotorControllerGroup grouped(final MotorController mc1, final MotorController mc2,
