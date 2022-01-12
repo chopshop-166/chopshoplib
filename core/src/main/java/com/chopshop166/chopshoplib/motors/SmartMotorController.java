@@ -66,23 +66,27 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Construct for a group.
      * 
-     * @param controller  The first controller.
+     * @param controller1 The first controller.
+     * @param controller2 The second controller.
      * @param controllers Subsequent controllers.
      */
-    public SmartMotorController(final MotorController controller, final MotorController... controllers) {
-        this(new MockEncoder(), controller, controllers);
+    public SmartMotorController(final MotorController controller1, final MotorController controller2,
+            final MotorController... controllers) {
+        this(new MockEncoder(), controller1, controller2, controllers);
     }
 
     /**
      * Construct for a group with an encoder.
      * 
      * @param encoder     The encoder to measure with.
-     * @param controller  The first controller.
+     * @param controller1 The first controller.
+     * @param controller2 The second controller.
      * @param controllers Subsequent controllers.
      */
-    public SmartMotorController(final IEncoder encoder, final MotorController controller,
+    public SmartMotorController(final IEncoder encoder, final MotorController controller1,
+            final MotorController controller2,
             final MotorController... controllers) {
-        this(new MotorControllerGroup(controller, controllers), encoder);
+        this(grouped(controller1, controller2, controllers), encoder);
     }
 
     /**
@@ -196,5 +200,14 @@ public class SmartMotorController implements Sendable, MotorController {
             speed = m.applyAsDouble(speed);
         }
         return speed;
+    }
+
+    private static MotorControllerGroup grouped(final MotorController mc1, final MotorController mc2,
+            final MotorController... mcs) {
+        final MotorController[] result = new MotorController[mcs.length + 2];
+        result[0] = mc1;
+        result[1] = mc2;
+        System.arraycopy(mcs, 0, result, 2, mcs.length);
+        return new MotorControllerGroup(result);
     }
 }
