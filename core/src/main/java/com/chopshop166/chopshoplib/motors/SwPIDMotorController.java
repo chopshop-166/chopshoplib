@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
+import com.chopshop166.chopshoplib.states.PIDValues;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.Sendable;
@@ -30,24 +31,7 @@ public class SwPIDMotorController extends SmartMotorController {
     /** Whether the PID controller is enabled. */
     private boolean pidEnabled = true;
     /** List of PID Parameters that we can switch between. */
-    final private List<PIDParams> configs = new ArrayList<>(4);
-
-    /**
-     * Class to represent PID parameters
-     */
-    static public class PIDParams {
-        /** Factor for "proportional" control */
-        private double kP;
-
-        /** Factor for "integral" control */
-        private double kI;
-
-        /** Factor for "derivative" control */
-        private double kD;
-
-        /** Factor for "feedforward" control */
-        private double kF;
-    }
+    final private List<PIDValues> configs = new ArrayList<>(4);
 
     /**
      * Use a PID controller with the position of an encoder.
@@ -159,10 +143,10 @@ public class SwPIDMotorController extends SmartMotorController {
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addDefaultConfiguration(final PIDParams config) {
+    public void addDefaultConfiguration(final PIDValues config) {
         this.configs.add(config);
-        this.feedforward = config.kF;
-        this.pid.setPID(config.kP, config.kI, config.kD);
+        this.feedforward = config.ff;
+        this.pid.setPID(config.p, config.i, config.d);
     }
 
     /**
@@ -170,7 +154,7 @@ public class SwPIDMotorController extends SmartMotorController {
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addConfiguration(final PIDParams config) {
+    public void addConfiguration(final PIDValues config) {
         this.configs.add(config);
     }
 
@@ -183,8 +167,8 @@ public class SwPIDMotorController extends SmartMotorController {
     @Override
     public void setPidSlot(final int slotId) {
         final var config = this.configs.get(slotId);
-        this.feedforward = config.kF;
-        this.pid.setPID(config.kP, config.kI, config.kD);
+        this.feedforward = config.ff;
+        this.pid.setPID(config.p, config.i, config.d);
     }
 
     /** Calculate the PID value, and set the speed controler to the result. */
