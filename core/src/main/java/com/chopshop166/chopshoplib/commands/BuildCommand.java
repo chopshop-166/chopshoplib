@@ -69,6 +69,17 @@ public class BuildCommand extends CommandBase {
     }
 
     /**
+     * Set the End handler.
+     * 
+     * @param handler The handler for finishing
+     * @return this for chaining.
+     */
+    public BuildCommand onEnd(final Runnable handler) {
+        this.onEndHandler = interrupted -> handler.run();
+        return this;
+    }
+
+    /**
      * Set the finished check.
      * 
      * @param check The test for if the command is finished.
