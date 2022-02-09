@@ -1,23 +1,33 @@
 package com.chopshop166.chopshoplib;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 /**
  * Implements a circular sample buffer.
  */
-public class SampleBuffer implements Iterable<Double> {
+public class SampleBuffer<E> implements Iterable<E> {
+
     /** The samples that are tracked. */
-    private final double samples[];
+    private E[] samples;
     /** The index of the next sample to add. */
     private int sampleIndex;
     /** True if the buffer has been reset. */
     private boolean isReset;
+    /** Class that the Sample Buffer array will be constructed with. */
+    private Class<E> clas;
 
-    /** Create a Sample Buffer with 25 elements. */
+    /**
+     * Creates a Sample Buffer with a capacity of 25..
+     * 
+     * 
+     */
     public SampleBuffer() {
-        this(25);
+        @SuppressWarnings("unchecked")
+        final E[] samples = (E[]) Array.newInstance(clas, 25);
+        this.samples = samples;
     }
 
     /**
@@ -26,7 +36,9 @@ public class SampleBuffer implements Iterable<Double> {
      * @param numSamples The number of samples to use
      */
     public SampleBuffer(final int numSamples) {
-        samples = new double[numSamples];
+        @SuppressWarnings("unchecked")
+        final E[] samples = (E[]) Array.newInstance(this.clas, numSamples);
+        this.samples = samples;
     }
 
     /**
@@ -43,7 +55,7 @@ public class SampleBuffer implements Iterable<Double> {
      * 
      * @param sample The value to add.
      */
-    public void addSample(final double sample) {
+    public void addSample(E sample) {
         samples[sampleIndex] = sample;
         sampleIndex++;
         if (sampleIndex == samples.length) {
@@ -53,7 +65,7 @@ public class SampleBuffer implements Iterable<Double> {
     }
 
     @Override
-    public Iterator<Double> iterator() {
-        return DoubleStream.of(samples).limit(isReset ? sampleIndex : samples.length).iterator();
+    public Iterator<E> iterator() {
+        return Stream.of(samples).limit(isReset ? sampleIndex : samples.length).iterator();
     }
 }

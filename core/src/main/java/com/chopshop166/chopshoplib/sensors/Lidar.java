@@ -30,7 +30,7 @@ public class Lidar implements Sendable {
     /** True if the measurement is valid. */
     private boolean isValid;
     /** The measurement samples, for averaging. */
-    private SampleBuffer samples;
+    private SampleBuffer<Short> samples;
 
     /** The standard deviation of the measurements. */
     private double stdDevValue;
@@ -367,7 +367,7 @@ public class Lidar implements Sendable {
         i2cDevice = new I2C(port, kAddress);
 
         // Objects related to statistics
-        samples = new SampleBuffer(averageOver);
+        samples = new SampleBuffer<Short>(averageOver);
 
         accessThread = new Thread(this::poll);
         accessThread.setName(String.format("LiDAR-0x%x", kAddress));
