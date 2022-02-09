@@ -1,5 +1,9 @@
 package com.chopshop166.chopshoplib.motors;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
+
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
 
@@ -23,6 +27,8 @@ public class SmartMotorController implements Sendable, MotorController {
     private final MotorController wrapped;
     /** An encoder, if one is attached and supplied. */
     private final IEncoder encoder;
+    /** Validators. */
+    private final List<BooleanSupplier> validators = new ArrayList<>();
 
     /** Construct with mocks for everything */
     public SmartMotorController() {
@@ -112,6 +118,26 @@ public class SmartMotorController implements Sendable, MotorController {
      */
     public void setControlType(final PIDControlType controlType) {
         // Do nothing for this class
+    }
+
+    /**
+     * Verify that all validators pass.
+     * 
+     * Use this to test for things like current.
+     * 
+     * @return Whether all validators pass.
+     */
+    public boolean validate() {
+        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+    }
+
+    /**
+     * Add a validator.
+     * 
+     * @param validator The validator to test for.
+     */
+    public void addValidator(final BooleanSupplier validator) {
+        validators.add(validator);
     }
 
     @Override
