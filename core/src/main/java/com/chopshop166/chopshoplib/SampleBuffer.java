@@ -20,7 +20,7 @@ public class SampleBuffer<E> implements Iterable<E> {
     private Class<E> clas;
 
     /**
-     * Creates a Sample Buffer with a capacity of 25.
+     * Create a Sample Buffer with a default length of 25.
      * 
      * 
      */
@@ -37,7 +37,7 @@ public class SampleBuffer<E> implements Iterable<E> {
      */
     public SampleBuffer(final int numSamples) {
         @SuppressWarnings("unchecked")
-        final E[] samples = (E[]) Array.newInstance(this.clas, numSamples);
+        final E[] samples = (E[]) Array.newInstance(clas, numSamples);
         this.samples = samples;
     }
 
