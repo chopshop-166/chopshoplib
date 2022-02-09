@@ -20,7 +20,7 @@ public class SampleBuffer<E> implements Iterable<E> {
     private Class<E> clas;
 
     /**
-     * Creates a Sample Buffer with a capacity of 25..
+     * Creates a Sample Buffer with a capacity of 25.
      * 
      * 
      */
@@ -45,7 +45,7 @@ public class SampleBuffer<E> implements Iterable<E> {
      * Clear the samples
      */
     public void reset() {
-        Arrays.fill(samples, 0);
+        Arrays.fill(samples, null);
         sampleIndex = 0;
         isReset = true;
     }
