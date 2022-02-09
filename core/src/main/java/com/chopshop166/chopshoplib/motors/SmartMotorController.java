@@ -132,6 +132,15 @@ public class SmartMotorController implements Sendable, MotorController {
     }
 
     /**
+     * Test if any validators failed.
+     * 
+     * @return Whether any validators failed.
+     */
+    public boolean errored() {
+        return !validate();
+    }
+
+    /**
      * Add a validator.
      * 
      * @param validator The validator to test for.
