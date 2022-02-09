@@ -71,6 +71,15 @@ public class PIDSparkMax extends SmartMotorController {
     }
 
     /**
+     * Add a validator to make sure that the current is below a provided limit.
+     * 
+     * @param limit The maximum current to allow.
+     */
+    public void validateCurrent(final double limit) {
+        addValidator(() -> sparkMax.getOutputCurrent() < limit);
+    }
+
+    /**
      * Set the control type.
      *
      * @param controlType The controlType to set.
