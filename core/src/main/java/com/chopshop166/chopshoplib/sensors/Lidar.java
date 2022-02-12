@@ -367,7 +367,7 @@ public class Lidar implements Sendable {
         i2cDevice = new I2C(port, kAddress);
 
         // Objects related to statistics
-        samples = new SampleBuffer<Double>(averageOver);
+        samples = new SampleBuffer<>(averageOver);
 
         accessThread = new Thread(this::poll);
         accessThread.setName(String.format("LiDAR-0x%x", kAddress));

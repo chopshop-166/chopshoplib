@@ -53,7 +53,7 @@ public interface Modifier extends DoubleUnaryOperator {
         return new Modifier() {
 
             /** The samples to average. */
-            private SampleBuffer<Double> buffer = new SampleBuffer<Double>(numSamples);
+            private SampleBuffer<Double> buffer = new SampleBuffer<>(numSamples);
 
             @Override
             public double applyAsDouble(final double speed) {
