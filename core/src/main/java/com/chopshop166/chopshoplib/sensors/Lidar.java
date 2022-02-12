@@ -30,7 +30,7 @@ public class Lidar implements Sendable {
     /** True if the measurement is valid. */
     private boolean isValid;
     /** The measurement samples, for averaging. */
-    private SampleBuffer<Short> samples;
+    private SampleBuffer<Double> samples;
 
     /** The standard deviation of the measurements. */
     private double stdDevValue;
@@ -367,7 +367,7 @@ public class Lidar implements Sendable {
         i2cDevice = new I2C(port, kAddress);
 
         // Objects related to statistics
-        samples = new SampleBuffer<Short>(averageOver);
+        samples = new SampleBuffer<Double>(averageOver);
 
         accessThread = new Thread(this::poll);
         accessThread.setName(String.format("LiDAR-0x%x", kAddress));
@@ -402,7 +402,7 @@ public class Lidar implements Sendable {
      */
     public void reset() {
         synchronized (syncObject) {
-            samples.reset();
+            samples.clear();
         }
     }
 
@@ -438,7 +438,7 @@ public class Lidar implements Sendable {
         i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
         synchronized (syncObject) {
-            samples.addSample(bbConvert.getShort());
+            samples.add((double) bbConvert.getShort());
             final Stats stats = Stats.of(samples);
             distanceMM = stats.mean();
             // If the standard deviation is really high then the sensor likely doesn't have

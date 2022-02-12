@@ -57,7 +57,7 @@ public interface Modifier extends DoubleUnaryOperator {
 
             @Override
             public double applyAsDouble(final double speed) {
-                buffer.addSample(speed);
+                buffer.add(speed);
                 return Stats.of(buffer).mean();
             }
         };
