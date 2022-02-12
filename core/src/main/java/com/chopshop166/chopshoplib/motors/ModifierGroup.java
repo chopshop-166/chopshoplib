@@ -9,7 +9,7 @@ import java.util.function.DoubleUnaryOperator;
 /**
  * A group of {@link Modifier} objects.
  */
-public class ModifierGroup {
+public class ModifierGroup implements DoubleUnaryOperator {
 
     /** The actual modifier list. */
     private final List<DoubleUnaryOperator> modifiers = new ArrayList<>();
@@ -35,6 +35,14 @@ public class ModifierGroup {
             speed = m.applyAsDouble(speed);
         }
         return speed;
+    }
+
+    /**
+     * Convenience wrapper to use the modifier group as a modifier.
+     */
+    @Override
+    public double applyAsDouble(final double orig) {
+        return run(orig);
     }
 
     /**
