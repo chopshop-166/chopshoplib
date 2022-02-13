@@ -93,4 +93,16 @@ public interface Modifier extends DoubleUnaryOperator {
     static Modifier speedFilter(final DoublePredicate condition) {
         return (double speed) -> condition.test(speed) ? 0.0 : speed;
     }
+
+    /**
+     * Modifier that sets speed to 0 if a condition is true.
+     * 
+     * The condition doesn't have to be related to the input speed.
+     * 
+     * @param condition The condition to test for.
+     * @return A modifier.
+     */
+    static Modifier unless(final BooleanSupplier condition) {
+        return speed -> condition.getAsBoolean() ? 0.0 : speed;
+    }
 }
