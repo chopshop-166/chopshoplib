@@ -80,14 +80,27 @@ public class BuildCommand extends CommandBase {
     }
 
     /**
-     * Set the finished check.
+     * Set the check to run the command until.
      * 
      * @param check The test for if the command is finished.
      * @return this for chaining.
      */
-    public BuildCommand finishedWhen(final BooleanSupplier check) {
+    public BuildCommand until(final BooleanSupplier check) {
         this.finishedHandler = check;
         return this;
+    }
+
+    /**
+     * Set the finished check.
+     * 
+     * Deprecated. Use {@link #until(BooleanSupplier)} instead.
+     * 
+     * @param check The test for if the command is finished.
+     * @return this for chaining.
+     */
+    @Deprecated
+    public BuildCommand finishedWhen(final BooleanSupplier check) {
+        return this.until(check);
     }
 
     @Override
