@@ -13,4 +13,13 @@ public interface IColorSensor {
      * @return The color.
      */
     Color getColor();
+
+    /**
+     * Get the distance from the color sensor to the detected object.
+     * 
+     * @return Proximity measurement value.
+     */
+    default int getProximity() {
+        return 0;
+    }
 }
