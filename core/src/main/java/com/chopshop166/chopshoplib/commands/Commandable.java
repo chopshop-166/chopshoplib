@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
@@ -236,5 +237,28 @@ interface Commandable {
      */
     default CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
         return CommandGroupBase.deadline(limiter, cmds).withName(name);
+    }
+
+    /**
+     * Create a conditional command.
+     * 
+     * @param condition The condition to test.
+     * @param onTrue    The command to run if the condition is true.
+     * @param onFalse   The command to run if the condition is false.
+     * @return The conditional command.
+     */
+    default CommandBase conditional(final BooleanSupplier condition, final Command onTrue, final Command onFalse) {
+        return new ConditionalCommand(onTrue, onFalse, condition);
+    }
+
+    /**
+     * Create a command that runs unless a condition is true.
+     * 
+     * @param condition The condition to test beforehand.
+     * @param cmd       The command to run.
+     * @return The conditional command.
+     */
+    default CommandBase unless(final BooleanSupplier condition, final Command cmd) {
+        return conditional(condition, cmd, new InstantCommand());
     }
 }
