@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
@@ -175,6 +176,20 @@ interface Commandable {
         return new InstantCommand(() -> {
             func.accept(value);
         }).withName(name);
+    }
+
+    /**
+     * Create a command that sets a motor to a speed while the command is running.
+     * 
+     * @param name  The name of the command.
+     * @param value The value to set the motor to.
+     * @param motor The motor to use.
+     * @return A new command.
+     */
+    default CommandBase runWhile(final String name, final double value, final MotorController motor) {
+        return startEnd(name, () -> {
+            motor.set(value);
+        }, motor::stopMotor);
     }
 
     /**
