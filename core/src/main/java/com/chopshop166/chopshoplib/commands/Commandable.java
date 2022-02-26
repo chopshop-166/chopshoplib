@@ -173,9 +173,9 @@ interface Commandable {
      * @return A new command.
      */
     default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        return new InstantCommand(() -> {
+        return instant(name, () -> {
             func.accept(value);
-        }).withName(name);
+        });
     }
 
     /**
