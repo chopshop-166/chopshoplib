@@ -1,9 +1,11 @@
 package com.chopshop166.chopshoplib.states;
 
+import java.util.function.UnaryOperator;
+
 /**
  * Direction for things such as a roller.
  */
-public enum LinearDirection {
+public enum LinearDirection implements UnaryOperator<Double> {
     // Reverse Direction
     REVERSE {
         /**
@@ -13,7 +15,7 @@ public enum LinearDirection {
          * @return The inverted value.
          */
         @Override
-        public double get(final double value) {
+        public Double apply(final Double value) {
             return -value;
         }
     },
@@ -26,7 +28,7 @@ public enum LinearDirection {
          * @return No speed (0.0).
          */
         @Override
-        public double get(final double value) {
+        public Double apply(final Double value) {
             return 0.0;
         }
     },
@@ -39,16 +41,8 @@ public enum LinearDirection {
          * @return The same value.
          */
         @Override
-        public double get(final double value) {
+        public Double apply(final Double value) {
             return value;
         }
     };
-
-    /**
-     * Get the given speed, inverting if necessary.
-     * 
-     * @param value The input speed.
-     * @return The input speed or its inverted value.
-     */
-    public abstract double get(final double value);
 }
