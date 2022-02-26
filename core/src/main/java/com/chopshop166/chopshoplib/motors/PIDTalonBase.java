@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 
 import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
@@ -25,7 +24,7 @@ public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> exte
      * @param resolution The number of ticks per revolution.
      */
     public PIDTalonBase(final T wrapped, final double resolution) {
-        super(new MockMotorController(), new TalonEncoder(wrapped, resolution));
+        super(wrapped, new TalonEncoder(wrapped, resolution));
         this.wrapped = wrapped;
     }
 
@@ -71,16 +70,6 @@ public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> exte
     }
 
     @Override
-    public void set(final double speed) {
-        wrapped.set(speed);
-    }
-
-    @Override
-    public double get() {
-        return wrapped.get();
-    }
-
-    @Override
     public TalonEncoder getEncoder() {
         // This cast is safe because we're the ones setting it in the first place.
         return (TalonEncoder) super.getEncoder();
@@ -89,10 +78,5 @@ public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> exte
     @Override
     public void setSetpoint(final double setPoint) {
         wrapped.set(savedControlType, setPoint);
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        wrapped.initSendable(builder);
     }
 }
