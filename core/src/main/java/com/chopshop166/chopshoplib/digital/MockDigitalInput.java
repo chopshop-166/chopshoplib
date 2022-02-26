@@ -1,6 +1,4 @@
-package com.chopshop166.chopshoplib.sensors;
-
-import com.chopshop166.chopshoplib.digital.DigitalInputSource;
+package com.chopshop166.chopshoplib.digital;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
