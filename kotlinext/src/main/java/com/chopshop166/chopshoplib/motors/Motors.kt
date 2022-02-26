@@ -56,5 +56,5 @@ fun <T> T.withPID(
         PIDControlType.Position -> SwPIDMotorController.position(this, pid, encoder)
         PIDControlType.Velocity -> SwPIDMotorController.velocity(this, pid, encoder)
         // SmartMotion isn't a thing outside of the Spark MAX
-        PIDControlType.SmartMotion -> SwPIDMotorController.position(this, pid, encoder)
+        else -> SwPIDMotorController.position(this, pid, encoder)
     }.apply(block)

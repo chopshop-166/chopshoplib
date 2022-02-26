@@ -92,6 +92,8 @@ public class PIDSparkMax extends SmartMotorController {
             this.savedControlType = CANSparkMax.ControlType.kVelocity;
         } else if (controlType == PIDControlType.SmartMotion) {
             this.savedControlType = CANSparkMax.ControlType.kSmartMotion;
+        } else if (controlType == PIDControlType.Voltage) {
+            this.savedControlType = CANSparkMax.ControlType.kVoltage;
         }
     }
 

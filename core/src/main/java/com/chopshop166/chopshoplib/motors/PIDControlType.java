@@ -6,6 +6,8 @@ public enum PIDControlType {
     Velocity,
     /** Position based PID. */
     Position,
+    /** Voltage */
+    Voltage,
     /** Smart Motion. */
     SmartMotion
 }
