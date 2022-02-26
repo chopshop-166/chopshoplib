@@ -1,9 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
-import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
-
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
@@ -11,7 +8,6 @@ import com.chopshop166.chopshoplib.Resettable;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -33,31 +29,6 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      */
     default BuildCommand cmd(final String name) {
         return new BuildCommand(name, this);
-    }
-
-    /**
-     * Create a {@link FunctionalCommand} with a name.
-     * 
-     * @param name       The command name.
-     * @param onInit     The action to run on initialize. If null, then will do
-     *                   nothing.
-     * @param onExecute  The action to run on execute. If null, then will do
-     *                   nothing.
-     * @param onEnd      The action to run on end. If null, then will do nothing.
-     * @param isFinished The condition to end the command.
-     * @return A new command.
-     */
-    @Override
-    default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
-            final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        final Runnable realOnInit = getValueOrDefault(onInit, () -> {
-        });
-        final Runnable realOnExec = getValueOrDefault(onExecute, () -> {
-        });
-        final Consumer<Boolean> realOnEnd = getValueOrDefault(onEnd, interrupted -> {
-        });
-        final BooleanSupplier realIsFinished = getValueOrDefault(isFinished, () -> true);
-        return new FunctionalCommand(realOnInit, realOnExec, realOnEnd, realIsFinished, this).withName(name);
     }
 
     /**
