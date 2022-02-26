@@ -53,6 +53,15 @@ public class PIDTalonBase<T extends BaseTalon & MotorController & Sendable> exte
     }
 
     /**
+     * Set the control type to a nonstandard one.
+     *
+     * @param controlType The controlType to set.
+     */
+    public void setControlType(final ControlMode controlType) {
+        this.savedControlType = controlType;
+    }
+
+    /**
      * Get the control mode of the Talon.
      *
      * @return The control mode.
