@@ -87,7 +87,7 @@ public class BuildCommand extends CommandBase {
      * @param check The test for if the command is finished.
      * @return this for chaining.
      */
-    public BuildCommand until(final BooleanSupplier check) {
+    public BuildCommand runsUntil(final BooleanSupplier check) {
         this.finishedHandler = check;
         return this;
     }
@@ -115,7 +115,7 @@ public class BuildCommand extends CommandBase {
      */
     @Deprecated
     public BuildCommand finishedWhen(final BooleanSupplier check) {
-        return this.until(check);
+        return this.runsUntil(check);
     }
 
     @Override
