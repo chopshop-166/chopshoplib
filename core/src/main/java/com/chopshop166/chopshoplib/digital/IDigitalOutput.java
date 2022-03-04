@@ -26,7 +26,7 @@ public interface IDigitalOutput extends Sendable, AutoCloseable {
      *
      * @param pulseLength The length of the pulse.
      */
-    void pulse(final double pulseLength);
+    void pulse(double pulseLength);
 
     /**
      * Determine if the pulse is still going. Determine if a previously started
