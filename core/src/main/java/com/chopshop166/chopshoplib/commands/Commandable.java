@@ -1,18 +1,16 @@
 package com.chopshop166.chopshoplib.commands;
 
-import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
-
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -84,30 +82,6 @@ interface Commandable {
     }
 
     /**
-     * Create a {@link FunctionalCommand} with a name.
-     * 
-     * @param name       The command name.
-     * @param onInit     The action to run on initialize. If null, then will do
-     *                   nothing.
-     * @param onExecute  The action to run on execute. If null, then will do
-     *                   nothing.
-     * @param onEnd      The action to run on end. If null, then will do nothing.
-     * @param isFinished The condition to end the command.
-     * @return A new command.
-     */
-    default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
-            final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        final Runnable realOnInit = getValueOrDefault(onInit, () -> {
-        });
-        final Runnable realOnExec = getValueOrDefault(onExecute, () -> {
-        });
-        final Consumer<Boolean> realOnEnd = getValueOrDefault(onEnd, interrupted -> {
-        });
-        final BooleanSupplier realIsFinished = getValueOrDefault(isFinished, () -> true);
-        return new FunctionalCommand(realOnInit, realOnExec, realOnEnd, realIsFinished).withName(name);
-    }
-
-    /**
      * Create an {@link InstantCommand}.
      * 
      * @param name   The name of the command.
@@ -174,9 +148,23 @@ interface Commandable {
      * @return A new command.
      */
     default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        return new InstantCommand(() -> {
+        return instant(name, () -> {
             func.accept(value);
-        }).withName(name);
+        });
+    }
+
+    /**
+     * Create a command that sets a motor to a speed while the command is running.
+     * 
+     * @param name  The name of the command.
+     * @param value The value to set the motor to.
+     * @param motor The motor to use.
+     * @return A new command.
+     */
+    default CommandBase runWhile(final String name, final double value, final MotorController motor) {
+        return startEnd(name, () -> {
+            motor.set(value);
+        }, motor::stopMotor);
     }
 
     /**

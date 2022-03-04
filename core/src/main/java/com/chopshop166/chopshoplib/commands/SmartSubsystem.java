@@ -1,9 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
-import static com.chopshop166.chopshoplib.RobotUtils.getValueOrDefault;
-
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
@@ -11,7 +8,6 @@ import com.chopshop166.chopshoplib.Resettable;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -33,31 +29,6 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      */
     default BuildCommand cmd(final String name) {
         return new BuildCommand(name, this);
-    }
-
-    /**
-     * Create a {@link FunctionalCommand} with a name.
-     * 
-     * @param name       The command name.
-     * @param onInit     The action to run on initialize. If null, then will do
-     *                   nothing.
-     * @param onExecute  The action to run on execute. If null, then will do
-     *                   nothing.
-     * @param onEnd      The action to run on end. If null, then will do nothing.
-     * @param isFinished The condition to end the command.
-     * @return A new command.
-     */
-    @Override
-    default CommandBase functional(final String name, final Runnable onInit, final Runnable onExecute,
-            final Consumer<Boolean> onEnd, final BooleanSupplier isFinished) {
-        final Runnable realOnInit = getValueOrDefault(onInit, () -> {
-        });
-        final Runnable realOnExec = getValueOrDefault(onExecute, () -> {
-        });
-        final Consumer<Boolean> realOnEnd = getValueOrDefault(onEnd, interrupted -> {
-        });
-        final BooleanSupplier realIsFinished = getValueOrDefault(isFinished, () -> true);
-        return new FunctionalCommand(realOnInit, realOnExec, realOnEnd, realIsFinished, this).withName(name);
     }
 
     /**
@@ -108,40 +79,6 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
     @Override
     default CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
         return parallel(name, new InstantCommand(init, this), new WaitUntilCommand(until));
-    }
-
-    /**
-     * Create a command to call a consumer function.
-     * 
-     * @param <T>   The type to wrap.
-     * @param name  The name of the command.
-     * @param value The value to call the function with.
-     * @param func  The function to call.
-     * @return A new command.
-     */
-    @Override
-    default <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        return new InstantCommand(() -> {
-            func.accept(value);
-        }, this).withName(name);
-    }
-
-    /**
-     * Create a command to call a consumer function and wait.
-     * 
-     * @param <T>   The type to wrap.
-     * @param name  The name of the command.
-     * @param value The value to call the function with.
-     * @param func  The function to call.
-     * @param until The condition to wait until.
-     * @return A new command.
-     */
-    @Override
-    default <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
-            final BooleanSupplier until) {
-        return initAndWait(name, () -> {
-            func.accept(value);
-        }, until);
     }
 
     /**
