@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -248,5 +250,29 @@ interface Commandable {
      */
     default CommandBase unless(final BooleanSupplier condition, final Command cmd) {
         return conditional(condition, cmd, new InstantCommand());
+    }
+
+    /**
+     * Create a command that selects which command to run from a map.
+     * 
+     * @param name     The command's name.
+     * @param commands The possible commands to run.
+     * @param selector The function to determine which command should be run.
+     * @return The wrapper command object.
+     */
+    default CommandBase select(final String name, final Map<Object, Command> commands,
+            final Supplier<Object> selector) {
+        return new SelectCommand(commands, selector).withName(name);
+    }
+
+    /**
+     * Create a command that selects which command to run from a function.
+     * 
+     * @param name     The command's name.
+     * @param selector The function to determine which command should be run.
+     * @return The wrapper command object.
+     */
+    default CommandBase select(final String name, final Supplier<Command> selector) {
+        return new SelectCommand(selector).withName(name);
     }
 }
