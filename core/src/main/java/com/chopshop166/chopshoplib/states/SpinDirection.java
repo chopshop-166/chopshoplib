@@ -1,9 +1,11 @@
 package com.chopshop166.chopshoplib.states;
 
+import java.util.function.UnaryOperator;
+
 /**
  * Enumeration to represent direction of rotation.
  */
-public enum SpinDirection {
+public enum SpinDirection implements UnaryOperator<Double> {
     // Clockwise Direction
     CLOCKWISE {
         /**
@@ -13,8 +15,21 @@ public enum SpinDirection {
          * @return The same value.
          */
         @Override
-        public double get(final double value) {
+        public Double apply(final Double value) {
             return value;
+        }
+    },
+    // Neutral (not moving)
+    NEUTRAL {
+        /**
+         * Get a value (usually speed) adjusted for direction.
+         * 
+         * @param value The input value.
+         * @return No speed (0.0).
+         */
+        @Override
+        public Double apply(final Double value) {
+            return 0.0;
         }
     },
     // Counterclockwise Direction
@@ -26,16 +41,8 @@ public enum SpinDirection {
          * @return The inverted value.
          */
         @Override
-        public double get(final double value) {
+        public Double apply(final Double value) {
             return -value;
         }
     };
-
-    /**
-     * Get the given speed, inverting if necessary.
-     * 
-     * @param value The input speed.
-     * @return The input speed or its inverted value.
-     */
-    public abstract double get(final double value);
 }
