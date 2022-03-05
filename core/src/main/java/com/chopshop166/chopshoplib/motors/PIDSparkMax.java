@@ -82,7 +82,7 @@ public class PIDSparkMax extends SmartMotorController {
     /**
      * Get the output current of the speed controller.
      * 
-     * @return The output current of the speed controller. (A)
+     * @return The output current of the speed controller in Amps.
      */
     public double getOutputCurrent() {
         return sparkMax.getOutputCurrent();
