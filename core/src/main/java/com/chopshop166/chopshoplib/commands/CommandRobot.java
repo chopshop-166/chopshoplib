@@ -5,22 +5,21 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import java.util.stream.Stream;
 
 import com.chopshop166.chopshoplib.Autonomous;
-import com.chopshop166.chopshoplib.HasSafeState;
-import com.chopshop166.chopshoplib.Resettable;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -67,8 +66,6 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
     @Override
     public void disabledInit() {
         CommandScheduler.getInstance().cancelAll();
-        safeStateAll();
-        resetAll();
     }
 
     /**
@@ -150,49 +147,25 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
     }
 
     /**
-     * Reset all objects' states within this robot.
+     * Create a command that resets the provided objects' sensors.
+     * 
+     * @param subsystems The subsystems to make safe.
+     * @return A command
      */
-    public void resetAll() {
-        final Class<? extends RobotBase> clazz = getClass();
-
-        // Get all fields of the class
-        Arrays.stream(clazz.getDeclaredFields())
-                // Filter for the ones that are accessible
-                .filter(field -> field.canAccess(this))
-                // Filter for the ones that are Resettable
-                .filter(field -> Resettable.class.isAssignableFrom(field.getType()))
-                // Call reset on them
-                .forEach(field -> {
-                    try {
-                        final Resettable resettable = (Resettable) field.get(this);
-                        resettable.reset();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
+    public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
+        return parallel("Reset Subsystems",
+                Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new));
     }
 
     /**
-     * Set all objects within this robot with a safe state to that state.
+     * Create a command that set the provided objects to their safe state.
+     * 
+     * @param subsystems The subsystems to make safe.
+     * @return A command
      */
-    public void safeStateAll() {
-        final Class<? extends RobotBase> clazz = getClass();
-
-        // Get all fields of the class
-        Arrays.stream(clazz.getDeclaredFields())
-                // Filter for the ones that are accessible
-                .filter(field -> field.canAccess(this))
-                // Filter for the ones that have safe states
-                .filter(field -> HasSafeState.class.isAssignableFrom(field.getType()))
-                // Trigger the safe state on them
-                .forEach(field -> {
-                    try {
-                        final HasSafeState resettable = (HasSafeState) field.get(this);
-                        resettable.safeState();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
+    public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
+        return parallel("Reset Subsystems",
+                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new));
     }
 
     /**
