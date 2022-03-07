@@ -154,6 +154,78 @@ public class ButtonXboxController extends XboxController {
     }
 
     /**
+     * Get the POV Up button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povUp() {
+        return getPovButton(POVDirection.UP);
+    }
+
+    /**
+     * Get the POV Up Right button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povUpRight() {
+        return getPovButton(POVDirection.UP_RIGHT);
+    }
+
+    /**
+     * Get the POV Right button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povRight() {
+        return getPovButton(POVDirection.RIGHT);
+    }
+
+    /**
+     * Get the POV Down Right button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povDownRight() {
+        return getPovButton(POVDirection.DOWN_RIGHT);
+    }
+
+    /**
+     * Get the POV Down button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povDown() {
+        return getPovButton(POVDirection.DOWN);
+    }
+
+    /**
+     * Get the POV Down Left button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povDownLeft() {
+        return getPovButton(POVDirection.DOWN_LEFT);
+    }
+
+    /**
+     * Get the POV Left button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povLeft() {
+        return getPovButton(POVDirection.LEFT);
+    }
+
+    /**
+     * Get the POV Up Left button.
+     * 
+     * @return A joystick button.
+     */
+    public POVButton povUpLeft() {
+        return getPovButton(POVDirection.UP_LEFT);
+    }
+
+    /**
      * Get a button from this Xbox Controller.
      * <p>
      * Returns the specified button of a Xbox Controller without having to
