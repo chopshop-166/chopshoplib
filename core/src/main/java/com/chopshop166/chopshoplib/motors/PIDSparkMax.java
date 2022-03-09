@@ -134,10 +134,12 @@ public class PIDSparkMax extends SmartMotorController {
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Speed Controller");
+        builder.setSmartDashboardType("Motor Controller");
         builder.setActuator(true);
         builder.setSafeState(this::disable);
         builder.addDoubleProperty("Value", this::get, this::set);
+        builder.addDoubleProperty("Temperature", this::getTemperature, null);
+        builder.addDoubleProperty("Current", this::getOutputCurrent, null);
     }
 
     @Override
@@ -164,6 +166,24 @@ public class PIDSparkMax extends SmartMotorController {
     @Override
     public boolean getInverted() {
         return sparkMax.getInverted();
+    }
+
+    /**
+     * Get Temperature from the motor
+     * 
+     *  @return Returns the temperature.
+     */
+    public double getTemperature() {
+        return sparkMax.getMotorTemperature();
+    }
+
+    /**
+     * Gets the current sent to the motor from the controller
+     *
+     * @return Returns the current
+     */
+    public double getOutputCurrent() {
+        return sparkMax.getOutputCurrent();
     }
 
     @Override
