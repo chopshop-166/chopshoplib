@@ -11,6 +11,8 @@ public class WGyro implements SmartGyro {
     private final Gyro gyro;
     /** The object as a sendable. */
     private final Sendable sendable;
+    /** The offset from the zero-position, for manual alignment. */
+    private double offset;
 
     /**
      * Constructor.
@@ -38,18 +40,22 @@ public class WGyro implements SmartGyro {
     @Override
     public void calibrate() {
         gyro.calibrate();
-
     }
 
     @Override
     public void reset() {
         gyro.reset();
-
+        offset = 0;
     }
 
     @Override
     public double getAngle() {
-        return gyro.getAngle();
+        return gyro.getAngle() - offset;
+    }
+
+    @Override
+    public void setAngle(final double angle) {
+        offset = angle;
     }
 
     @Override

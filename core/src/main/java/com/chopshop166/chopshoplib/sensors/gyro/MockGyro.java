@@ -13,15 +13,6 @@ public class MockGyro implements SmartGyro {
     private double rate;
 
     /**
-     * Set the angle.
-     * 
-     * @param angle The new angle.
-     */
-    public void setAngle(final double angle) {
-        this.angle = angle;
-    }
-
-    /**
      * Set the rate.
      * 
      * @param rate The new rate.
@@ -33,6 +24,16 @@ public class MockGyro implements SmartGyro {
     @Override
     public double getAngle() {
         return angle;
+    }
+
+    /**
+     * Set the angle.
+     * 
+     * @param angle The new angle.
+     */
+    @Override
+    public void setAngle(final double angle) {
+        this.angle = angle;
     }
 
     @Override

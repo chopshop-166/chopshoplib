@@ -84,6 +84,11 @@ public class PigeonGyro implements SmartGyro {
     }
 
     @Override
+    public void setAngle(final double angleDeg) {
+        gyro.setFusedHeading(angleDeg);
+    }
+
+    @Override
     public void calibrate() {
         // NoOp
     }
