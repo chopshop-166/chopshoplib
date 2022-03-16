@@ -1,16 +1,14 @@
-package com.chopshop166.chopshoplib.sensors;
+package com.chopshop166.chopshoplib.sensors.gyro;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * Gyro Base wrapper for the Pigeon IMU
  */
-public class PigeonGyro implements Gyro, Sendable {
+public class PigeonGyro implements SmartGyro {
 
     /** The wrapped object. */
     final private PigeonIMU gyro;

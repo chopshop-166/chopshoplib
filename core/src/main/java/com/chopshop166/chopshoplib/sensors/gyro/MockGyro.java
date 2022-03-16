@@ -1,13 +1,11 @@
-package com.chopshop166.chopshoplib.sensors;
+package com.chopshop166.chopshoplib.sensors.gyro;
 
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * A mock Gyro implementation.
  */
-public class MockGyro implements Gyro, Sendable {
+public class MockGyro implements SmartGyro {
 
     /** The angle it's rotated to. */
     private double angle;

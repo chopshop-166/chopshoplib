@@ -1,8 +1,9 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.chopshop166.chopshoplib.sensors.WGyro;
 import com.chopshop166.chopshoplib.motors.SmartMotorController;
-import com.chopshop166.chopshoplib.sensors.MockGyro;
+import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
+import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
+import com.chopshop166.chopshoplib.sensors.gyro.WGyro;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.util.sendable.Sendable;
@@ -23,7 +24,7 @@ public class DifferentialDriveMap {
     /** Kinematics information */
     private final DifferentialDriveKinematics kinematics;
     /** The gyro */
-    private final WGyro gyro;
+    private final SmartGyro gyro;
 
     /**
      * Default constructor.
@@ -99,9 +100,9 @@ public class DifferentialDriveMap {
     /**
      * Gets a Gyro.
      * 
-     * @return The gyro object as a {@link WGyro}.
+     * @return The gyro object as a {@link SmartGyro}.
      */
-    public WGyro getGyro() {
+    public SmartGyro getGyro() {
         return gyro;
     }
 
