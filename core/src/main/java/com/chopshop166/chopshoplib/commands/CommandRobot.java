@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.commands;
 
 import java.io.IOException;
+import java.lang.reflect.AccessibleObject;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.jar.Attributes;
@@ -111,8 +112,8 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
 
         // Get all fields of the class
         Arrays.stream(clazz.getDeclaredFields())
-                // Filter for the ones that are accessible
-                .filter(field -> field.canAccess(this))
+                // Filter for the ones that we can make accessible
+                .filter(AccessibleObject::trySetAccessible)
                 // Filter for the ones that return a Command-derived type
                 .filter(field -> Command.class.isAssignableFrom(field.getType()))
                 // Make sure it has the annotation
