@@ -1,16 +1,18 @@
-package com.chopshop166.chopshoplib.sensors;
+package com.chopshop166.chopshoplib.sensors.gyro;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-/** Wrapper around a gyro. */
-public class WGyro implements Gyro, Sendable {
+/** Wrapper around a WPIlib built in gyro. */
+public class WGyro implements SmartGyro {
 
     /** The object as a gyro. */
     private final Gyro gyro;
     /** The object as a sendable. */
     private final Sendable sendable;
+    /** The offset from the zero-position, for manual alignment. */
+    private double offset;
 
     /**
      * Constructor.
@@ -38,18 +40,22 @@ public class WGyro implements Gyro, Sendable {
     @Override
     public void calibrate() {
         gyro.calibrate();
-
     }
 
     @Override
     public void reset() {
         gyro.reset();
-
+        offset = 0;
     }
 
     @Override
     public double getAngle() {
-        return gyro.getAngle();
+        return gyro.getAngle() - offset;
+    }
+
+    @Override
+    public void setAngle(final double angle) {
+        offset = angle;
     }
 
     @Override
