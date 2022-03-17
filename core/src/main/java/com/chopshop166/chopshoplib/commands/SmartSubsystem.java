@@ -82,6 +82,18 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
     }
 
     /**
+     * Create a command to run after a given time.
+     * 
+     * @param timeDelta Time in seconds to wait between calls.
+     * @param periodic  The runnable to execute.
+     * @return A new command.
+     */
+    @Override
+    default CommandBase every(final double timeDelta, final Runnable periodic) {
+        return new ElapsedTimeCommand(timeDelta, this, periodic);
+    }
+
+    /**
      * Create a command to reset the subsystem.
      * 
      * @return A reset command.

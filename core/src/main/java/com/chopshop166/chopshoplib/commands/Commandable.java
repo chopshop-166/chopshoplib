@@ -275,4 +275,15 @@ public interface Commandable {
     default CommandBase select(final String name, final Supplier<Command> selector) {
         return new SelectCommand(selector).withName(name);
     }
+
+    /**
+     * Create a command to run after a given time.
+     * 
+     * @param timeDelta Time in seconds to wait between calls.
+     * @param periodic  The runnable to execute.
+     * @return A new command.
+     */
+    default CommandBase every(final double timeDelta, final Runnable periodic) {
+        return new ElapsedTimeCommand(timeDelta, periodic);
+    }
 }
