@@ -242,13 +242,13 @@ public interface Commandable {
     }
 
     /**
-     * Create a command that runs unless a condition is true.
-     *
+     * Create a command that runs only if a condition is true.
+     * 
      * @param condition The condition to test beforehand.
      * @param cmd       The command to run.
      * @return The conditional command.
      */
-    default CommandBase unless(final BooleanSupplier condition, final Command cmd) {
+    default CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
         return conditional(condition, cmd, new InstantCommand());
     }
 
