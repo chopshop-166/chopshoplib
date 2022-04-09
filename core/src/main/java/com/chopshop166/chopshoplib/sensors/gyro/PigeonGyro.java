@@ -23,6 +23,14 @@ public class PigeonGyro implements SmartGyro {
     public PigeonGyro(final PigeonIMU gyro) {
         super();
         this.gyro = gyro;
+        
+        // Automatically invert if the gyro is upside-down
+        short accelerometerXYZ[] = new short[3];
+        this.gyro.getBiasedAccelerometer(accelerometerXYZ);
+        if(accelerometerXYZ[2] < 0)
+        {
+            setInverted(true);
+        }
     }
 
     /**
