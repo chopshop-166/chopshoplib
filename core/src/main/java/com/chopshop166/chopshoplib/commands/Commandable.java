@@ -277,13 +277,13 @@ public interface Commandable {
     }
 
     /**
-     * Create a command to run after a given time.
+     * Create a command to run at regular intervals.
      * 
      * @param timeDelta Time in seconds to wait between calls.
      * @param periodic  The runnable to execute.
      * @return A new command.
      */
     default CommandBase every(final double timeDelta, final Runnable periodic) {
-        return new ElapsedTimeCommand(timeDelta, periodic);
+        return new IntervalCommand(timeDelta, periodic);
     }
 }

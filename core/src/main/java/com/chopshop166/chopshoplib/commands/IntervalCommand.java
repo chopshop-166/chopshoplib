@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 /**
  * A command that executes a runnable each time a given time span has elapsed.
  */
-public class ElapsedTimeCommand extends CommandBase {
+public class IntervalCommand extends CommandBase {
 
     /** Advances when time has passed, triggers the runnable. */
     private final Timer elapsedTimer = new Timer();
@@ -22,7 +22,7 @@ public class ElapsedTimeCommand extends CommandBase {
      * @param timeDelta Time in seconds to wait between calls.
      * @param periodic  The runnable to execute.
      */
-    public ElapsedTimeCommand(final double timeDelta, final Runnable periodic) {
+    public IntervalCommand(final double timeDelta, final Runnable periodic) {
         super();
         this.timeDelta = timeDelta;
         this.periodic = periodic;
@@ -35,7 +35,7 @@ public class ElapsedTimeCommand extends CommandBase {
      * @param requirement The subsystem that the command depends on.
      * @param periodic    The runnable to execute.
      */
-    public ElapsedTimeCommand(final double timeDelta, final Subsystem requirement, final Runnable periodic) {
+    public IntervalCommand(final double timeDelta, final Subsystem requirement, final Runnable periodic) {
         this(timeDelta, periodic);
         addRequirements(requirement);
     }
