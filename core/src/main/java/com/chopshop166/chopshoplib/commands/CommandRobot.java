@@ -233,7 +233,7 @@ public abstract class CommandRobot extends TimedRobot implements Commandable {
                     // Find all annotations that provide a name
                     for (final RobotMapFor annotation : clazz.getAnnotationsByType(RobotMapFor.class)) {
                         // Check to see if the name matches
-                        if (annotation.value().equals(name)) {
+                        if (annotation.value().equalsIgnoreCase(name)) {
                             return theClass.getDeclaredConstructor().newInstance();
                         }
                     }
