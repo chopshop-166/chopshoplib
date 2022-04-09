@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 /**
  * Utilities related to commands.
  */
-interface Commandable {
+public interface Commandable {
 
     /**
      * Repeat a {@link Command} a given number of times.
-     * 
+     *
      * @param name          The name of the command.
      * @param numTimesToRun The number of times to run the command.
      * @param cmd           The command to repeat.
@@ -38,7 +38,7 @@ interface Commandable {
 
     /**
      * Repeat a {@link Command} a given number of times.
-     * 
+     *
      * @param numTimesToRun The number of times to run the command.
      * @param cmd           The command to repeat.
      * @return A newly constructed command.
@@ -49,7 +49,7 @@ interface Commandable {
 
     /**
      * Repeat a {@link Command} a given number of times.
-     * 
+     *
      * @param name          The name of the command.
      * @param numTimesToRun The number of times to run the command.
      * @param cmd           A way to create the command to repeat.
@@ -61,7 +61,7 @@ interface Commandable {
 
     /**
      * Repeat a {@link Command} a given number of times.
-     * 
+     *
      * @param numTimesToRun The number of times to run the command.
      * @param cmd           A way to create the command to repeat.
      * @return A newly constructed command group.
@@ -72,7 +72,7 @@ interface Commandable {
 
     /**
      * Create a command builder with a given name.
-     * 
+     *
      * @param name         The command name.
      * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.
@@ -83,7 +83,7 @@ interface Commandable {
 
     /**
      * Create an {@link InstantCommand}.
-     * 
+     *
      * @param name   The name of the command.
      * @param action The action to take.
      * @return A new command.
@@ -94,7 +94,7 @@ interface Commandable {
 
     /**
      * Create a {@link RunCommand}.
-     * 
+     *
      * @param name   The name of the command.
      * @param action The action to take.
      * @return A new command.
@@ -105,7 +105,7 @@ interface Commandable {
 
     /**
      * Create a {@link StartEndCommand}.
-     * 
+     *
      * @param name    The name of the command.
      * @param onStart The action to take on start.
      * @param onEnd   The action to take on end.
@@ -117,7 +117,7 @@ interface Commandable {
 
     /**
      * Wait until a condition is true.
-     * 
+     *
      * @param name  The name of the command.
      * @param until The condition to wait until.
      * @return A new command.
@@ -128,7 +128,7 @@ interface Commandable {
 
     /**
      * Run a {@link Runnable} and then wait until a condition is true.
-     * 
+     *
      * @param name  The name of the command.
      * @param init  The action to take.
      * @param until The condition to wait until.
@@ -140,7 +140,7 @@ interface Commandable {
 
     /**
      * Create a command to call a consumer function.
-     * 
+     *
      * @param <T>   The type to wrap.
      * @param name  The name of the command.
      * @param value The value to call the function with.
@@ -155,7 +155,7 @@ interface Commandable {
 
     /**
      * Create a command that sets a motor to a speed while the command is running.
-     * 
+     *
      * @param name  The name of the command.
      * @param value The value to set the motor to.
      * @param motor The motor to use.
@@ -169,7 +169,7 @@ interface Commandable {
 
     /**
      * Create a command to call a consumer function and wait.
-     * 
+     *
      * @param <T>   The type to wrap.
      * @param name  The name of the command.
      * @param value The value to call the function with.
@@ -186,7 +186,7 @@ interface Commandable {
 
     /**
      * Create a sequential command group with a name.
-     * 
+     *
      * @param name The name of the command group.
      * @param cmds The commands to sequence.
      * @return A new command group.
@@ -197,7 +197,7 @@ interface Commandable {
 
     /**
      * Create a parallel command group with a name.
-     * 
+     *
      * @param name The name of the command group.
      * @param cmds The commands to run in parallel.
      * @return A new command group.
@@ -208,7 +208,7 @@ interface Commandable {
 
     /**
      * Create a racing command group with a name.
-     * 
+     *
      * @param name   The name of the command group.
      * @param racers The commands to race.
      * @return A new command group.
@@ -219,7 +219,7 @@ interface Commandable {
 
     /**
      * Create a deadline-limited command group with a name.
-     * 
+     *
      * @param name    The name of the command group.
      * @param limiter The deadline command.
      * @param cmds    The commands to run until the deadline ends.
@@ -231,7 +231,7 @@ interface Commandable {
 
     /**
      * Create a conditional command.
-     * 
+     *
      * @param condition The condition to test.
      * @param onTrue    The command to run if the condition is true.
      * @param onFalse   The command to run if the condition is false.
@@ -243,7 +243,7 @@ interface Commandable {
 
     /**
      * Create a command that runs unless a condition is true.
-     * 
+     *
      * @param condition The condition to test beforehand.
      * @param cmd       The command to run.
      * @return The conditional command.
@@ -254,7 +254,7 @@ interface Commandable {
 
     /**
      * Create a command that selects which command to run from a map.
-     * 
+     *
      * @param name     The command's name.
      * @param commands The possible commands to run.
      * @param selector The function to determine which command should be run.
@@ -267,7 +267,7 @@ interface Commandable {
 
     /**
      * Create a command that selects which command to run from a function.
-     * 
+     *
      * @param name     The command's name.
      * @param selector The function to determine which command should be run.
      * @return The wrapper command object.
