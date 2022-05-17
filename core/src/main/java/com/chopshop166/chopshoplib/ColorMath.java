@@ -2,29 +2,81 @@ package com.chopshop166.chopshoplib;
 
 import edu.wpi.first.wpilibj.util.Color;
 
-public class ColorMath {
+/**
+ * A utility class for doing vector math with the Color object
+ */
+public final class ColorMath {
 
-    public static Color plus(Color lhs, Color rhs) {
+    private ColorMath() {
+
+    }
+
+    /**
+     * Adds two colors together
+     * 
+     * @param lhs Left-hand side
+     * @param rhs Right-hand side
+     * @return lhs + rhs
+     */
+    public static Color plus(final Color lhs, final Color rhs) {
         return new Color(lhs.red + rhs.red, lhs.green + rhs.green, lhs.blue + rhs.blue);
     }
 
-    public static Color minus(Color lhs, Color rhs) {
+    /**
+     * Subtract two colors
+     * 
+     * @param lhs Left-hand side
+     * @param rhs Right-hand side
+     * @return lhs - rhs
+     */
+    public static Color minus(final Color lhs, final Color rhs) {
         return new Color(lhs.red - rhs.red, lhs.green - rhs.green, lhs.blue - rhs.blue);
     }
 
-    public static Color times(Color color, double scalar) {
+    /**
+     * Multiply a color by a scalar value
+     * 
+     * @param color
+     * @param scalar
+     * @return color * scalar
+     */
+    public static Color times(final Color color, final double scalar) {
         return new Color(color.red * scalar, color.green * scalar, color.blue * scalar);
     }
 
-    public static Color div(Color color, double scalar) {
+    /**
+     * Divide a color by a scalar value
+     * 
+     * @param color
+     * @param scalar
+     * @return color / scalar
+     */
+    public static Color div(final Color color, final double scalar) {
         return new Color(color.red / scalar, color.green / scalar, color.blue / scalar);
     }
 
-    public static double dot(Color lhs, Color rhs) {
+    /**
+     * Takes the dot product of two colors
+     * 
+     * @param lhs
+     * @param rhs
+     * @return lhs * rhs
+     */
+    public static double dot(final Color lhs, final Color rhs) {
         return lhs.red * rhs.red + lhs.green * rhs.green + lhs.blue * rhs.blue;
     }
 
-    public static Color lerp(Color a, Color b, double factor) {
-        return plus(times(minus(b, a), factor), a);
+    /**
+     * Interpolates
+     * 
+     * @param start  the starting color
+     * @param end    the ending color
+     * @param factor the interpolation factor (0 results in the start color, 1
+     *               results in the end color, going beyond 0 or 1 will extrapolate
+     *               past the start and end colors)
+     * @return A blend of the two colors based on the factor
+     */
+    public static Color lerp(final Color start, final Color end, final double factor) {
+        return plus(times(minus(end, start), factor), start);
     }
 }
