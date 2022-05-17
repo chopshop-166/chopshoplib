@@ -8,9 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * A command that does nothing but takes a specified amount of time to finish.
- * Useful for
- * CommandGroups. Can also be subclassed to make a command with an internal
- * timer.
+ * Useful for CommandGroups. Can also be subclassed to make a command with an
+ * internal timer.
  *
  */
 public class FunctionalWaitCommand extends CommandBase {
