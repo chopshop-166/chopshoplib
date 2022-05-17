@@ -27,12 +27,12 @@ public class FunctionalWaitCommand extends CommandBase {
      * Creates a new FunctionalWaitCommand. This command will do nothing, and end
      * after the duration that is supplied.
      *
-     * @param duration a DoubleSupplier returning the time to wait, in seconds.
+     * @param durationSupplier a DoubleSupplier returning the time to wait, in
+     *                         seconds.
      */
-    public FunctionalWaitCommand(final DoubleSupplier duration) {
+    public FunctionalWaitCommand(final DoubleSupplier durationSupplier) {
         super();
-        durationSupplier = duration;
-        SendableRegistry.setName(this, getName());
+        this.durationSupplier = durationSupplier;
     }
 
     @Override
