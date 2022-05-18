@@ -28,10 +28,11 @@ public class FunctionalWaitCommand extends CommandBase {
      *
      * @param durationSupplier a DoubleSupplier returning the time to wait, in
      *                         seconds.
+     * @param name             The name of the command
      */
-    public FunctionalWaitCommand(final DoubleSupplier durationSupplier) {
-        super();
-        this.durationSupplier = durationSupplier;
+    public FunctionalWaitCommand(final DoubleSupplier durationSupplier, final String name) {
+        this(durationSupplier);
+        setName(name);
     }
 
     /**
@@ -40,11 +41,10 @@ public class FunctionalWaitCommand extends CommandBase {
      *
      * @param durationSupplier a DoubleSupplier returning the time to wait, in
      *                         seconds.
-     * @param name             The name of the command
      */
-    public FunctionalWaitCommand(final DoubleSupplier durationSupplier, String name) {
-        this(durationSupplier);
-        setName(name);
+    public FunctionalWaitCommand(final DoubleSupplier durationSupplier) {
+        super();
+        this.durationSupplier = durationSupplier;
     }
 
     @Override
