@@ -2,7 +2,6 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
