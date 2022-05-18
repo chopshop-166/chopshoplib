@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
@@ -73,10 +74,12 @@ public class PIDSparkMax extends SmartMotorController {
     /**
      * Add a validator to make sure that the current is below a provided limit.
      * 
-     * @param limit The maximum current to allow.
+     * @param limit              The maximum current to allow.
+     * @param filterTimeConstant The time constant of the IIR filter.
      */
-    public void validateCurrent(final double limit) {
-        addValidator(() -> sparkMax.getOutputCurrent() < limit);
+    public void validateCurrent(final double limit, final double filterTimeConstant) {
+        final LinearFilter currentFilter = LinearFilter.singlePoleIIR(filterTimeConstant, 0.02);
+        addValidator(() -> currentFilter.calculate(sparkMax.getOutputCurrent()) < limit);
     }
 
     /**
@@ -171,7 +174,7 @@ public class PIDSparkMax extends SmartMotorController {
     /**
      * Get Temperature from the motor
      * 
-     *  @return Returns the temperature.
+     * @return Returns the temperature.
      */
     public double getTemperature() {
         return sparkMax.getMotorTemperature();
