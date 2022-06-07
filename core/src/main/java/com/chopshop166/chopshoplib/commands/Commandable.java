@@ -242,13 +242,13 @@ public interface Commandable {
     }
 
     /**
-     * Create a command that runs unless a condition is true.
-     *
+     * Create a command that runs only if a condition is true.
+     * 
      * @param condition The condition to test beforehand.
      * @param cmd       The command to run.
      * @return The conditional command.
      */
-    default CommandBase unless(final BooleanSupplier condition, final Command cmd) {
+    default CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
         return conditional(condition, cmd, new InstantCommand());
     }
 
@@ -274,5 +274,16 @@ public interface Commandable {
      */
     default CommandBase select(final String name, final Supplier<Command> selector) {
         return new SelectCommand(selector).withName(name);
+    }
+
+    /**
+     * Create a command to run at regular intervals.
+     * 
+     * @param timeDelta Time in seconds to wait between calls.
+     * @param periodic  The runnable to execute.
+     * @return A new command.
+     */
+    default CommandBase every(final double timeDelta, final Runnable periodic) {
+        return new IntervalCommand(timeDelta, periodic);
     }
 }
