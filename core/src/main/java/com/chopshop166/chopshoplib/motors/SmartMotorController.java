@@ -149,6 +149,15 @@ public class SmartMotorController implements Sendable, MotorController {
         validators.add(validator);
     }
 
+    /**
+     * Validate whether the encoder rate is above a certain threshold
+     * 
+     * @param rateThreshold the threshold to validate
+     */
+    public void validateEncoderRate(final double rateThreshold) {
+        addValidator(() -> Math.abs(encoder.getRate()) >= rateThreshold);
+    }
+
     @Override
     public void set(final double speed) {
         wrapped.set(speed);
