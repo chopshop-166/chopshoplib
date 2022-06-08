@@ -81,6 +81,20 @@ public final class ColorMath {
     }
 
     /**
+     * Interpolates smoothly between two numbers
+     * 
+     * @param start  the starting number
+     * @param end    the ending number
+     * @param factor the interpolation factor (0 results in the start number, 1
+     *               results in the end number, going beyond 0 or 1 will extrapolate
+     *               past the start and end numbers)
+     * @return a blend of the two numbers based on the factor
+     */
+    private static double scalarLerp(final double start, final double end, final double factor) {
+        return (end - start) * factor + start;
+    }
+
+    /**
      * Interpolates smoothly between two colors.
      * 
      * @param start  the starting color
@@ -88,9 +102,12 @@ public final class ColorMath {
      * @param factor the interpolation factor (0 results in the start color, 1
      *               results in the end color, going beyond 0 or 1 will extrapolate
      *               past the start and end colors)
-     * @return A blend of the two colors based on the factor
+     * @return a blend of the two colors based on the factor
      */
     public static Color lerp(final Color start, final Color end, final double factor) {
-        return plus(times(minus(end, start), factor), start);
+        return new Color(
+                scalarLerp(start.red, end.red, factor),
+                scalarLerp(start.green, end.green, factor),
+                scalarLerp(start.blue, end.blue, factor));
     }
 }
