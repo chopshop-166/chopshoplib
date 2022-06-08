@@ -3,7 +3,7 @@ package com.chopshop166.chopshoplib;
 import edu.wpi.first.wpilibj.util.Color;
 
 /**
- * A utility class for doing vector math with the Color object
+ * A utility class for doing vector math with the Color object.
  */
 public final class ColorMath {
 
@@ -12,7 +12,7 @@ public final class ColorMath {
     }
 
     /**
-     * Adds two colors together
+     * Adds two colors together.
      * 
      * @param lhs Left-hand side
      * @param rhs Right-hand side
@@ -23,7 +23,7 @@ public final class ColorMath {
     }
 
     /**
-     * Subtract two colors
+     * Subtract two colors.
      * 
      * @param lhs Left-hand side
      * @param rhs Right-hand side
@@ -34,10 +34,10 @@ public final class ColorMath {
     }
 
     /**
-     * Multiply a color by a scalar value
+     * Multiply a color by a scalar value.
      * 
-     * @param color
-     * @param scalar
+     * @param color  Color that gets multiplied by the scalar
+     * @param scalar Number that multiplies the color
      * @return color * scalar
      */
     public static Color times(final Color color, final double scalar) {
@@ -45,10 +45,10 @@ public final class ColorMath {
     }
 
     /**
-     * Divide a color by a scalar value
+     * Divide a color by a scalar value.
      * 
-     * @param color
-     * @param scalar
+     * @param color  Color that gets divided by the scalar
+     * @param scalar Number that divides the color
      * @return color / scalar
      */
     public static Color div(final Color color, final double scalar) {
@@ -56,10 +56,10 @@ public final class ColorMath {
     }
 
     /**
-     * Takes the dot product of two colors
+     * Takes the dot product of two colors.
      * 
-     * @param lhs
-     * @param rhs
+     * @param lhs Left-hand side
+     * @param rhs Right-hand side
      * @return lhs * rhs
      */
     public static double dot(final Color lhs, final Color rhs) {
@@ -67,7 +67,7 @@ public final class ColorMath {
     }
 
     /**
-     * Interpolates
+     * Interpolates smoothly between two colors.
      * 
      * @param start  the starting color
      * @param end    the ending color
