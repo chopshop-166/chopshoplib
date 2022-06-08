@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.util.Color;
 final class ColorMathTest {
 
     /** The acceptable error for equality */
-    private static final double EPSILON = 0.01;
+    private static final double EPSILON = 0.001;
 
     @Test
     /* package */ void testEquality() {
