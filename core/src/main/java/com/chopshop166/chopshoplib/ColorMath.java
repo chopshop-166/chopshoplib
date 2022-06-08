@@ -67,6 +67,20 @@ public final class ColorMath {
     }
 
     /**
+     * Compares if two colors are equal.
+     * 
+     * @param lhs     Left-hand side
+     * @param rhs     Right-hand side
+     * @param epsilon The acceptable error
+     * @return lhs == rhs
+     */
+    public static boolean equals(final Color lhs, final Color rhs, final double epsilon) {
+        return Math.abs(lhs.red - rhs.red) <= epsilon &&
+                Math.abs(lhs.green - rhs.green) <= epsilon &&
+                Math.abs(lhs.blue - rhs.blue) <= epsilon;
+    }
+
+    /**
      * Interpolates smoothly between two colors.
      * 
      * @param start  the starting color
