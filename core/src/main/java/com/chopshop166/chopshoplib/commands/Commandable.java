@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -274,5 +275,15 @@ public interface Commandable {
      */
     default CommandBase select(final String name, final Supplier<Command> selector) {
         return new SelectCommand(selector).withName(name);
+    }
+
+    /**
+     * Create a command that waits for the duration provided by a DoubleSupplier
+     * 
+     * @param durationSupplier function that returns the number of seconds to wait
+     * @return The wait command
+     */
+    default CommandBase wait(final DoubleSupplier durationSupplier) {
+        return new FunctionalWaitCommand(durationSupplier);
     }
 }
