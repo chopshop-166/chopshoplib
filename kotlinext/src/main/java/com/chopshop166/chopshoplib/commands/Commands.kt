@@ -6,9 +6,11 @@ import com.chopshop166.chopshoplib.commands.CommandRobot
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.CommandGroupBase
+import edu.wpi.first.wpilibj2.command.ConditionalCommand
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.RunCommand
 import edu.wpi.first.wpilibj2.command.StartEndCommand
+import edu.wpi.first.wpilibj2.command.SelectCommand
 import edu.wpi.first.wpilibj2.command.Subsystem
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.WaitCommand
@@ -171,7 +173,7 @@ fun initAndWait(name : String, init : () -> Unit, until : () -> Boolean) =
  */
 fun <T> Subsystem.setter(name : String, value : T, func : (T) -> Unit) =
     instant(name) {
-        func(value);
+        func(value)
     }
 
 /**
@@ -185,7 +187,7 @@ fun <T> Subsystem.setter(name : String, value : T, func : (T) -> Unit) =
  */
 fun <T> setter(name : String, value : T, func : (T) -> Unit) =
     instant(name) {
-        func(value);
+        func(value)
     }
 
 /**
@@ -201,7 +203,7 @@ fun <T> setter(name : String, value : T, func : (T) -> Unit) =
 fun <T> Subsystem.callAndWait(name : String, value : T, func : (T) -> Unit, until : () -> Boolean) =
     initAndWait(name, {
         func(value);
-    }, until);
+    }, until)
 
 /**
  * Create a command to call a consumer function and wait.
@@ -216,7 +218,69 @@ fun <T> Subsystem.callAndWait(name : String, value : T, func : (T) -> Unit, unti
 fun <T> callAndWait(name : String, value : T, func : (T) -> Unit, until : () -> Boolean) =
     initAndWait(name, {
         func(value);
-    }, until);
+    }, until)
+
+/**
+ * Create a conditional command.
+ * 
+ * @param condition The condition to test.
+ * @param onTrue    The command to run if the condition is true.
+ * @param onFalse   The command to run if the condition is false.
+ * @return The conditional command.
+ */
+fun conditional(condition : () -> Boolean, onTrue : Command, onFalse : Command) =
+    ConditionalCommand(onTrue, onFalse, condition)
+
+/**
+ * Create a command that runs only if a condition is true.
+ * 
+ * @param condition The condition to test beforehand.
+ * @param cmd       The command to run.
+ * @return The conditional command.
+ */
+fun runIf(condition : () -> Boolean, cmd : Command) =
+    conditional(condition, cmd, InstantCommand())
+
+/**
+ * Create a command that selects which command to run from a map.
+ * 
+ * @param name     The command's name.
+ * @param commands The possible commands to run.
+ * @param selector The function to determine which command should be run.
+ * @return The wrapper command object.
+ */
+fun select(name : String, commands : Map<Any, Command>, selector: () -> Any) =
+    SelectCommand(commands, selector).withName(name)
+
+/**
+ * Create a command that selects which command to run from a function.
+ * 
+ * @param name     The command's name.
+ * @param selector The function to determine which command should be run.
+ * @return The wrapper command object.
+ */
+fun select(name : String, selector : () -> Command) =
+    SelectCommand(selector).withName(name)
+
+/**
+ * Create a command to run at regular intervals.
+ * 
+ * @param timeDelta Time in seconds to wait between calls.
+ * @param periodic  The runnable to execute.
+ * @return A new command.
+ */
+fun every(timeDelta : Double, periodic : () -> Unit) =
+    IntervalCommand(timeDelta, periodic)
+
+/**
+ * Create a command to run at regular intervals.
+ * 
+ * @param timeDelta Time in seconds to wait between calls.
+ * @param periodic  The runnable to execute.
+ * @return A new command.
+ */
+fun Subsystem.every(timeDelta : Double, periodic : () -> Unit) =
+    IntervalCommand(timeDelta, this, periodic)
 
 /**
  * Create a command to reset the subsystem sensors.
