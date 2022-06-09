@@ -298,4 +298,15 @@ public interface Commandable {
     default CommandBase wait(final String name, final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(durationSupplier, name);
     }
+
+    /**
+     * Create a command that waits for the duration provided by a DoubleSupplier
+     * 
+     * @param durationSupplier function that returns the number of seconds to wait
+     * @return The wait command
+     */
+    default CommandBase wait(final DoubleSupplier durationSupplier) {
+        return new FunctionalWaitCommand(durationSupplier);
+    }
+
 }
