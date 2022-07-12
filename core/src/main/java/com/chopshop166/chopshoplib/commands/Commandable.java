@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
@@ -291,22 +292,32 @@ public interface Commandable {
     /**
      * Create a command that waits for the duration provided by a DoubleSupplier
      * 
-     * @param name             the command's name
-     * @param durationSupplier function that returns the number of seconds to wait
+     * @param name             The command's name
+     * @param durationSupplier Function that returns the number of seconds to wait
      * @return The wait command
      */
     default CommandBase wait(final String name, final DoubleSupplier durationSupplier) {
-        return new FunctionalWaitCommand(durationSupplier, name);
+        return new FunctionalWaitCommand(name, durationSupplier);
     }
 
     /**
      * Create a command that waits for the duration provided by a DoubleSupplier
      * 
-     * @param durationSupplier function that returns the number of seconds to wait
+     * @param durationSupplier Function that returns the number of seconds to wait
      * @return The wait command
      */
     default CommandBase wait(final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(durationSupplier);
+    }
+
+    /**
+     * Create a WaitCommand
+     * 
+     * @param duration The duration in seconds
+     * @return The wait command
+     */
+    default CommandBase wait(final double duration) {
+        return new WaitCommand(duration);
     }
 
 }
