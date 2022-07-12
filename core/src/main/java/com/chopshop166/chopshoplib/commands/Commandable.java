@@ -296,7 +296,7 @@ public interface Commandable {
      * @param durationSupplier Function that returns the number of seconds to wait
      * @return The wait command
      */
-    default CommandBase wait(final String name, final DoubleSupplier durationSupplier) {
+    default CommandBase waitFor(final String name, final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(name, durationSupplier);
     }
 
@@ -306,7 +306,7 @@ public interface Commandable {
      * @param durationSupplier Function that returns the number of seconds to wait
      * @return The wait command
      */
-    default CommandBase wait(final DoubleSupplier durationSupplier) {
+    default CommandBase waitFor(final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(durationSupplier);
     }
 
@@ -316,7 +316,7 @@ public interface Commandable {
      * @param duration The duration in seconds
      * @return The wait command
      */
-    default CommandBase wait(final double duration) {
+    default CommandBase waitFor(final double duration) {
         return new WaitCommand(duration);
     }
 
