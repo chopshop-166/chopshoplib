@@ -30,7 +30,7 @@ public class FunctionalWaitCommand extends CommandBase {
      *                         seconds.
      * @param name             The name of the command
      */
-    public FunctionalWaitCommand(final DoubleSupplier durationSupplier, final String name) {
+    public FunctionalWaitCommand(final String name, final DoubleSupplier durationSupplier) {
         this(durationSupplier);
         setName(name);
     }
