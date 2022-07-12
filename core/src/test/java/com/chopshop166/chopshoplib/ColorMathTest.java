@@ -80,21 +80,63 @@ final class ColorMathTest {
                 "Color dot product returns correct value");
     }
 
-    /** Check color interpolation */
+    /** Check color middle interpolation */
     @Test
-    /* package */ void testLerp() {
+    /* package */ void testMiddleLerp() {
         final Color colorStart = new Color(0.2, 0.4, 0.15);
         final Color colorEnd = new Color(0.85, 0.2, 0.9);
 
         final Color expected = new Color(0.525, 0.3, 0.525);
-
         final Color result = ColorMath.lerp(colorStart, colorEnd, 0.5);
+        assertTrue(ColorMath.equals(expected, result, EPSILON), "Middle interpolation is correct");
+    }
 
-        assertTrue(ColorMath.equals(
-                result,
-                expected,
-                EPSILON),
-                "Color interpolation returns correct value");
+    /** Check color start interpolation */
+    @Test
+    /* package */ void testStartLerp() {
+        final Color colorStart = new Color(0.2, 0.4, 0.15);
+        final Color colorEnd = new Color(0.85, 0.2, 0.9);
+
+        final Color expected = new Color(0.2, 0.4, 0.15);
+        final Color result = ColorMath.lerp(colorStart, colorEnd, 0);
+        assertTrue(ColorMath.equals(expected, result, EPSILON), "Start interpolation is correct");
+    }
+
+    /** Check color end interpolation */
+    @Test
+    /* package */ void testEndLerp() {
+        final Color colorStart = new Color(0.2, 0.4, 0.15);
+        final Color colorEnd = new Color(0.85, 0.2, 0.9);
+
+        final Color expected = new Color(0.85, 0.2, 0.9);
+        final Color result = ColorMath.lerp(colorStart, colorEnd, 1);
+        assertTrue(ColorMath.equals(expected, result, EPSILON), "End interpolation is correct");
+    }
+
+    /** Check color underflow interpolation */
+    @Test
+    /* package */ void testUnderflowLerp() {
+        final Color colorStart = new Color(0.2, 0.4, 0.15);
+        final Color colorEnd = new Color(0.85, 0.2, 0.9);
+
+        final Color expected = new Color(0, 0.5, 0);
+        final Color result = ColorMath.lerp(colorStart, colorEnd, -0.5);
+        assertTrue(ColorMath.equals(expected, result, EPSILON),
+                "Underflow interpolation is correct: " + result.red + ", "
+                        + result.green + ", " + result.blue);
+    }
+
+    /** Check color overflow interpolation */
+    @Test
+    /* package */ void testOverflowLerp() {
+        final Color colorStart = new Color(0.2, 0.4, 0.15);
+        final Color colorEnd = new Color(0.85, 0.2, 0.9);
+
+        final Color expected = new Color(1, 0.1, 1);
+        final Color result = ColorMath.lerp(colorStart, colorEnd, 1.5);
+        assertTrue(ColorMath.equals(expected, result, EPSILON),
+                "Overflow interpolation is correct: " + result.red + ", "
+                        + result.green + ", " + result.blue);
     }
 
 }
