@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
@@ -286,4 +288,36 @@ public interface Commandable {
     default CommandBase every(final double timeDelta, final Runnable periodic) {
         return new IntervalCommand(timeDelta, periodic);
     }
+
+    /**
+     * Create a command that waits for the duration provided by a DoubleSupplier
+     * 
+     * @param name             The command's name
+     * @param durationSupplier Function that returns the number of seconds to wait
+     * @return The wait command
+     */
+    default CommandBase waitFor(final String name, final DoubleSupplier durationSupplier) {
+        return new FunctionalWaitCommand(name, durationSupplier);
+    }
+
+    /**
+     * Create a command that waits for the duration provided by a DoubleSupplier
+     * 
+     * @param durationSupplier Function that returns the number of seconds to wait
+     * @return The wait command
+     */
+    default CommandBase waitFor(final DoubleSupplier durationSupplier) {
+        return new FunctionalWaitCommand(durationSupplier);
+    }
+
+    /**
+     * Create a WaitCommand
+     * 
+     * @param duration The duration in seconds
+     * @return The wait command
+     */
+    default CommandBase waitFor(final double duration) {
+        return new WaitCommand(duration);
+    }
+
 }
