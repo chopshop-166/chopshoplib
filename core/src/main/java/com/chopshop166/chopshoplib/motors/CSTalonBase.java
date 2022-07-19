@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 /**
  * Talon that is compatible with the Smart Motor Controller.
  */
-public class WTalonBase<T extends BaseTalon & MotorController & Sendable> extends SmartMotorController {
+public class CSTalonBase<T extends BaseTalon & MotorController & Sendable> extends SmartMotorController {
 
     /** Reference to the wrapped Talon. */
     private final T wrapped;
@@ -23,7 +23,7 @@ public class WTalonBase<T extends BaseTalon & MotorController & Sendable> extend
      * @param wrapped    The raw object to wrap.
      * @param resolution The number of ticks per revolution.
      */
-    public WTalonBase(final T wrapped, final double resolution) {
+    public CSTalonBase(final T wrapped, final double resolution) {
         super(wrapped, new TalonEncoder(wrapped, resolution));
         this.wrapped = wrapped;
     }

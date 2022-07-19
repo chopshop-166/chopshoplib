@@ -3,22 +3,22 @@ package com.chopshop166.chopshoplib.motors;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /** Convenience alias for a Talon SRX */
-public class WTalonSRX extends WTalonBase<WPI_TalonSRX> {
+public class CSTalonFX extends CSTalonBase<WPI_TalonFX> {
 
     /** List of Configurations that we can switch between. */
-    final private List<TalonSRXConfiguration> config = new ArrayList<>(4);
+    final private List<TalonFXConfiguration> config = new ArrayList<>(4);
 
     /**
      * Constructor.
      *
      * @param talon The Talon object to wrap.
      */
-    public WTalonSRX(final WPI_TalonSRX talon) {
-        super(talon, 4096);
+    public CSTalonFX(final WPI_TalonFX talon) {
+        super(talon, 2048);
     }
 
     /**
@@ -26,17 +26,17 @@ public class WTalonSRX extends WTalonBase<WPI_TalonSRX> {
      *
      * @param deviceNumber The device number to construct with.
      */
-    public WTalonSRX(final int deviceNumber) {
-        this(new WPI_TalonSRX(deviceNumber));
+    public CSTalonFX(final int deviceNumber) {
+        this(new WPI_TalonFX(deviceNumber));
     }
 
     /**
      * Add the default configuration to the list of configurations and set it in the
-     * TalonSRX.
+     * TalonFX.
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addDefaultConfiguration(final TalonSRXConfiguration config) {
+    public void addDefaultConfiguration(final TalonFXConfiguration config) {
         this.config.add(config);
         getMotorController().configAllSettings(config);
     }
@@ -46,7 +46,7 @@ public class WTalonSRX extends WTalonBase<WPI_TalonSRX> {
      *
      * @param config Configuration to add to the list of stored configs.
      */
-    public void addConfiguration(final TalonSRXConfiguration config) {
+    public void addConfiguration(final TalonFXConfiguration config) {
         this.config.add(config);
     }
 
@@ -54,5 +54,4 @@ public class WTalonSRX extends WTalonBase<WPI_TalonSRX> {
     public void setPidSlot(final int slotId) {
         getMotorController().configAllSettings(this.config.get(slotId));
     }
-
 }

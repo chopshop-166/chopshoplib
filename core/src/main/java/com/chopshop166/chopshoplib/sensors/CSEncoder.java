@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Encoder;
  * 
  * The constructor arguments are the same as the ones in the base class.
  */
-public class WEncoder extends Encoder implements IEncoder {
+public class CSEncoder extends Encoder implements IEncoder {
 
     /**
      * Create the encoder.
@@ -17,7 +17,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param channelB         The second channel.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public WEncoder(final int channelA, final int channelB, final boolean reverseDirection) {
+    public CSEncoder(final int channelA, final int channelB, final boolean reverseDirection) {
         super(channelA, channelB, reverseDirection);
     }
 
@@ -27,7 +27,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param channelA The first channel.
      * @param channelB The second channel.
      */
-    public WEncoder(final int channelA, final int channelB) {
+    public CSEncoder(final int channelA, final int channelB) {
         super(channelA, channelB, false);
     }
 
@@ -39,7 +39,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param reverseDirection True if the encoder is reversed.
      * @param encodingType     The encoding type.
      */
-    public WEncoder(final int channelA, final int channelB, final boolean reverseDirection,
+    public CSEncoder(final int channelA, final int channelB, final boolean reverseDirection,
             final EncodingType encodingType) {
         super(channelA, channelB, reverseDirection, encodingType);
     }
@@ -52,7 +52,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param indexChannel     The index channel.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public WEncoder(final int channelA, final int channelB, final int indexChannel, final boolean reverseDirection) {
+    public CSEncoder(final int channelA, final int channelB, final int indexChannel, final boolean reverseDirection) {
         super(channelA, channelB, indexChannel, reverseDirection);
     }
 
@@ -63,7 +63,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param channelB     The second channel.
      * @param indexChannel The index channel.
      */
-    public WEncoder(final int channelA, final int channelB, final int indexChannel) {
+    public CSEncoder(final int channelA, final int channelB, final int indexChannel) {
         super(channelA, channelB, indexChannel);
     }
 
@@ -74,7 +74,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param sourceB          The second source.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public WEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection) {
         super(sourceA, sourceB, reverseDirection);
     }
 
@@ -84,7 +84,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param sourceA The first source.
      * @param sourceB The second source.
      */
-    public WEncoder(final DigitalSource sourceA, final DigitalSource sourceB) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB) {
         super(sourceA, sourceB);
     }
 
@@ -96,7 +96,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param reverseDirection True if the encoder is reversed.
      * @param encodingType     The encoding type.
      */
-    public WEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection,
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection,
             final EncodingType encodingType) {
         super(sourceA, sourceB, reverseDirection, encodingType);
     }
@@ -109,7 +109,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param indexSource      The index source.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public WEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource,
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource,
             final boolean reverseDirection) {
         super(sourceA, sourceB, indexSource, reverseDirection);
     }
@@ -121,7 +121,7 @@ public class WEncoder extends Encoder implements IEncoder {
      * @param sourceB     The second source.
      * @param indexSource The index source.
      */
-    public WEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource) {
         super(sourceA, sourceB, indexSource);
     }
 
