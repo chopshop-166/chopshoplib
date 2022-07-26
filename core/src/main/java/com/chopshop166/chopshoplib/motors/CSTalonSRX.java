@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** Convenience alias for a Talon SRX */
-public class PIDTalonSRX extends PIDTalonBase<WPI_TalonSRX> {
+public class CSTalonSRX extends CSTalonBase<WPI_TalonSRX> {
 
     /** List of Configurations that we can switch between. */
     final private List<TalonSRXConfiguration> config = new ArrayList<>(4);
@@ -17,7 +17,7 @@ public class PIDTalonSRX extends PIDTalonBase<WPI_TalonSRX> {
      *
      * @param talon The Talon object to wrap.
      */
-    public PIDTalonSRX(final WPI_TalonSRX talon) {
+    public CSTalonSRX(final WPI_TalonSRX talon) {
         super(talon, 4096);
     }
 
@@ -26,7 +26,7 @@ public class PIDTalonSRX extends PIDTalonBase<WPI_TalonSRX> {
      *
      * @param deviceNumber The device number to construct with.
      */
-    public PIDTalonSRX(final int deviceNumber) {
+    public CSTalonSRX(final int deviceNumber) {
         this(new WPI_TalonSRX(deviceNumber));
     }
 

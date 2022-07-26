@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @author Andrew Martin
  * @since 2020-01-20
  */
-public class WDigitalInput extends DigitalInput implements DigitalInputSource {
+public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
 
     /**
      * True if the reading should be inverted.
@@ -20,7 +20,7 @@ public class WDigitalInput extends DigitalInput implements DigitalInputSource {
      * 
      * @param channel The Digital I/O Channel to use.
      */
-    public WDigitalInput(final int channel) {
+    public CSDigitalInput(final int channel) {
         super(channel);
     }
 

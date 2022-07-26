@@ -10,16 +10,13 @@ import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
- * PIDSpeedController
+ * WSparkMax
  *
  * Derives SmartMotorController to allow for use on a SparkMax Speed Controller.
  * It will act as a normal SparkMax with encoders, but will also be able to use
  * PID.
- *
- * @author Andrew Martin
- * @since 2020-02-7
  */
-public class PIDSparkMax extends SmartMotorController {
+public class CSSparkMax extends SmartMotorController {
     /** The unwrapped Spark MAX object. */
     private final CANSparkMax sparkMax;
     /** The PID controller from the Spark MAX. */
@@ -34,7 +31,7 @@ public class PIDSparkMax extends SmartMotorController {
      *
      * @param max The Spark MAX oject.
      */
-    public PIDSparkMax(final CANSparkMax max) {
+    public CSSparkMax(final CANSparkMax max) {
         super(new MockMotorController(), new SparkMaxEncoder(max.getEncoder()));
         this.sparkMax = max;
         this.sparkPID = max.getPIDController();
@@ -49,7 +46,7 @@ public class PIDSparkMax extends SmartMotorController {
      *                 plugged in. Brushed motors must be connected to the Red and
      *                 Black terminals only.
      */
-    public PIDSparkMax(final int deviceID, final MotorType type) {
+    public CSSparkMax(final int deviceID, final MotorType type) {
         this(new CANSparkMax(deviceID, type));
     }
 

@@ -16,14 +16,14 @@ fun <T> T.toSmart(encoder: IEncoder = MockEncoder()) where
 T : Sendable,
 T : MotorController = SmartMotorController(this, encoder)
 
-fun CANSparkMax.follow(thisObj: PIDSparkMax, inverted: Boolean = false) =
+fun CANSparkMax.follow(thisObj: CSSparkMax, inverted: Boolean = false) =
     follow(thisObj.motorController, inverted)
 
 fun CANSparkMax.withPID(
     controlType: PIDControlType = PIDControlType.Velocity,
-    block: PIDSparkMax.() -> Unit = {}
+    block: CSSparkMax.() -> Unit = {}
 ) =
-    PIDSparkMax(this).apply {
+    CSSparkMax(this).apply {
         setControlType(controlType)
         block()
     }
@@ -32,7 +32,7 @@ fun WPI_TalonSRX.withPID(
     controlType: PIDControlType = PIDControlType.Velocity,
     block: WPI_TalonSRX.() -> Unit = {}
 ) =
-    PIDTalonSRX(this).apply {
+    CSTalonSRX(this).apply {
         setControlType(controlType)
         block()
     }
@@ -41,7 +41,7 @@ fun WPI_TalonFX.withPID(
     controlType: PIDControlType = PIDControlType.Velocity,
     block: WPI_TalonFX.() -> Unit = {}
 ) =
-    PIDTalonFX(this).apply {
+    CSTalonFX(this).apply {
         setControlType(controlType)
         block()
     }
