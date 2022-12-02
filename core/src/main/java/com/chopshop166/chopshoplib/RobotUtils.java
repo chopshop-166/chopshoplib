@@ -167,6 +167,9 @@ public final class RobotUtils {
     public static String getMACAddress() {
         try {
             final NetworkInterface iface = NetworkInterface.getByName("eth0");
+            if (iface == null) {
+                return "Not Found";
+            }
             final byte[] mac = iface.getHardwareAddress();
 
             if (mac == null) { // happens on windows sometimes
