@@ -5,14 +5,14 @@ import java.util.Map;
 
 import com.chopshop166.chopshoplib.triggers.AxisButton;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * Represents an XBox controller along with its associated buttons.
  */
-public class ButtonXboxController extends XboxController {
+public class ButtonXboxController extends CommandXboxController {
 
     /**
      * Enum of POV HAT directions.
@@ -33,9 +33,6 @@ public class ButtonXboxController extends XboxController {
             this.dPadRotation = rotation;
         }
     }
-
-    /** The mapping of button ID to command button. */
-    private final Map<Button, JoystickButton> buttons = new EnumMap<>(Button.class);
 
     /** The mapping of POV Button direction to command button. */
     private final Map<POVDirection, POVButton> povButtons = new EnumMap<>(POVDirection.class);
@@ -61,96 +58,6 @@ public class ButtonXboxController extends XboxController {
      */
     public double getTriggers() {
         return getRightTriggerAxis() - getLeftTriggerAxis();
-    }
-
-    /**
-     * Get the A button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton a() {
-        return getButton(Button.kA);
-    }
-
-    /**
-     * Get the B button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton b() {
-        return getButton(Button.kB);
-    }
-
-    /**
-     * Get the X button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton x() {
-        return getButton(Button.kX);
-    }
-
-    /**
-     * Get the Y button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton y() {
-        return getButton(Button.kY);
-    }
-
-    /**
-     * Get the back button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton back() {
-        return getButton(Button.kBack);
-    }
-
-    /**
-     * Get the start button.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton start() {
-        return getButton(Button.kStart);
-    }
-
-    /**
-     * Get the left bumper.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton lbumper() {
-        return getButton(Button.kLeftBumper);
-    }
-
-    /**
-     * Get the left stick click.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton lstick() {
-        return getButton(Button.kLeftStick);
-    }
-
-    /**
-     * Get the right bumper.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton rbumper() {
-        return getButton(Button.kRightBumper);
-    }
-
-    /**
-     * Get the right stick click.
-     * 
-     * @return A joystick button.
-     */
-    public JoystickButton rstick() {
-        return getButton(Button.kRightStick);
     }
 
     /**
@@ -226,19 +133,6 @@ public class ButtonXboxController extends XboxController {
     }
 
     /**
-     * Get a button from this Xbox Controller.
-     * <p>
-     * Returns the specified button of a Xbox Controller without having to
-     * explicitly create each button.
-     * 
-     * @param buttonId The index of the button to access.
-     * @return The button object for the given ID.
-     */
-    private JoystickButton getButton(final Button buttonId) {
-        return buttons.computeIfAbsent(buttonId, b -> new JoystickButton(this, b.value));
-    }
-
-    /**
      * Get an axis from this Xbox Controller.
      * <p>
      * Returns the specified trigger of a Xbox Controller without having to
@@ -248,7 +142,7 @@ public class ButtonXboxController extends XboxController {
      * @return The trigger object for the given hand.
      */
     public AxisButton getAxis(final Axis axis) {
-        return triggerButtons.computeIfAbsent(axis, h -> new AxisButton(this, axis));
+        return triggerButtons.computeIfAbsent(axis, h -> new AxisButton(getHID(), h));
     }
 
     /**
@@ -261,6 +155,6 @@ public class ButtonXboxController extends XboxController {
      * @return The button object for the given ID.
      */
     public POVButton getPovButton(final POVDirection angle) {
-        return povButtons.computeIfAbsent(angle, a -> new POVButton(this, a.getAngle()));
+        return povButtons.computeIfAbsent(angle, a -> new POVButton(getHID(), a.getAngle()));
     }
 }
