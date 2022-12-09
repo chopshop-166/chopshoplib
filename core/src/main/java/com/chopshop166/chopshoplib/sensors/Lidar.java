@@ -7,11 +7,8 @@ import java.util.Optional;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
-import edu.wpi.first.networktables.NTSendableBuilder;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
@@ -483,18 +480,8 @@ public class Lidar implements Sendable {
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("LiDAR");
-        if (builder.getBackendKind() == BackendKind.kNetworkTables) {
-            final NTSendableBuilder ntbuilder = (NTSendableBuilder) builder;
-            final NetworkTableEntry mmDistance = ntbuilder.getEntry("Distance");
-            final NetworkTableEntry standardDeviation = ntbuilder.getEntry("Standard Deviation");
-            final NetworkTableEntry validityEntry = ntbuilder.getEntry("isValid");
-            ntbuilder.setUpdateTable(() -> {
-                mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
-                synchronized (syncObject) {
-                    validityEntry.setBoolean(isValid);
-                    standardDeviation.setDouble(stdDevValue);
-                }
-            });
-        }
+        builder.addBooleanProperty("isValid", () -> isValid, null);
+        builder.addDoubleProperty("Distance", () -> getDistance(MeasurementType.MILLIMETERS), null);
+        builder.addDoubleProperty("Standard Deviation", () -> stdDevValue, null);
     }
 }
