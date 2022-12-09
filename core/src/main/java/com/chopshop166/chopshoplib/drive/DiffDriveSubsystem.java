@@ -57,7 +57,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
         this.gyro = map.getGyro();
         this.kinematics = map.getKinematics();
         this.driveTrain = new DifferentialDrive(left, right);
-        this.odometry = new DifferentialDriveOdometry(getRotation());
+        this.odometry = new DifferentialDriveOdometry(getRotation(), 0.0, 0.0);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      */
     public void resetOdometry(final Pose2d pose) {
         resetEncoders();
-        odometry.resetPosition(pose, getRotation());
+        odometry.resetPosition(getRotation(), 0.0, 0.0, pose);
     }
 
     /** Reset the encoders. */
