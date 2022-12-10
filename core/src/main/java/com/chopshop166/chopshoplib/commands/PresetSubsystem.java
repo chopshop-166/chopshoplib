@@ -6,8 +6,10 @@ import com.chopshop166.chopshoplib.PersistenceCheck;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link PIDSubsystem} that has several presets that it can go to.
@@ -59,7 +61,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The wait command.
      */
     public CommandBase waitForSetpoint() {
-        return waitUntil("Wait For Setpoint", persistenceCheck);
+        return new WaitUntilCommand(persistenceCheck).withName("Wait For Setpoint");
     }
 
     /**
@@ -69,7 +71,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetWait(final T value) {
-        return sequence("Set to " + value.name(), presetCmd(value), waitForSetpoint());
+        return CommandGroupBase.sequence(presetCmd(value), waitForSetpoint()).withName("Set to " + value.name());
     }
 
     @Override
