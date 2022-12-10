@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public final class MockDSolenoid implements IDSolenoid {
 
     /** The last commanded value. */
-    private Value value;
+    private Value value = Value.kOff;
 
     @Override
     public void initSendable(final SendableBuilder builder) {
