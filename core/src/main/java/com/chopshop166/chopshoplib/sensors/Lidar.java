@@ -66,6 +66,7 @@ public class Lidar implements Sendable {
     /**
      * Settings received from the sensor.
      */
+    @SuppressWarnings({ "PMD.TooManyFields" })
     public static class Settings {
         /**
          * Mode of operation.

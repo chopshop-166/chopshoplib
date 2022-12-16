@@ -32,30 +32,15 @@
         <exclude name="LoosePackageCoupling"/>
         <exclude name="TooManyMethods"/>
     </rule>
-    <rule ref="category/java/design.xml/ExcessiveImports">
-        <properties>
-            <property name="violationSuppressXPath" value=".[typeIs('com.chopshop166.chopshoplib.commands.CommandRobot')]"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/GodClass">
-        <properties>
-            <property name="violationSuppressXPath" value=".[typeIs('com.chopshop166.chopshoplib.commands.CommandRobot')]"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/TooManyFields">
-        <properties>
-            <property name="violationSuppressXPath" value=".[typeIs('com.chopshop166.chopshoplib.sensors.Lidar.Settings')]"/>
-        </properties>
-    </rule>
 
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentSize"/>
     </rule>
     <rule ref="category/java/errorprone.xml">
         <exclude name="AvoidLiteralsInIfCondition"/>
-        <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="CloseResource"/>
         <exclude name="DataflowAnomalyAnalysis"/>
+        <exclude name="NonSerializableClass"/>
         <exclude name="NonStaticInitializer"/>
     </rule>
     <rule ref="category/java/multithreading.xml">
