@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
+@SuppressWarnings({ "PMD.ExcessiveImports", "PMD.GodClass" })
 public abstract class CommandRobot extends TimedRobot {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
