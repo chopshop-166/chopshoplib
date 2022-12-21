@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -46,7 +46,7 @@ public class CommandBuilder {
      * @return A newly constructed command.
      */
     public CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return repeat(numTimesToRun, () -> new ProxyScheduleCommand(cmd));
+        return repeat(numTimesToRun, () -> new ProxyCommand(cmd));
     }
 
     /**
@@ -69,7 +69,7 @@ public class CommandBuilder {
      * @return A newly constructed command group.
      */
     public CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return CommandGroupBase.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+        return Commands.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
     /**
@@ -194,7 +194,7 @@ public class CommandBuilder {
      * @return A new command group.
      */
     public CommandBase sequence(final String name, final Command... cmds) {
-        return CommandGroupBase.sequence(cmds).withName(name);
+        return Commands.sequence(cmds).withName(name);
     }
 
     /**
@@ -205,7 +205,7 @@ public class CommandBuilder {
      * @return A new command group.
      */
     public CommandBase parallel(final String name, final Command... cmds) {
-        return CommandGroupBase.parallel(cmds).withName(name);
+        return Commands.parallel(cmds).withName(name);
     }
 
     /**
@@ -216,7 +216,7 @@ public class CommandBuilder {
      * @return A new command group.
      */
     public CommandBase race(final String name, final Command... racers) {
-        return CommandGroupBase.race(racers).withName(name);
+        return Commands.race(racers).withName(name);
     }
 
     /**
@@ -228,7 +228,7 @@ public class CommandBuilder {
      * @return A new command group.
      */
     public CommandBase deadline(final String name, final Command limiter, final Command... cmds) {
-        return CommandGroupBase.deadline(limiter, cmds).withName(name);
+        return Commands.deadline(limiter, cmds).withName(name);
     }
 
     /**
@@ -275,7 +275,7 @@ public class CommandBuilder {
      * @return The wrapper command object.
      */
     public CommandBase select(final String name, final Supplier<Command> selector) {
-        return new SelectCommand(selector).withName(name);
+        return new ProxyCommand(selector).withName(name);
     }
 
     /**
