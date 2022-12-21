@@ -91,7 +91,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     public Command changeState(final S newState) {
         final StringBuilder cmdname = new StringBuilder(getName());
         cmdname.append(" -> ").append(newState.name());
-        return setter(cmdname.toString(), newState, this::setState);
+        return make.setter(cmdname.toString(), newState, this::setState);
     }
 
     /**
