@@ -22,7 +22,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @return A reset command.
      */
     default CommandBase resetCmd() {
-        return new InstantCommand(this::reset).withName("Reset " + SendableRegistry.getName(this));
+        return new InstantCommand(this::reset, this).withName("Reset " + SendableRegistry.getName(this));
     }
 
     /**
@@ -31,7 +31,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * @return A reset command.
      */
     default CommandBase safeStateCmd() {
-        return new InstantCommand(this::safeState).withName("Safe " + SendableRegistry.getName(this));
+        return new InstantCommand(this::safeState, this).withName("Safe " + SendableRegistry.getName(this));
     }
 
     /**
@@ -41,6 +41,6 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      */
     default CommandBase cancel() {
         return new InstantCommand(() -> {
-        }).withName("Cancel " + SendableRegistry.getName(this));
+        }, this).withName("Cancel " + SendableRegistry.getName(this));
     }
 }
