@@ -7,6 +7,8 @@ import com.chopshop166.chopshoplib.PersistenceCheck;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import static edu.wpi.first.wpilibj2.command.Commands.sequence;
+import static edu.wpi.first.wpilibj2.command.Commands.waitUntil;
 
 /**
  * A {@link PIDSubsystem} that has several presets that it can go to.
@@ -14,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extends PIDSubsystem
         implements SmartSubsystem {
 
-    /** Builder for commands. */
-    protected CommandBuilder make = new SubsystemCommandBuilder(this);
     /** Check to make sure it's at the setpoint for enough time. */
     private final PersistenceCheck persistenceCheck;
 
@@ -49,9 +49,9 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetCmd(final T value) {
-        return make.instant("Set to " + value.name(), () -> {
+        return runOnce(() -> {
             setSetpoint(value.getAsDouble());
-        });
+        }).withName("Set to " + value.name());
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The wait command.
      */
     public CommandBase waitForSetpoint() {
-        return make.waitUntil("Wait For Setpoint", persistenceCheck);
+        return waitUntil(persistenceCheck).withName("Wait For Setpoint");
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetWait(final T value) {
-        return make.sequence("Set to " + value.name(), presetCmd(value), waitForSetpoint());
+        return sequence(presetCmd(value), waitForSetpoint()).withName("Set to " + value.name());
     }
 
     @Override

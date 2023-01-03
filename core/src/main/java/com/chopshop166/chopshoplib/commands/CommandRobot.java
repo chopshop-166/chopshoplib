@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -37,8 +38,6 @@ public abstract class CommandRobot extends TimedRobot {
     final private SendableChooser<Command> autoChooser = new SendableChooser<>();
     /** Currently running autonomous command. */
     private Command autoCmd;
-    /** Command accessor. */
-    protected final CommandBuilder make = new CommandBuilder();
 
     /** Set up the button bindings. */
     public abstract void configureButtonBindings();
@@ -157,8 +156,9 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return make.parallel("Reset Subsystems",
-                Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new));
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
+                .withName(
+                        "Reset Subsystems");
     }
 
     /**
@@ -168,8 +168,8 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
-        return make.parallel("Reset Subsystems",
-                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new));
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new)).withName(
+                "Reset Subsystems");
     }
 
     /**

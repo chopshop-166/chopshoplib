@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import com.chopshop166.chopshoplib.commands.Commands;
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -91,7 +92,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     public Command changeState(final S newState) {
         final StringBuilder cmdname = new StringBuilder(getName());
         cmdname.append(" -> ").append(newState.name());
-        return make.setter(cmdname.toString(), newState, this::setState);
+        return Commands.setter(cmdname.toString(), newState, this::setState);
     }
 
     /**

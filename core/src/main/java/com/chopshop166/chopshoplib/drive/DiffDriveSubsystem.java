@@ -178,11 +178,11 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return A command that will run until interrupted.
      */
     public CommandBase drive(final DoubleSupplier forward, final DoubleSupplier turn) {
-        return make.running("Drive", () -> {
+        return run(() -> {
             final double yAxis = forward.getAsDouble();
             final double xAxis = turn.getAsDouble();
             driveTrain.arcadeDrive(yAxis, xAxis);
-        });
+        }).withName("Drive");
     }
 
     /**
@@ -193,7 +193,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The command.
      */
     public CommandBase driveDistance(final double distance, final double speed) {
-        return make.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders).onExecute(() -> {
+        return cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders).onExecute(() -> {
             driveTrain.arcadeDrive(speed, 0);
         }).onEnd(interrupted -> {
             driveTrain.stopMotor();
@@ -210,7 +210,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The command.
      */
     public CommandBase turnDegrees(final double degrees, final double speed) {
-        return make.cmd("Turn Degrees").onInitialize(this::resetGyro).onExecute(() -> {
+        return cmd("Turn Degrees").onInitialize(this::resetGyro).onExecute(() -> {
             double realSpeed = speed;
             if (Math.signum(degrees) != Math.signum(speed)) {
                 realSpeed *= -1;

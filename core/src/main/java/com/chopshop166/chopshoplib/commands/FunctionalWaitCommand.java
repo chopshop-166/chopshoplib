@@ -26,19 +26,6 @@ public class FunctionalWaitCommand extends CommandBase {
      * Creates a new FunctionalWaitCommand. This command will do nothing, and end
      * after the duration that is supplied.
      *
-     * @param name             The name of the command
-     * @param durationSupplier a DoubleSupplier returning the time to wait, in
-     *                         seconds.
-     */
-    public FunctionalWaitCommand(final String name, final DoubleSupplier durationSupplier) {
-        this(durationSupplier);
-        setName(name);
-    }
-
-    /**
-     * Creates a new FunctionalWaitCommand. This command will do nothing, and end
-     * after the duration that is supplied.
-     *
      * @param durationSupplier a DoubleSupplier returning the time to wait, in
      *                         seconds.
      */
