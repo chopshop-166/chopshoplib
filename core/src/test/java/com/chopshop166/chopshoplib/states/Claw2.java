@@ -6,14 +6,14 @@ public class Claw2 extends StateSubsystem<LinearDirection> {
   public Claw2() {
     super(LinearDirection.NEUTRAL);
 
-    transition(LinearDirection.NEUTRAL, LinearDirection.FORWARD);
-    transition(LinearDirection.NEUTRAL, LinearDirection.REVERSE);
-    transition(LinearDirection.REVERSE, LinearDirection.FORWARD);
-    transition(LinearDirection.FORWARD, LinearDirection.REVERSE);
-    onEntry(LinearDirection.FORWARD, () -> {
+    this.transition(LinearDirection.NEUTRAL, LinearDirection.FORWARD);
+    this.transition(LinearDirection.NEUTRAL, LinearDirection.REVERSE);
+    this.transition(LinearDirection.REVERSE, LinearDirection.FORWARD);
+    this.transition(LinearDirection.FORWARD, LinearDirection.REVERSE);
+    this.onEntry(LinearDirection.FORWARD, () -> {
       // Solenoid forward
     });
-    onEntry(LinearDirection.REVERSE, () -> {
+    this.onEntry(LinearDirection.REVERSE, () -> {
       // Solenoid reverse
     });
   }

@@ -22,20 +22,20 @@ public final class SolenoidGroup implements ISolenoid {
      * @param others Any subsequent group members.
      */
     public SolenoidGroup(final ISolenoid first, final ISolenoid second, final ISolenoid... others) {
-        wrapped.add(first);
-        wrapped.add(second);
-        wrapped.addAll(Arrays.asList(others));
+        this.wrapped.add(first);
+        this.wrapped.add(second);
+        this.wrapped.addAll(Arrays.asList(others));
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        wrapped.get(0).initSendable(builder);
+        this.wrapped.get(0).initSendable(builder);
     }
 
     @Override
     @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
     public void close() throws Exception {
-        wrapped.forEach(s -> {
+        this.wrapped.forEach(s -> {
             try {
                 s.close();
             } catch (Exception e) {
@@ -46,27 +46,27 @@ public final class SolenoidGroup implements ISolenoid {
 
     @Override
     public void set(final boolean value) {
-        wrapped.forEach(s -> s.set(value));
+        this.wrapped.forEach(s -> s.set(value));
     }
 
     @Override
     public boolean get() {
-        return wrapped.get(0).get();
+        return this.wrapped.get(0).get();
     }
 
     @Override
     public boolean isDisabled() {
-        return wrapped.get(0).isDisabled();
+        return this.wrapped.get(0).isDisabled();
     }
 
     @Override
     public void setPulseDuration(final double durationSeconds) {
-        wrapped.forEach(s -> s.setPulseDuration(durationSeconds));
+        this.wrapped.forEach(s -> s.setPulseDuration(durationSeconds));
     }
 
     @Override
     public void startPulse() {
-        wrapped.forEach(ISolenoid::startPulse);
+        this.wrapped.forEach(ISolenoid::startPulse);
     }
 
 }

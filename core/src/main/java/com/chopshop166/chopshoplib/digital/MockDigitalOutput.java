@@ -25,7 +25,7 @@ public class MockDigitalOutput implements IDigitalOutput {
 
     @Override
     public double getPWMRate() {
-        return rate;
+        return this.rate;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MockDigitalOutput implements IDigitalOutput {
 
     @Override
     public boolean get() {
-        return value;
+        return this.value;
     }
 
     @Override

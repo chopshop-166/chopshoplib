@@ -145,7 +145,7 @@ public final class RobotUtils {
      * @return The new axis to use.
      */
     public DoubleSupplier deadbandAxis(final double range, final DoubleSupplier axis) {
-        final DoubleUnaryOperator deadband = scalingDeadband(range);
+        final DoubleUnaryOperator deadband = this.scalingDeadband(range);
         return () -> deadband.applyAsDouble(axis.getAsDouble());
     }
 

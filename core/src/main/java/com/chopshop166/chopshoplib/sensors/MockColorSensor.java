@@ -13,7 +13,7 @@ public class MockColorSensor implements IColorSensor {
 
     /** Create the chooser */
     public MockColorSensor() {
-        chooser.setDefaultOption("Unknown", new Color(0, 0, 0));
+        this.chooser.setDefaultOption("Unknown", new Color(0, 0, 0));
     }
 
     /**
@@ -23,12 +23,12 @@ public class MockColorSensor implements IColorSensor {
      * @param color The color.
      */
     public void addColor(final String name, final Color color) {
-        chooser.addOption(name, color);
+        this.chooser.addOption(name, color);
     }
 
     @Override
     public Color getColor() {
-        return chooser.getSelected();
+        return this.chooser.getSelected();
     }
 
 }

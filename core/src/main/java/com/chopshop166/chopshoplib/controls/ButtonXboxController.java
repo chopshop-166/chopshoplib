@@ -57,7 +57,7 @@ public class ButtonXboxController extends CommandXboxController {
      * @return A double in {@code [-1, 1]}
      */
     public double getTriggers() {
-        return getRightTriggerAxis() - getLeftTriggerAxis();
+        return this.getRightTriggerAxis() - this.getLeftTriggerAxis();
     }
 
     /**
@@ -65,8 +65,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povUp() {
-        return getPovButton(POVDirection.UP);
+        return this.getPovButton(POVDirection.UP);
     }
 
     /**
@@ -74,8 +75,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povUpRight() {
-        return getPovButton(POVDirection.UP_RIGHT);
+        return this.getPovButton(POVDirection.UP_RIGHT);
     }
 
     /**
@@ -83,8 +85,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povRight() {
-        return getPovButton(POVDirection.RIGHT);
+        return this.getPovButton(POVDirection.RIGHT);
     }
 
     /**
@@ -92,8 +95,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povDownRight() {
-        return getPovButton(POVDirection.DOWN_RIGHT);
+        return this.getPovButton(POVDirection.DOWN_RIGHT);
     }
 
     /**
@@ -101,8 +105,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povDown() {
-        return getPovButton(POVDirection.DOWN);
+        return this.getPovButton(POVDirection.DOWN);
     }
 
     /**
@@ -110,8 +115,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povDownLeft() {
-        return getPovButton(POVDirection.DOWN_LEFT);
+        return this.getPovButton(POVDirection.DOWN_LEFT);
     }
 
     /**
@@ -119,8 +125,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povLeft() {
-        return getPovButton(POVDirection.LEFT);
+        return this.getPovButton(POVDirection.LEFT);
     }
 
     /**
@@ -128,8 +135,9 @@ public class ButtonXboxController extends CommandXboxController {
      * 
      * @return A joystick button.
      */
+    @Override
     public POVButton povUpLeft() {
-        return getPovButton(POVDirection.UP_LEFT);
+        return this.getPovButton(POVDirection.UP_LEFT);
     }
 
     /**
@@ -142,7 +150,7 @@ public class ButtonXboxController extends CommandXboxController {
      * @return The trigger object for the given hand.
      */
     public AxisButton getAxis(final Axis axis) {
-        return triggerButtons.computeIfAbsent(axis, h -> new AxisButton(getHID(), h));
+        return this.triggerButtons.computeIfAbsent(axis, h -> new AxisButton(this.getHID(), h));
     }
 
     /**
@@ -155,6 +163,6 @@ public class ButtonXboxController extends CommandXboxController {
      * @return The button object for the given ID.
      */
     public POVButton getPovButton(final POVDirection angle) {
-        return povButtons.computeIfAbsent(angle, a -> new POVButton(getHID(), a.getAngle()));
+        return this.povButtons.computeIfAbsent(angle, a -> new POVButton(this.getHID(), a.getAngle()));
     }
 }

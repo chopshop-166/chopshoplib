@@ -38,12 +38,12 @@ public class CtreEncoder implements IEncoder {
 
     @Override
     public double getRate() {
-        return enc.getVelocity();
+        return this.enc.getVelocity();
     }
 
     @Override
     public double getAbsolutePosition() {
-        return enc.getAbsolutePosition();
+        return this.enc.getAbsolutePosition();
     }
 
     @Override

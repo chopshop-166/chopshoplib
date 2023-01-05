@@ -24,7 +24,7 @@ public class MockAccelerometer implements Accelerometer, Sendable {
      * @param newX The new value.
      */
     public void setX(final double newX) {
-        x = newX;
+        this.x = newX;
     }
 
     /**
@@ -33,7 +33,7 @@ public class MockAccelerometer implements Accelerometer, Sendable {
      * @param newY The new value.
      */
     public void setY(final double newY) {
-        y = newY;
+        this.y = newY;
     }
 
     /**
@@ -42,7 +42,7 @@ public class MockAccelerometer implements Accelerometer, Sendable {
      * @param newZ The new value.
      */
     public void setZ(final double newZ) {
-        z = newZ;
+        this.z = newZ;
     }
 
     /**
@@ -51,7 +51,7 @@ public class MockAccelerometer implements Accelerometer, Sendable {
      * @return The set range.
      */
     public Range getRange() {
-        return range;
+        return this.range;
     }
 
     @Override
@@ -61,17 +61,17 @@ public class MockAccelerometer implements Accelerometer, Sendable {
 
     @Override
     public double getX() {
-        return x;
+        return this.x;
     }
 
     @Override
     public double getY() {
-        return y;
+        return this.y;
     }
 
     @Override
     public double getZ() {
-        return z;
+        return this.z;
     }
 
     @Override

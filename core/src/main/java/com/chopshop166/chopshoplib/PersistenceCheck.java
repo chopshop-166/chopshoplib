@@ -25,21 +25,21 @@ public class PersistenceCheck implements BooleanSupplier {
     public PersistenceCheck(final int nTimes, final BooleanSupplier source) {
         this.nTimes = nTimes;
         this.source = source;
-        numSuccesses = 0;
+        this.numSuccesses = 0;
     }
 
     /** Reset the number of passed attempts. */
     public void reset() {
-        numSuccesses = 0;
+        this.numSuccesses = 0;
     }
 
     @Override
     public boolean getAsBoolean() {
-        if (source.getAsBoolean()) {
-            numSuccesses++;
+        if (this.source.getAsBoolean()) {
+            this.numSuccesses++;
         } else {
-            reset();
+            this.reset();
         }
-        return numSuccesses >= nTimes;
+        return this.numSuccesses >= this.nTimes;
     }
 }

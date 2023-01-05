@@ -34,16 +34,20 @@ public class SwerveDriveMap {
     public SwerveDriveMap() {
 
         this.frontLeft = new MockSwerveModule(
-                new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER));
+                new Translation2d(SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER,
+                        SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER));
 
         this.frontRight = new MockSwerveModule(
-                new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER));
+                new Translation2d(SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER,
+                        -SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER));
 
         this.rearLeft = new MockSwerveModule(
-                new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER));
+                new Translation2d(-SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER,
+                        SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER));
 
         this.rearRight = new MockSwerveModule(
-                new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER));
+                new Translation2d(-SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER,
+                        -SwerveDriveMap.DEFAULT_DISTANCE_FROM_CENTER));
 
         this.maxDriveSpeedMetersPerSecond = 2;
 
@@ -84,30 +88,30 @@ public class SwerveDriveMap {
     }
 
     public SwerveModule getFrontLeft() {
-        return frontLeft;
+        return this.frontLeft;
     }
 
     public SwerveModule getFrontRight() {
-        return frontRight;
+        return this.frontRight;
     }
 
     public SwerveModule getRearLeft() {
-        return rearLeft;
+        return this.rearLeft;
     }
 
     public SwerveModule getRearRight() {
-        return rearRight;
+        return this.rearRight;
     }
 
     public double getMaxDriveSpeedMetersPerSecond() {
-        return maxDriveSpeedMetersPerSecond;
+        return this.maxDriveSpeedMetersPerSecond;
     }
 
     public double getMaxRotationRadianPerSecond() {
-        return maxRotationRadianPerSecond;
+        return this.maxRotationRadianPerSecond;
     }
 
     public SmartGyro getGyro() {
-        return gyro;
+        return this.gyro;
     }
 }

@@ -16,14 +16,14 @@ public final class MockDSolenoid implements IDSolenoid {
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Double Solenoid");
         builder.setActuator(true);
-        builder.setSafeState(() -> set(Value.kOff));
-        builder.addStringProperty("Value", () -> get().name().substring(1), value -> {
+        builder.setSafeState(() -> this.set(Value.kOff));
+        builder.addStringProperty("Value", () -> this.get().name().substring(1), value -> {
             if ("Forward".equals(value)) {
-                set(Value.kForward);
+                this.set(Value.kForward);
             } else if ("Reverse".equals(value)) {
-                set(Value.kReverse);
+                this.set(Value.kReverse);
             } else {
-                set(Value.kOff);
+                this.set(Value.kOff);
             }
         });
     }
@@ -35,7 +35,7 @@ public final class MockDSolenoid implements IDSolenoid {
 
     @Override
     public Value get() {
-        return value;
+        return this.value;
     }
 
     @Override

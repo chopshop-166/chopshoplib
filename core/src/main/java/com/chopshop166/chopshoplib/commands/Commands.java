@@ -13,12 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import static edu.wpi.first.wpilibj2.command.Commands.either;
-import static edu.wpi.first.wpilibj2.command.Commands.none;
-import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
-import static edu.wpi.first.wpilibj2.command.Commands.sequence;
-import static edu.wpi.first.wpilibj2.command.Commands.startEnd;
 
 public class Commands {
 
@@ -34,7 +28,7 @@ public class Commands {
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final String name, final int numTimesToRun, final Command cmd) {
-        return repeat(numTimesToRun, cmd).withName(name);
+        return Commands.repeat(numTimesToRun, cmd).withName(name);
     }
 
     /**
@@ -45,7 +39,7 @@ public class Commands {
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return repeat(numTimesToRun, () -> new ProxyCommand(cmd));
+        return Commands.repeat(numTimesToRun, () -> new ProxyCommand(cmd));
     }
 
     /**
@@ -57,7 +51,7 @@ public class Commands {
      * @return A newly constructed command group.
      */
     public static CommandBase repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
-        return repeat(numTimesToRun, cmd).withName(name);
+        return Commands.repeat(numTimesToRun, cmd).withName(name);
     }
 
     /**
@@ -68,7 +62,8 @@ public class Commands {
      * @return A newly constructed command group.
      */
     public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+        return edu.wpi.first.wpilibj2.command.Commands
+                .sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
     /**
@@ -91,7 +86,8 @@ public class Commands {
      * @return A new command.
      */
     public static CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return parallel(new InstantCommand(init), new WaitUntilCommand(until)).withName(name);
+        return edu.wpi.first.wpilibj2.command.Commands.parallel(new InstantCommand(init), new WaitUntilCommand(until))
+                .withName(name);
     }
 
     /**
@@ -104,7 +100,7 @@ public class Commands {
      * @return A new command.
      */
     public static <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        return runOnce(() -> {
+        return edu.wpi.first.wpilibj2.command.Commands.runOnce(() -> {
             func.accept(value);
         }).withName(name);
     }
@@ -118,7 +114,7 @@ public class Commands {
      * @return A new command.
      */
     public static CommandBase runWhile(final String name, final double value, final MotorController motor) {
-        return startEnd(() -> {
+        return edu.wpi.first.wpilibj2.command.Commands.startEnd(() -> {
             motor.set(value);
         }, motor::stopMotor).withName(name);
     }
@@ -135,7 +131,7 @@ public class Commands {
      */
     public static <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
             final BooleanSupplier until) {
-        return initAndWait(name, () -> {
+        return Commands.initAndWait(name, () -> {
             func.accept(value);
         }, until);
     }
@@ -148,7 +144,8 @@ public class Commands {
      * @return The conditional command.
      */
     public static CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
-        return either(cmd, none(), condition);
+        return edu.wpi.first.wpilibj2.command.Commands.either(cmd, edu.wpi.first.wpilibj2.command.Commands.none(),
+                condition);
     }
 
     /**

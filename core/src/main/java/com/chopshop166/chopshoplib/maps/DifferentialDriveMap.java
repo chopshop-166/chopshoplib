@@ -85,7 +85,7 @@ public class DifferentialDriveMap {
      * @return A {@link SmartMotorController}.
      */
     public SmartMotorController getLeft() {
-        return left;
+        return this.left;
     }
 
     /**
@@ -94,7 +94,7 @@ public class DifferentialDriveMap {
      * @return A {@link SmartMotorController}.
      */
     public SmartMotorController getRight() {
-        return right;
+        return this.right;
     }
 
     /**
@@ -103,7 +103,7 @@ public class DifferentialDriveMap {
      * @return The gyro object as a {@link SmartGyro}.
      */
     public SmartGyro getGyro() {
-        return gyro;
+        return this.gyro;
     }
 
     /**
@@ -112,6 +112,6 @@ public class DifferentialDriveMap {
      * @return The kinematics object.
      */
     public DifferentialDriveKinematics getKinematics() {
-        return kinematics;
+        return this.kinematics;
     }
 }

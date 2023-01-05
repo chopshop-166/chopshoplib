@@ -27,7 +27,7 @@ public class RepeatWhileCommand extends CommandBase {
      */
     public RepeatWhileCommand(final String name, final Command cmd, final BooleanSupplier cond) {
         this(cmd, cond);
-        setName(name);
+        this.setName(name);
     }
 
     /**
@@ -38,39 +38,39 @@ public class RepeatWhileCommand extends CommandBase {
      */
     public RepeatWhileCommand(final Command cmd, final BooleanSupplier cond) {
         super();
-        addRequirements(cmd.getRequirements().toArray(Subsystem[]::new));
+        this.addRequirements(cmd.getRequirements().toArray(Subsystem[]::new));
         this.cond = cond;
         this.cmd = cmd;
     }
 
     @Override
     public void initialize() {
-        shouldFinish = false;
-        cmd.initialize();
+        this.shouldFinish = false;
+        this.cmd.initialize();
     }
 
     @Override
     public void execute() {
-        cmd.execute();
-        if (cmd.isFinished()) {
-            cmd.end(false);
-            if (cond.getAsBoolean()) {
-                cmd.initialize();
+        this.cmd.execute();
+        if (this.cmd.isFinished()) {
+            this.cmd.end(false);
+            if (this.cond.getAsBoolean()) {
+                this.cmd.initialize();
             } else {
-                shouldFinish = true;
+                this.shouldFinish = true;
             }
         }
     }
 
     @Override
     public boolean isFinished() {
-        return shouldFinish;
+        return this.shouldFinish;
     }
 
     @Override
     public void end(final boolean interrupted) {
         if (interrupted) {
-            cmd.end(interrupted);
+            this.cmd.end(interrupted);
         }
     }
 }

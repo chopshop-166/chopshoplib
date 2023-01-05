@@ -55,7 +55,7 @@ public class SwPIDMotorController extends SmartMotorController {
      * @return The new PID controller.
      */
     public static SwPIDMotorController position(final SmartMotorController motor, final PIDController pid) {
-        return position(motor, pid, motor.getEncoder());
+        return SwPIDMotorController.position(motor, pid, motor.getEncoder());
     }
 
     /**
@@ -80,7 +80,7 @@ public class SwPIDMotorController extends SmartMotorController {
      * @return The new PID controller.
      */
     public static SwPIDMotorController velocity(final SmartMotorController motor, final PIDController pid) {
-        return velocity(motor, pid, motor.getEncoder());
+        return SwPIDMotorController.velocity(motor, pid, motor.getEncoder());
     }
 
     /**
@@ -110,8 +110,8 @@ public class SwPIDMotorController extends SmartMotorController {
         super(motor, encoder);
         this.measurement = measurement;
         this.pid = pid;
-        dog.suppressTimeoutMessage(true);
-        dog.enable();
+        this.dog.suppressTimeoutMessage(true);
+        this.dog.enable();
     }
 
     /**
@@ -120,21 +120,21 @@ public class SwPIDMotorController extends SmartMotorController {
      * @return The PID controller.
      */
     public PIDController getController() {
-        return pid;
+        return this.pid;
     }
 
     /** Enable the PID controller. */
     public void enablePID() {
-        if (!pidEnabled) {
-            pidEnabled = true;
-            dog.enable();
+        if (!this.pidEnabled) {
+            this.pidEnabled = true;
+            this.dog.enable();
         }
     }
 
     /** Disable the PID controller. */
     public void disablePID() {
-        pidEnabled = false;
-        dog.disable();
+        this.pidEnabled = false;
+        this.dog.disable();
     }
 
     /**
@@ -160,7 +160,7 @@ public class SwPIDMotorController extends SmartMotorController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        pid.setSetpoint(setPoint);
+        this.pid.setSetpoint(setPoint);
         this.setpoint = setPoint;
     }
 
@@ -173,10 +173,10 @@ public class SwPIDMotorController extends SmartMotorController {
 
     /** Calculate the PID value, and set the speed controler to the result. */
     private void calculatePID() {
-        final double ff = feedforward * setpoint;
-        final double meas = measurement.getAsDouble();
-        final double calc = pid.calculate(meas);
-        set(ff + calc);
-        dog.reset();
+        final double ff = this.feedforward * this.setpoint;
+        final double meas = this.measurement.getAsDouble();
+        final double calc = this.pid.calculate(meas);
+        this.set(ff + calc);
+        this.dog.reset();
     }
 }

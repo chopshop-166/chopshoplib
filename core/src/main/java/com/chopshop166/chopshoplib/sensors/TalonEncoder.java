@@ -34,7 +34,7 @@ public class TalonEncoder implements IEncoder {
      */
     @Override
     public double getDistance() {
-        return talon.getSelectedSensorPosition() * revPerTick;
+        return this.talon.getSelectedSensorPosition() * this.revPerTick;
     }
 
     /**
@@ -44,7 +44,7 @@ public class TalonEncoder implements IEncoder {
      */
     @Override
     public double getRate() {
-        return talon.getSelectedSensorVelocity() * revPerTick;
+        return this.talon.getSelectedSensorVelocity() * this.revPerTick;
     }
 
     @Override
@@ -57,6 +57,6 @@ public class TalonEncoder implements IEncoder {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
         builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", () -> revPerTick, null);
+        builder.addDoubleProperty("Distance per Tick", () -> this.revPerTick, null);
     }
 }

@@ -127,6 +127,6 @@ public class CSEncoder extends Encoder implements IEncoder {
 
     @Override
     public boolean isMovingForward() {
-        return getDirection();
+        return this.getDirection();
     }
 }

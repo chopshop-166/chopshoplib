@@ -20,7 +20,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
      * @param ms Modifiers to start with.
      */
     public ModifierGroup(final DoubleUnaryOperator... ms) {
-        modifiers.addAll(Arrays.asList(ms));
+        this.modifiers.addAll(Arrays.asList(ms));
     }
 
     /**
@@ -31,7 +31,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
      */
     public double run(final double rawSpeed) {
         double speed = rawSpeed;
-        for (final DoubleUnaryOperator m : modifiers) {
+        for (final DoubleUnaryOperator m : this.modifiers) {
             speed = m.applyAsDouble(speed);
         }
         return speed;
@@ -42,7 +42,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
      */
     @Override
     public double applyAsDouble(final double orig) {
-        return run(orig);
+        return this.run(orig);
     }
 
     /**
@@ -52,8 +52,8 @@ public class ModifierGroup implements DoubleUnaryOperator {
      * @param ms Any extra modifiers (optional).
      */
     public void add(final Modifier m, final Modifier... ms) {
-        modifiers.add(m);
-        modifiers.addAll(Arrays.asList(ms));
+        this.modifiers.add(m);
+        this.modifiers.addAll(Arrays.asList(ms));
     }
 
     /**
@@ -62,13 +62,13 @@ public class ModifierGroup implements DoubleUnaryOperator {
      * @param ms Collection of modifiers.
      */
     public void addAll(final Collection<? extends Modifier> ms) {
-        modifiers.addAll(ms);
+        this.modifiers.addAll(ms);
     }
 
     /**
      * Clear the list of modifiers.
      */
     public void clear() {
-        modifiers.clear();
+        this.modifiers.clear();
     }
 }

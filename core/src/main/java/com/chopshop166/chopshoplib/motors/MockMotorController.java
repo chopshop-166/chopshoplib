@@ -17,12 +17,12 @@ public class MockMotorController implements Sendable, MotorController {
 
     @Override
     public void set(final double speed) {
-        this.speed = isInverted ? -speed : speed;
+        this.speed = this.isInverted ? -speed : speed;
     }
 
     @Override
     public double get() {
-        return speed;
+        return this.speed;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MockMotorController implements Sendable, MotorController {
 
     @Override
     public boolean getInverted() {
-        return isInverted;
+        return this.isInverted;
     }
 
     @Override

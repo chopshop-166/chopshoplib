@@ -20,9 +20,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
@@ -51,13 +51,13 @@ public abstract class CommandRobot extends TimedRobot {
     @Override
     public void robotInit() {
         super.robotInit();
-        logBuildData();
-        configureButtonBindings();
-        populateDashboard();
-        setDefaultCommands();
+        CommandRobot.logBuildData();
+        this.configureButtonBindings();
+        this.populateDashboard();
+        this.setDefaultCommands();
 
-        populateAutonomous();
-        Shuffleboard.getTab("Shuffleboard").add("Autonomous", autoChooser);
+        this.populateAutonomous();
+        Shuffleboard.getTab("Shuffleboard").add("Autonomous", this.autoChooser);
     }
 
     @Override
@@ -76,18 +76,18 @@ public abstract class CommandRobot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autoCmd = getAutoCommand();
+        this.autoCmd = this.getAutoCommand();
 
         // schedule the autonomous command (example)
-        if (autoCmd != null) {
-            autoCmd.schedule();
+        if (this.autoCmd != null) {
+            this.autoCmd.schedule();
         }
     }
 
     @Override
     public void teleopInit() {
-        if (autoCmd != null) {
-            autoCmd.cancel();
+        if (this.autoCmd != null) {
+            this.autoCmd.cancel();
         }
     }
 
@@ -105,12 +105,12 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A {@link Command} object
      */
     public Command getAutoCommand() {
-        return autoChooser.getSelected();
+        return this.autoChooser.getSelected();
     }
 
     /** Add all the autonomous modes to the chooser. */
     public void populateAutonomous() {
-        final Class<? extends CommandRobot> clazz = getClass();
+        final Class<? extends CommandRobot> clazz = this.getClass();
 
         // Get all fields of the class
         Arrays.stream(clazz.getDeclaredFields())
@@ -142,9 +142,9 @@ public abstract class CommandRobot extends TimedRobot {
                     }
 
                     if (annotation.defaultAuto()) {
-                        autoChooser.setDefaultOption(name, cmd);
+                        this.autoChooser.setDefaultOption(name, cmd);
                     } else {
-                        autoChooser.addOption(name, cmd);
+                        this.autoChooser.addOption(name, cmd);
                     }
                 });
     }
@@ -156,7 +156,7 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
+        return Commands.parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
                 .withName(
                         "Reset Subsystems");
     }
@@ -168,8 +168,9 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new)).withName(
-                "Reset Subsystems");
+        return Commands.parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
+                .withName(
+                        "Reset Subsystems");
     }
 
     /**
@@ -181,7 +182,7 @@ public abstract class CommandRobot extends TimedRobot {
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return getRobotMap(rootClass, pkg, null);
+        return CommandRobot.getRobotMap(rootClass, pkg, null);
     }
 
     /**
@@ -194,7 +195,7 @@ public abstract class CommandRobot extends TimedRobot {
      * @return An instance of the given type, or the default value.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
-        return getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
+        return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
     }
 
     /**
@@ -207,7 +208,7 @@ public abstract class CommandRobot extends TimedRobot {
      * @return An instance of the given type, or null.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
-        return getMapForName(name, rootClass, pkg, null);
+        return CommandRobot.getMapForName(name, rootClass, pkg, null);
     }
 
     /**
@@ -258,21 +259,21 @@ public abstract class CommandRobot extends TimedRobot {
     public static void logBuildData() {
 
         final ShuffleboardTab tab = Shuffleboard.getTab("BuildData");
-        String hashString = UNKNOWN_VALUE;
-        String buildTime = UNKNOWN_VALUE;
-        String branchString = UNKNOWN_VALUE;
-        String fileString = UNKNOWN_VALUE;
-        String macAddress = UNKNOWN_VALUE;
+        String hashString = CommandRobot.UNKNOWN_VALUE;
+        String buildTime = CommandRobot.UNKNOWN_VALUE;
+        String branchString = CommandRobot.UNKNOWN_VALUE;
+        String fileString = CommandRobot.UNKNOWN_VALUE;
+        String macAddress = CommandRobot.UNKNOWN_VALUE;
 
         try {
             final URL manifestURL = Resources.getResource("META-INF/MANIFEST.MF");
             final Manifest manifest = new Manifest(manifestURL.openStream());
             final Attributes attrs = manifest.getMainAttributes();
 
-            hashString = getAttr(attrs, "Git-Hash");
-            buildTime = getAttr(attrs, "Build-Time");
-            branchString = getAttr(attrs, "Git-Branch");
-            fileString = getAttr(attrs, "Git-Files");
+            hashString = CommandRobot.getAttr(attrs, "Git-Hash");
+            buildTime = CommandRobot.getAttr(attrs, "Build-Time");
+            branchString = CommandRobot.getAttr(attrs, "Git-Branch");
+            fileString = CommandRobot.getAttr(attrs, "Git-Files");
             macAddress = RobotUtils.getMACAddress();
         } catch (IOException ex) {
             // Could not read the manifest, just send dummy values
@@ -296,7 +297,7 @@ public abstract class CommandRobot extends TimedRobot {
         if (attrs.containsKey(key)) {
             return attrs.getValue(key);
         } else {
-            return UNKNOWN_VALUE;
+            return CommandRobot.UNKNOWN_VALUE;
         }
     }
 

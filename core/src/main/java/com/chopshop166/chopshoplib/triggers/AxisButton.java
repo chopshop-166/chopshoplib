@@ -42,7 +42,7 @@ public class AxisButton extends Trigger {
      * @return The XBox Controller object.
      */
     public XboxController getController() {
-        return controller;
+        return this.controller;
     }
 
 }

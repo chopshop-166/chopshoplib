@@ -4,9 +4,9 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 
 /**
  * A {@link SmartSubsystem} that provides all the necessary convenience methods.
@@ -32,7 +32,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      * @return A new command.
      */
     public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return parallel(runOnce(init), new WaitUntilCommand(until)).withName(name);
+        return Commands.parallel(this.runOnce(init), new WaitUntilCommand(until)).withName(name);
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      */
     @Override
     public CommandBase resetCmd() {
-        return runOnce(this::reset).withName("Reset " + SendableRegistry.getName(this));
+        return this.runOnce(this::reset).withName("Reset " + SendableRegistry.getName(this));
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      */
     @Override
     public CommandBase safeStateCmd() {
-        return runOnce(this::safeState).withName("Safe " + SendableRegistry.getName(this));
+        return this.runOnce(this::safeState).withName("Safe " + SendableRegistry.getName(this));
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      */
     @Override
     public CommandBase cancel() {
-        return runOnce(() -> {
+        return this.runOnce(() -> {
         }).withName("Cancel " + SendableRegistry.getName(this));
     }
 }

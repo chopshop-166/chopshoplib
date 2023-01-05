@@ -18,7 +18,7 @@ public interface SwerveModule extends Sendable {
      * @return An angle as a rotation object.
      */
     default Rotation2d getAngle() {
-        return getState().angle;
+        return this.getState().angle;
     }
 
     /**

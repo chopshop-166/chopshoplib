@@ -6,9 +6,8 @@ import com.chopshop166.chopshoplib.PersistenceCheck;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import static edu.wpi.first.wpilibj2.command.Commands.sequence;
-import static edu.wpi.first.wpilibj2.command.Commands.waitUntil;
 
 /**
  * A {@link PIDSubsystem} that has several presets that it can go to.
@@ -27,7 +26,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      */
     public PresetSubsystem(final PIDController controller, final int numSamples) {
         super(controller);
-        persistenceCheck = new PersistenceCheck(numSamples, controller::atSetpoint);
+        this.persistenceCheck = new PersistenceCheck(numSamples, controller::atSetpoint);
     }
 
     /**
@@ -39,7 +38,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      */
     public PresetSubsystem(final PIDController controller, final int numSamples, final double initial) {
         super(controller, initial);
-        persistenceCheck = new PersistenceCheck(numSamples, controller::atSetpoint);
+        this.persistenceCheck = new PersistenceCheck(numSamples, controller::atSetpoint);
     }
 
     /**
@@ -49,8 +48,8 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetCmd(final T value) {
-        return runOnce(() -> {
-            setSetpoint(value.getAsDouble());
+        return this.runOnce(() -> {
+            this.setSetpoint(value.getAsDouble());
         }).withName("Set to " + value.name());
     }
 
@@ -60,7 +59,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The wait command.
      */
     public CommandBase waitForSetpoint() {
-        return waitUntil(persistenceCheck).withName("Wait For Setpoint");
+        return Commands.waitUntil(this.persistenceCheck).withName("Wait For Setpoint");
     }
 
     /**
@@ -70,17 +69,17 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetWait(final T value) {
-        return sequence(presetCmd(value), waitForSetpoint()).withName("Set to " + value.name());
+        return Commands.sequence(this.presetCmd(value), this.waitForSetpoint()).withName("Set to " + value.name());
     }
 
     @Override
     public void safeState() {
-        setSetpoint(getMeasurement());
+        this.setSetpoint(this.getMeasurement());
     }
 
     @Override
     public void reset() {
-        setSetpoint(getMeasurement());
+        this.setSetpoint(this.getMeasurement());
     }
 
 }

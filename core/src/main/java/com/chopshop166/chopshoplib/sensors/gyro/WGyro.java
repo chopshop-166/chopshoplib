@@ -27,40 +27,40 @@ public class WGyro implements SmartGyro {
 
     @Override
     public void close() throws Exception {
-        gyro.close();
+        this.gyro.close();
 
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        sendable.initSendable(builder);
+        this.sendable.initSendable(builder);
 
     }
 
     @Override
     public void calibrate() {
-        gyro.calibrate();
+        this.gyro.calibrate();
     }
 
     @Override
     public void reset() {
-        gyro.reset();
-        offset = 0;
+        this.gyro.reset();
+        this.offset = 0;
     }
 
     @Override
     public double getAngle() {
-        return gyro.getAngle() - offset;
+        return this.gyro.getAngle() - this.offset;
     }
 
     @Override
     public void setAngle(final double angle) {
-        offset = angle;
+        this.offset = angle;
     }
 
     @Override
     public double getRate() {
-        return gyro.getRate();
+        return this.gyro.getRate();
     }
 
 }

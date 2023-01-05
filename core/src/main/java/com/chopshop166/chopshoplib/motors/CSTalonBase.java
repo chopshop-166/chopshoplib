@@ -34,7 +34,7 @@ public class CSTalonBase<T extends BaseTalon & MotorController & Sendable> exten
      * @return The raw Talon object.
      */
     public T getMotorController() {
-        return wrapped;
+        return this.wrapped;
     }
 
     /**
@@ -66,7 +66,7 @@ public class CSTalonBase<T extends BaseTalon & MotorController & Sendable> exten
      * @return The control mode.
      */
     public ControlMode getControlType() {
-        return savedControlType;
+        return this.savedControlType;
     }
 
     @Override
@@ -77,6 +77,6 @@ public class CSTalonBase<T extends BaseTalon & MotorController & Sendable> exten
 
     @Override
     public void setSetpoint(final double setPoint) {
-        wrapped.set(savedControlType, setPoint);
+        this.wrapped.set(this.savedControlType, setPoint);
     }
 }

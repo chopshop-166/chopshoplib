@@ -39,7 +39,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @return The wrapped encoder.
      */
     public RelativeEncoder getRaw() {
-        return encoder;
+        return this.encoder;
     }
 
     /**
@@ -48,7 +48,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @param scaleFactor The scaleFactor to set.
      */
     public void setPositionScaleFactor(final double scaleFactor) {
-        encoder.setPositionConversionFactor(scaleFactor);
+        this.encoder.setPositionConversionFactor(scaleFactor);
     }
 
     /**
@@ -57,7 +57,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getPositionScaleFactor() {
-        return encoder.getPositionConversionFactor();
+        return this.encoder.getPositionConversionFactor();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @param scaleFactor The scaleFactor to set.
      */
     public void setVelocityScaleFactor(final double scaleFactor) {
-        encoder.setVelocityConversionFactor(scaleFactor);
+        this.encoder.setVelocityConversionFactor(scaleFactor);
     }
 
     /**
@@ -75,7 +75,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getVelocityScaleFactor() {
-        return encoder.getVelocityConversionFactor();
+        return this.encoder.getVelocityConversionFactor();
     }
 
     /**
@@ -85,7 +85,7 @@ public class SparkMaxEncoder implements IEncoder {
      */
     @Override
     public double getDistance() {
-        return encoder.getPosition();
+        return this.encoder.getPosition();
     }
 
     /**
@@ -95,7 +95,7 @@ public class SparkMaxEncoder implements IEncoder {
      */
     @Override
     public double getRate() {
-        return encoder.getVelocity();
+        return this.encoder.getVelocity();
     }
 
     /**
@@ -104,7 +104,7 @@ public class SparkMaxEncoder implements IEncoder {
      * @return true if reversed, otherwise false.
      */
     public boolean isReverseDirection() {
-        return encoder.getInverted();
+        return this.encoder.getInverted();
     }
 
     /**
@@ -113,22 +113,22 @@ public class SparkMaxEncoder implements IEncoder {
      * @param isReversed true if the encoder is reversed, otherwise false.
      */
     public void setReverseDirection(final boolean isReversed) {
-        encoder.setInverted(isReversed);
+        this.encoder.setInverted(isReversed);
     }
 
     @Override
     public void reset() {
-        encoder.setPosition(0.0);
+        this.encoder.setPosition(0.0);
     }
 
     @Override
     public boolean isStopped() {
-        return encoder.getVelocity() == 0;
+        return this.encoder.getVelocity() == 0;
     }
 
     @Override
     public boolean isMovingForward() {
-        return encoder.getVelocity() >= 0.0;
+        return this.encoder.getVelocity() >= 0.0;
     }
 
     @Override

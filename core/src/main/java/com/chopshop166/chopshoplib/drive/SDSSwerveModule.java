@@ -1,13 +1,13 @@
 package com.chopshop166.chopshoplib.drive;
 
-import com.chopshop166.chopshoplib.motors.PIDControlType;
 import com.chopshop166.chopshoplib.motors.CSSparkMax;
+import com.chopshop166.chopshoplib.motors.PIDControlType;
 import com.chopshop166.chopshoplib.states.PIDValues;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -89,7 +89,7 @@ public class SDSSwerveModule implements SwerveModule {
          * @return The conversion rate.
          */
         public double getConversion() {
-            return gearRatio * Math.PI * wheelDiameter;
+            return this.gearRatio * Math.PI * this.wheelDiameter;
         }
     }
 
@@ -105,7 +105,8 @@ public class SDSSwerveModule implements SwerveModule {
     public SDSSwerveModule(final Translation2d moduleLocation, final CANCoder steeringEncoder,
             final CSSparkMax steeringController, final CSSparkMax driveController, final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
-                new PIDController(PID_VALUES.p, PID_VALUES.i, PID_VALUES.d));
+                new PIDController(SDSSwerveModule.PID_VALUES.p, SDSSwerveModule.PID_VALUES.i,
+                        SDSSwerveModule.PID_VALUES.d));
     }
 
     /**
@@ -124,7 +125,7 @@ public class SDSSwerveModule implements SwerveModule {
         this.location = moduleLocation;
         this.steeringEncoder = steeringEncoder;
         this.steeringController = steeringController;
-        this.driveController = configureDriveMotor(driveController, conf);
+        this.driveController = SDSSwerveModule.configureDriveMotor(driveController, conf);
         this.steeringPID = pid;
         this.steeringPID.enableContinuousInput(-180, 180);
     }
@@ -135,7 +136,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     public CSSparkMax getSteeringController() {
-        return steeringController;
+        return this.steeringController;
     }
 
     /**
@@ -144,7 +145,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     public CSSparkMax getDriveController() {
-        return driveController;
+        return this.driveController;
     }
 
     /**
@@ -154,7 +155,7 @@ public class SDSSwerveModule implements SwerveModule {
      */
     @Override
     public Translation2d getLocation() {
-        return location;
+        return this.location;
     }
 
     /**
@@ -165,33 +166,33 @@ public class SDSSwerveModule implements SwerveModule {
      */
     @Override
     public void setDesiredState(final SwerveModuleState desiredState) {
-        final SwerveModuleState state = calculateSteeringAngle(desiredState);
+        final SwerveModuleState state = this.calculateSteeringAngle(desiredState);
 
         // Run Steering angle PID to calculate output since the Spark Max can't take
         // advantage of the Cancoder
-        final double angleOutput = steeringPID.calculate(getAngle().getDegrees(), state.angle.getDegrees());
+        final double angleOutput = this.steeringPID.calculate(this.getAngle().getDegrees(), state.angle.getDegrees());
         // If we're not trying to actually drive, don't reset the module angle
         if (state.speedMetersPerSecond == 0) {
-            steeringController.set(0);
+            this.steeringController.set(0);
         } else {
-            steeringController.set(angleOutput);
+            this.steeringController.set(angleOutput);
         }
 
         // Set the drive motor output speed
         if (state.speedMetersPerSecond == 0) {
-            driveController.getPidController().setIAccum(0);
+            this.driveController.getPidController().setIAccum(0);
         }
-        this.speedError = state.speedMetersPerSecond - driveController.getEncoder().getRate();
-        if (inverted) {
-            driveController.setSetpoint(-state.speedMetersPerSecond);
+        this.speedError = state.speedMetersPerSecond - this.driveController.getEncoder().getRate();
+        if (this.inverted) {
+            this.driveController.setSetpoint(-state.speedMetersPerSecond);
         } else {
-            driveController.setSetpoint(state.speedMetersPerSecond);
+            this.driveController.setSetpoint(state.speedMetersPerSecond);
         }
     }
 
     @Override
     public void setInverted(final boolean isInverted) {
-        inverted = isInverted;
+        this.inverted = isInverted;
     }
 
     /**
@@ -201,7 +202,7 @@ public class SDSSwerveModule implements SwerveModule {
      */
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(steeringEncoder.getAbsolutePosition());
+        return Rotation2d.fromDegrees(this.steeringEncoder.getAbsolutePosition());
     }
 
     /**
@@ -213,7 +214,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The optimized module state.
      */
     private SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
-        return SwerveModuleState.optimize(desiredState, getAngle());
+        return SwerveModuleState.optimize(desiredState, this.getAngle());
     }
 
     /**
@@ -252,26 +253,27 @@ public class SDSSwerveModule implements SwerveModule {
 
     @Override
     public double getDistance() {
-        return driveController.getEncoder().getDistance();
+        return this.driveController.getEncoder().getDistance();
     }
 
     @Override
     public void resetDistance() {
-        driveController.getEncoder().reset();
+        this.driveController.getEncoder().reset();
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setActuator(true);
         builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("Angle Error", steeringPID::getPositionError, null);
-        builder.addDoubleProperty("Speed Error", () -> speedError, null);
-        builder.addDoubleProperty("Angle", () -> getAngle().getDegrees(), null);
-        builder.addDoubleProperty("Speed", () -> driveController.getEncoder().getRate(), null);
+        builder.addDoubleProperty("Angle Error", this.steeringPID::getPositionError, null);
+        builder.addDoubleProperty("Speed Error", () -> this.speedError, null);
+        builder.addDoubleProperty("Angle", () -> this.getAngle().getDegrees(), null);
+        builder.addDoubleProperty("Speed", () -> this.driveController.getEncoder().getRate(), null);
     }
 
     @Override
     public SwerveModuleState getState() {
-        return new SwerveModuleState((inverted ? 1.0 : -1.0) * driveController.getEncoder().getRate(), getAngle());
+        return new SwerveModuleState((this.inverted ? 1.0 : -1.0) * this.driveController.getEncoder().getRate(),
+                this.getAngle());
     }
 }

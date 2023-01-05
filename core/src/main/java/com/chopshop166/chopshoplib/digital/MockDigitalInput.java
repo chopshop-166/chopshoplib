@@ -22,7 +22,7 @@ public class MockDigitalInput implements DigitalInputSource {
 
     @Override
     public boolean getAsBoolean() {
-        return value;
+        return this.value;
     }
 
     @Override

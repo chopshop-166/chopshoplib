@@ -36,19 +36,19 @@ public class FunctionalWaitCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        timer.reset();
-        timer.start();
-        duration = durationSupplier.getAsDouble();
+        this.timer.reset();
+        this.timer.start();
+        this.duration = this.durationSupplier.getAsDouble();
     }
 
     @Override
     public void end(final boolean interrupted) {
-        timer.stop();
+        this.timer.stop();
     }
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(duration);
+        return this.timer.hasElapsed(this.duration);
     }
 
     @Override

@@ -37,24 +37,24 @@ public class IntervalCommand extends CommandBase {
      */
     public IntervalCommand(final double timeDelta, final Subsystem requirement, final Runnable periodic) {
         this(timeDelta, periodic);
-        addRequirements(requirement);
+        this.addRequirements(requirement);
     }
 
     @Override
     public void initialize() {
-        elapsedTimer.reset();
-        elapsedTimer.start();
+        this.elapsedTimer.reset();
+        this.elapsedTimer.start();
     }
 
     @Override
     public void execute() {
-        if (elapsedTimer.advanceIfElapsed(timeDelta)) {
-            periodic.run();
+        if (this.elapsedTimer.advanceIfElapsed(this.timeDelta)) {
+            this.periodic.run();
         }
     }
 
     @Override
     public void end(final boolean interrupted) {
-        elapsedTimer.stop();
+        this.elapsedTimer.stop();
     }
 }

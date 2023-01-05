@@ -26,7 +26,7 @@ public interface HasSafeState {
      * @param interrupted Ignored.
      */
     default void stop(final boolean interrupted) {
-        safeState();
+        this.safeState();
     }
 
 }
