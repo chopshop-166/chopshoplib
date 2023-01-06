@@ -154,9 +154,9 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param left  The left speed.
      * @param right The right speed.
      */
-    public void tankDriveSetpoint(final double left, final double right) {
-        this.map.left().setSetpoint(left);
-        this.map.right().setSetpoint(right);
+    public void tankDriveSetpoint(final Double left, final Double right) {
+        this.map.left().setSetpoint(left == null ? 0.0 : left);
+        this.map.right().setSetpoint(left == null ? 0.0 : left);
         this.driveTrain.feed();
     }
 
