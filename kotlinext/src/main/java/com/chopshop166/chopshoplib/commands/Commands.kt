@@ -64,7 +64,6 @@ fun cmd(block: CommandBuilder.() -> Unit) =
 /**
  * Create an {@link InstantCommand}.
  * 
- * @param name   The name of the command.
  * @param action The action to take.
  * @return A new command.
  */
@@ -74,7 +73,6 @@ fun Subsystem.runOnce(action : () -> Unit) =
 /**
  * Create an {@link InstantCommand}.
  * 
- * @param name   The name of the command.
  * @param action The action to take.
  * @return A new command.
  */
@@ -84,7 +82,6 @@ fun runOnce(action : () -> Unit) =
 /**
  * Create a {@link RunCommand}.
  * 
- * @param name   The name of the command.
  * @param action The action to take.
  * @return A new command.
  */
@@ -94,7 +91,6 @@ fun Subsystem.run(action : () -> Unit) =
 /**
  * Create a {@link RunCommand}.
  * 
- * @param name   The name of the command.
  * @param action The action to take.
  * @return A new command.
  */
@@ -104,7 +100,6 @@ fun run(action : () -> Unit) =
 /**
  * Create a {@link StartEndCommand}.
  * 
- * @param name    The name of the command.
  * @param onStart The action to take on start.
  * @param onEnd   The action to take on end.
  * @return A new command.
@@ -115,7 +110,6 @@ fun Subsystem.startEnd(onStart : () -> Unit, onEnd : () -> Unit) =
 /**
  * Create a {@link StartEndCommand}.
  * 
- * @param name    The name of the command.
  * @param onStart The action to take on start.
  * @param onEnd   The action to take on end.
  * @return A new command.
@@ -126,7 +120,6 @@ fun startEnd(onStart : () -> Unit, onEnd : () -> Unit) =
 /**
  * Run a {@link Runnable} and then wait until a condition is true.
  * 
- * @param name  The name of the command.
  * @param init  The action to take.
  * @param until The condition to wait until.
  * @return A new command.
@@ -137,7 +130,6 @@ fun Subsystem.initAndWait(init : () -> Unit, until : () -> Boolean) =
 /**
  * Run a {@link Runnable} and then wait until a condition is true.
  * 
- * @param name  The name of the command.
  * @param init  The action to take.
  * @param until The condition to wait until.
  * @return A new command.
@@ -149,7 +141,6 @@ fun initAndWait(init : () -> Unit, until : () -> Boolean) =
  * Create a command to call a consumer function.
  * 
  * @param <T>   The type to wrap.
- * @param name  The name of the command.
  * @param value The value to call the function with.
  * @param func  The function to call.
  * @return A new command.
@@ -163,7 +154,6 @@ fun <T> Subsystem.setter(value : T, func : (T) -> Unit) =
  * Create a command to call a consumer function.
  * 
  * @param <T>   The type to wrap.
- * @param name  The name of the command.
  * @param value The value to call the function with.
  * @param func  The function to call.
  * @return A new command.
@@ -177,7 +167,6 @@ fun <T> setter(value : T, func : (T) -> Unit) =
  * Create a command to call a consumer function and wait.
  * 
  * @param <T>   The type to wrap.
- * @param name  The name of the command.
  * @param value The value to call the function with.
  * @param func  The function to call.
  * @param until The condition to wait until.
@@ -192,7 +181,6 @@ fun <T> Subsystem.callAndWait(value : T, func : (T) -> Unit, until : () -> Boole
  * Create a command to call a consumer function and wait.
  * 
  * @param <T>   The type to wrap.
- * @param name  The name of the command.
  * @param value The value to call the function with.
  * @param func  The function to call.
  * @param until The condition to wait until.
@@ -216,7 +204,6 @@ fun CommandBase.runsIf(condition : () -> Boolean) =
 /**
  * Create a command that selects which command to run from a map.
  * 
- * @param name     The command's name.
  * @param commands The possible commands to run.
  * @param selector The function to determine which command should be run.
  * @return The wrapper command object.
@@ -227,7 +214,6 @@ fun select(commands : Map<Any, Command>, selector: () -> Any) =
 /**
  * Create a command that selects which command to run from a function.
  * 
- * @param name     The command's name.
  * @param selector The function to determine which command should be run.
  * @return The wrapper command object.
  */

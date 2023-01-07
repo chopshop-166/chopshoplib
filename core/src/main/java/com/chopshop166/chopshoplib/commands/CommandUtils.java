@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -17,21 +17,9 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 /**
  * Utility class for storing command helpers.
  */
-final public class Commands {
+final public class CommandUtils {
 
-    private Commands() {
-    }
-
-    /**
-     * Repeat a {@link Command} a given number of times.
-     *
-     * @param name          The name of the command.
-     * @param numTimesToRun The number of times to run the command.
-     * @param cmd           The command to repeat.
-     * @return A newly constructed command.
-     */
-    public static CommandBase repeat(final String name, final int numTimesToRun, final Command cmd) {
-        return Commands.repeat(numTimesToRun, cmd).withName(name);
+    private CommandUtils() {
     }
 
     /**
@@ -42,19 +30,7 @@ final public class Commands {
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return Commands.repeat(numTimesToRun, () -> new ProxyCommand(cmd));
-    }
-
-    /**
-     * Repeat a {@link Command} a given number of times.
-     *
-     * @param name          The name of the command.
-     * @param numTimesToRun The number of times to run the command.
-     * @param cmd           A way to create the command to repeat.
-     * @return A newly constructed command group.
-     */
-    public static CommandBase repeat(final String name, final int numTimesToRun, final Supplier<Command> cmd) {
-        return Commands.repeat(numTimesToRun, cmd).withName(name);
+        return CommandUtils.repeat(numTimesToRun, () -> new ProxyCommand(cmd));
     }
 
     /**
@@ -65,8 +41,7 @@ final public class Commands {
      * @return A newly constructed command group.
      */
     public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return edu.wpi.first.wpilibj2.command.Commands
-                .sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+        return Commands.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
     /**
@@ -83,58 +58,52 @@ final public class Commands {
     /**
      * Run a {@link Runnable} and then wait until a condition is true.
      *
-     * @param name  The name of the command.
      * @param init  The action to take.
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return edu.wpi.first.wpilibj2.command.Commands.parallel(new InstantCommand(init), new WaitUntilCommand(until))
-                .withName(name);
+    public static CommandBase initAndWait(final Runnable init, final BooleanSupplier until) {
+        return Commands.parallel(Commands.runOnce(init), new WaitUntilCommand(until));
     }
 
     /**
      * Create a command to call a consumer function.
      *
      * @param <T>   The type to wrap.
-     * @param name  The name of the command.
      * @param value The value to call the function with.
      * @param func  The function to call.
      * @return A new command.
      */
-    public static <T> CommandBase setter(final String name, final T value, final Consumer<T> func) {
-        return edu.wpi.first.wpilibj2.command.Commands.runOnce(() -> {
+    public static <T> CommandBase setter(final T value, final Consumer<T> func) {
+        return Commands.runOnce(() -> {
             func.accept(value);
-        }).withName(name);
+        });
     }
 
     /**
      * Create a command that sets a motor to a speed while the command is running.
      *
-     * @param name  The name of the command.
      * @param value The value to set the motor to.
      * @param motor The motor to use.
      * @return A new command.
      */
-    public static CommandBase runWhile(final String name, final double value, final MotorController motor) {
-        return edu.wpi.first.wpilibj2.command.Commands.startEnd(() -> {
+    public static CommandBase runWhile(final double value, final MotorController motor) {
+        return Commands.startEnd(() -> {
             motor.set(value);
-        }, motor::stopMotor).withName(name);
+        }, motor::stopMotor);
     }
 
     /**
      * Create a command to call a consumer function and wait.
      *
      * @param <T>   The type to wrap.
-     * @param name  The name of the command.
      * @param value The value to call the function with.
      * @param func  The function to call.
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static <T> CommandBase callAndWait(final String name, final T value, final Consumer<T> func,
-            final BooleanSupplier until) {
-        return Commands.initAndWait(name, () -> {
+    public static <T> CommandBase callAndWait(final T value, final Consumer<T> func, final BooleanSupplier until) {
+        return CommandUtils.initAndWait(() -> {
             func.accept(value);
         }, until);
     }
@@ -147,19 +116,17 @@ final public class Commands {
      * @return The conditional command.
      */
     public static CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
-        return edu.wpi.first.wpilibj2.command.Commands.either(cmd, edu.wpi.first.wpilibj2.command.Commands.none(),
-                condition);
+        return Commands.either(cmd, Commands.none(), condition);
     }
 
     /**
      * Create a command that selects which command to run from a function.
      *
-     * @param name     The command's name.
      * @param selector The function to determine which command should be run.
      * @return The wrapper command object.
      */
-    public static CommandBase select(final String name, final Supplier<Command> selector) {
-        return new ProxyCommand(selector).withName(name);
+    public static CommandBase select(final Supplier<Command> selector) {
+        return new ProxyCommand(selector);
     }
 
     /**
