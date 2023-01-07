@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static edu.wpi.first.wpilibj2.command.Commands.parallel;
+
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.net.URL;
@@ -22,7 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * A Robot that calls the command scheduler in its periodic functions.
@@ -156,9 +157,8 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return Commands.parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
-                .withName(
-                        "Reset Subsystems");
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
+                .withName("Reset Subsystems");
     }
 
     /**
@@ -168,9 +168,8 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
-        return Commands.parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
-                .withName(
-                        "Reset Subsystems");
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
+                .withName("Reset Subsystems");
     }
 
     /**

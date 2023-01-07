@@ -2,13 +2,7 @@ package com.chopshop166.chopshoplib.commands
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand
 import edu.wpi.first.wpilibj2.command.PrintCommand
-import edu.wpi.first.wpilibj2.command.Commands.deadline
-import edu.wpi.first.wpilibj2.command.Commands.either
-import edu.wpi.first.wpilibj2.command.Commands.parallel
-import edu.wpi.first.wpilibj2.command.Commands.race
-import edu.wpi.first.wpilibj2.command.Commands.runOnce
-import edu.wpi.first.wpilibj2.command.Commands.sequence
-import edu.wpi.first.wpilibj2.command.Commands.waitSeconds
+import edu.wpi.first.wpilibj2.command.Commands.*
 
 fun testSequence() =
     sequence(

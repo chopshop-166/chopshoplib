@@ -1,17 +1,26 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static edu.wpi.first.wpilibj2.command.Commands.parallel;
+import static edu.wpi.first.wpilibj2.command.Commands.waitUntil;
+
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link SmartSubsystem} that provides all the necessary convenience methods.
  */
 public abstract class SmartSubsystemBase extends SubsystemBase implements SmartSubsystem {
+
+    /**
+     * Create a command builder with a given name.
+     * 
+     * @return A new command builder.
+     */
+    public BuildCommand cmd() {
+        return new BuildCommand(this);
+    }
 
     /**
      * Create a command builder with a given name.
@@ -26,13 +35,12 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     /**
      * Run a {@link Runnable} and then wait until a condition is true.
      * 
-     * @param name  The name of the command.
      * @param init  The action to take.
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public CommandBase initAndWait(final String name, final Runnable init, final BooleanSupplier until) {
-        return Commands.parallel(this.runOnce(init), new WaitUntilCommand(until)).withName(name);
+    public CommandBase initAndWait(final Runnable init, final BooleanSupplier until) {
+        return parallel(this.runOnce(init), waitUntil(until));
     }
 
     /**
@@ -47,26 +55,6 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     }
 
     /**
-     * Create a command to reset the subsystem.
-     * 
-     * @return A reset command.
-     */
-    @Override
-    public CommandBase resetCmd() {
-        return this.runOnce(this::reset).withName("Reset " + SendableRegistry.getName(this));
-    }
-
-    /**
-     * Create a command to reset the subsystem.
-     * 
-     * @return A reset command.
-     */
-    @Override
-    public CommandBase safeStateCmd() {
-        return this.runOnce(this::safeState).withName("Safe " + SendableRegistry.getName(this));
-    }
-
-    /**
      * Cancel the currently running command.
      * 
      * @return A cancel command.
@@ -74,6 +62,6 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     @Override
     public CommandBase cancel() {
         return this.runOnce(() -> {
-        }).withName("Cancel " + SendableRegistry.getName(this));
+        }).withName("Cancel " + this.getName());
     }
 }
