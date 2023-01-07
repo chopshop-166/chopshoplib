@@ -31,7 +31,7 @@ final public class CommandUtils {
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return CommandUtils.repeat(numTimesToRun, () -> new ProxyCommand(cmd));
+        return repeat(numTimesToRun, () -> new ProxyCommand(cmd));
     }
 
     /**
@@ -114,7 +114,7 @@ final public class CommandUtils {
      * @return A new command.
      */
     public static <T> CommandBase callAndWait(final T value, final Consumer<T> func, final BooleanSupplier until) {
-        return CommandUtils.initAndWait(() -> {
+        return initAndWait(() -> {
             func.accept(value);
         }, until);
     }
