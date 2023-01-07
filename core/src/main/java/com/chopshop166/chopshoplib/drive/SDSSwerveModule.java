@@ -105,8 +105,7 @@ public class SDSSwerveModule implements SwerveModule {
     public SDSSwerveModule(final Translation2d moduleLocation, final CANCoder steeringEncoder,
             final CSSparkMax steeringController, final CSSparkMax driveController, final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
-                new PIDController(SDSSwerveModule.PID_VALUES.p, SDSSwerveModule.PID_VALUES.i,
-                        SDSSwerveModule.PID_VALUES.d));
+                new PIDController(PID_VALUES.p(), PID_VALUES.i(), PID_VALUES.d()));
     }
 
     /**

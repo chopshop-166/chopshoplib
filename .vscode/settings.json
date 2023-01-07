@@ -3,6 +3,11 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "kotlin.compiler.jvm.target": "17",
+  "[java]": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4
+  },
   "java.server.launchMode": "Hybrid",
   "java.cleanup.actionsOnSave": [
     "addDeprecated",

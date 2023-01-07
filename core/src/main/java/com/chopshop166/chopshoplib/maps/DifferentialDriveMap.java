@@ -23,7 +23,7 @@ public record DifferentialDriveMap(SmartMotorController left, SmartMotorControll
      * Default constructor.
      */
     public DifferentialDriveMap() {
-        this(new SmartMotorController(), new SmartMotorController(), 1.0, new MockGyro());
+        this(new SmartMotorController(), new SmartMotorController(), 1.0);
     }
 
     /**

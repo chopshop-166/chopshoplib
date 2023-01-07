@@ -145,8 +145,8 @@ public class SwPIDMotorController extends SmartMotorController {
      */
     public void addDefaultConfiguration(final PIDValues config) {
         this.configs.add(config);
-        this.feedforward = config.ff;
-        this.pid.setPID(config.p, config.i, config.d);
+        this.feedforward = config.ff();
+        this.pid.setPID(config.p(), config.i(), config.d());
     }
 
     /**
@@ -167,8 +167,8 @@ public class SwPIDMotorController extends SmartMotorController {
     @Override
     public void setPidSlot(final int slotId) {
         final var config = this.configs.get(slotId);
-        this.feedforward = config.ff;
-        this.pid.setPID(config.p, config.i, config.d);
+        this.feedforward = config.ff();
+        this.pid.setPID(config.p(), config.i(), config.d());
     }
 
     /** Calculate the PID value, and set the speed controler to the result. */
