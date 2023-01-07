@@ -47,6 +47,16 @@ final public class CommandUtils {
     /**
      * Create a command builder with a given name.
      *
+     * @param requirements The subsystems that the command needs (can be empty).
+     * @return A new command builder.
+     */
+    public static BuildCommand cmd(final Subsystem... requirements) {
+        return new BuildCommand(requirements);
+    }
+
+    /**
+     * Create a command builder with a given name.
+     *
      * @param name         The command name.
      * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.

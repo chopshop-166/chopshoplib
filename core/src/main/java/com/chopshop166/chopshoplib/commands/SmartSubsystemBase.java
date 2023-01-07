@@ -15,6 +15,15 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     /**
      * Create a command builder with a given name.
      * 
+     * @return A new command builder.
+     */
+    public BuildCommand cmd() {
+        return new BuildCommand(this);
+    }
+
+    /**
+     * Create a command builder with a given name.
+     * 
      * @param name The command name.
      * @return A new command builder.
      */
