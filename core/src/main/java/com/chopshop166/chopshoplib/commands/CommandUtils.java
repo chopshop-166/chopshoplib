@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static edu.wpi.first.wpilibj2.command.Commands.*;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
@@ -9,7 +11,6 @@ import java.util.stream.Stream;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -41,7 +42,7 @@ final public class CommandUtils {
      * @return A newly constructed command group.
      */
     public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return Commands.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+        return sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
     /**
@@ -73,7 +74,7 @@ final public class CommandUtils {
      * @return A new command.
      */
     public static CommandBase initAndWait(final Runnable init, final BooleanSupplier until) {
-        return Commands.parallel(Commands.runOnce(init), new WaitUntilCommand(until));
+        return parallel(runOnce(init), new WaitUntilCommand(until));
     }
 
     /**
@@ -85,7 +86,7 @@ final public class CommandUtils {
      * @return A new command.
      */
     public static <T> CommandBase setter(final T value, final Consumer<T> func) {
-        return Commands.runOnce(() -> {
+        return runOnce(() -> {
             func.accept(value);
         });
     }
@@ -98,7 +99,7 @@ final public class CommandUtils {
      * @return A new command.
      */
     public static CommandBase runWhile(final double value, final MotorController motor) {
-        return Commands.startEnd(() -> {
+        return startEnd(() -> {
             motor.set(value);
         }, motor::stopMotor);
     }
@@ -126,7 +127,7 @@ final public class CommandUtils {
      * @return The conditional command.
      */
     public static CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
-        return Commands.either(cmd, Commands.none(), condition);
+        return either(cmd, none(), condition);
     }
 
     /**

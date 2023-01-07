@@ -2,14 +2,13 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "kotlin.compiler.jvm.target": "1.8",
+  "kotlin.compiler.jvm.target": "17",
   "java.server.launchMode": "Hybrid",
   "java.cleanup.actionsOnSave": [
     "addDeprecated",
     "addOverride",
     "invertEquals",
     "qualifyMembers",
-    "qualifyStaticMembers",
     "stringConcatToTextBlock"
   ],
   "java.completion.favoriteStaticMembers": [

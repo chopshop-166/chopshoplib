@@ -1,11 +1,12 @@
 package com.chopshop166.chopshoplib.commands;
 
+import static edu.wpi.first.wpilibj2.command.Commands.parallel;
+import static edu.wpi.first.wpilibj2.command.Commands.waitUntil;
+
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /**
  * A {@link SmartSubsystem} that provides all the necessary convenience methods.
@@ -39,7 +40,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      * @return A new command.
      */
     public CommandBase initAndWait(final Runnable init, final BooleanSupplier until) {
-        return Commands.parallel(this.runOnce(init), new WaitUntilCommand(until));
+        return parallel(this.runOnce(init), waitUntil(until));
     }
 
     /**
