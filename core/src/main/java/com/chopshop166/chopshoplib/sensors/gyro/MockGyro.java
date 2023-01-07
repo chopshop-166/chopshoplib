@@ -23,7 +23,7 @@ public class MockGyro implements SmartGyro {
 
     @Override
     public double getAngle() {
-        return angle;
+        return this.angle;
     }
 
     /**
@@ -38,12 +38,12 @@ public class MockGyro implements SmartGyro {
 
     @Override
     public double getRate() {
-        return rate;
+        return this.rate;
     }
 
     @Override
     public void reset() {
-        angle = 0;
+        this.angle = 0;
     }
 
     @Override

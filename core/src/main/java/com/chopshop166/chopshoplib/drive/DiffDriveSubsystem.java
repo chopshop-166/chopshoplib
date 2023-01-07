@@ -6,13 +6,10 @@ import java.util.function.DoubleSupplier;
 
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 import com.chopshop166.chopshoplib.maps.DifferentialDriveMap;
-import com.chopshop166.chopshoplib.motors.SmartMotorController;
-import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -30,16 +27,10 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
  */
 public class DiffDriveSubsystem extends SmartSubsystemBase {
 
-    /** The left motor controller. */
-    private final SmartMotorController left;
-    /** The right motor controller. */
-    private final SmartMotorController right;
-    /** The gyro object. */
-    private final SmartGyro gyro;
+    /** The hardware map. */
+    private final DifferentialDriveMap map;
     /** The drive train object. */
     private final DifferentialDrive driveTrain;
-    /** The kinematics for path following. */
-    private final DifferentialDriveKinematics kinematics;
     /** The odometry for path following. */
     private final DifferentialDriveOdometry odometry;
     /** The field object. */
@@ -52,31 +43,29 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      */
     public DiffDriveSubsystem(final DifferentialDriveMap map) {
         super();
-        this.left = map.getLeft();
-        this.right = map.getRight();
-        this.gyro = map.getGyro();
-        this.kinematics = map.getKinematics();
-        this.driveTrain = new DifferentialDrive(left, right);
-        this.odometry = new DifferentialDriveOdometry(getRotation());
+        this.map = map;
+        this.driveTrain = new DifferentialDrive(map.left(), map.right());
+        this.odometry = new DifferentialDriveOdometry(this.getRotation(), 0.0, 0.0);
     }
 
     @Override
     public void reset() {
-        resetEncoders();
-        resetGyro();
-        driveTrain.stopMotor();
+        this.resetEncoders();
+        this.resetGyro();
+        this.driveTrain.stopMotor();
     }
 
     @Override
     public void safeState() {
-        driveTrain.stopMotor();
+        this.driveTrain.stopMotor();
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        odometry.update(getRotation(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
-        field.setRobotPose(getPose());
+        this.odometry.update(this.getRotation(), this.map.leftEncoder().getDistance(),
+                this.map.rightEncoder().getDistance());
+        this.field.setRobotPose(this.getPose());
     }
 
     /**
@@ -96,7 +85,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The rotation as a WPIlib object.
      */
     public final Rotation2d getRotation() {
-        return Rotation2d.fromDegrees(gyro.getAngle());
+        return Rotation2d.fromDegrees(this.map.gyro().getAngle());
     }
 
     /**
@@ -105,7 +94,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The pose (translation and rotation).
      */
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return this.odometry.getPoseMeters();
     }
 
     /**
@@ -116,19 +105,19 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param pose The robot's position and rotation.
      */
     public void resetOdometry(final Pose2d pose) {
-        resetEncoders();
-        odometry.resetPosition(pose, getRotation());
+        this.resetEncoders();
+        this.odometry.resetPosition(this.getRotation(), 0.0, 0.0, pose);
     }
 
     /** Reset the encoders. */
     public void resetEncoders() {
-        left.getEncoder().reset();
-        right.getEncoder().reset();
+        this.map.leftEncoder().reset();
+        this.map.rightEncoder().reset();
     }
 
     /** Reset the gyro. */
     public void resetGyro() {
-        gyro.reset();
+        this.map.gyro().reset();
     }
 
     /**
@@ -137,7 +126,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The turn rate in degrees/second.
      */
     public double getTurnRate() {
-        return gyro.getRate();
+        return this.map.gyro().getRate();
     }
 
     /**
@@ -146,7 +135,8 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return Left and right wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(left.getEncoder().getRate(), right.getEncoder().getRate());
+        return new DifferentialDriveWheelSpeeds(this.map.leftEncoder().getRate(),
+                this.map.rightEncoder().getRate());
     }
 
     /**
@@ -155,7 +145,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The average distance.
      */
     private double encoderAvg() {
-        return (left.getEncoder().getDistance() + right.getEncoder().getDistance()) / 2;
+        return (this.map.leftEncoder().getDistance() + this.map.rightEncoder().getDistance()) / 2;
     }
 
     /**
@@ -164,10 +154,10 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param left  The left speed.
      * @param right The right speed.
      */
-    public void tankDriveSetpoint(final double left, final double right) {
-        this.left.setSetpoint(left);
-        this.right.setSetpoint(right);
-        driveTrain.feed();
+    public void tankDriveSetpoint(final Double left, final Double right) {
+        this.map.left().setSetpoint(left == null ? 0.0 : left);
+        this.map.right().setSetpoint(left == null ? 0.0 : left);
+        this.driveTrain.feed();
     }
 
     /**
@@ -178,11 +168,11 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return A command that will run until interrupted.
      */
     public CommandBase drive(final DoubleSupplier forward, final DoubleSupplier turn) {
-        return make.running("Drive", () -> {
+        return this.run(() -> {
             final double yAxis = forward.getAsDouble();
             final double xAxis = turn.getAsDouble();
-            driveTrain.arcadeDrive(yAxis, xAxis);
-        });
+            this.driveTrain.arcadeDrive(yAxis, xAxis);
+        }).withName("Drive");
     }
 
     /**
@@ -193,11 +183,11 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The command.
      */
     public CommandBase driveDistance(final double distance, final double speed) {
-        return make.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders).onExecute(() -> {
-            driveTrain.arcadeDrive(speed, 0);
+        return this.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders).onExecute(() -> {
+            this.driveTrain.arcadeDrive(speed, 0);
         }).onEnd(interrupted -> {
-            driveTrain.stopMotor();
-        }).runsUntil(() -> encoderAvg() >= distance);
+            this.driveTrain.stopMotor();
+        }).runsUntil(() -> this.encoderAvg() >= distance);
     }
 
     /**
@@ -210,15 +200,15 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The command.
      */
     public CommandBase turnDegrees(final double degrees, final double speed) {
-        return make.cmd("Turn Degrees").onInitialize(this::resetGyro).onExecute(() -> {
+        return this.cmd("Turn Degrees").onInitialize(this::resetGyro).onExecute(() -> {
             double realSpeed = speed;
             if (Math.signum(degrees) != Math.signum(speed)) {
                 realSpeed *= -1;
             }
-            driveTrain.arcadeDrive(0, realSpeed);
+            this.driveTrain.arcadeDrive(0, realSpeed);
         }).onEnd(interrupted -> {
-            driveTrain.stopMotor();
-        }).runsUntil(() -> Math.abs(gyro.getAngle()) >= Math.abs(degrees));
+            this.driveTrain.stopMotor();
+        }).runsUntil(() -> Math.abs(this.map.gyro().getAngle()) >= Math.abs(degrees));
     }
 
     /**
@@ -228,7 +218,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return A command.
      */
     public CommandBase autonomousCommand(final String trajectoryName) {
-        return autonomousCommand(trajectoryName, true);
+        return this.autonomousCommand(trajectoryName, true);
     }
 
     /**
@@ -255,18 +245,19 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
                 // Gets pose
                 this::getPose,
                 // Creates our ramsete controller
-                getRamsete(),
+                this.getRamsete(),
                 // Describes how the drivetrain is influenced by motor speed
-                kinematics,
+                this.map.kinematics(),
                 // Sends speeds to motors
                 this::tankDriveSetpoint, this);
 
         CommandBase cmd;
         if (resetPose) {
-            cmd = new InstantCommand(() -> resetOdometry(finalAutoTrajectory.getInitialPose())).andThen(ramseteCommand)
-                    .andThen(driveTrain::stopMotor);
+            cmd = new InstantCommand(() -> this.resetOdometry(finalAutoTrajectory.getInitialPose()))
+                    .andThen(ramseteCommand)
+                    .andThen(this.driveTrain::stopMotor);
         } else {
-            cmd = ramseteCommand.andThen(driveTrain::stopMotor);
+            cmd = ramseteCommand.andThen(this.driveTrain::stopMotor);
         }
 
         cmd.setName(trajectoryName);

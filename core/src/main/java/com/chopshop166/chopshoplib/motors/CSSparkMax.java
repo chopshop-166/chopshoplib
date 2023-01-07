@@ -56,7 +56,7 @@ public class CSSparkMax extends SmartMotorController {
      * @return The raw Spark MAX object.
      */
     public CANSparkMax getMotorController() {
-        return sparkMax;
+        return this.sparkMax;
     }
 
     /**
@@ -65,7 +65,7 @@ public class CSSparkMax extends SmartMotorController {
      * @return The CAN PID object.
      */
     public SparkMaxPIDController getPidController() {
-        return sparkPID;
+        return this.sparkPID;
     }
 
     /**
@@ -76,7 +76,7 @@ public class CSSparkMax extends SmartMotorController {
      */
     public void validateCurrent(final double limit, final double filterTimeConstant) {
         final LinearFilter currentFilter = LinearFilter.singlePoleIIR(filterTimeConstant, 0.02);
-        addValidator(() -> currentFilter.calculate(sparkMax.getOutputCurrent()) < limit);
+        this.addValidator(() -> currentFilter.calculate(this.sparkMax.getOutputCurrent()) < limit);
     }
 
     /**
@@ -108,7 +108,7 @@ public class CSSparkMax extends SmartMotorController {
      * @return The controlType.
      */
     public ControlType getControlType() {
-        return savedControlType;
+        return this.savedControlType;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class CSSparkMax extends SmartMotorController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        sparkPID.setReference(setPoint, savedControlType, pidSlot);
+        this.sparkPID.setReference(setPoint, this.savedControlType, this.pidSlot);
     }
 
     /**
@@ -144,28 +144,28 @@ public class CSSparkMax extends SmartMotorController {
 
     @Override
     public void set(final double speed) {
-        sparkMax.set(speed);
+        this.sparkMax.set(speed);
     }
 
     @Override
     public void setVoltage(final double outputVolts) {
-        sparkMax.setVoltage(outputVolts);
+        this.sparkMax.setVoltage(outputVolts);
     }
 
     @Override
     public double get() {
-        return sparkMax.get();
+        return this.sparkMax.get();
     }
 
     @Override
     public void setInverted(final boolean isInverted) {
-        sparkMax.setInverted(isInverted);
-        getEncoder().setReverseDirection(isInverted);
+        this.sparkMax.setInverted(isInverted);
+        this.getEncoder().setReverseDirection(isInverted);
     }
 
     @Override
     public boolean getInverted() {
-        return sparkMax.getInverted();
+        return this.sparkMax.getInverted();
     }
 
     /**
@@ -174,7 +174,7 @@ public class CSSparkMax extends SmartMotorController {
      * @return Returns the temperature.
      */
     public double getTemperature() {
-        return sparkMax.getMotorTemperature();
+        return this.sparkMax.getMotorTemperature();
     }
 
     /**
@@ -183,16 +183,16 @@ public class CSSparkMax extends SmartMotorController {
      * @return Returns the current
      */
     public double getOutputCurrent() {
-        return sparkMax.getOutputCurrent();
+        return this.sparkMax.getOutputCurrent();
     }
 
     @Override
     public void disable() {
-        sparkMax.disable();
+        this.sparkMax.disable();
     }
 
     @Override
     public void stopMotor() {
-        sparkMax.stopMotor();
+        this.sparkMax.stopMotor();
     }
 }

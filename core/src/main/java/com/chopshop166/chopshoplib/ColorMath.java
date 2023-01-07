@@ -106,8 +106,8 @@ public final class ColorMath {
      */
     public static Color lerp(final Color start, final Color end, final double factor) {
         return new Color(
-                scalarLerp(start.red, end.red, factor),
-                scalarLerp(start.green, end.green, factor),
-                scalarLerp(start.blue, end.blue, factor));
+                ColorMath.scalarLerp(start.red, end.red, factor),
+                ColorMath.scalarLerp(start.green, end.green, factor),
+                ColorMath.scalarLerp(start.blue, end.blue, factor));
     }
 }

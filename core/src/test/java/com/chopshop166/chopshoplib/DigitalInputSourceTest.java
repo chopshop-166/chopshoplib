@@ -1,10 +1,9 @@
 package com.chopshop166.chopshoplib;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.chopshop166.chopshoplib.digital.DigitalInputSource;
-
-import org.junit.jupiter.api.Test;
 
 /** Test that DigitalInputSource is assigned properly. */
 final class DigitalInputSourceTest {
@@ -13,6 +12,6 @@ final class DigitalInputSourceTest {
     @Test
     /* package */ void testLambda() {
         final DigitalInputSource source = () -> true;
-        assertTrue(source.getAsBoolean(), "Lambda is assigned to the correct function");
+        Assertions.assertTrue(source.getAsBoolean(), "Lambda is assigned to the correct function");
     }
 }

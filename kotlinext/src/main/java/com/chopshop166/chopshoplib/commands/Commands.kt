@@ -4,10 +4,11 @@ import com.chopshop166.chopshoplib.HasSafeState
 import com.chopshop166.chopshoplib.Resettable
 import com.chopshop166.chopshoplib.commands.CommandRobot
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.CommandBase
-import edu.wpi.first.wpilibj2.command.CommandGroupBase
 import edu.wpi.first.wpilibj2.command.ConditionalCommand
 import edu.wpi.first.wpilibj2.command.InstantCommand
+import edu.wpi.first.wpilibj2.command.ProxyCommand
 import edu.wpi.first.wpilibj2.command.RunCommand
 import edu.wpi.first.wpilibj2.command.StartEndCommand
 import edu.wpi.first.wpilibj2.command.SelectCommand
@@ -17,19 +18,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand
 import java.util.function.Supplier
 
-fun wait(time: Double) = WaitCommand(time)
-fun wait(until: () -> Boolean) = WaitUntilCommand(until)
-
-fun exec(block: () -> Unit) = InstantCommand(block)
-
-fun repeat(name: String = "", num: Int, block: () -> Command) =
-    sequence(name, *(0..num).map {block()}.toTypedArray())
-
 @DslMarker
 annotation class CommandBuilderMarker
 
 @CommandBuilderMarker
-class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem) {
+class CommandBuilder(private vararg val sys: Subsystem) {
     private var onInit: Command.() -> Unit = {}
     private var onExecute: Command.() -> Unit = {}
     private var onEnd: Command.(Boolean) -> Unit = {}
@@ -43,9 +36,6 @@ class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem
     fun build() =
         object : CommandBase() {
             init {
-                if (cmdName != "") {
-                    this.name = cmdName
-                }
                 addRequirements(*sys)
             }
             override fun initialize() = onInit()
@@ -55,9 +45,6 @@ class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem
         }
 }
 
-fun cmd(name: String = "", block: CommandBuilder.() -> Unit) =
-    CommandBuilder(name).apply(block).build()
-
 inline fun <reified T> CommandRobot.getMapForName(
     name: String,
     pkg: String,
@@ -65,8 +52,14 @@ inline fun <reified T> CommandRobot.getMapForName(
 ) =
     CommandRobot.getMapForName<T>(name, T::class.java, pkg, defaultValue)
 
-fun Subsystem.cmd(name: String = "", block: CommandBuilder.() -> Unit) =
-    CommandBuilder(name, this).apply(block).build()
+fun repeat(num: Int, block: () -> Command) =
+    Commands.sequence(*(0..num).map {block()}.toTypedArray())
+
+fun Subsystem.cmd(block: CommandBuilder.() -> Unit) =
+    CommandBuilder(this).apply(block).build()
+
+fun cmd(block: CommandBuilder.() -> Unit) =
+    CommandBuilder().apply(block).build()
 
 /**
  * Create an {@link InstantCommand}.
@@ -75,8 +68,8 @@ fun Subsystem.cmd(name: String = "", block: CommandBuilder.() -> Unit) =
  * @param action The action to take.
  * @return A new command.
  */
-fun Subsystem.instant(name : String, action : () -> Unit) =
-    InstantCommand(action, this).withName(name)
+fun Subsystem.runOnce(action : () -> Unit) =
+    Commands.runOnce(action, this)
 
 /**
  * Create an {@link InstantCommand}.
@@ -85,8 +78,8 @@ fun Subsystem.instant(name : String, action : () -> Unit) =
  * @param action The action to take.
  * @return A new command.
  */
-fun instant(name : String, action : () -> Unit) =
-    InstantCommand(action).withName(name)
+fun runOnce(action : () -> Unit) =
+    Commands.runOnce(action)
 
 /**
  * Create a {@link RunCommand}.
@@ -95,8 +88,8 @@ fun instant(name : String, action : () -> Unit) =
  * @param action The action to take.
  * @return A new command.
  */
-fun Subsystem.running(name : String, action : () -> Unit) =
-    RunCommand(action, this).withName(name)
+fun Subsystem.run(action : () -> Unit) =
+    Commands.run(action, this)
 
 /**
  * Create a {@link RunCommand}.
@@ -105,8 +98,8 @@ fun Subsystem.running(name : String, action : () -> Unit) =
  * @param action The action to take.
  * @return A new command.
  */
-fun running(name : String, action : () -> Unit) =
-    RunCommand(action).withName(name)
+fun run(action : () -> Unit) =
+    Commands.run(action)
 
 /**
  * Create a {@link StartEndCommand}.
@@ -116,8 +109,8 @@ fun running(name : String, action : () -> Unit) =
  * @param onEnd   The action to take on end.
  * @return A new command.
  */
-fun Subsystem.startEnd(name : String, onStart : () -> Unit, onEnd : () -> Unit) =
-    StartEndCommand(onStart, onEnd, this).withName(name)
+fun Subsystem.startEnd(onStart : () -> Unit, onEnd : () -> Unit) =
+    StartEndCommand(onStart, onEnd, this)
 
 /**
  * Create a {@link StartEndCommand}.
@@ -127,18 +120,8 @@ fun Subsystem.startEnd(name : String, onStart : () -> Unit, onEnd : () -> Unit) 
  * @param onEnd   The action to take on end.
  * @return A new command.
  */
-fun startEnd(name : String, onStart : () -> Unit, onEnd : () -> Unit) =
-    StartEndCommand(onStart, onEnd,).withName(name)
-
-/**
- * Wait until a condition is true.
- * 
- * @param name  The name of the command.
- * @param until The condition to wait until.
- * @return A new command.
- */
-fun waitUntil(name : String, until : () -> Boolean) =
-    parallel(name, wait(until))
+fun startEnd(onStart : () -> Unit, onEnd : () -> Unit) =
+    StartEndCommand(onStart, onEnd)
 
 /**
  * Run a {@link Runnable} and then wait until a condition is true.
@@ -148,8 +131,8 @@ fun waitUntil(name : String, until : () -> Boolean) =
  * @param until The condition to wait until.
  * @return A new command.
  */
-fun Subsystem.initAndWait(name : String, init : () -> Unit, until : () -> Boolean) =
-    parallel(name, InstantCommand(init, this), wait(until))
+fun Subsystem.initAndWait(init : () -> Unit, until : () -> Boolean) =
+    Commands.parallel(Commands.runOnce(init, this), Commands.waitUntil(until))
 
 /**
  * Run a {@link Runnable} and then wait until a condition is true.
@@ -159,8 +142,8 @@ fun Subsystem.initAndWait(name : String, init : () -> Unit, until : () -> Boolea
  * @param until The condition to wait until.
  * @return A new command.
  */
-fun initAndWait(name : String, init : () -> Unit, until : () -> Boolean) =
-    parallel(name, InstantCommand(init), wait(until))
+fun initAndWait(init : () -> Unit, until : () -> Boolean) =
+    Commands.parallel(Commands.runOnce(init), Commands.waitUntil(until))
 
 /**
  * Create a command to call a consumer function.
@@ -171,8 +154,8 @@ fun initAndWait(name : String, init : () -> Unit, until : () -> Boolean) =
  * @param func  The function to call.
  * @return A new command.
  */
-fun <T> Subsystem.setter(name : String, value : T, func : (T) -> Unit) =
-    instant(name) {
+fun <T> Subsystem.setter(value : T, func : (T) -> Unit) =
+    runOnce {
         func(value)
     }
 
@@ -185,8 +168,8 @@ fun <T> Subsystem.setter(name : String, value : T, func : (T) -> Unit) =
  * @param func  The function to call.
  * @return A new command.
  */
-fun <T> setter(name : String, value : T, func : (T) -> Unit) =
-    instant(name) {
+fun <T> setter(value : T, func : (T) -> Unit) =
+    runOnce {
         func(value)
     }
 
@@ -200,8 +183,8 @@ fun <T> setter(name : String, value : T, func : (T) -> Unit) =
  * @param until The condition to wait until.
  * @return A new command.
  */
-fun <T> Subsystem.callAndWait(name : String, value : T, func : (T) -> Unit, until : () -> Boolean) =
-    initAndWait(name, {
+fun <T> Subsystem.callAndWait(value : T, func : (T) -> Unit, until : () -> Boolean) =
+    initAndWait({
         func(value);
     }, until)
 
@@ -215,21 +198,10 @@ fun <T> Subsystem.callAndWait(name : String, value : T, func : (T) -> Unit, unti
  * @param until The condition to wait until.
  * @return A new command.
  */
-fun <T> callAndWait(name : String, value : T, func : (T) -> Unit, until : () -> Boolean) =
-    initAndWait(name, {
+fun <T> callAndWait(value : T, func : (T) -> Unit, until : () -> Boolean) =
+    initAndWait({
         func(value);
     }, until)
-
-/**
- * Create a conditional command.
- * 
- * @param condition The condition to test.
- * @param onTrue    The command to run if the condition is true.
- * @param onFalse   The command to run if the condition is false.
- * @return The conditional command.
- */
-fun conditional(condition : () -> Boolean, onTrue : Command, onFalse : Command) =
-    ConditionalCommand(onTrue, onFalse, condition)
 
 /**
  * Create a command that runs only if a condition is true.
@@ -238,8 +210,8 @@ fun conditional(condition : () -> Boolean, onTrue : Command, onFalse : Command) 
  * @param cmd       The command to run.
  * @return The conditional command.
  */
-fun runIf(condition : () -> Boolean, cmd : Command) =
-    conditional(condition, cmd, InstantCommand())
+fun CommandBase.runsIf(condition : () -> Boolean) =
+    Commands.either(this, Commands.none(), condition)
 
 /**
  * Create a command that selects which command to run from a map.
@@ -249,8 +221,8 @@ fun runIf(condition : () -> Boolean, cmd : Command) =
  * @param selector The function to determine which command should be run.
  * @return The wrapper command object.
  */
-fun select(name : String, commands : Map<Any, Command>, selector: () -> Any) =
-    SelectCommand(commands, selector).withName(name)
+fun select(commands : Map<Any, Command>, selector: () -> Any) =
+    SelectCommand(commands, selector)
 
 /**
  * Create a command that selects which command to run from a function.
@@ -259,18 +231,8 @@ fun select(name : String, commands : Map<Any, Command>, selector: () -> Any) =
  * @param selector The function to determine which command should be run.
  * @return The wrapper command object.
  */
-fun select(name : String, selector : () -> Command) =
-    SelectCommand(selector).withName(name)
-
-/**
- * Create a command to run at regular intervals.
- * 
- * @param timeDelta Time in seconds to wait between calls.
- * @param periodic  The runnable to execute.
- * @return A new command.
- */
-fun every(timeDelta : Double, periodic : () -> Unit) =
-    IntervalCommand(timeDelta, periodic)
+fun select(selector : () -> Command) =
+    ProxyCommand(selector)
 
 /**
  * Create a command to run at regular intervals.
@@ -283,12 +245,22 @@ fun Subsystem.every(timeDelta : Double, periodic : () -> Unit) =
     IntervalCommand(timeDelta, this, periodic)
 
 /**
+ * Create a command to run at regular intervals.
+ * 
+ * @param timeDelta Time in seconds to wait between calls.
+ * @param periodic  The runnable to execute.
+ * @return A new command.
+ */
+fun every(timeDelta : Double, periodic : () -> Unit) =
+    IntervalCommand(timeDelta, periodic)
+
+/**
  * Create a command to reset the subsystem sensors.
  * 
  * @return A command.
  */
 fun <T> T.resetCmd() where T : SubsystemBase, T : Resettable =
-    instant("Reset " + this.name, this::reset)
+    this.runOnce(this::reset).withName("Reset " + this.name)
 
 /**
  * Create a command to set the subsystem to a safe state.
@@ -296,7 +268,7 @@ fun <T> T.resetCmd() where T : SubsystemBase, T : Resettable =
  * @return A command.
  */
 fun <T> T.safeStateCmd() where T : SubsystemBase, T : HasSafeState =
-    instant("Reset " + this.name, this::safeState)
+    this.runOnce(this::safeState).withName("Safe " + this.name)
 
 /**
  * Cancel the currently running command.
@@ -304,46 +276,5 @@ fun <T> T.safeStateCmd() where T : SubsystemBase, T : HasSafeState =
  * @return A cancel command.
  */
 fun SubsystemBase.cancel() =
-    instant("Cancel " + this.name) {
-    }
-
-/**
- * Create a sequential command group with a name.
- * 
- * @param name The name of the command group.
- * @param cmds The commands to sequence.
- * @return A new command group.
- */
-fun sequence(name : String, vararg cmds : Command) =
-    CommandGroupBase.sequence(*cmds).withName(name)
-
-/**
- * Create a parallel command group with a name.
- * 
- * @param name The name of the command group.
- * @param cmds The commands to run in parallel.
- * @return A new command group.
- */
-fun parallel(name : String, vararg cmds : Command) =
-    CommandGroupBase.parallel(*cmds).withName(name)
-
-/**
- * Create a racing command group with a name.
- * 
- * @param name   The name of the command group.
- * @param racers The commands to race.
- * @return A new command group.
- */
-fun race(name : String, vararg racers : Command) =
-    CommandGroupBase.race(*racers).withName(name)
-
-/**
- * Create a deadline-limited command group with a name.
- * 
- * @param name    The name of the command group.
- * @param limiter The deadline command.
- * @param cmds    The commands to run until the deadline ends.
- * @return A new command group.
- */
-fun deadline(name : String, limiter : Command, vararg cmds : Command) =
-    CommandGroupBase.deadline(limiter, *cmds).withName(name)
+    this.runOnce {
+    }.withName("Cancel " + this.name)

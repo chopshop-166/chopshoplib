@@ -6,7 +6,7 @@ import java.util.function.UnaryOperator;
  * Enumeration to represent direction of rotation.
  */
 public enum SpinDirection implements UnaryOperator<Double> {
-    // Clockwise Direction
+    /** Clockwise Direction */
     CLOCKWISE {
         /**
          * Get a value (usually speed) adjusted for direction.
@@ -19,7 +19,7 @@ public enum SpinDirection implements UnaryOperator<Double> {
             return value;
         }
     },
-    // Neutral (not moving)
+    /** Neutral (not moving) */
     NEUTRAL {
         /**
          * Get a value (usually speed) adjusted for direction.
@@ -32,7 +32,7 @@ public enum SpinDirection implements UnaryOperator<Double> {
             return 0.0;
         }
     },
-    // Counterclockwise Direction
+    /** Counterclockwise Direction */
     COUNTERCLOCKWISE {
         /**
          * Get a value (usually speed) adjusted for direction.

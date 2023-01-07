@@ -17,7 +17,7 @@ public final class MockSolenoid implements ISolenoid {
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("Solenoid");
         builder.setActuator(true);
-        builder.setSafeState(() -> set(false));
+        builder.setSafeState(() -> this.set(false));
         builder.addBooleanProperty("Value", this::get, this::set);
     }
 
@@ -28,7 +28,7 @@ public final class MockSolenoid implements ISolenoid {
 
     @Override
     public boolean get() {
-        return value;
+        return this.value;
     }
 
     @Override

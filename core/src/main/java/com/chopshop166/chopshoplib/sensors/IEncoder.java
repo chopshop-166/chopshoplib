@@ -44,7 +44,7 @@ public interface IEncoder extends Sendable, IAbsolutePosition {
      * @return true if the counter has not changed for the max period
      */
     default boolean isStopped() {
-        return getRate() == 0;
+        return this.getRate() == 0;
     }
 
     /**
@@ -53,7 +53,7 @@ public interface IEncoder extends Sendable, IAbsolutePosition {
      * @return true for one direction, false for the other
      */
     default boolean isMovingForward() {
-        return getRate() > 0;
+        return this.getRate() > 0;
     }
 
 }

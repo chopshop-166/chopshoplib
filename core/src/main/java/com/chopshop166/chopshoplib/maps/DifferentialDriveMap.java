@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.maps;
 
 import com.chopshop166.chopshoplib.motors.SmartMotorController;
+import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.WGyro;
@@ -15,16 +16,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * Provides a base map for differential drive, using the left and right speed
  * controllers. Also provides a gyro and kinematics.
  */
-public class DifferentialDriveMap {
-
-    /** Left speed controller (or group) */
-    private final SmartMotorController left;
-    /** Right speed controller (or group) */
-    private final SmartMotorController right;
-    /** Kinematics information */
-    private final DifferentialDriveKinematics kinematics;
-    /** The gyro */
-    private final SmartGyro gyro;
+public record DifferentialDriveMap(SmartMotorController left, SmartMotorController right,
+        DifferentialDriveKinematics kinematics, SmartGyro gyro) {
 
     /**
      * Default constructor.
@@ -57,10 +50,7 @@ public class DifferentialDriveMap {
     public <GyroBase extends Gyro & Sendable> DifferentialDriveMap(final SmartMotorController left,
             final SmartMotorController right,
             final double trackWidthMeters, final GyroBase gyro) {
-        this.left = left;
-        this.right = right;
-        this.gyro = new WGyro(gyro);
-        this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
+        this(left, right, trackWidthMeters, new WGyro(gyro));
     }
 
     /**
@@ -73,45 +63,24 @@ public class DifferentialDriveMap {
      */
     public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
             final double trackWidthMeters, final WGyro gyro) {
-        this.left = left;
-        this.right = right;
-        this.gyro = gyro;
-        this.kinematics = new DifferentialDriveKinematics(trackWidthMeters);
+        this(left, right, new DifferentialDriveKinematics(trackWidthMeters), gyro);
     }
 
     /**
-     * Provides the left speed controller.
+     * Shortcut for the left encoder.
      * 
-     * @return A {@link SmartMotorController}.
+     * @return The encoder object.
      */
-    public SmartMotorController getLeft() {
-        return left;
+    public IEncoder leftEncoder() {
+        return this.left.getEncoder();
     }
 
     /**
-     * Provides the right speed controller.
+     * Shortcut for the left encoder.
      * 
-     * @return A {@link SmartMotorController}.
+     * @return The encoder object.
      */
-    public SmartMotorController getRight() {
-        return right;
-    }
-
-    /**
-     * Gets a Gyro.
-     * 
-     * @return The gyro object as a {@link SmartGyro}.
-     */
-    public SmartGyro getGyro() {
-        return gyro;
-    }
-
-    /**
-     * Get the drive kinematics.
-     * 
-     * @return The kinematics object.
-     */
-    public DifferentialDriveKinematics getKinematics() {
-        return kinematics;
+    public IEncoder rightEncoder() {
+        return this.right.getEncoder();
     }
 }

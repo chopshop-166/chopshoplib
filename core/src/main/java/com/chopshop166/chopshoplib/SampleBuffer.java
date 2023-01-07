@@ -41,8 +41,8 @@ public class SampleBuffer<E> extends LinkedList<E> {
      */
     @Override
     public boolean add(final E sample) {
-        if (size() >= this.sampleCap) {
-            removeFirst();
+        if (this.size() >= this.sampleCap) {
+            this.removeFirst();
         }
         return super.add(sample);
     }

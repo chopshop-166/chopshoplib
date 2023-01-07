@@ -33,8 +33,8 @@ public class BuildCommand extends CommandBase {
      */
     public BuildCommand(final String name, final Subsystem... subsystems) {
         super();
-        setName(name);
-        addRequirements(subsystems);
+        this.setName(name);
+        this.addRequirements(subsystems);
     }
 
     /**
@@ -101,7 +101,7 @@ public class BuildCommand extends CommandBase {
      * @return this for chaining.
      */
     public BuildCommand runsWhenDisabled(final boolean runs) {
-        shouldRunWhenDisabled = runs;
+        this.shouldRunWhenDisabled = runs;
         return this;
     }
 
@@ -140,6 +140,6 @@ public class BuildCommand extends CommandBase {
 
     @Override
     public boolean runsWhenDisabled() {
-        return shouldRunWhenDisabled;
+        return this.shouldRunWhenDisabled;
     }
 }

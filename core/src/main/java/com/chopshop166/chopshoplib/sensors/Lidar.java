@@ -7,11 +7,8 @@ import java.util.Optional;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
-import edu.wpi.first.networktables.NTSendableBuilder;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
@@ -44,7 +41,10 @@ public class Lidar implements Sendable {
      * The scale to return measurements in.
      */
     public enum MeasurementType {
-        INCHES, MILLIMETERS;
+        /** Measurement is in inches. */
+        INCHES,
+        /** Measurement is in millimeters. */
+        MILLIMETERS;
     }
 
     /**
@@ -53,7 +53,7 @@ public class Lidar implements Sendable {
     private void poll() {
         while (true) {
             /* Get the distance from the sensor */
-            readDistance();
+            this.readDistance();
             /* Sensor updates at 60Hz, but we'll run this at 50 since the math is nicer */
             try {
                 Thread.sleep(20);
@@ -96,7 +96,7 @@ public class Lidar implements Sendable {
              * @return The enum value.
              */
             public byte toByte() {
-                return value;
+                return this.value;
             }
 
             /**
@@ -106,7 +106,7 @@ public class Lidar implements Sendable {
              * @return The operation mode.
              */
             public static OpMode fromByte(final byte value) {
-                return Arrays.stream(values()).filter(v -> v.value == value).findFirst().orElse(INVALID);
+                return Arrays.stream(OpMode.values()).filter(v -> v.value == value).findFirst().orElse(INVALID);
             }
 
             /**
@@ -116,7 +116,7 @@ public class Lidar implements Sendable {
              * @return The operation mode.
              */
             public static OpMode fromSettingsByte(final byte value) {
-                return fromByte(value);
+                return OpMode.fromByte(value);
             }
         }
 
@@ -152,7 +152,7 @@ public class Lidar implements Sendable {
              * @return The enum value.
              */
             public byte toByte() {
-                return value;
+                return this.value;
             }
 
             /**
@@ -162,7 +162,8 @@ public class Lidar implements Sendable {
              * @return The preset in use.
              */
             public static PresetConfiguration fromByte(final byte value) {
-                return Arrays.stream(values()).filter(conf -> conf.value == value).findFirst().orElse(CUSTOM);
+                return Arrays.stream(PresetConfiguration.values()).filter(conf -> conf.value == value).findFirst()
+                        .orElse(CUSTOM);
             }
 
             /**
@@ -172,7 +173,7 @@ public class Lidar implements Sendable {
              * @return The operation mode.
              */
             public static PresetConfiguration fromSettingsByte(final byte value) {
-                return fromByte(value);
+                return PresetConfiguration.fromByte(value);
             }
         }
 
@@ -206,7 +207,7 @@ public class Lidar implements Sendable {
              * @return The enum value.
              */
             public int toInt() {
-                return value;
+                return this.value;
             }
 
             /**
@@ -216,7 +217,7 @@ public class Lidar implements Sendable {
              * @return The LED state.
              */
             public static LedIndicator fromInt(final int value) {
-                return Arrays.stream(values()).filter(v -> v.value == value).findFirst().orElse(UNKNOWN);
+                return Arrays.stream(LedIndicator.values()).filter(v -> v.value == value).findFirst().orElse(UNKNOWN);
             }
 
             /**
@@ -226,7 +227,7 @@ public class Lidar implements Sendable {
              * @return The LED state.
              */
             public static LedIndicator fromSensorByte(final byte value) {
-                return fromInt((value & 0x6) >> 1);
+                return LedIndicator.fromInt((value & 0x6) >> 1);
             }
         }
 
@@ -256,7 +257,7 @@ public class Lidar implements Sendable {
              * @return The enum value.
              */
             public int toInt() {
-                return value;
+                return this.value;
             }
 
             /**
@@ -280,7 +281,7 @@ public class Lidar implements Sendable {
              * @return The offset calculation being used.
              */
             public static OffsetCalFlag fromSensorByte(final int value) {
-                return fromInt((value & 0x8) >> 3);
+                return OffsetCalFlag.fromInt((value & 0x8) >> 3);
             }
         }
 
@@ -323,35 +324,35 @@ public class Lidar implements Sendable {
          */
         public Settings(final byte[] response) {
             /* Process the zeroth byte */
-            operationMode = OpMode.fromByte(response[0]);
+            this.operationMode = OpMode.fromByte(response[0]);
             /* Process the first byte */
-            preset = PresetConfiguration.fromByte(response[1]);
+            this.preset = PresetConfiguration.fromByte(response[1]);
             /* Process the 2nd & 3rd bytes */
-            signalRateLimit = ByteBuffer.wrap(response, 2, 2).getShort() / 65536.0;
+            this.signalRateLimit = ByteBuffer.wrap(response, 2, 2).getShort() / 65536.0;
             /* Process the 4th byte */
-            sigmaEstimateLimate = response[4];
+            this.sigmaEstimateLimate = response[4];
             /* Process the 5th & 6th bytes */
-            timingBudgetInMS = ByteBuffer.wrap(response, 5, 2).getShort();
+            this.timingBudgetInMS = ByteBuffer.wrap(response, 5, 2).getShort();
             /* Process the 7th byte */
             if (response[7] == 0x0e) {
-                preRangeVcselPeriod = 14;
-                finalRangeVcselPeriod = 10;
+                this.preRangeVcselPeriod = 14;
+                this.finalRangeVcselPeriod = 10;
             } else if (response[7] == 0x12) {
-                preRangeVcselPeriod = 18;
-                finalRangeVcselPeriod = 14;
+                this.preRangeVcselPeriod = 18;
+                this.finalRangeVcselPeriod = 14;
             }
             /* Process the 8th, 9th & 10th bytes */
-            fwVersion = String.format("%d.%d.%d", response[8], response[9], response[10]);
+            this.fwVersion = String.format("%d.%d.%d", response[8], response[9], response[10]);
             /* Process the 11th, 12th, & 13th bytes */
-            stPalApi = String.format("%d.%d.%d", response[11], response[12], response[13]);
+            this.stPalApi = String.format("%d.%d.%d", response[11], response[12], response[13]);
             /* Process the 14th byte */
-            offsetCalibration = OffsetCalFlag.fromSensorByte(response[14]);
-            ledIndicatorMode = LedIndicator.fromSensorByte(response[14]);
-            watchdogTimer = (response[14] & 1) != 0;
+            this.offsetCalibration = OffsetCalFlag.fromSensorByte(response[14]);
+            this.ledIndicatorMode = LedIndicator.fromSensorByte(response[14]);
+            this.watchdogTimer = (response[14] & 1) != 0;
             /* Process the 15th, 16th, 17th, & 18th bytes */
-            offsetCalibrationValue = ByteBuffer.wrap(response, 15, 4).getInt() / 1000;
+            this.offsetCalibrationValue = ByteBuffer.wrap(response, 15, 4).getInt() / 1000;
             /* Process the 19th, 20th, 21th, & 22th bytes */
-            crosstalkCalibrationValue = ByteBuffer.wrap(response, 19, 4).getInt() / 65536;
+            this.crosstalkCalibrationValue = ByteBuffer.wrap(response, 19, 4).getInt() / 65536;
         }
 
     }
@@ -365,14 +366,14 @@ public class Lidar implements Sendable {
      */
     public Lidar(final Port port, final int kAddress, final int averageOver) {
         super();
-        i2cDevice = new I2C(port, kAddress);
+        this.i2cDevice = new I2C(port, kAddress);
 
         // Objects related to statistics
-        samples = new SampleBuffer<>(averageOver);
+        this.samples = new SampleBuffer<>(averageOver);
 
-        accessThread = new Thread(this::poll);
-        accessThread.setName(String.format("LiDAR-0x%x", kAddress));
-        accessThread.start();
+        this.accessThread = new Thread(this::poll);
+        this.accessThread.setName(String.format("LiDAR-0x%x", kAddress));
+        this.accessThread.start();
     }
 
     /**
@@ -393,8 +394,8 @@ public class Lidar implements Sendable {
      * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
-        synchronized (syncObject) {
-            stdDevLimit = sdLimit;
+        synchronized (this.syncObject) {
+            this.stdDevLimit = sdLimit;
         }
     }
 
@@ -402,8 +403,8 @@ public class Lidar implements Sendable {
      * Clear the samples
      */
     public void reset() {
-        synchronized (syncObject) {
-            samples.clear();
+        synchronized (this.syncObject) {
+            this.samples.clear();
         }
     }
 
@@ -414,12 +415,12 @@ public class Lidar implements Sendable {
      * @return An Optional containing the distance if it exists
      */
     public Optional<Double> getDistanceOptional(final MeasurementType meas) {
-        synchronized (syncObject) {
-            if (!isValid) {
+        synchronized (this.syncObject) {
+            if (!this.isValid) {
                 return Optional.empty();
             }
         }
-        return Optional.of(getDistance(meas));
+        return Optional.of(this.getDistance(meas));
     }
 
     /**
@@ -429,23 +430,23 @@ public class Lidar implements Sendable {
      * @return The distance
      */
     public double getDistance(final MeasurementType meas) {
-        return meas == MeasurementType.INCHES ? distanceMM / 25.4 : distanceMM;
+        return meas == MeasurementType.INCHES ? this.distanceMM / 25.4 : this.distanceMM;
     }
 
     private void readDistance() {
         final byte[] dataBuffer = new byte[2];
 
-        i2cDevice.write(0x44, 0x1);
-        i2cDevice.readOnly(dataBuffer, 2);
+        this.i2cDevice.write(0x44, 0x1);
+        this.i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
-        synchronized (syncObject) {
-            samples.add((double) bbConvert.getShort());
-            final Stats stats = Stats.of(samples);
-            distanceMM = stats.mean();
+        synchronized (this.syncObject) {
+            this.samples.add((double) bbConvert.getShort());
+            final Stats stats = Stats.of(this.samples);
+            this.distanceMM = stats.mean();
             // If the standard deviation is really high then the sensor likely doesn't have
             // a valid reading.
-            stdDevValue = stats.populationStandardDeviation();
-            isValid = stdDevValue < stdDevLimit;
+            this.stdDevValue = stats.populationStandardDeviation();
+            this.isValid = this.stdDevValue < this.stdDevLimit;
         }
     }
 
@@ -456,7 +457,7 @@ public class Lidar implements Sendable {
      */
     public void setMode(final Settings.OpMode mode) {
         final byte modeByte = mode.toByte();
-        i2cDevice.writeBulk(new byte[] { 0x4d, modeByte });
+        this.i2cDevice.writeBulk(new byte[] { 0x4d, modeByte });
     }
 
     /**
@@ -466,8 +467,8 @@ public class Lidar implements Sendable {
      */
     public Settings querySettings() {
         final byte[] dataBuffer = new byte[23];
-        i2cDevice.writeBulk(new byte[] { 0x51 });
-        i2cDevice.readOnly(dataBuffer, 23);
+        this.i2cDevice.writeBulk(new byte[] { 0x51 });
+        this.i2cDevice.readOnly(dataBuffer, 23);
         return new Settings(dataBuffer);
     }
 
@@ -477,24 +478,14 @@ public class Lidar implements Sendable {
      * @return The {@link Thread} object.
      */
     public Thread getAccessThread() {
-        return accessThread;
+        return this.accessThread;
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("LiDAR");
-        if (builder.getBackendKind() == BackendKind.kNetworkTables) {
-            final NTSendableBuilder ntbuilder = (NTSendableBuilder) builder;
-            final NetworkTableEntry mmDistance = ntbuilder.getEntry("Distance");
-            final NetworkTableEntry standardDeviation = ntbuilder.getEntry("Standard Deviation");
-            final NetworkTableEntry validityEntry = ntbuilder.getEntry("isValid");
-            ntbuilder.setUpdateTable(() -> {
-                mmDistance.setDouble(getDistance(MeasurementType.MILLIMETERS));
-                synchronized (syncObject) {
-                    validityEntry.setBoolean(isValid);
-                    standardDeviation.setDouble(stdDevValue);
-                }
-            });
-        }
+        builder.addBooleanProperty("isValid", () -> this.isValid, null);
+        builder.addDoubleProperty("Distance", () -> this.getDistance(MeasurementType.MILLIMETERS), null);
+        builder.addDoubleProperty("Standard Deviation", () -> this.stdDevValue, null);
     }
 }

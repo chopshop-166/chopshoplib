@@ -47,7 +47,7 @@ public class PigeonGyro implements SmartGyro {
      * @return The wrapped class.
      */
     public PigeonIMU getRaw() {
-        return gyro;
+        return this.gyro;
     }
 
     /**
@@ -69,7 +69,7 @@ public class PigeonGyro implements SmartGyro {
      */
     @Override
     public void reset() {
-        gyro.setFusedHeading(0);
+        this.gyro.setFusedHeading(0);
     }
 
     /**
@@ -78,8 +78,8 @@ public class PigeonGyro implements SmartGyro {
     @Override
     public double getRate() {
         final double[] xyz = new double[3];
-        gyro.getRawGyro(xyz);
-        return inverted ? -xyz[2] : xyz[2];
+        this.gyro.getRawGyro(xyz);
+        return this.inverted ? -xyz[2] : xyz[2];
     }
 
     /**
@@ -87,12 +87,12 @@ public class PigeonGyro implements SmartGyro {
      */
     @Override
     public double getAngle() {
-        return inverted ? -gyro.getFusedHeading() : gyro.getFusedHeading();
+        return this.inverted ? -this.gyro.getFusedHeading() : this.gyro.getFusedHeading();
     }
 
     @Override
     public void setAngle(final double angleDeg) {
-        gyro.setFusedHeading(angleDeg);
+        this.gyro.setFusedHeading(angleDeg);
     }
 
     @Override

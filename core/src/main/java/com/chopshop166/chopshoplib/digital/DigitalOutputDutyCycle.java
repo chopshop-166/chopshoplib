@@ -29,7 +29,7 @@ public class DigitalOutputDutyCycle extends DigitalOutput implements IDigitalOut
      */
     @Override
     public void updateDutyCycle(final double rate) {
-        mRate = rate;
+        this.mRate = rate;
         super.updateDutyCycle(rate);
     }
 
@@ -40,7 +40,7 @@ public class DigitalOutputDutyCycle extends DigitalOutput implements IDigitalOut
      */
     @Override
     public void enablePWM(final double initialDutyCycle) {
-        mRate = initialDutyCycle;
+        this.mRate = initialDutyCycle;
         super.enablePWM(initialDutyCycle);
     }
 
@@ -51,6 +51,6 @@ public class DigitalOutputDutyCycle extends DigitalOutput implements IDigitalOut
      */
     @Override
     public double getPWMRate() {
-        return mRate;
+        return this.mRate;
     }
 }

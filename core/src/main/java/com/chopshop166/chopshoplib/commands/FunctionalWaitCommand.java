@@ -26,19 +26,6 @@ public class FunctionalWaitCommand extends CommandBase {
      * Creates a new FunctionalWaitCommand. This command will do nothing, and end
      * after the duration that is supplied.
      *
-     * @param name             The name of the command
-     * @param durationSupplier a DoubleSupplier returning the time to wait, in
-     *                         seconds.
-     */
-    public FunctionalWaitCommand(final String name, final DoubleSupplier durationSupplier) {
-        this(durationSupplier);
-        setName(name);
-    }
-
-    /**
-     * Creates a new FunctionalWaitCommand. This command will do nothing, and end
-     * after the duration that is supplied.
-     *
      * @param durationSupplier a DoubleSupplier returning the time to wait, in
      *                         seconds.
      */
@@ -49,19 +36,19 @@ public class FunctionalWaitCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        timer.reset();
-        timer.start();
-        duration = durationSupplier.getAsDouble();
+        this.timer.reset();
+        this.timer.start();
+        this.duration = this.durationSupplier.getAsDouble();
     }
 
     @Override
     public void end(final boolean interrupted) {
-        timer.stop();
+        this.timer.stop();
     }
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(duration);
+        return this.timer.hasElapsed(this.duration);
     }
 
     @Override

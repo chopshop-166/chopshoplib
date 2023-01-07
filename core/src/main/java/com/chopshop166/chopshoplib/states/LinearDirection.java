@@ -6,7 +6,7 @@ import java.util.function.UnaryOperator;
  * Direction for things such as a roller.
  */
 public enum LinearDirection implements UnaryOperator<Double> {
-    // Reverse Direction
+    /** Reverse Direction. */
     REVERSE {
         /**
          * Get a value (usually speed) adjusted for direction.
@@ -19,7 +19,7 @@ public enum LinearDirection implements UnaryOperator<Double> {
             return -value;
         }
     },
-    // Neither forward nor reverse
+    /** Neither forward nor reverse. */
     NEUTRAL {
         /**
          * Cancel a speed for neutral state.
@@ -32,7 +32,7 @@ public enum LinearDirection implements UnaryOperator<Double> {
             return 0.0;
         }
     },
-    // Forward Direction
+    /** Forward Direction. */
     FORWARD {
         /**
          * Get a value (usually speed) adjusted for direction.

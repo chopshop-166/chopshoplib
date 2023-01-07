@@ -20,7 +20,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier upperLimit(final BooleanSupplier limit) {
-        return speedFilter((double speed) -> speed > 0.0 && limit.getAsBoolean());
+        return Modifier.speedFilter((double speed) -> speed > 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -30,7 +30,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier lowerLimit(final BooleanSupplier limit) {
-        return speedFilter((double speed) -> speed < 0.0 && limit.getAsBoolean());
+        return Modifier.speedFilter((double speed) -> speed < 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -40,7 +40,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier deadband(final double band) {
-        return speedFilter((double speed) -> Math.abs(speed) < band);
+        return Modifier.speedFilter((double speed) -> Math.abs(speed) < band);
     }
 
     /**
@@ -57,8 +57,8 @@ public interface Modifier extends DoubleUnaryOperator {
 
             @Override
             public double applyAsDouble(final double speed) {
-                buffer.add(speed);
-                return Stats.of(buffer).mean();
+                this.buffer.add(speed);
+                return Stats.of(this.buffer).mean();
             }
         };
     }

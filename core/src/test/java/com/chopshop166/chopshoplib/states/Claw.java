@@ -6,15 +6,15 @@ public class Claw extends StateSubsystem<OpenClose> {
   public Claw() {
     super(OpenClose.OPEN);
 
-    transition(OpenClose.OPEN, OpenClose.CLOSED);
-    transition(OpenClose.CLOSED, OpenClose.OPEN);
-    onEntry(OpenClose.OPEN, () -> {
+    this.transition(OpenClose.OPEN, OpenClose.CLOSED);
+    this.transition(OpenClose.CLOSED, OpenClose.OPEN);
+    this.onEntry(OpenClose.OPEN, () -> {
       // Change solenoid
     });
-    onEntry(OpenClose.CLOSED, () -> {
+    this.onEntry(OpenClose.CLOSED, () -> {
       // Change solenoid
     });
-    handle(OpenClose.OPEN, () -> {
+    this.handle(OpenClose.OPEN, () -> {
       // If it's in the open state, close it
       return OpenClose.CLOSED;
     });
@@ -22,11 +22,11 @@ public class Claw extends StateSubsystem<OpenClose> {
 
   @Override
   protected void defaultTransition(final OpenClose currentState, final OpenClose commandedState) {
-    logTransition(currentState, commandedState);
+    this.logTransition(currentState, commandedState);
   }
 
   @Override
   public void safeState() {
-    setState(OpenClose.OPEN);
+    this.setState(OpenClose.OPEN);
   }
 }

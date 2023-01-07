@@ -29,7 +29,7 @@ public class MockSwerveModule implements SwerveModule {
      */
     @Override
     public Translation2d getLocation() {
-        return location;
+        return this.location;
     }
 
     @Override
@@ -54,8 +54,8 @@ public class MockSwerveModule implements SwerveModule {
         builder.setSmartDashboardType("Swerve Module");
         builder.addDoubleProperty("Angle Error", () -> 0.0, null);
         builder.addDoubleProperty("Speed Error", () -> 0.0, null);
-        builder.addDoubleProperty("Angle", () -> getAngle().getDegrees(), null);
-        builder.addDoubleProperty("Speed", () -> desiredState.speedMetersPerSecond, null);
+        builder.addDoubleProperty("Angle", () -> this.getAngle().getDegrees(), null);
+        builder.addDoubleProperty("Speed", () -> this.desiredState.speedMetersPerSecond, null);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class MockSwerveModule implements SwerveModule {
 
     @Override
     public Rotation2d getAngle() {
-        return desiredState.angle;
+        return this.desiredState.angle;
     }
 
     @Override
     public SwerveModuleState getState() {
-        return desiredState;
+        return this.desiredState;
     }
 }

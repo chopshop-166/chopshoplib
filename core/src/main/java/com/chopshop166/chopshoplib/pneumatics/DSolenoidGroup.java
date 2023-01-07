@@ -23,20 +23,20 @@ public final class DSolenoidGroup implements IDSolenoid {
      * @param others Any subsequent group members.
      */
     public DSolenoidGroup(final IDSolenoid first, final IDSolenoid second, final IDSolenoid... others) {
-        wrapped.add(first);
-        wrapped.add(second);
-        wrapped.addAll(Arrays.asList(others));
+        this.wrapped.add(first);
+        this.wrapped.add(second);
+        this.wrapped.addAll(Arrays.asList(others));
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        wrapped.get(0).initSendable(builder);
+        this.wrapped.get(0).initSendable(builder);
     }
 
     @Override
     @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
     public void close() throws Exception {
-        wrapped.forEach(s -> {
+        this.wrapped.forEach(s -> {
             try {
                 s.close();
             } catch (Exception e) {
@@ -47,22 +47,22 @@ public final class DSolenoidGroup implements IDSolenoid {
 
     @Override
     public void set(final Value value) {
-        wrapped.forEach(s -> s.set(value));
+        this.wrapped.forEach(s -> s.set(value));
     }
 
     @Override
     public Value get() {
-        return wrapped.get(0).get();
+        return this.wrapped.get(0).get();
     }
 
     @Override
     public boolean isFwdSolenoidDisabled() {
-        return wrapped.get(0).isFwdSolenoidDisabled();
+        return this.wrapped.get(0).isFwdSolenoidDisabled();
     }
 
     @Override
     public boolean isRevSolenoidDisabled() {
-        return wrapped.get(0).isRevSolenoidDisabled();
+        return this.wrapped.get(0).isRevSolenoidDisabled();
     }
 
 }

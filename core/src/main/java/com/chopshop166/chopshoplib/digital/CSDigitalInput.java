@@ -30,7 +30,7 @@ public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
      * @return True if the input is inverted.
      */
     public boolean getInverted() {
-        return inverted;
+        return this.inverted;
     }
 
     /**
@@ -39,7 +39,7 @@ public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
      * @param invertValue True if the input should be inverted.
      */
     public void setInverted(final boolean invertValue) {
-        inverted = invertValue;
+        this.inverted = invertValue;
     }
 
     /**
@@ -48,11 +48,11 @@ public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
      */
     @Override
     public boolean get() {
-        return inverted ^ super.get();
+        return this.inverted ^ super.get();
     }
 
     @Override
     public boolean getAsBoolean() {
-        return get();
+        return this.get();
     }
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import com.chopshop166.chopshoplib.commands.Commands;
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,10 +52,10 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      */
     protected StateSubsystem(final S initState, final boolean allowSameTransition) {
         super();
-        currentState = initState;
+        this.currentState = initState;
         this.allowSameTransition = allowSameTransition;
 
-        setDefaultCommand(new InstantCommand(() -> handleState(currentState), this));
+        this.setDefaultCommand(new InstantCommand(() -> this.handleState(this.currentState), this));
     }
 
     /**
@@ -63,13 +64,13 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param newState The new state to transition to.
      */
     public void setState(final S newState) {
-        final Transition<S> transition = new Transition<>(currentState, newState);
-        if (transitions.contains(transition) || allowSameTransition && currentState.equals(newState)) {
-            Optional.of(onExitHandlers.get(currentState)).ifPresent(Runnable::run);
-            currentState = newState;
-            Optional.of(onEntryHandlers.get(currentState)).ifPresent(Runnable::run);
+        final Transition<S> transition = new Transition<>(this.currentState, newState);
+        if (this.transitions.contains(transition) || this.allowSameTransition && this.currentState.equals(newState)) {
+            Optional.of(this.onExitHandlers.get(this.currentState)).ifPresent(Runnable::run);
+            this.currentState = newState;
+            Optional.of(this.onEntryHandlers.get(this.currentState)).ifPresent(Runnable::run);
         } else {
-            defaultTransition(currentState, newState);
+            this.defaultTransition(this.currentState, newState);
         }
     }
 
@@ -79,7 +80,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @return The current state.
      */
     public S getState() {
-        return currentState;
+        return this.currentState;
     }
 
     /**
@@ -89,9 +90,9 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @return A command that will change the subsystem state.
      */
     public Command changeState(final S newState) {
-        final StringBuilder cmdname = new StringBuilder(getName());
+        final StringBuilder cmdname = new StringBuilder(this.getName());
         cmdname.append(" -> ").append(newState.name());
-        return make.setter(cmdname.toString(), newState, this::setState);
+        return Commands.setter(cmdname.toString(), newState, this::setState);
     }
 
     /**
@@ -128,7 +129,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param commanded The state to transition to.
      */
     protected final void transition(final S current, final S commanded) {
-        transitions.add(new Transition<S>(current, commanded));
+        this.transitions.add(new Transition<S>(current, commanded));
     }
 
     /**
@@ -138,7 +139,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param action   The action to run when transitioning to the state.
      */
     protected final void onEntry(final S newState, final Runnable action) {
-        onEntryHandlers.put(newState, action);
+        this.onEntryHandlers.put(newState, action);
     }
 
     /**
@@ -148,7 +149,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param action   The action to run when transitioning from the state.
      */
     protected final void onExit(final S newState, final Runnable action) {
-        onExitHandlers.put(newState, action);
+        this.onExitHandlers.put(newState, action);
     }
 
     /**
@@ -160,10 +161,10 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param action The action to take in the given state.
      */
     protected final void handle(final S state, final Supplier<S> action) {
-        handlers.put(state, () -> {
+        this.handlers.put(state, () -> {
             final S newState = action.get();
-            if (!getState().equals(newState) || allowSameTransition) {
-                setState(newState);
+            if (!this.getState().equals(newState) || this.allowSameTransition) {
+                this.setState(newState);
             }
         });
     }
@@ -175,7 +176,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param action The action to take in the given state.
      */
     protected final void handle(final S state, final Runnable action) {
-        handlers.put(state, action);
+        this.handlers.put(state, action);
     }
 
     /**
@@ -184,8 +185,8 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param state The state to check.
      */
     protected final void handleState(final S state) {
-        if (handlers.containsKey(state)) {
-            handlers.get(state).run();
+        if (this.handlers.containsKey(state)) {
+            this.handlers.get(state).run();
         }
     }
 
@@ -213,7 +214,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
 
         @Override
         public int hashCode() {
-            return Objects.hash(startState, endState);
+            return Objects.hash(this.startState, this.endState);
         }
 
         @SuppressWarnings("unchecked")
@@ -226,7 +227,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
                 return false;
             }
             final Transition<State> t = (Transition<State>) obj;
-            return t.startState.equals(startState) && t.endState.equals(endState);
+            return t.startState.equals(this.startState) && t.endState.equals(this.endState);
         }
     }
 }

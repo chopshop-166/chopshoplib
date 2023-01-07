@@ -53,7 +53,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @param encoder The encoder attached to the motor controller.
      */
     public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final IEncoder encoder) {
-        sendable = wrapped;
+        this.sendable = wrapped;
         this.wrapped = wrapped;
         this.encoder = encoder;
     }
@@ -81,7 +81,7 @@ public class SmartMotorController implements Sendable, MotorController {
     public SmartMotorController(final IEncoder encoder, final MotorController controller1,
             final MotorController controller2,
             final MotorController... controllers) {
-        this(grouped(controller1, controller2, controllers), encoder);
+        this(SmartMotorController.grouped(controller1, controller2, controllers), encoder);
     }
 
     /**
@@ -90,7 +90,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @return An encoder, or a mock if none is attached.
      */
     public IEncoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     /**
@@ -128,7 +128,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @return Whether all validators pass.
      */
     public boolean validate() {
-        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+        return this.validators.stream().allMatch(BooleanSupplier::getAsBoolean);
     }
 
     /**
@@ -137,7 +137,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @return Whether any validators failed.
      */
     public boolean errored() {
-        return !validate();
+        return !this.validate();
     }
 
     /**
@@ -146,7 +146,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @param validator The validator to test for.
      */
     public void addValidator(final BooleanSupplier validator) {
-        validators.add(validator);
+        this.validators.add(validator);
     }
 
     /**
@@ -155,17 +155,17 @@ public class SmartMotorController implements Sendable, MotorController {
      * @param rateThreshold the threshold to validate
      */
     public void validateEncoderRate(final double rateThreshold) {
-        addValidator(() -> Math.abs(encoder.getRate()) >= rateThreshold);
+        this.addValidator(() -> Math.abs(this.encoder.getRate()) >= rateThreshold);
     }
 
     @Override
     public void set(final double speed) {
-        wrapped.set(speed);
+        this.wrapped.set(speed);
     }
 
     @Override
     public double get() {
-        return wrapped.get();
+        return this.wrapped.get();
     }
 
     /**
@@ -176,27 +176,27 @@ public class SmartMotorController implements Sendable, MotorController {
      */
     @Override
     public void setInverted(final boolean isInverted) {
-        wrapped.setInverted(isInverted);
+        this.wrapped.setInverted(isInverted);
     }
 
     @Override
     public boolean getInverted() {
-        return wrapped.getInverted();
+        return this.wrapped.getInverted();
     }
 
     @Override
     public void disable() {
-        wrapped.disable();
+        this.wrapped.disable();
     }
 
     @Override
     public void stopMotor() {
-        wrapped.stopMotor();
+        this.wrapped.stopMotor();
     }
 
     @Override
     public void initSendable(final SendableBuilder builder) {
-        sendable.initSendable(builder);
+        this.sendable.initSendable(builder);
     }
 
     private static MotorControllerGroup grouped(final MotorController mc1, final MotorController mc2,

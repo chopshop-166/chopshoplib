@@ -11,5 +11,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RobotMapForCollection {
+    /**
+     * All the robots this is a map for.
+     * 
+     * @return A list of robot identities.
+     */
     RobotMapFor[] value();
 }

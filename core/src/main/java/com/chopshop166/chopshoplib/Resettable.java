@@ -26,7 +26,7 @@ public interface Resettable {
      * @param interrupted Ignored.
      */
     default void reset(final boolean interrupted) {
-        reset();
+        this.reset();
     }
 
 }

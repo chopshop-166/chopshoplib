@@ -20,7 +20,7 @@ public class MockAnalogInput implements Sendable {
      * @return The assigned value.
      */
     public double get() {
-        return value;
+        return this.value;
     }
 
     /**

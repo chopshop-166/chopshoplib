@@ -38,7 +38,7 @@ public class CSTalonSRX extends CSTalonBase<WPI_TalonSRX> {
      */
     public void addDefaultConfiguration(final TalonSRXConfiguration config) {
         this.config.add(config);
-        getMotorController().configAllSettings(config);
+        this.getMotorController().configAllSettings(config);
     }
 
     /**
@@ -52,7 +52,7 @@ public class CSTalonSRX extends CSTalonBase<WPI_TalonSRX> {
 
     @Override
     public void setPidSlot(final int slotId) {
-        getMotorController().configAllSettings(this.config.get(slotId));
+        this.getMotorController().configAllSettings(this.config.get(slotId));
     }
 
 }
