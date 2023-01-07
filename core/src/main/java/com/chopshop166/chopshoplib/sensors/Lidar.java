@@ -41,7 +41,10 @@ public class Lidar implements Sendable {
      * The scale to return measurements in.
      */
     public enum MeasurementType {
-        INCHES, MILLIMETERS;
+        /** Measurement is in inches. */
+        INCHES,
+        /** Measurement is in millimeters. */
+        MILLIMETERS;
     }
 
     /**
@@ -159,7 +162,8 @@ public class Lidar implements Sendable {
              * @return The preset in use.
              */
             public static PresetConfiguration fromByte(final byte value) {
-                return Arrays.stream(PresetConfiguration.values()).filter(conf -> conf.value == value).findFirst().orElse(CUSTOM);
+                return Arrays.stream(PresetConfiguration.values()).filter(conf -> conf.value == value).findFirst()
+                        .orElse(CUSTOM);
             }
 
             /**

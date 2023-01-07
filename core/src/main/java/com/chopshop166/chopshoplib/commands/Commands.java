@@ -14,7 +14,10 @@ import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class Commands {
+/**
+ * Utility class for storing command helpers.
+ */
+final public class Commands {
 
     private Commands() {
     }

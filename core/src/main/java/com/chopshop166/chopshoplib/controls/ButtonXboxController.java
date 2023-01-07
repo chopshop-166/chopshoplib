@@ -18,7 +18,22 @@ public class ButtonXboxController extends CommandXboxController {
      * Enum of POV HAT directions.
      */
     public enum POVDirection {
-        UP(0), UP_RIGHT(45), RIGHT(90), DOWN_RIGHT(135), DOWN(180), DOWN_LEFT(225), LEFT(270), UP_LEFT(315);
+        /** Up. */
+        UP(0),
+        /** Up right. */
+        UP_RIGHT(45),
+        /** Right. */
+        RIGHT(90),
+        /** Down right. */
+        DOWN_RIGHT(135),
+        /** Down. */
+        DOWN(180),
+        /** Down left. */
+        DOWN_LEFT(225),
+        /** Left. */
+        LEFT(270),
+        /** Up left. */
+        UP_LEFT(315);
 
         /** The angle of the direction enum. */
         private int dPadRotation;
