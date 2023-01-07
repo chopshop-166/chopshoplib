@@ -10,9 +10,6 @@ tasks.withType(KotlinCompile) {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
     }
-    kotlinOptions {
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-    }
 }
 
 dependencies {
