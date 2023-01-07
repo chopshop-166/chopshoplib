@@ -18,18 +18,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand
 import java.util.function.Supplier
 
-private fun CommandBase.maybeName(name : String?) {
-    name?.let { withName(it) }
-}
-
-fun repeat(num: Int, block: () -> Command) =
-    Commands.sequence(*(0..num).map {block()}.toTypedArray())
-
 @DslMarker
 annotation class CommandBuilderMarker
 
 @CommandBuilderMarker
-class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem) {
+class CommandBuilder(private vararg val sys: Subsystem) {
     private var onInit: Command.() -> Unit = {}
     private var onExecute: Command.() -> Unit = {}
     private var onEnd: Command.(Boolean) -> Unit = {}
@@ -43,9 +36,6 @@ class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem
     fun build() =
         object : CommandBase() {
             init {
-                if (cmdName != "") {
-                    this.name = cmdName
-                }
                 addRequirements(*sys)
             }
             override fun initialize() = onInit()
@@ -55,9 +45,6 @@ class CommandBuilder(var cmdName: String = "", private vararg val sys: Subsystem
         }
 }
 
-fun cmd(name: String = "", block: CommandBuilder.() -> Unit) =
-    CommandBuilder(name).apply(block).build()
-
 inline fun <reified T> CommandRobot.getMapForName(
     name: String,
     pkg: String,
@@ -65,8 +52,14 @@ inline fun <reified T> CommandRobot.getMapForName(
 ) =
     CommandRobot.getMapForName<T>(name, T::class.java, pkg, defaultValue)
 
-fun Subsystem.cmd(name: String = "", block: CommandBuilder.() -> Unit) =
-    CommandBuilder(name, this).apply(block).build()
+fun repeat(num: Int, block: () -> Command) =
+    Commands.sequence(*(0..num).map {block()}.toTypedArray())
+
+fun Subsystem.cmd(block: CommandBuilder.() -> Unit) =
+    CommandBuilder(this).apply(block).build()
+
+fun cmd(block: CommandBuilder.() -> Unit) =
+    CommandBuilder().apply(block).build()
 
 /**
  * Create an {@link InstantCommand}.
@@ -248,8 +241,8 @@ fun select(selector : () -> Command) =
  * @param periodic  The runnable to execute.
  * @return A new command.
  */
-fun every(timeDelta : Double, periodic : () -> Unit) =
-    IntervalCommand(timeDelta, periodic)
+fun Subsystem.every(timeDelta : Double, periodic : () -> Unit) =
+    IntervalCommand(timeDelta, this, periodic)
 
 /**
  * Create a command to run at regular intervals.
@@ -258,8 +251,8 @@ fun every(timeDelta : Double, periodic : () -> Unit) =
  * @param periodic  The runnable to execute.
  * @return A new command.
  */
-fun Subsystem.every(timeDelta : Double, periodic : () -> Unit) =
-    IntervalCommand(timeDelta, this, periodic)
+fun every(timeDelta : Double, periodic : () -> Unit) =
+    IntervalCommand(timeDelta, periodic)
 
 /**
  * Create a command to reset the subsystem sensors.
