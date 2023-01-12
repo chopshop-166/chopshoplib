@@ -136,8 +136,8 @@ public class CSSparkMax extends SmartMotorController {
         builder.setActuator(true);
         builder.setSafeState(this::disable);
         builder.addDoubleProperty("Value", this::get, this::set);
-        builder.addDoubleProperty("Temperature", this::getTemperature, null);
-        builder.addDoubleProperty("Current", this::getOutputCurrent, null);
+        builder.addDoubleArrayProperty("Temperature", this::getTemperatureC, null);
+        builder.addDoubleArrayProperty("Current", this::getCurrentAmps, null);
     }
 
     @Override
@@ -171,8 +171,9 @@ public class CSSparkMax extends SmartMotorController {
      * 
      * @return Returns the temperature.
      */
-    public double getTemperature() {
-        return this.sparkMax.getMotorTemperature();
+    @Override
+    public double[] getTemperatureC() {
+        return new double[] { this.sparkMax.getMotorTemperature() };
     }
 
     /**
@@ -180,8 +181,9 @@ public class CSSparkMax extends SmartMotorController {
      *
      * @return Returns the current
      */
-    public double getOutputCurrent() {
-        return this.sparkMax.getOutputCurrent();
+    @Override
+    public double[] getCurrentAmps() {
+        return new double[] { this.sparkMax.getOutputCurrent() };
     }
 
     @Override

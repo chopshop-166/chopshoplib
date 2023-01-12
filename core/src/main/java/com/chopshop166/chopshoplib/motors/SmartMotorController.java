@@ -10,7 +10,6 @@ import com.chopshop166.chopshoplib.sensors.MockEncoder;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 /**
  * A MotorController with features attached.
@@ -59,32 +58,7 @@ public class SmartMotorController implements Sendable, MotorController {
     }
 
     /**
-     * Construct for a group.
-     * 
-     * @param controller1 The first controller.
-     * @param controller2 The second controller.
-     * @param controllers Subsequent controllers.
-     */
-    public SmartMotorController(final MotorController controller1,
-            final MotorController controller2, final MotorController... controllers) {
-        this(new MockEncoder(), controller1, controller2, controllers);
-    }
-
-    /**
-     * Construct for a group with an encoder.
-     * 
-     * @param encoder The encoder to measure with.
-     * @param controller1 The first controller.
-     * @param controller2 The second controller.
-     * @param controllers Subsequent controllers.
-     */
-    public SmartMotorController(final IEncoder encoder, final MotorController controller1,
-            final MotorController controller2, final MotorController... controllers) {
-        this(SmartMotorController.grouped(controller1, controller2, controllers), encoder);
-    }
-
-    /**
-     * Get the encoder attached to the robot.
+     * Add smart motor controller group class Get the encoder attached to the robot.
      *
      * @return An encoder, or a mock if none is attached.
      */
@@ -157,6 +131,24 @@ public class SmartMotorController implements Sendable, MotorController {
         this.addValidator(() -> Math.abs(this.encoder.getRate()) >= rateThreshold);
     }
 
+    /**
+     * Get an array of all currents associated with the motor controller.
+     * 
+     * @return An array in amps.
+     */
+    public double[] getCurrentAmps() {
+        return new double[] {0};
+    }
+
+    /**
+     * Get an array of all temperatures associated with the motor controller.
+     * 
+     * @return An array in degrees celsius.
+     */
+    public double[] getTemperatureC() {
+        return new double[] {0};
+    }
+
     @Override
     public void set(final double speed) {
         this.wrapped.set(speed);
@@ -196,14 +188,5 @@ public class SmartMotorController implements Sendable, MotorController {
     @Override
     public void initSendable(final SendableBuilder builder) {
         this.sendable.initSendable(builder);
-    }
-
-    private static MotorControllerGroup grouped(final MotorController mc1,
-            final MotorController mc2, final MotorController... mcs) {
-        final MotorController[] result = new MotorController[mcs.length + 2];
-        result[0] = mc1;
-        result[1] = mc2;
-        System.arraycopy(mcs, 0, result, 2, mcs.length);
-        return new MotorControllerGroup(result);
     }
 }
