@@ -1,7 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.net.URL;
@@ -9,14 +8,12 @@ import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Stream;
-
 import com.chopshop166.chopshoplib.Autonomous;
-import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
-
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -198,7 +195,8 @@ public abstract class CommandRobot extends TimedRobot {
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
             final T defaultValue) {
-        return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
+        return CommandRobot.getMapForName(RobotController.getSerialNumber(), rootClass, pkg,
+                defaultValue);
     }
 
     /**
@@ -268,7 +266,7 @@ public abstract class CommandRobot extends TimedRobot {
         String buildTime = CommandRobot.UNKNOWN_VALUE;
         String branchString = CommandRobot.UNKNOWN_VALUE;
         String fileString = CommandRobot.UNKNOWN_VALUE;
-        String macAddress = CommandRobot.UNKNOWN_VALUE;
+        String serialNumber = CommandRobot.UNKNOWN_VALUE;
 
         try {
             final URL manifestURL = Resources.getResource("META-INF/MANIFEST.MF");
@@ -279,7 +277,7 @@ public abstract class CommandRobot extends TimedRobot {
             buildTime = CommandRobot.getAttr(attrs, "Build-Time");
             branchString = CommandRobot.getAttr(attrs, "Git-Branch");
             fileString = CommandRobot.getAttr(attrs, "Git-Files");
-            macAddress = RobotUtils.getMACAddress();
+            serialNumber = RobotController.getSerialNumber();
         } catch (IOException ex) {
             // Could not read the manifest, just send dummy values
         } finally {
@@ -287,7 +285,7 @@ public abstract class CommandRobot extends TimedRobot {
             tab.add("Build Time", buildTime).withPosition(1, 0).withSize(2, 1);
             tab.add("Git Branch", branchString).withPosition(3, 0);
             tab.add("Git Files", fileString).withPosition(0, 1).withSize(4, 1);
-            tab.add("MAC Address", macAddress).withPosition(4, 0);
+            tab.add("Serial Number", serialNumber).withPosition(4, 0);
         }
     }
 
