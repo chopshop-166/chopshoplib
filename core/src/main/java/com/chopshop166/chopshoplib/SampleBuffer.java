@@ -5,9 +5,8 @@ import java.util.LinkedList;
 /**
  * Implements a circular sample buffer.
  * 
- * Though it can be used as a linked list for other operations, it's
- * discouraged. Use add to verify that adding an element removes old
- * elements as necessary.
+ * Though it can be used as a linked list for other operations, it's discouraged. Use add to verify
+ * that adding an element removes old elements as necessary.
  */
 public class SampleBuffer<E> extends LinkedList<E> {
 

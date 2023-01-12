@@ -46,8 +46,7 @@ public interface SwerveModule extends Sendable {
     Translation2d getLocation();
 
     /**
-     * Process the desired state and set the output values for the motor
-     * controllers.
+     * Process the desired state and set the output values for the motor controllers.
      *
      * @param desiredState The direction and speed.
      */

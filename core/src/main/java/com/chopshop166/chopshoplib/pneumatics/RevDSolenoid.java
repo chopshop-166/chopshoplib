@@ -21,11 +21,12 @@ public class RevDSolenoid extends DoubleSolenoid implements IDSolenoid {
     /**
      * Construct a REV Double Solenoid.
      * 
-     * @param modulenumber   The module to use.
+     * @param modulenumber The module to use.
      * @param forwardChannel The forward trigger channel.
      * @param reverseChannel The reverse trigger channel.
      */
-    public RevDSolenoid(final int modulenumber, final int forwardChannel, final int reverseChannel) {
+    public RevDSolenoid(final int modulenumber, final int forwardChannel,
+            final int reverseChannel) {
         super(modulenumber, PneumaticsModuleType.REVPH, forwardChannel, reverseChannel);
     }
 }

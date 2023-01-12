@@ -48,7 +48,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     /**
      * Constructor.
      * 
-     * @param initState           The state that the subsystem starts in.
+     * @param initState The state that the subsystem starts in.
      * @param allowSameTransition Whether to allow transitions to the current state.
      */
     protected StateSubsystem(final S initState, final boolean allowSameTransition) {
@@ -66,7 +66,8 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      */
     public void setState(final S newState) {
         final Transition<S> transition = new Transition<>(this.currentState, newState);
-        if (this.transitions.contains(transition) || this.allowSameTransition && this.currentState.equals(newState)) {
+        if (this.transitions.contains(transition)
+                || this.allowSameTransition && this.currentState.equals(newState)) {
             Optional.of(this.onExitHandlers.get(this.currentState)).ifPresent(Runnable::run);
             this.currentState = newState;
             Optional.of(this.onEntryHandlers.get(this.currentState)).ifPresent(Runnable::run);
@@ -101,7 +102,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * 
      * Override this to provide a custom implementation.
      * 
-     * @param current   The current state.
+     * @param current The current state.
      * @param commanded The commanded state.
      */
     protected void defaultTransition(final S current, final S commanded) {
@@ -113,7 +114,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * 
      * Call this from {@link #defaultTransition(Enum, Enum)} to log.
      * 
-     * @param currentState   The current state.
+     * @param currentState The current state.
      * @param commandedState The commanded state.
      */
     protected final void logTransition(final S currentState, final S commandedState) {
@@ -126,7 +127,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     /**
      * Allow a transition from one state to another.
      * 
-     * @param current   The state to transition from.
+     * @param current The state to transition from.
      * @param commanded The state to transition to.
      */
     protected final void transition(final S current, final S commanded) {
@@ -137,7 +138,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * Register a callback for when the subsystem transitions to the given state.
      * 
      * @param newState The state to transition to.
-     * @param action   The action to run when transitioning to the state.
+     * @param action The action to run when transitioning to the state.
      */
     protected final void onEntry(final S newState, final Runnable action) {
         this.onEntryHandlers.put(newState, action);
@@ -147,7 +148,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * Register a callback for when the subsystem transitions from the given state.
      * 
      * @param newState The state to transition to.
-     * @param action   The action to run when transitioning from the state.
+     * @param action The action to run when transitioning from the state.
      */
     protected final void onExit(final S newState, final Runnable action) {
         this.onExitHandlers.put(newState, action);
@@ -158,7 +159,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * 
      * Provide a new state to transition to.
      * 
-     * @param state  The state to run the action in.
+     * @param state The state to run the action in.
      * @param action The action to take in the given state.
      */
     protected final void handle(final S state, final Supplier<S> action) {
@@ -173,7 +174,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     /**
      * Perform an action every iteration that the subsystem is in this state.
      * 
-     * @param state  The state to run the action in.
+     * @param state The state to run the action in.
      * @param action The action to take in the given state.
      */
     protected final void handle(final S state, final Runnable action) {
@@ -206,7 +207,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
          * Create a transition.
          * 
          * @param startState The state to transition from.
-         * @param endState   The state to transition to.
+         * @param endState The state to transition to.
          */
         public Transition(final State startState, final State endState) {
             this.startState = startState;

@@ -22,7 +22,7 @@ public class RepeatWhileCommand extends CommandBase {
      * Create a command that repeats a command while a condition is true.
      * 
      * @param name The name of the command.
-     * @param cmd  The command to repeat.
+     * @param cmd The command to repeat.
      * @param cond The condition to test.
      */
     public RepeatWhileCommand(final String name, final Command cmd, final BooleanSupplier cond) {
@@ -33,7 +33,7 @@ public class RepeatWhileCommand extends CommandBase {
     /**
      * Create a command that repeats a command while a condition is true.
      * 
-     * @param cmd  The command to repeat.
+     * @param cmd The command to repeat.
      * @param cond The condition to test.
      */
     public RepeatWhileCommand(final Command cmd, final BooleanSupplier cond) {

@@ -15,9 +15,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 /**
  * A MotorController with features attached.
  *
- * This is used in a few select scenarios, when we want to keep the exact type
- * of an object general, but at the same time want to access it as one of two
- * disconnected interfaces.
+ * This is used in a few select scenarios, when we want to keep the exact type of an object general,
+ * but at the same time want to access it as one of two disconnected interfaces.
  */
 public class SmartMotorController implements Sendable, MotorController {
 
@@ -38,7 +37,7 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Wrap a motor controller.
      *
-     * @param <T>     The base type to wrap
+     * @param <T> The base type to wrap
      * @param wrapped The wrapped motor controller.
      */
     public <T extends Sendable & MotorController> SmartMotorController(final T wrapped) {
@@ -48,11 +47,12 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Wrap a motor controller with an encoder.
      *
-     * @param <T>     The base type to wrap
+     * @param <T> The base type to wrap
      * @param wrapped The wrapped motor controller.
      * @param encoder The encoder attached to the motor controller.
      */
-    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped, final IEncoder encoder) {
+    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped,
+            final IEncoder encoder) {
         this.sendable = wrapped;
         this.wrapped = wrapped;
         this.encoder = encoder;
@@ -65,22 +65,21 @@ public class SmartMotorController implements Sendable, MotorController {
      * @param controller2 The second controller.
      * @param controllers Subsequent controllers.
      */
-    public SmartMotorController(final MotorController controller1, final MotorController controller2,
-            final MotorController... controllers) {
+    public SmartMotorController(final MotorController controller1,
+            final MotorController controller2, final MotorController... controllers) {
         this(new MockEncoder(), controller1, controller2, controllers);
     }
 
     /**
      * Construct for a group with an encoder.
      * 
-     * @param encoder     The encoder to measure with.
+     * @param encoder The encoder to measure with.
      * @param controller1 The first controller.
      * @param controller2 The second controller.
      * @param controllers Subsequent controllers.
      */
     public SmartMotorController(final IEncoder encoder, final MotorController controller1,
-            final MotorController controller2,
-            final MotorController... controllers) {
+            final MotorController controller2, final MotorController... controllers) {
         this(SmartMotorController.grouped(controller1, controller2, controllers), encoder);
     }
 
@@ -171,8 +170,8 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Warning: Do not use in a subsystem.
      *
-     * This is intended for configuration in the map only, but the MotorController
-     * requires it to exist.
+     * This is intended for configuration in the map only, but the MotorController requires it to
+     * exist.
      */
     @Override
     public void setInverted(final boolean isInverted) {
@@ -199,8 +198,8 @@ public class SmartMotorController implements Sendable, MotorController {
         this.sendable.initSendable(builder);
     }
 
-    private static MotorControllerGroup grouped(final MotorController mc1, final MotorController mc2,
-            final MotorController... mcs) {
+    private static MotorControllerGroup grouped(final MotorController mc1,
+            final MotorController mc2, final MotorController... mcs) {
         final MotorController[] result = new MotorController[mcs.length + 2];
         result[0] = mc1;
         result[1] = mc2;

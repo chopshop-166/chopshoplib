@@ -43,8 +43,7 @@ public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
     }
 
     /**
-     * Uses exclusive or to invert the returned value based on the inverted
-     * variable.
+     * Uses exclusive or to invert the returned value based on the inverted variable.
      */
     @Override
     public boolean get() {

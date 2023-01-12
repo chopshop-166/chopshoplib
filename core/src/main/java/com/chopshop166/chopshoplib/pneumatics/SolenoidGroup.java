@@ -17,7 +17,7 @@ public final class SolenoidGroup implements ISolenoid {
     /**
      * Construct the group.
      * 
-     * @param first  The first group member.
+     * @param first The first group member.
      * @param second The second group member.
      * @param others Any subsequent group members.
      */
@@ -33,7 +33,7 @@ public final class SolenoidGroup implements ISolenoid {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock"})
     public void close() throws Exception {
         this.wrapped.forEach(s -> {
             try {

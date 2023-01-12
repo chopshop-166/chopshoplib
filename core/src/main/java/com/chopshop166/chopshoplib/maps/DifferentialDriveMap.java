@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 /**
  * Differential Drive Map
  * 
- * Provides a base map for differential drive, using the left and right speed
- * controllers. Also provides a gyro and kinematics.
+ * Provides a base map for differential drive, using the left and right speed controllers. Also
+ * provides a gyro and kinematics.
  */
 public record DifferentialDriveMap(SmartMotorController left, SmartMotorController right,
         DifferentialDriveKinematics kinematics, SmartGyro gyro) {
@@ -29,8 +29,8 @@ public record DifferentialDriveMap(SmartMotorController left, SmartMotorControll
     /**
      * Constructor.
      * 
-     * @param left             Left speed controller.
-     * @param right            Right speed controller.
+     * @param left Left speed controller.
+     * @param right Right speed controller.
      * @param trackWidthMeters Width of robot.
      */
     public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
@@ -41,25 +41,24 @@ public record DifferentialDriveMap(SmartMotorController left, SmartMotorControll
     /**
      * Constructor.
      * 
-     * @param <GyroBase>       A gyro type.
-     * @param left             Left speed controller.
-     * @param right            Right speed controller.
+     * @param <GyroBase> A gyro type.
+     * @param left Left speed controller.
+     * @param right Right speed controller.
      * @param trackWidthMeters Width of robot.
-     * @param gyro             The gyro.
+     * @param gyro The gyro.
      */
     public <GyroBase extends Gyro & Sendable> DifferentialDriveMap(final SmartMotorController left,
-            final SmartMotorController right,
-            final double trackWidthMeters, final GyroBase gyro) {
+            final SmartMotorController right, final double trackWidthMeters, final GyroBase gyro) {
         this(left, right, trackWidthMeters, new WGyro(gyro));
     }
 
     /**
      * Constructor.
      * 
-     * @param left             Left speed controller.
-     * @param right            Right speed controller.
+     * @param left Left speed controller.
+     * @param right Right speed controller.
      * @param trackWidthMeters Width of robot.
-     * @param gyro             The gyro.
+     * @param gyro The gyro.
      */
     public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
             final double trackWidthMeters, final WGyro gyro) {

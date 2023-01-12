@@ -38,7 +38,7 @@ public class BuildCommand extends CommandBase {
     /**
      * Create the command builder for a named command.
      *
-     * @param name       The name of the resulting command.
+     * @param name The name of the resulting command.
      * @param subsystems All subsystems this command depends on.
      */
     public BuildCommand(final String name, final Subsystem... subsystems) {

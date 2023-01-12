@@ -23,13 +23,17 @@ public record SwerveDriveMap(SwerveModule frontLeft, SwerveModule frontRight, Sw
     public SwerveDriveMap() {
         this(
                 // Front Left
-                new MockSwerveModule(new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER)),
+                new MockSwerveModule(new Translation2d(DEFAULT_DISTANCE_FROM_CENTER,
+                        DEFAULT_DISTANCE_FROM_CENTER)),
                 // Front Right
-                new MockSwerveModule(new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER)),
+                new MockSwerveModule(new Translation2d(DEFAULT_DISTANCE_FROM_CENTER,
+                        -DEFAULT_DISTANCE_FROM_CENTER)),
                 // Rear Left
-                new MockSwerveModule(new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER)),
+                new MockSwerveModule(new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER,
+                        DEFAULT_DISTANCE_FROM_CENTER)),
                 // Rear Right
-                new MockSwerveModule(new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER)),
+                new MockSwerveModule(new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER,
+                        -DEFAULT_DISTANCE_FROM_CENTER)),
                 // Max speed (m/s)
                 2.0,
                 // Max rotation (rad/s)

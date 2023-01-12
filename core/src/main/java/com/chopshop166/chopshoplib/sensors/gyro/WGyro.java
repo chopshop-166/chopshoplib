@@ -18,7 +18,7 @@ public class WGyro implements SmartGyro {
      * Constructor.
      * 
      * @param <GyroBase> A type that is both a {@link Gyro} and {@link Sendable}
-     * @param gyro       The gyro object.
+     * @param gyro The gyro object.
      */
     public <GyroBase extends Gyro & Sendable> WGyro(final GyroBase gyro) {
         this.gyro = gyro;

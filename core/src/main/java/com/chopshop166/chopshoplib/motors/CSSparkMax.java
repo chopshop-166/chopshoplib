@@ -12,9 +12,8 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 /**
  * WSparkMax
  *
- * Derives SmartMotorController to allow for use on a SparkMax Speed Controller.
- * It will act as a normal SparkMax with encoders, but will also be able to use
- * PID.
+ * Derives SmartMotorController to allow for use on a SparkMax Speed Controller. It will act as a
+ * normal SparkMax with encoders, but will also be able to use PID.
  */
 public class CSSparkMax extends SmartMotorController {
     /** The unwrapped Spark MAX object. */
@@ -41,10 +40,9 @@ public class CSSparkMax extends SmartMotorController {
      * Create a new wrapped SPARK MAX Controller.
      *
      * @param deviceID The device ID.
-     * @param type     The motor type connected to the controller. Brushless motors
-     *                 must be connected to their matching color and the hall sensor
-     *                 plugged in. Brushed motors must be connected to the Red and
-     *                 Black terminals only.
+     * @param type The motor type connected to the controller. Brushless motors must be connected to
+     *        their matching color and the hall sensor plugged in. Brushed motors must be connected
+     *        to the Red and Black terminals only.
      */
     public CSSparkMax(final int deviceID, final MotorType type) {
         this(new CANSparkMax(deviceID, type));
@@ -71,7 +69,7 @@ public class CSSparkMax extends SmartMotorController {
     /**
      * Add a validator to make sure that the current is below a provided limit.
      * 
-     * @param limit              The maximum current to allow.
+     * @param limit The maximum current to allow.
      * @param filterTimeConstant The time constant of the IIR filter.
      */
     public void validateCurrent(final double limit, final double filterTimeConstant) {
