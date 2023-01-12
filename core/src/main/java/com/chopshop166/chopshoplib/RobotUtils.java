@@ -1,13 +1,9 @@
 package com.chopshop166.chopshoplib;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.StringJoiner;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
-
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
@@ -156,32 +152,5 @@ public final class RobotUtils {
      */
     public static BooleanSupplier not(final BooleanSupplier func) {
         return () -> !func.getAsBoolean();
-    }
-
-    /**
-     * Get the MAC address
-     * 
-     * @return The robot's MAC address as a string.
-     */
-    public static String getMACAddress() {
-        try {
-            final NetworkInterface iface = NetworkInterface.getByName("eth0");
-            if (iface == null) {
-                return "Not Found";
-            }
-            final byte[] mac = iface.getHardwareAddress();
-
-            if (mac == null) { // happens on windows sometimes
-                throw new SocketException();
-            }
-
-            final StringJoiner sb = new StringJoiner(":");
-            for (final byte octet : mac) {
-                sb.add(String.format("%02X", octet));
-            }
-            return sb.toString();
-        } catch (SocketException e) {
-            return "SocketException";
-        }
     }
 }
