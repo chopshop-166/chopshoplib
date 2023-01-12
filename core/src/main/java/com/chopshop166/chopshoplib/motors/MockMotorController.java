@@ -5,8 +5,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
- * Mock speed controller that can be used to simulate a motor on a driver
- * station.
+ * Mock speed controller that can be used to simulate a motor on a driver station.
  */
 public class MockMotorController implements Sendable, MotorController {
 

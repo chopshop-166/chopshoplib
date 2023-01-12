@@ -3,8 +3,7 @@ package com.chopshop166.chopshoplib;
 import java.util.function.BooleanSupplier;
 
 /**
- * Returns true if the given source is true a specified number of times in a
- * row.
+ * Returns true if the given source is true a specified number of times in a row.
  */
 public class PersistenceCheck implements BooleanSupplier {
 
@@ -16,8 +15,7 @@ public class PersistenceCheck implements BooleanSupplier {
     private int numSuccesses;
 
     /**
-     * Returns true if the given source is true a specified number of times in a
-     * row.
+     * Returns true if the given source is true a specified number of times in a row.
      * 
      * @param nTimes The number of times for a match.
      * @param source The operation to check.

@@ -19,7 +19,7 @@ public class MockColorSensor implements IColorSensor {
     /**
      * Add a color to the chooser.
      * 
-     * @param name  The name.
+     * @param name The name.
      * @param color The color.
      */
     public void addColor(final String name, final Color color) {

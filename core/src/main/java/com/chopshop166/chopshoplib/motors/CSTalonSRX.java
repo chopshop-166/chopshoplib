@@ -31,8 +31,7 @@ public class CSTalonSRX extends CSTalonBase<WPI_TalonSRX> {
     }
 
     /**
-     * Add the default configuration to the list of configurations and set it in the
-     * TalonSRX.
+     * Add the default configuration to the list of configurations and set it in the TalonSRX.
      *
      * @param config Configuration to add to the list of stored configs.
      */

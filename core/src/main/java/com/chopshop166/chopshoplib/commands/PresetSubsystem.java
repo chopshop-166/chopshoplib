@@ -33,10 +33,11 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * Construct the subsystem.
      * 
      * @param controller The PID controller to use.
-     * @param initial    The initial value.
+     * @param initial The initial value.
      * @param numSamples Number of setpoint valid samples to check for.
      */
-    public PresetSubsystem(final PIDController controller, final int numSamples, final double initial) {
+    public PresetSubsystem(final PIDController controller, final int numSamples,
+            final double initial) {
         super(controller, initial);
         this.persistenceCheck = new PersistenceCheck(numSamples, controller::atSetpoint);
     }
@@ -69,7 +70,8 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @return The instant command.
      */
     public CommandBase presetWait(final T value) {
-        return Commands.sequence(this.presetCmd(value), this.waitForSetpoint()).withName("Set to " + value.name());
+        return Commands.sequence(this.presetCmd(value), this.waitForSetpoint())
+                .withName("Set to " + value.name());
     }
 
     @Override

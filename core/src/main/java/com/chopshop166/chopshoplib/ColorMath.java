@@ -36,7 +36,7 @@ public final class ColorMath {
     /**
      * Multiply a color by a scalar value.
      * 
-     * @param color  Color that gets multiplied by the scalar
+     * @param color Color that gets multiplied by the scalar
      * @param scalar Number that multiplies the color
      * @return color * scalar
      */
@@ -47,7 +47,7 @@ public final class ColorMath {
     /**
      * Divide a color by a scalar value.
      * 
-     * @param color  Color that gets divided by the scalar
+     * @param color Color that gets divided by the scalar
      * @param scalar Number that divides the color
      * @return color / scalar
      */
@@ -69,25 +69,23 @@ public final class ColorMath {
     /**
      * Compares if two colors are equal.
      * 
-     * @param lhs     Left-hand side
-     * @param rhs     Right-hand side
+     * @param lhs Left-hand side
+     * @param rhs Right-hand side
      * @param epsilon The acceptable error
      * @return lhs == rhs
      */
     public static boolean equals(final Color lhs, final Color rhs, final double epsilon) {
-        return Math.abs(lhs.red - rhs.red) <= epsilon &&
-                Math.abs(lhs.green - rhs.green) <= epsilon &&
-                Math.abs(lhs.blue - rhs.blue) <= epsilon;
+        return Math.abs(lhs.red - rhs.red) <= epsilon && Math.abs(lhs.green - rhs.green) <= epsilon
+                && Math.abs(lhs.blue - rhs.blue) <= epsilon;
     }
 
     /**
      * Interpolates smoothly between two numbers
      * 
-     * @param start  the starting number
-     * @param end    the ending number
-     * @param factor the interpolation factor (0 results in the start number, 1
-     *               results in the end number, going beyond 0 or 1 will extrapolate
-     *               past the start and end numbers)
+     * @param start the starting number
+     * @param end the ending number
+     * @param factor the interpolation factor (0 results in the start number, 1 results in the end
+     *        number, going beyond 0 or 1 will extrapolate past the start and end numbers)
      * @return a blend of the two numbers based on the factor
      */
     private static double scalarLerp(final double start, final double end, final double factor) {
@@ -97,16 +95,14 @@ public final class ColorMath {
     /**
      * Interpolates smoothly between two colors.
      * 
-     * @param start  the starting color
-     * @param end    the ending color
-     * @param factor the interpolation factor (0 results in the start color, 1
-     *               results in the end color, going beyond 0 or 1 will extrapolate
-     *               past the start and end colors)
+     * @param start the starting color
+     * @param end the ending color
+     * @param factor the interpolation factor (0 results in the start color, 1 results in the end
+     *        color, going beyond 0 or 1 will extrapolate past the start and end colors)
      * @return a blend of the two colors based on the factor
      */
     public static Color lerp(final Color start, final Color end, final double factor) {
-        return new Color(
-                ColorMath.scalarLerp(start.red, end.red, factor),
+        return new Color(ColorMath.scalarLerp(start.red, end.red, factor),
                 ColorMath.scalarLerp(start.green, end.green, factor),
                 ColorMath.scalarLerp(start.blue, end.blue, factor));
     }

@@ -6,9 +6,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * A command that does nothing but takes a specified amount of time to finish.
- * Useful for CommandGroups. Can also be subclassed to make a command with an
- * internal timer.
+ * A command that does nothing but takes a specified amount of time to finish. Useful for
+ * CommandGroups. Can also be subclassed to make a command with an internal timer.
  *
  */
 public class FunctionalWaitCommand extends CommandBase {
@@ -23,11 +22,10 @@ public class FunctionalWaitCommand extends CommandBase {
     private double duration;
 
     /**
-     * Creates a new FunctionalWaitCommand. This command will do nothing, and end
-     * after the duration that is supplied.
+     * Creates a new FunctionalWaitCommand. This command will do nothing, and end after the duration
+     * that is supplied.
      *
-     * @param durationSupplier a DoubleSupplier returning the time to wait, in
-     *                         seconds.
+     * @param durationSupplier a DoubleSupplier returning the time to wait, in seconds.
      */
     public FunctionalWaitCommand(final DoubleSupplier durationSupplier) {
         super();

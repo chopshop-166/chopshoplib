@@ -20,7 +20,7 @@ public class IntervalCommand extends CommandBase {
      * Create the command.
      * 
      * @param timeDelta Time in seconds to wait between calls.
-     * @param periodic  The runnable to execute.
+     * @param periodic The runnable to execute.
      */
     public IntervalCommand(final double timeDelta, final Runnable periodic) {
         super();
@@ -31,11 +31,12 @@ public class IntervalCommand extends CommandBase {
     /**
      * Create the command.
      * 
-     * @param timeDelta   Time in seconds to wait between calls.
+     * @param timeDelta Time in seconds to wait between calls.
      * @param requirement The subsystem that the command depends on.
-     * @param periodic    The runnable to execute.
+     * @param periodic The runnable to execute.
      */
-    public IntervalCommand(final double timeDelta, final Subsystem requirement, final Runnable periodic) {
+    public IntervalCommand(final double timeDelta, final Subsystem requirement,
+            final Runnable periodic) {
         this(timeDelta, periodic);
         this.addRequirements(requirement);
     }

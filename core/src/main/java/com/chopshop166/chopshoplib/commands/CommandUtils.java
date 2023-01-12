@@ -20,14 +20,13 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
  */
 final public class CommandUtils {
 
-    private CommandUtils() {
-    }
+    private CommandUtils() {}
 
     /**
      * Repeat a {@link Command} a given number of times.
      *
      * @param numTimesToRun The number of times to run the command.
-     * @param cmd           The command to repeat.
+     * @param cmd The command to repeat.
      * @return A newly constructed command.
      */
     public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
@@ -38,7 +37,7 @@ final public class CommandUtils {
      * Repeat a {@link Command} a given number of times.
      *
      * @param numTimesToRun The number of times to run the command.
-     * @param cmd           A way to create the command to repeat.
+     * @param cmd A way to create the command to repeat.
      * @return A newly constructed command group.
      */
     public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
@@ -58,7 +57,7 @@ final public class CommandUtils {
     /**
      * Create a command builder with a given name.
      *
-     * @param name         The command name.
+     * @param name The command name.
      * @param requirements The subsystems that the command needs (can be empty).
      * @return A new command builder.
      */
@@ -69,7 +68,7 @@ final public class CommandUtils {
     /**
      * Run a {@link Runnable} and then wait until a condition is true.
      *
-     * @param init  The action to take.
+     * @param init The action to take.
      * @param until The condition to wait until.
      * @return A new command.
      */
@@ -80,9 +79,9 @@ final public class CommandUtils {
     /**
      * Create a command to call a consumer function.
      *
-     * @param <T>   The type to wrap.
+     * @param <T> The type to wrap.
      * @param value The value to call the function with.
-     * @param func  The function to call.
+     * @param func The function to call.
      * @return A new command.
      */
     public static <T> CommandBase setter(final T value, final Consumer<T> func) {
@@ -107,13 +106,14 @@ final public class CommandUtils {
     /**
      * Create a command to call a consumer function and wait.
      *
-     * @param <T>   The type to wrap.
+     * @param <T> The type to wrap.
      * @param value The value to call the function with.
-     * @param func  The function to call.
+     * @param func The function to call.
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static <T> CommandBase callAndWait(final T value, final Consumer<T> func, final BooleanSupplier until) {
+    public static <T> CommandBase callAndWait(final T value, final Consumer<T> func,
+            final BooleanSupplier until) {
         return initAndWait(() -> {
             func.accept(value);
         }, until);
@@ -123,7 +123,7 @@ final public class CommandUtils {
      * Create a command that runs only if a condition is true.
      * 
      * @param condition The condition to test beforehand.
-     * @param cmd       The command to run.
+     * @param cmd The command to run.
      * @return The conditional command.
      */
     public static CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
@@ -144,7 +144,7 @@ final public class CommandUtils {
      * Create a command to run at regular intervals.
      * 
      * @param timeDelta Time in seconds to wait between calls.
-     * @param periodic  The runnable to execute.
+     * @param periodic The runnable to execute.
      * @return A new command.
      */
     public static CommandBase every(final double timeDelta, final Runnable periodic) {

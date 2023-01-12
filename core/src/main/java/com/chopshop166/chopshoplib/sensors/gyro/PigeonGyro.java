@@ -12,7 +12,7 @@ public class PigeonGyro implements SmartGyro {
 
     /** The wrapped object. */
     final private PigeonIMU gyro;
-    /** Boolean to control inverted output */
+    /** Boolean to control inverted output. */
     private boolean inverted;
 
     /**
@@ -51,7 +51,7 @@ public class PigeonGyro implements SmartGyro {
     }
 
     /**
-     * Inverts the angle and rate of the Pigeon
+     * Inverts the angle and rate of the Pigeon.
      *
      * @param isInverted The state of inversion, true is inverted.
      */

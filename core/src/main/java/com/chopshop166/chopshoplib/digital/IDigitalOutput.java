@@ -29,8 +29,8 @@ public interface IDigitalOutput extends Sendable, AutoCloseable {
     void pulse(double pulseLength);
 
     /**
-     * Determine if the pulse is still going. Determine if a previously started
-     * pulse is still going.
+     * Determine if the pulse is still going. Determine if a previously started pulse is still
+     * going.
      *
      * @return true if pulsing
      */
@@ -40,8 +40,7 @@ public interface IDigitalOutput extends Sendable, AutoCloseable {
      * Change the PWM frequency of the PWM output on a Digital Output line.
      *
      * <p>
-     * The valid range is from 0.6 Hz to 19 kHz. The frequency resolution is
-     * logarithmic.
+     * The valid range is from 0.6 Hz to 19 kHz. The frequency resolution is logarithmic.
      *
      * <p>
      * There is only one PWM frequency for all channels.
@@ -57,12 +56,11 @@ public interface IDigitalOutput extends Sendable, AutoCloseable {
      * Allocate one of the 6 DO PWM generator resources.
      *
      * <p>
-     * Supply the initial duty-cycle to output so as to avoid a glitch when first
-     * starting.
+     * Supply the initial duty-cycle to output so as to avoid a glitch when first starting.
      *
      * <p>
-     * The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less)
-     * but is reduced the higher the frequency of the PWM signal is.
+     * The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less) but is reduced
+     * the higher the frequency of the PWM signal is.
      *
      * @param initialDutyCycle The duty-cycle to start generating. [0..1]
      */
@@ -80,8 +78,8 @@ public interface IDigitalOutput extends Sendable, AutoCloseable {
      * Change the duty-cycle that is being generated on the line.
      *
      * <p>
-     * The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less)
-     * but is reduced the higher the frequency of the PWM signal is.
+     * The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less) but is reduced
+     * the higher the frequency of the PWM signal is.
      *
      * @param dutyCycle The duty-cycle to change to. [0..1]
      */

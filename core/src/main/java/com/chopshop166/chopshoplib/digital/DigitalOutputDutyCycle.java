@@ -15,8 +15,8 @@ public class DigitalOutputDutyCycle extends DigitalOutput implements IDigitalOut
      * <p>
      * Create an instance of a digital output given a channel.
      *
-     * @param channel the DIO channel to use for the digital output. 0-9 are
-     *                on-board, 10-25 are on the MXP
+     * @param channel the DIO channel to use for the digital output. 0-9 are on-board, 10-25 are on
+     *        the MXP
      */
     public DigitalOutputDutyCycle(final int channel) {
         super(channel);

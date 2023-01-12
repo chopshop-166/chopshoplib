@@ -39,7 +39,8 @@ final class MapGetterTest {
     @Test
     /* package */ void testBadNameDefault() {
         final RobotMap defMap = new MapA();
-        final RobotMap map = CommandRobot.getMapForName("C", RobotMap.class, MapGetterTest.PACKAGE, defMap);
+        final RobotMap map =
+                CommandRobot.getMapForName("C", RobotMap.class, MapGetterTest.PACKAGE, defMap);
         Assertions.assertEquals(defMap, map, "Gets the default map");
     }
 }

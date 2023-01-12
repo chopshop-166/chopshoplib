@@ -38,8 +38,7 @@ public class MockSwerveModule implements SwerveModule {
     }
 
     /**
-     * Process the desired state and set the output values for the motor
-     * controllers.
+     * Process the desired state and set the output values for the motor controllers.
      *
      * @param desiredState The direction and speed.
      */

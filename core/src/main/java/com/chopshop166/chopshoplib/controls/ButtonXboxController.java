@@ -56,11 +56,9 @@ public class ButtonXboxController extends CommandXboxController {
     private final Map<Axis, AxisButton> triggerButtons = new EnumMap<>(Axis.class);
 
     /**
-     * Construct an instance of a Xbox Controller along with each button the
-     * joystick has.
+     * Construct an instance of a Xbox Controller along with each button the joystick has.
      *
-     * @param port The USB port that the Xbox Controller is connected to on the
-     *             Driver Station.
+     * @param port The USB port that the Xbox Controller is connected to on the Driver Station.
      */
     public ButtonXboxController(final int port) {
         super(port);
@@ -158,8 +156,8 @@ public class ButtonXboxController extends CommandXboxController {
     /**
      * Get an axis from this Xbox Controller.
      * <p>
-     * Returns the specified trigger of a Xbox Controller without having to
-     * explicitly create each one.
+     * Returns the specified trigger of a Xbox Controller without having to explicitly create each
+     * one.
      * 
      * @param axis The axis to access.
      * @return The trigger object for the given hand.
@@ -171,13 +169,14 @@ public class ButtonXboxController extends CommandXboxController {
     /**
      * Get a button from the POV hat on this Xbox Controller.
      * <p>
-     * Returns the specified POV Hat button of an Xbox controller without having to
-     * explicitly create each button.
+     * Returns the specified POV Hat button of an Xbox controller without having to explicitly
+     * create each button.
      * 
      * @param angle The index of the button to access.
      * @return The button object for the given ID.
      */
     public POVButton getPovButton(final POVDirection angle) {
-        return this.povButtons.computeIfAbsent(angle, a -> new POVButton(this.getHID(), a.getAngle()));
+        return this.povButtons.computeIfAbsent(angle,
+                a -> new POVButton(this.getHID(), a.getAngle()));
     }
 }

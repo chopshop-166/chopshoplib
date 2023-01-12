@@ -31,8 +31,7 @@ public class CSTalonFX extends CSTalonBase<WPI_TalonFX> {
     }
 
     /**
-     * Add the default configuration to the list of configurations and set it in the
-     * TalonFX.
+     * Add the default configuration to the list of configurations and set it in the TalonFX.
      *
      * @param config Configuration to add to the list of stored configs.
      */

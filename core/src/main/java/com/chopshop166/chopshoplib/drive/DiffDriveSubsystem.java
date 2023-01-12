@@ -151,7 +151,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
     /**
      * Tank drive using motor controller speeds (RPM).
      * 
-     * @param left  The left speed.
+     * @param left The left speed.
      * @param right The right speed.
      */
     public void tankDriveSetpoint(final Double left, final Double right) {
@@ -164,7 +164,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * Drive using controller axes.
      *
      * @param forward The forward direction.
-     * @param turn    The direction to turn.
+     * @param turn The direction to turn.
      * @return A command that will run until interrupted.
      */
     public CommandBase drive(final DoubleSupplier forward, final DoubleSupplier turn) {
@@ -179,15 +179,16 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * Drive a given distance at the given speed.
      * 
      * @param distance The distance in meters.
-     * @param speed    The speed in motor controller units.
+     * @param speed The speed in motor controller units.
      * @return The command.
      */
     public CommandBase driveDistance(final double distance, final double speed) {
-        return this.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders).onExecute(() -> {
-            this.driveTrain.arcadeDrive(speed, 0);
-        }).onEnd(interrupted -> {
-            this.driveTrain.stopMotor();
-        }).runsUntil(() -> this.encoderAvg() >= distance);
+        return this.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders)
+                .onExecute(() -> {
+                    this.driveTrain.arcadeDrive(speed, 0);
+                }).onEnd(interrupted -> {
+                    this.driveTrain.stopMotor();
+                }).runsUntil(() -> this.encoderAvg() >= distance);
     }
 
     /**
@@ -196,7 +197,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * This command resets the gyro when started.
      * 
      * @param degrees The angle to turn by in degrees.
-     * @param speed   The speed to turn at in motor controller units.
+     * @param speed The speed to turn at in motor controller units.
      * @return The command.
      */
     public CommandBase turnDegrees(final double degrees, final double speed) {
@@ -225,7 +226,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * Run an autonomous trajectory.
      * 
      * @param trajectoryName The trajectory to run.
-     * @param resetPose      Whether to reset the pose first.
+     * @param resetPose Whether to reset the pose first.
      * @return A command.
      */
     public CommandBase autonomousCommand(final String trajectoryName, final Boolean resetPose) {
@@ -233,10 +234,12 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
         final String trajectoryJSON = "paths/" + trajectoryName + ".wpilib.json";
         Trajectory autoTrajectory = new Trajectory();
         try {
-            final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            final Path trajectoryPath =
+                    Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             autoTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
+                    ex.getStackTrace());
         }
 
         final Trajectory finalAutoTrajectory = autoTrajectory;
@@ -254,8 +257,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
         CommandBase cmd;
         if (resetPose) {
             cmd = new InstantCommand(() -> this.resetOdometry(finalAutoTrajectory.getInitialPose()))
-                    .andThen(ramseteCommand)
-                    .andThen(this.driveTrain::stopMotor);
+                    .andThen(ramseteCommand).andThen(this.driveTrain::stopMotor);
         } else {
             cmd = ramseteCommand.andThen(this.driveTrain::stopMotor);
         }

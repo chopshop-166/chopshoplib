@@ -6,9 +6,8 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
- * A wrapper for the {@link RelativeEncoder} provided by REV Robotics,
- * to implement
- * WPIlib interfaces.
+ * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
+ * interfaces.
  */
 public class SparkMaxEncoder implements IEncoder {
 
@@ -136,6 +135,7 @@ public class SparkMaxEncoder implements IEncoder {
         builder.setSmartDashboardType("Encoder");
         builder.addDoubleProperty("Speed", this::getRate, null);
         builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", this::getPositionScaleFactor, this::setPositionScaleFactor);
+        builder.addDoubleProperty("Distance per Tick", this::getPositionScaleFactor,
+                this::setPositionScaleFactor);
     }
 }

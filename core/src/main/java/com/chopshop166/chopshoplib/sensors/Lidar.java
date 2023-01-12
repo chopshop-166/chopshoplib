@@ -66,7 +66,7 @@ public class Lidar implements Sendable {
     /**
      * Settings received from the sensor.
      */
-    @SuppressWarnings({ "PMD.TooManyFields" })
+    @SuppressWarnings({"PMD.TooManyFields"})
     public static class Settings {
         /**
          * Mode of operation.
@@ -106,7 +106,8 @@ public class Lidar implements Sendable {
              * @return The operation mode.
              */
             public static OpMode fromByte(final byte value) {
-                return Arrays.stream(OpMode.values()).filter(v -> v.value == value).findFirst().orElse(INVALID);
+                return Arrays.stream(OpMode.values()).filter(v -> v.value == value).findFirst()
+                        .orElse(INVALID);
             }
 
             /**
@@ -162,8 +163,8 @@ public class Lidar implements Sendable {
              * @return The preset in use.
              */
             public static PresetConfiguration fromByte(final byte value) {
-                return Arrays.stream(PresetConfiguration.values()).filter(conf -> conf.value == value).findFirst()
-                        .orElse(CUSTOM);
+                return Arrays.stream(PresetConfiguration.values())
+                        .filter(conf -> conf.value == value).findFirst().orElse(CUSTOM);
             }
 
             /**
@@ -217,7 +218,8 @@ public class Lidar implements Sendable {
              * @return The LED state.
              */
             public static LedIndicator fromInt(final int value) {
-                return Arrays.stream(LedIndicator.values()).filter(v -> v.value == value).findFirst().orElse(UNKNOWN);
+                return Arrays.stream(LedIndicator.values()).filter(v -> v.value == value)
+                        .findFirst().orElse(UNKNOWN);
             }
 
             /**
@@ -317,8 +319,7 @@ public class Lidar implements Sendable {
         /**
          * This will process the response from a settings query.
          *
-         * This will process the byte array and turn it into a more easily accessible
-         * object.
+         * This will process the byte array and turn it into a more easily accessible object.
          *
          * @param response A byte array with the response from a settings query
          */
@@ -360,8 +361,8 @@ public class Lidar implements Sendable {
     /**
      * Create a LIDAR object
      *
-     * @param port        The I2C port the sensor is connected to
-     * @param kAddress    The I2C address the sensor is found at
+     * @param port The I2C port the sensor is connected to
+     * @param kAddress The I2C address the sensor is found at
      * @param averageOver The number of samples to average
      */
     public Lidar(final Port port, final int kAddress, final int averageOver) {
@@ -379,7 +380,7 @@ public class Lidar implements Sendable {
     /**
      * Create a LIDAR object
      *
-     * @param port     The I2C port the sensor is connected to
+     * @param port The I2C port the sensor is connected to
      * @param kAddress The I2C address the sensor is found at
      */
     public Lidar(final Port port, final int kAddress) {
@@ -388,8 +389,7 @@ public class Lidar implements Sendable {
     }
 
     /**
-     * Set the maximum allowed standard deviation before the input is considered
-     * invalid
+     * Set the maximum allowed standard deviation before the input is considered invalid
      *
      * @param sdLimit The maximum standard deviation expected
      */
@@ -457,7 +457,7 @@ public class Lidar implements Sendable {
      */
     public void setMode(final Settings.OpMode mode) {
         final byte modeByte = mode.toByte();
-        this.i2cDevice.writeBulk(new byte[] { 0x4d, modeByte });
+        this.i2cDevice.writeBulk(new byte[] {0x4d, modeByte});
     }
 
     /**
@@ -467,7 +467,7 @@ public class Lidar implements Sendable {
      */
     public Settings querySettings() {
         final byte[] dataBuffer = new byte[23];
-        this.i2cDevice.writeBulk(new byte[] { 0x51 });
+        this.i2cDevice.writeBulk(new byte[] {0x51});
         this.i2cDevice.readOnly(dataBuffer, 23);
         return new Settings(dataBuffer);
     }
@@ -485,7 +485,8 @@ public class Lidar implements Sendable {
     public void initSendable(final SendableBuilder builder) {
         builder.setSmartDashboardType("LiDAR");
         builder.addBooleanProperty("isValid", () -> this.isValid, null);
-        builder.addDoubleProperty("Distance", () -> this.getDistance(MeasurementType.MILLIMETERS), null);
+        builder.addDoubleProperty("Distance", () -> this.getDistance(MeasurementType.MILLIMETERS),
+                null);
         builder.addDoubleProperty("Standard Deviation", () -> this.stdDevValue, null);
     }
 }

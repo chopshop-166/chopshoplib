@@ -18,10 +18,11 @@ public class AxisButton extends Trigger {
      * Create a button based on an axis.
      * 
      * @param controller The controller to use.
-     * @param axis       The axis to use.
-     * @param predicate  The check against the axis value.
+     * @param axis The axis to use.
+     * @param predicate The check against the axis value.
      */
-    public AxisButton(final XboxController controller, final Axis axis, final DoublePredicate predicate) {
+    public AxisButton(final XboxController controller, final Axis axis,
+            final DoublePredicate predicate) {
         super(() -> predicate.test(controller.getRawAxis(axis.value)));
         this.controller = controller;
     }
@@ -30,7 +31,7 @@ public class AxisButton extends Trigger {
      * Create a button based on an axis.
      * 
      * @param controller The controller to use.
-     * @param axis       The axis to use.
+     * @param axis The axis to use.
      */
     public AxisButton(final XboxController controller, final Axis axis) {
         this(controller, axis, v -> v > 0.5);

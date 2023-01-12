@@ -35,7 +35,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     /**
      * Run a {@link Runnable} and then wait until a condition is true.
      * 
-     * @param init  The action to take.
+     * @param init The action to take.
      * @param until The condition to wait until.
      * @return A new command.
      */
@@ -47,7 +47,7 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      * Create a command to run at regular intervals.
      * 
      * @param timeDelta Time in seconds to wait between calls.
-     * @param periodic  The runnable to execute.
+     * @param periodic The runnable to execute.
      * @return A new command.
      */
     public CommandBase every(final double timeDelta, final Runnable periodic) {

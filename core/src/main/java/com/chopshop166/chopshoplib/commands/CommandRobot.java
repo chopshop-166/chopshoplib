@@ -30,7 +30,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-@SuppressWarnings({ "PMD.ExcessiveImports", "PMD.GodClass" })
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public abstract class CommandRobot extends TimedRobot {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
@@ -124,7 +124,8 @@ public abstract class CommandRobot extends TimedRobot {
                 // Access each field and return a pair of (Command, Field)
                 .map(field -> {
                     try {
-                        return Pair.of((Command) field.get(this), field.getAnnotation(Autonomous.class));
+                        return Pair.of((Command) field.get(this),
+                                field.getAnnotation(Autonomous.class));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         return null;
@@ -157,8 +158,9 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
-                .withName("Reset Subsystems");
+        return parallel(
+                Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
+                        .withName("Reset Subsystems");
     }
 
     /**
@@ -168,16 +170,17 @@ public abstract class CommandRobot extends TimedRobot {
      * @return A command
      */
     public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
-                .withName("Reset Subsystems");
+        return parallel(
+                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
+                        .withName("Reset Subsystems");
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>       The type to return.
+     * @param <T> The type to return.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
+     * @param pkg The package to look in.
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
@@ -187,36 +190,38 @@ public abstract class CommandRobot extends TimedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>          The type to return.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
+     * @param <T> The type to return.
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
+            final T defaultValue) {
         return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>       The type to return.
-     * @param name      The name to match against in annotations.
+     * @param <T> The type to return.
+     * @param name The name to match against in annotations.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
+     * @param pkg The package to look in.
      * @return An instance of the given type, or null.
      */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg) {
+    public static <T> T getMapForName(final String name, final Class<T> rootClass,
+            final String pkg) {
         return CommandRobot.getMapForName(name, rootClass, pkg, null);
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>          The type to return.
-     * @param name         The name to match against in annotations.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
+     * @param <T> The type to return.
+     * @param name The name to match against in annotations.
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
@@ -234,7 +239,8 @@ public abstract class CommandRobot extends TimedRobot {
                     // Cast the class to the derived type
                     final Class<? extends T> theClass = clazz.asSubclass(rootClass);
                     // Find all annotations that provide a name
-                    for (final RobotMapFor annotation : clazz.getAnnotationsByType(RobotMapFor.class)) {
+                    for (final RobotMapFor annotation : clazz
+                            .getAnnotationsByType(RobotMapFor.class)) {
                         // Check to see if the name matches
                         if (annotation.value().equalsIgnoreCase(name)) {
                             return theClass.getDeclaredConstructor().newInstance();
@@ -251,8 +257,8 @@ public abstract class CommandRobot extends TimedRobot {
     /**
      * Put robot code build information onto the dashboard.
      * <p>
-     * This will fail without a Gradle task to generate build information. See this
-     * ChopShopLib README for more information.
+     * This will fail without a Gradle task to generate build information. See this ChopShopLib
+     * README for more information.
      */
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public static void logBuildData() {
@@ -289,7 +295,7 @@ public abstract class CommandRobot extends TimedRobot {
      * Get an attribute, safely
      * 
      * @param attrs Attributes to load from
-     * @param key   Key to load
+     * @param key Key to load
      * @return An attribute, or UNKNOWN_VALUE.
      */
     private static String getAttr(final Attributes attrs, final String key) {

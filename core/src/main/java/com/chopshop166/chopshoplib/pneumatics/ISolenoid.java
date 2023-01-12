@@ -38,8 +38,7 @@ public interface ISolenoid extends Sendable, AutoCloseable {
     void setPulseDuration(double durationSeconds);
 
     /**
-     * Trigger the PCM to generate a pulse of the duration set in
-     * {@link #setPulseDuration}.
+     * Trigger the PCM to generate a pulse of the duration set in {@link #setPulseDuration}.
      */
     void startPulse();
 }

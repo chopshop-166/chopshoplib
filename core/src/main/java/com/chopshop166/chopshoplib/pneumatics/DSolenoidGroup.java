@@ -18,11 +18,12 @@ public final class DSolenoidGroup implements IDSolenoid {
     /**
      * Construct the group.
      * 
-     * @param first  The first group member.
+     * @param first The first group member.
      * @param second The second group member.
      * @param others Any subsequent group members.
      */
-    public DSolenoidGroup(final IDSolenoid first, final IDSolenoid second, final IDSolenoid... others) {
+    public DSolenoidGroup(final IDSolenoid first, final IDSolenoid second,
+            final IDSolenoid... others) {
         this.wrapped.add(first);
         this.wrapped.add(second);
         this.wrapped.addAll(Arrays.asList(others));
@@ -34,7 +35,7 @@ public final class DSolenoidGroup implements IDSolenoid {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock"})
     public void close() throws Exception {
         this.wrapped.forEach(s -> {
             try {

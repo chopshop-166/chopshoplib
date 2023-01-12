@@ -36,14 +36,14 @@ public class SwPIDMotorController extends SmartMotorController {
     /**
      * Use a PID controller with the position of an encoder.
      *
-     * @param <T>     A type that's a Speed Controller and also Sendable.
-     * @param motor   The speed controller to move.
-     * @param pid     The PID controller to use for calculation.
+     * @param <T> A type that's a Speed Controller and also Sendable.
+     * @param motor The speed controller to move.
+     * @param pid The PID controller to use for calculation.
      * @param encoder The encoder to use for measurement.
      * @return The new PID controller.
      */
-    public static <T extends Sendable & MotorController> SwPIDMotorController position(final T motor,
-            final PIDController pid, final IEncoder encoder) {
+    public static <T extends Sendable & MotorController> SwPIDMotorController position(
+            final T motor, final PIDController pid, final IEncoder encoder) {
         return new SwPIDMotorController(motor, encoder, pid, encoder::getDistance);
     }
 
@@ -51,24 +51,25 @@ public class SwPIDMotorController extends SmartMotorController {
      * Use a PID controller with the position of an encoder.
      *
      * @param motor The speed controller to move.
-     * @param pid   The PID controller to use for calculation.
+     * @param pid The PID controller to use for calculation.
      * @return The new PID controller.
      */
-    public static SwPIDMotorController position(final SmartMotorController motor, final PIDController pid) {
+    public static SwPIDMotorController position(final SmartMotorController motor,
+            final PIDController pid) {
         return SwPIDMotorController.position(motor, pid, motor.getEncoder());
     }
 
     /**
      * Use a PID controller with the velocity of an encoder.
      *
-     * @param <T>     A type that's a Speed Controller and also Sendable.
-     * @param motor   The speed controller to move.
-     * @param pid     The PID controller to use for calculation.
+     * @param <T> A type that's a Speed Controller and also Sendable.
+     * @param motor The speed controller to move.
+     * @param pid The PID controller to use for calculation.
      * @param encoder The encoder to use for measurement.
      * @return The new PID controller.
      */
-    public static <T extends Sendable & MotorController> SwPIDMotorController velocity(final T motor,
-            final PIDController pid, final IEncoder encoder) {
+    public static <T extends Sendable & MotorController> SwPIDMotorController velocity(
+            final T motor, final PIDController pid, final IEncoder encoder) {
         return new SwPIDMotorController(motor, encoder, pid, encoder::getRate);
     }
 
@@ -76,37 +77,38 @@ public class SwPIDMotorController extends SmartMotorController {
      * Use a PID controller with the velocity of an encoder.
      *
      * @param motor The speed controller to move.
-     * @param pid   The PID controller to use for calculation.
+     * @param pid The PID controller to use for calculation.
      * @return The new PID controller.
      */
-    public static SwPIDMotorController velocity(final SmartMotorController motor, final PIDController pid) {
+    public static SwPIDMotorController velocity(final SmartMotorController motor,
+            final PIDController pid) {
         return SwPIDMotorController.velocity(motor, pid, motor.getEncoder());
     }
 
     /**
      * Create a PID speed controller using software PID.
      *
-     * @param <T>         The unwrapped type of a motor controller
-     * @param motor       The motor controller to use.
-     * @param pid         The PID controller for calculation.
+     * @param <T> The unwrapped type of a motor controller
+     * @param motor The motor controller to use.
+     * @param pid The PID controller for calculation.
      * @param measurement The measurement source.
      */
-    public <T extends Sendable & MotorController> SwPIDMotorController(final T motor, final PIDController pid,
-            final DoubleSupplier measurement) {
+    public <T extends Sendable & MotorController> SwPIDMotorController(final T motor,
+            final PIDController pid, final DoubleSupplier measurement) {
         this(motor, new MockEncoder(), pid, measurement);
     }
 
     /**
      * Create a PID speed controller using software PID.
      *
-     * @param <T>         The unwrapped type of a motor controller
-     * @param motor       The motor controller to use.
-     * @param encoder     The encoder to use.
-     * @param pid         The PID controller for calculation.
+     * @param <T> The unwrapped type of a motor controller
+     * @param motor The motor controller to use.
+     * @param encoder The encoder to use.
+     * @param pid The PID controller for calculation.
      * @param measurement The measurement source.
      */
-    public <T extends Sendable & MotorController> SwPIDMotorController(final T motor, final IEncoder encoder,
-            final PIDController pid, final DoubleSupplier measurement) {
+    public <T extends Sendable & MotorController> SwPIDMotorController(final T motor,
+            final IEncoder encoder, final PIDController pid, final DoubleSupplier measurement) {
         super(motor, encoder);
         this.measurement = measurement;
         this.pid = pid;
@@ -138,8 +140,7 @@ public class SwPIDMotorController extends SmartMotorController {
     }
 
     /**
-     * Add the default configuration to the list of configurations and update the
-     * PIDController.
+     * Add the default configuration to the list of configurations and update the PIDController.
      *
      * @param config Configuration to add to the list of stored configs.
      */

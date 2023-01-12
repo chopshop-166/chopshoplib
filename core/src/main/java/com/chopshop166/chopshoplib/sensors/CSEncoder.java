@@ -13,8 +13,8 @@ public class CSEncoder extends Encoder implements IEncoder {
     /**
      * Create the encoder.
      * 
-     * @param channelA         The first channel.
-     * @param channelB         The second channel.
+     * @param channelA The first channel.
+     * @param channelB The second channel.
      * @param reverseDirection True if the encoder is reversed.
      */
     public CSEncoder(final int channelA, final int channelB, final boolean reverseDirection) {
@@ -34,10 +34,10 @@ public class CSEncoder extends Encoder implements IEncoder {
     /**
      * Create the encoder.
      * 
-     * @param channelA         The first channel.
-     * @param channelB         The second channel.
+     * @param channelA The first channel.
+     * @param channelB The second channel.
      * @param reverseDirection True if the encoder is reversed.
-     * @param encodingType     The encoding type.
+     * @param encodingType The encoding type.
      */
     public CSEncoder(final int channelA, final int channelB, final boolean reverseDirection,
             final EncodingType encodingType) {
@@ -47,20 +47,21 @@ public class CSEncoder extends Encoder implements IEncoder {
     /**
      * Create the encoder.
      * 
-     * @param channelA         The first channel.
-     * @param channelB         The second channel.
-     * @param indexChannel     The index channel.
+     * @param channelA The first channel.
+     * @param channelB The second channel.
+     * @param indexChannel The index channel.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public CSEncoder(final int channelA, final int channelB, final int indexChannel, final boolean reverseDirection) {
+    public CSEncoder(final int channelA, final int channelB, final int indexChannel,
+            final boolean reverseDirection) {
         super(channelA, channelB, indexChannel, reverseDirection);
     }
 
     /**
      * Create the encoder.
      * 
-     * @param channelA     The first channel.
-     * @param channelB     The second channel.
+     * @param channelA The first channel.
+     * @param channelB The second channel.
      * @param indexChannel The index channel.
      */
     public CSEncoder(final int channelA, final int channelB, final int indexChannel) {
@@ -70,11 +71,12 @@ public class CSEncoder extends Encoder implements IEncoder {
     /**
      * Create the encoder.
      * 
-     * @param sourceA          The first source.
-     * @param sourceB          The second source.
+     * @param sourceA The first source.
+     * @param sourceB The second source.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB,
+            final boolean reverseDirection) {
         super(sourceA, sourceB, reverseDirection);
     }
 
@@ -91,37 +93,38 @@ public class CSEncoder extends Encoder implements IEncoder {
     /**
      * Create the encoder.
      * 
-     * @param sourceA          The first source.
-     * @param sourceB          The second source.
+     * @param sourceA The first source.
+     * @param sourceB The second source.
      * @param reverseDirection True if the encoder is reversed.
-     * @param encodingType     The encoding type.
+     * @param encodingType The encoding type.
      */
-    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final boolean reverseDirection,
-            final EncodingType encodingType) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB,
+            final boolean reverseDirection, final EncodingType encodingType) {
         super(sourceA, sourceB, reverseDirection, encodingType);
     }
 
     /**
      * Create the encoder.
      * 
-     * @param sourceA          The first source.
-     * @param sourceB          The second source.
-     * @param indexSource      The index source.
+     * @param sourceA The first source.
+     * @param sourceB The second source.
+     * @param indexSource The index source.
      * @param reverseDirection True if the encoder is reversed.
      */
-    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource,
-            final boolean reverseDirection) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB,
+            final DigitalSource indexSource, final boolean reverseDirection) {
         super(sourceA, sourceB, indexSource, reverseDirection);
     }
 
     /**
      * Create the encoder.
      * 
-     * @param sourceA     The first source.
-     * @param sourceB     The second source.
+     * @param sourceA The first source.
+     * @param sourceB The second source.
      * @param indexSource The index source.
      */
-    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB, final DigitalSource indexSource) {
+    public CSEncoder(final DigitalSource sourceA, final DigitalSource sourceB,
+            final DigitalSource indexSource) {
         super(sourceA, sourceB, indexSource);
     }
 

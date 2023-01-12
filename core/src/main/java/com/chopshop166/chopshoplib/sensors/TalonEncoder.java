@@ -18,7 +18,7 @@ public class TalonEncoder implements IEncoder {
     /**
      * Construct the encoder from the Talon.
      * 
-     * @param talon      The Talon SRX to connect to.
+     * @param talon The Talon SRX to connect to.
      * @param resolution The number of ticks per encoder.
      */
     public TalonEncoder(final BaseTalon talon, final double resolution) {

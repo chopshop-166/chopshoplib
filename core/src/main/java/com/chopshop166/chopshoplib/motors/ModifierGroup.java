@@ -48,7 +48,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
     /**
      * Add modifiers to the list.
      *
-     * @param m  First modifier.
+     * @param m First modifier.
      * @param ms Any extra modifiers (optional).
      */
     public void add(final Modifier m, final Modifier... ms) {
