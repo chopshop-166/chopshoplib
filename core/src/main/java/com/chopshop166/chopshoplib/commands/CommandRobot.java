@@ -1,6 +1,8 @@
 package com.chopshop166.chopshoplib.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
+
+import org.littletonrobotics.junction.LoggedRobot;
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.net.URL;
@@ -14,7 +16,6 @@ import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * Contains convenient wrappers for the commands that are often used in groups.
  */
 @SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
-public abstract class CommandRobot extends TimedRobot {
+public abstract class CommandRobot extends LoggedRobot {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
     final private static String UNKNOWN_VALUE = "???";
