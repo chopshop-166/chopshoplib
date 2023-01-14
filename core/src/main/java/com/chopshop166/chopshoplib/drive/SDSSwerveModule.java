@@ -74,7 +74,7 @@ public class SDSSwerveModule implements SwerveModule {
 
         /**
          * Construct configuration data.
-         * 
+         *
          * @param gearRatio The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
          */
@@ -85,7 +85,7 @@ public class SDSSwerveModule implements SwerveModule {
 
         /**
          * Get the conversion rate.
-         * 
+         *
          * @return The conversion rate.
          */
         public double getConversion() {
@@ -135,16 +135,18 @@ public class SDSSwerveModule implements SwerveModule {
      *
      * @return The controller object.
      */
-    public CSSparkMax getSteeringController() {
+    @Override
+    public CSSparkMax getSteeringMotor() {
         return this.steeringController;
     }
 
     /**
-     * Get the Disney motor controller.
+     * Get the drive motor controller.
      *
      * @return The controller object.
      */
-    public CSSparkMax getDriveController() {
+    @Override
+    public CSSparkMax getDriveMotor() {
         return this.driveController;
     }
 
