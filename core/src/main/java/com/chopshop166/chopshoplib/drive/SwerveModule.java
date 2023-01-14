@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.drive;
 
+import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -14,7 +15,7 @@ public interface SwerveModule extends Sendable {
 
     /**
      * Get the angle of the swerve module.
-     * 
+     *
      * @return An angle as a rotation object.
      */
     default Rotation2d getAngle() {
@@ -23,14 +24,28 @@ public interface SwerveModule extends Sendable {
 
     /**
      * Get the distance travelled.
-     * 
+     *
      * @return Meters per second.
      */
     double getDistance();
 
     /**
+     * Get the drive motor object
+     *
+     * @return the drive motor
+     */
+    SmartMotorController getDriveMotor();
+
+    /**
+     * Get the steering motor object
+     *
+     * @return the steering motor
+     */
+    SmartMotorController getSteeringMotor();
+
+    /**
      * Set the inverted state of the module.
-     * 
+     *
      * @param isInverted Whether the module is inverted.
      */
     void setInverted(boolean isInverted);
