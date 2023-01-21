@@ -2,17 +2,15 @@ package com.chopshop166.chopshoplib.motors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
 /**
  * A group of {@link Modifier} objects.
  */
-public class ModifierGroup implements DoubleUnaryOperator {
+public class ModifierGroup extends ArrayList<DoubleUnaryOperator> implements DoubleUnaryOperator {
 
-    /** The actual modifier list. */
-    private final List<DoubleUnaryOperator> modifiers = new ArrayList<>();
+    /** Required by ArrayList/Serializable. */
+    protected static final long serialVersionUID = 0L;
 
     /**
      * Create group with modifiers.
@@ -20,7 +18,8 @@ public class ModifierGroup implements DoubleUnaryOperator {
      * @param ms Modifiers to start with.
      */
     public ModifierGroup(final DoubleUnaryOperator... ms) {
-        this.modifiers.addAll(Arrays.asList(ms));
+        super();
+        this.addAll(Arrays.asList(ms));
     }
 
     /**
@@ -31,7 +30,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
      */
     public double run(final double rawSpeed) {
         double speed = rawSpeed;
-        for (final DoubleUnaryOperator m : this.modifiers) {
+        for (final DoubleUnaryOperator m : this) {
             speed = m.applyAsDouble(speed);
         }
         return speed;
@@ -52,23 +51,7 @@ public class ModifierGroup implements DoubleUnaryOperator {
      * @param ms Any extra modifiers (optional).
      */
     public void add(final Modifier m, final Modifier... ms) {
-        this.modifiers.add(m);
-        this.modifiers.addAll(Arrays.asList(ms));
-    }
-
-    /**
-     * Add all modifiers from a collection.
-     *
-     * @param ms Collection of modifiers.
-     */
-    public void addAll(final Collection<? extends Modifier> ms) {
-        this.modifiers.addAll(ms);
-    }
-
-    /**
-     * Clear the list of modifiers.
-     */
-    public void clear() {
-        this.modifiers.clear();
+        this.add(m);
+        this.addAll(Arrays.asList(ms));
     }
 }
