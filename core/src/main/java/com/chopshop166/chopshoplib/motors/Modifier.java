@@ -20,7 +20,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier upperLimit(final BooleanSupplier limit) {
-        return Modifier.speedFilter((double speed) -> speed > 0.0 && limit.getAsBoolean());
+        return Modifier.speedFilter(speed -> speed > 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -30,7 +30,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier lowerLimit(final BooleanSupplier limit) {
-        return Modifier.speedFilter((double speed) -> speed < 0.0 && limit.getAsBoolean());
+        return Modifier.speedFilter(speed -> speed < 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -40,7 +40,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier deadband(final double band) {
-        return Modifier.speedFilter((double speed) -> Math.abs(speed) < band);
+        return Modifier.speedFilter(speed -> Math.abs(speed) < band);
     }
 
     /**
@@ -50,16 +50,11 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The average speed.
      */
     static Modifier rollingAverage(final int numSamples) {
-        return new Modifier() {
-
-            /** The samples to average. */
-            private SampleBuffer<Double> buffer = new SampleBuffer<>(numSamples);
-
-            @Override
-            public double applyAsDouble(final double speed) {
-                this.buffer.add(speed);
-                return Stats.of(this.buffer).mean();
-            }
+        /** The samples to average. */
+        final SampleBuffer<Double> buffer = new SampleBuffer<>(numSamples);
+        return speed -> {
+            buffer.add(speed);
+            return Stats.of(buffer).mean();
         };
     }
 
@@ -72,7 +67,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier power(final double exp) {
-        return (double speed) -> Math.copySign(Math.pow(speed, exp), speed);
+        return speed -> Math.copySign(Math.pow(speed, exp), speed);
     }
 
     /**
@@ -81,7 +76,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return An inverter.
      */
     static Modifier invert() {
-        return (double speed) -> -speed;
+        return speed -> -speed;
     }
 
     /**
@@ -91,7 +86,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The original speed, or 0 if the condition is true.
      */
     static Modifier speedFilter(final DoublePredicate condition) {
-        return (double speed) -> condition.test(speed) ? 0.0 : speed;
+        return speed -> condition.test(speed) ? 0.0 : speed;
     }
 
     /**
