@@ -1,12 +1,12 @@
 package com.chopshop166.chopshoplib.motors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BooleanSupplier;
-
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
-
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
@@ -129,6 +129,21 @@ public class SmartMotorController implements Sendable, MotorController {
      */
     public void validateEncoderRate(final double rateThreshold) {
         this.addValidator(() -> Math.abs(this.encoder.getRate()) >= rateThreshold);
+    }
+
+    /**
+     * Add a validator to make sure that the current is below a provided limit.
+     * 
+     * @param limit The maximum current to allow.
+     * @param filterTimeConstant The time constant of the IIR filter.
+     */
+    public void validateCurrent(final double limit, final double filterTimeConstant) {
+        final LinearFilter currentFilter = LinearFilter.singlePoleIIR(filterTimeConstant, 0.02);
+        this.addValidator(() -> {
+            final double current =
+                    Arrays.stream(this.getCurrentAmps()).reduce(Double::sum).orElse(0.0);
+            return currentFilter.calculate(current) < limit;
+        });
     }
 
     /**
