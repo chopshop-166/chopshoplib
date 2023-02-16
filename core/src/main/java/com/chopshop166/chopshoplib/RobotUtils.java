@@ -14,7 +14,7 @@ public final class RobotUtils {
 
     /**
      * Get a value if it exists, or a default value if it's null.
-     * 
+     *
      * @param <T> The type to get.
      * @param value The value to test.
      * @param defaultValue The default value for if value is null.
@@ -37,7 +37,7 @@ public final class RobotUtils {
 
     /**
      * Map an array of {@code double} primitives to a {@link Double} array.
-     * 
+     *
      * @param args The array of doubles to map.
      * @return The array of boxed values.
      */
@@ -47,7 +47,7 @@ public final class RobotUtils {
 
     /**
      * Clamp a value between bounds.
-     * 
+     *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
      * @param value The value to clamp.
@@ -59,7 +59,7 @@ public final class RobotUtils {
 
     /**
      * Clamp a value between bounds.
-     * 
+     *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
      * @param value The value to clamp.
@@ -71,7 +71,7 @@ public final class RobotUtils {
 
     /**
      * Clamp a value between bounds.
-     * 
+     *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
      * @param value The value to clamp.
@@ -83,7 +83,7 @@ public final class RobotUtils {
 
     /**
      * Clamp a value between bounds.
-     * 
+     *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
      * @param value The value to clamp.
@@ -95,7 +95,7 @@ public final class RobotUtils {
 
     /**
      * Sign Preserving Square
-     * 
+     *
      * @param value The value to multiply.
      * @return The square of the given value, preserving sign.
      */
@@ -105,7 +105,7 @@ public final class RobotUtils {
 
     /**
      * Sign Preserving Power
-     * 
+     *
      * @param value The value to multiply.
      * @param exp The value to exponentiate by.
      * @return The square of the given value, preserving sign.
@@ -116,13 +116,13 @@ public final class RobotUtils {
 
     /**
      * Apply a deadband to a value.
-     * 
+     *
      * Any value outside the deadband is scaled to the entire range.
-     * 
+     *
      * @param range The range to deaden.
      * @return A function taking and returning a double.
      */
-    public DoubleUnaryOperator scalingDeadband(final double range) {
+    public static DoubleUnaryOperator scalingDeadband(final double range) {
         return speed -> {
             if (Math.abs(speed) < range) {
                 return 0.0;
@@ -134,19 +134,19 @@ public final class RobotUtils {
 
     /**
      * Apply a deadband to an axis, elongating the remaining space.
-     * 
+     *
      * @param range The range to deaden.
      * @param axis The axis to pull from.
      * @return The new axis to use.
      */
-    public DoubleSupplier deadbandAxis(final double range, final DoubleSupplier axis) {
-        final DoubleUnaryOperator deadband = this.scalingDeadband(range);
+    public static DoubleSupplier deadbandAxis(final double range, final DoubleSupplier axis) {
+        final DoubleUnaryOperator deadband = scalingDeadband(range);
         return () -> deadband.applyAsDouble(axis.getAsDouble());
     }
 
     /**
      * Negate a boolean supplier.
-     * 
+     *
      * @param func The base function
      * @return A function that returns true when func returns false, and vice versa.
      */

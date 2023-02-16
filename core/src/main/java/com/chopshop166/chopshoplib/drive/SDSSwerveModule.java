@@ -83,6 +83,7 @@ public class SDSSwerveModule implements SwerveModule {
          *
          * @param gearRatio The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
+         * @param pidValues The PID constants to use for the steering PID.
          */
         public Configuration(final double gearRatio, final double wheelDiameter,
                 final PIDValues pidValues) {
