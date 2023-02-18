@@ -80,4 +80,14 @@ public class CSTalonBase<T extends BaseTalon & MotorController & Sendable>
     public void setSetpoint(final double setPoint) {
         this.wrapped.set(this.savedControlType, setPoint);
     }
+
+    @Override
+    public double[] getCurrentAmps() {
+        return new double[] {this.wrapped.getStatorCurrent()};
+    }
+
+    @Override
+    public double[] getTemperatureC() {
+        return new double[] {this.wrapped.getTemperature()};
+    }
 }
