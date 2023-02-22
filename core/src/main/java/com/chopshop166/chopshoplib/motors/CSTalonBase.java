@@ -83,7 +83,7 @@ public class CSTalonBase<T extends BaseTalon & MotorController & Sendable>
 
     @Override
     public double[] getCurrentAmps() {
-        return new double[] {this.wrapped.getStatorCurrent()};
+        return new double[] {this.wrapped.getSupplyCurrent()};
     }
 
     @Override
