@@ -103,7 +103,7 @@ public class SmartMotorController implements Sendable, MotorController {
      * @return Whether all validators pass.
      */
     public boolean validate() {
-        return this.validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+        return this.validators.stream().allMatch(MotorValidator::getAsBoolean);
     }
 
     /**
@@ -113,6 +113,13 @@ public class SmartMotorController implements Sendable, MotorController {
      */
     public boolean errored() {
         return !this.validate();
+    }
+
+    /**
+     * Reset every validator
+     */
+    public void resetValidators() {
+        this.validators.stream().forEach(MotorValidator::reset);
     }
 
     /**
@@ -132,6 +139,7 @@ public class SmartMotorController implements Sendable, MotorController {
     public void validateEncoderRate(final double rateThreshold) {
         this.addValidator(new EncoderValidator(this.encoder::getRate, rateThreshold));
     }
+
 
     /**
      * Add a validator to make sure that the current is below a provided limit.
