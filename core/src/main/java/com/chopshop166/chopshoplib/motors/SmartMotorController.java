@@ -3,7 +3,6 @@ package com.chopshop166.chopshoplib.motors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 import com.chopshop166.chopshoplib.motors.validators.CurrentValidator;
 import com.chopshop166.chopshoplib.motors.validators.EncoderValidator;
 import com.chopshop166.chopshoplib.motors.validators.MotorValidator;
@@ -135,9 +134,10 @@ public class SmartMotorController implements Sendable, MotorController {
      * Validate whether the encoder rate is above a certain threshold
      * 
      * @param rateThreshold the threshold to validate
+     * @param persistance how many cycles to determine if the encoder is not rotating
      */
-    public void validateEncoderRate(final double rateThreshold) {
-        this.addValidator(new EncoderValidator(this.encoder::getRate, rateThreshold));
+    public void validateEncoderRate(final double rateThreshold, final int persistance) {
+        this.addValidator(new EncoderValidator(this.encoder::getRate, rateThreshold, persistance));
     }
 
 
