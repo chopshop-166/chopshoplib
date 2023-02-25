@@ -2,7 +2,7 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-
+import com.chopshop166.chopshoplib.PersistenceCheck;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -98,6 +98,28 @@ public class BuildCommand extends CommandBase {
      */
     public BuildCommand runsUntil(final BooleanSupplier check) {
         this.finishedHandler = check;
+        return this;
+    }
+
+    /**
+     * Set the check to run the command until.
+     *
+     * @param check The test for if the command is finished.
+     * @return this for chaining.
+     */
+    public BuildCommand runsUntilPersist(final BooleanSupplier check) {
+        return this.runsUntilPersist(15, check);
+    }
+
+    /**
+     * Set the check to run the command until.
+     *
+     * @param nTimes How many times in a row the check needs to pass.
+     * @param check The test for if the command is finished.
+     * @return this for chaining.
+     */
+    public BuildCommand runsUntilPersist(final int nTimes, final BooleanSupplier check) {
+        this.finishedHandler = new PersistenceCheck(nTimes, check);
         return this;
     }
 
