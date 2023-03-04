@@ -20,10 +20,10 @@ public class BuildCommand extends CommandBase {
     /** The end handler. */
     private Consumer<Boolean> onEndHandler = interrupted -> {
     };
-    /** The finished check. */
-    private BooleanSupplier finishedHandler = () -> false;
     /** Whether the command can run when the robot is disabled. */
     private boolean shouldRunWhenDisabled;
+    /** The finished check. */
+    private PersistenceCheck check = new PersistenceCheck(1, () -> true);
 
     /**
      * Create the command builder.
@@ -97,7 +97,7 @@ public class BuildCommand extends CommandBase {
      * @return this for chaining.
      */
     public BuildCommand runsUntil(final BooleanSupplier check) {
-        this.finishedHandler = check;
+        this.check = new PersistenceCheck(1, check);
         return this;
     }
 
@@ -119,7 +119,7 @@ public class BuildCommand extends CommandBase {
      * @return this for chaining.
      */
     public BuildCommand runsUntilPersist(final int nTimes, final BooleanSupplier check) {
-        this.finishedHandler = new PersistenceCheck(nTimes, check);
+        this.check = new PersistenceCheck(nTimes, check);
         return this;
     }
 
@@ -136,21 +136,9 @@ public class BuildCommand extends CommandBase {
         return this;
     }
 
-    /**
-     * Set the finished check.
-     *
-     * Deprecated. Use {@link #until(BooleanSupplier)} instead.
-     *
-     * @param check The test for if the command is finished.
-     * @return this for chaining.
-     */
-    @Deprecated
-    public BuildCommand finishedWhen(final BooleanSupplier check) {
-        return this.runsUntil(check);
-    }
-
     @Override
     final public void initialize() {
+        this.check.reset();
         this.onInitializeHandler.run();
     }
 
@@ -161,7 +149,7 @@ public class BuildCommand extends CommandBase {
 
     @Override
     final public boolean isFinished() {
-        return this.finishedHandler.getAsBoolean();
+        return this.check.getAsBoolean();
     }
 
     @Override
