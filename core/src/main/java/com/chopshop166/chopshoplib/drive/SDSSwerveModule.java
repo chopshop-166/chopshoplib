@@ -257,6 +257,8 @@ public class SDSSwerveModule implements SwerveModule {
         pid.setD(0.0);
         pid.setFF(0.219);
 
+        sparkMax.burnFlash();
+
         // Return the original object so this can be chained
         return motor;
     }
