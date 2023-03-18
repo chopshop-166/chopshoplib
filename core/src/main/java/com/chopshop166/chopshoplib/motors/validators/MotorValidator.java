@@ -7,5 +7,5 @@ import java.util.function.BooleanSupplier;
  */
 public interface MotorValidator extends BooleanSupplier {
     /** Reset validator */
-    void reset();
+    default void reset() {}
 }
