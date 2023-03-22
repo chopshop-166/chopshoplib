@@ -2,7 +2,7 @@ package com.chopshop166.chopshoplib.sensors.gyro;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
@@ -17,7 +17,7 @@ public class PigeonGyro implements SmartGyro {
 
     /**
      * Create the wrapper.
-     * 
+     *
      * @param gyro The object to wrap.
      */
     public PigeonGyro(final PigeonIMU gyro) {
@@ -34,7 +34,7 @@ public class PigeonGyro implements SmartGyro {
 
     /**
      * Create the wrapper.
-     * 
+     *
      * @param talon The Talon that the gyro is attached to.
      */
     public PigeonGyro(final TalonSRX talon) {
@@ -43,7 +43,7 @@ public class PigeonGyro implements SmartGyro {
 
     /**
      * Get the wrapped object.
-     * 
+     *
      * @return The wrapped class.
      */
     public PigeonIMU getRaw() {
@@ -98,6 +98,20 @@ public class PigeonGyro implements SmartGyro {
     @Override
     public void calibrate() {
         // NoOp
+    }
+
+    @Override
+    public Rotation3d getRotation3d() {
+        final double[] yprDeg = new double[3];
+        this.gyro.getYawPitchRoll(yprDeg);
+        return new Rotation3d(yprDeg[2], yprDeg[1], yprDeg[0]);
+    }
+
+    @Override
+    public Rotation3d getRotationalVelocity() {
+        final double[] xyzDps = new double[3];
+        this.gyro.getRawGyro(xyzDps);
+        return new Rotation3d(xyzDps[1], -xyzDps[0], xyzDps[2]);
     }
 
     @Override

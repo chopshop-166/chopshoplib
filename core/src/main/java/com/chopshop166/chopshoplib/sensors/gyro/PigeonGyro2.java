@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
@@ -98,6 +98,20 @@ public class PigeonGyro2 implements SmartGyro {
     @Override
     public void calibrate() {
         // NoOp
+    }
+
+    @Override
+    public Rotation3d getRotation3d() {
+        final double[] yprDeg = new double[3];
+        this.gyro.getYawPitchRoll(yprDeg);
+        return new Rotation3d(yprDeg[2], yprDeg[1], yprDeg[0]);
+    }
+
+    @Override
+    public Rotation3d getRotationalVelocity() {
+        final double[] xyzDps = new double[3];
+        this.gyro.getRawGyro(xyzDps);
+        return new Rotation3d(xyzDps[1], -xyzDps[0], xyzDps[2]);
     }
 
     @Override
