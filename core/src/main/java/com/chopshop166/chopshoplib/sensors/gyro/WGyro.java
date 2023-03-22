@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -16,7 +17,7 @@ public class WGyro implements SmartGyro {
 
     /**
      * Constructor.
-     * 
+     *
      * @param <GyroBase> A type that is both a {@link Gyro} and {@link Sendable}
      * @param gyro The gyro object.
      */
@@ -61,6 +62,16 @@ public class WGyro implements SmartGyro {
     @Override
     public double getRate() {
         return this.gyro.getRate();
+    }
+
+    @Override
+    public Rotation3d getRotation3d() {
+        return new Rotation3d(0, 0, this.getAngle());
+    }
+
+    @Override
+    public Rotation3d getRotationalVelocity() {
+        return new Rotation3d(0, 0, this.getRate());
     }
 
 }
