@@ -35,36 +35,29 @@ public class SDSSwerveModule implements SwerveModule {
     /** The last calculated speed error. */
     private double speedError;
 
-    /** PID values for Mk3 and Mk4. */
-    private static final PIDValues PID_VALUES_34 = new PIDValues(0.0043, 0.00, 0.0001);
-
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
-            (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4), PID_VALUES_34);
+            (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4));
 
     /** Mark 3 Fast configuration. */
     public static final Configuration MK3_FAST = new Configuration(
-            (16.0 / 48.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4), PID_VALUES_34);
+            (16.0 / 48.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4));
 
     /** Mark 4 V1 configuration. */
-    public static final Configuration MK4_V1 =
-            new Configuration((14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0),
-                    Units.inchesToMeters(3.95), PID_VALUES_34);
+    public static final Configuration MK4_V1 = new Configuration(
+            (14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0), Units.inchesToMeters(3.95));
 
     /** Mark 4 V2 configuration. */
-    public static final Configuration MK4_V2 =
-            new Configuration((14.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0),
-                    Units.inchesToMeters(3.95), PID_VALUES_34);
+    public static final Configuration MK4_V2 = new Configuration(
+            (14.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0), Units.inchesToMeters(3.95));
 
     /** Mark 4 V3 configuration. */
-    public static final Configuration MK4_V3 =
-            new Configuration((14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 45.0),
-                    Units.inchesToMeters(3.95), PID_VALUES_34);
+    public static final Configuration MK4_V3 = new Configuration(
+            (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 45.0), Units.inchesToMeters(3.95));
 
     /** Mark 4 V4 configuration. */
-    public static final Configuration MK4_V4 =
-            new Configuration((16.0 / 48.0) * (28.0 / 16.0) * (15.0 / 45.0),
-                    Units.inchesToMeters(3.95), PID_VALUES_34);
+    public static final Configuration MK4_V4 = new Configuration(
+            (16.0 / 48.0) * (28.0 / 16.0) * (15.0 / 45.0), Units.inchesToMeters(3.95));
 
     /**
      * Module configuration.
@@ -78,6 +71,25 @@ public class SDSSwerveModule implements SwerveModule {
         /** PID configuration. */
         public final PIDValues pidValues;
 
+        /** PID Configuration for Drive Motor */
+        public final PIDValues drivePIDValues;
+
+        /**
+         * Construct configuration data.
+         *
+         * @param gearRatio The gear ratio for the module.
+         * @param wheelDiameter The diameter of the wheel.
+         * @param pidValues The PID constants to use for the steering PID.
+         * @param drivePIDValues The PID constants to use for the drive PID.
+         */
+        public Configuration(final double gearRatio, final double wheelDiameter,
+                final PIDValues pidValues, final PIDValues drivePIDValues) {
+            this.gearRatio = gearRatio;
+            this.wheelDiameter = wheelDiameter;
+            this.pidValues = pidValues;
+            this.drivePIDValues = drivePIDValues;
+        }
+
         /**
          * Construct configuration data.
          *
@@ -90,7 +102,22 @@ public class SDSSwerveModule implements SwerveModule {
             this.gearRatio = gearRatio;
             this.wheelDiameter = wheelDiameter;
             this.pidValues = pidValues;
+            this.drivePIDValues = new PIDValues(0, 0.00015, 0, 0.219);
         }
+
+        /**
+         * Construct configuration data.
+         *
+         * @param gearRatio The gear ratio for the module.
+         * @param wheelDiameter The diameter of the wheel.
+         */
+        public Configuration(final double gearRatio, final double wheelDiameter) {
+            this.gearRatio = gearRatio;
+            this.wheelDiameter = wheelDiameter;
+            this.pidValues = new PIDValues(0.0043, 0.00, 0.0001);
+            this.drivePIDValues = new PIDValues(0, 0.00015, 0, 0.219);
+        }
+
 
         /**
          * Get the conversion rate.
@@ -252,10 +279,10 @@ public class SDSSwerveModule implements SwerveModule {
 
         // Configure PID
         // https://docs.revrobotics.com/sparkmax/operating-modes/closed-loop-control
-        pid.setP(0.0);
-        pid.setI(0.00015);
-        pid.setD(0.0);
-        pid.setFF(0.219);
+        pid.setP(conf.drivePIDValues.p());
+        pid.setI(conf.drivePIDValues.i());
+        pid.setD(conf.drivePIDValues.d());
+        pid.setFF(conf.drivePIDValues.ff());
 
         sparkMax.burnFlash();
 
