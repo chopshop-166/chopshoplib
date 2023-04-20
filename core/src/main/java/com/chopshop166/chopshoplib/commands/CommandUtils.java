@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
+import com.chopshop166.chopshoplib.Box;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -121,7 +121,7 @@ final public class CommandUtils {
 
     /**
      * Create a command that runs only if a condition is true.
-     * 
+     *
      * @param condition The condition to test beforehand.
      * @param cmd The command to run.
      * @return The conditional command.
@@ -142,7 +142,7 @@ final public class CommandUtils {
 
     /**
      * Create a command to run at regular intervals.
-     * 
+     *
      * @param timeDelta Time in seconds to wait between calls.
      * @param periodic The runnable to execute.
      * @return A new command.
@@ -152,13 +152,45 @@ final public class CommandUtils {
     }
 
     /**
-     * Create a command that waits for the duration provided by a DoubleSupplier
-     * 
-     * @param durationSupplier Function that returns the number of seconds to wait
-     * @return The wait command
+     * Create a command that waits for the duration provided by a DoubleSupplier.
+     *
+     * @param durationSupplier Function that returns the number of seconds to wait.
+     * @return The wait command.
      */
     public static CommandBase waitFor(final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(durationSupplier);
+    }
+
+    /**
+     * Run a command, running one command if the first is interrupted, or a second otherwise.
+     *
+     * @param original The command to test.
+     * @param ifInterrupted The command to run if original was interrupted.
+     * @param ifFinished The command to run if original was not interrupted.
+     * @return A command object.
+     */
+    public static CommandBase doIfInterrupted(final Command original, final Command ifInterrupted,
+            final Command ifFinished) {
+        final Box<Boolean> wasInterrupted = new Box<>();
+        return runOnce(() -> {
+            wasInterrupted.data = false;
+        }).andThen(original.finallyDo(interrupted -> {
+            wasInterrupted.data = interrupted;
+        }), either(ifInterrupted, ifFinished, () -> wasInterrupted.data));
+    }
+
+    /**
+     * Run a command, running one command if the first times out, or a second otherwise.
+     *
+     * @param original The command to test.
+     * @param timeout The timeout time.
+     * @param ifInterrupted The command to run if original was interrupted.
+     * @param ifFinished The command to run if original was not interrupted.
+     * @return A command object.
+     */
+    public static CommandBase doIfInterrupted(final Command original, final double timeout,
+            final Command ifInterrupted, final Command ifFinished) {
+        return doIfInterrupted(original.withTimeout(timeout), ifInterrupted, ifFinished);
     }
 
 }
