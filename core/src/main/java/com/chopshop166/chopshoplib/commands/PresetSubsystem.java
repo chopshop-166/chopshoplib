@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 import com.chopshop166.chopshoplib.PersistenceCheck;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
@@ -48,7 +48,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @param value The preset to use.
      * @return The instant command.
      */
-    public CommandBase presetCmd(final T value) {
+    public Command presetCmd(final T value) {
         return this.runOnce(() -> {
             this.setSetpoint(value.getAsDouble());
         }).withName("Set to " + value.name());
@@ -59,7 +59,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * 
      * @return The wait command.
      */
-    public CommandBase waitForSetpoint() {
+    public Command waitForSetpoint() {
         return Commands.waitUntil(this.persistenceCheck).withName("Wait For Setpoint");
     }
 
@@ -69,7 +69,7 @@ public abstract class PresetSubsystem<T extends Enum<?> & DoubleSupplier> extend
      * @param value The preset to use.
      * @return The instant command.
      */
-    public CommandBase presetWait(final T value) {
+    public Command presetWait(final T value) {
         return Commands.sequence(this.presetCmd(value), this.waitForSetpoint())
                 .withName("Set to " + value.name());
     }

@@ -1,13 +1,13 @@
 package com.chopshop166.chopshoplib.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * A command that executes a runnable each time a given time span has elapsed.
  */
-public class IntervalCommand extends CommandBase {
+public class IntervalCommand extends Command {
 
     /** Advances when time has passed, triggers the runnable. */
     private final Timer elapsedTimer = new Timer();

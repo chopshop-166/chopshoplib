@@ -5,7 +5,6 @@ import com.chopshop166.chopshoplib.Resettable
 import com.chopshop166.chopshoplib.commands.CommandRobot
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
-import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.ConditionalCommand
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.ProxyCommand
@@ -34,7 +33,7 @@ class CommandBuilder(private vararg val sys: Subsystem) {
     fun isFinished(isFinishedCheck: Command.() -> Boolean) { this.isFinishedCheck = isFinishedCheck }
 
     fun build() =
-        object : CommandBase() {
+        object : Command() {
             init {
                 addRequirements(*sys)
             }
@@ -198,7 +197,7 @@ fun <T> callAndWait(value : T, func : (T) -> Unit, until : () -> Boolean) =
  * @param cmd       The command to run.
  * @return The conditional command.
  */
-fun CommandBase.runsIf(condition : () -> Boolean) =
+fun Command.runsIf(condition : () -> Boolean) =
     Commands.either(this, Commands.none(), condition)
 
 /**

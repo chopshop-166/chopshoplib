@@ -3,14 +3,14 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * A command that does nothing but takes a specified amount of time to finish. Useful for
  * CommandGroups. Can also be subclassed to make a command with an internal timer.
  *
  */
-public class FunctionalWaitCommand extends CommandBase {
+public class FunctionalWaitCommand extends Command {
 
     /** Used to see how much time is elapsed. */
     protected Timer timer = new Timer();

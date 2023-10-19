@@ -1,8 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-
-import org.littletonrobotics.junction.LoggedRobot;
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.net.URL;
@@ -10,6 +8,7 @@ import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Stream;
+import org.littletonrobotics.junction.LoggedRobot;
 import com.chopshop166.chopshoplib.Autonomous;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -155,10 +153,9 @@ public abstract class CommandRobot extends LoggedRobot {
      * @param subsystems The subsystems to make safe.
      * @return A command
      */
-    public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(
-                Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
-                        .withName("Reset Subsystems");
+    public Command resetSubsystems(final SmartSubsystem... subsystems) {
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(Command[]::new))
+                .withName("Reset Subsystems");
     }
 
     /**
@@ -167,9 +164,9 @@ public abstract class CommandRobot extends LoggedRobot {
      * @param subsystems The subsystems to make safe.
      * @return A command
      */
-    public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
+    public Command safeStateSubsystems(final SmartSubsystem... subsystems) {
         return parallel(
-                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
+                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(Command[]::new))
                         .withName("Reset Subsystems");
     }
 

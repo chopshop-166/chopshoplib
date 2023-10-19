@@ -3,10 +3,8 @@ package com.chopshop166.chopshoplib.drive;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.DoubleSupplier;
-
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 import com.chopshop166.chopshoplib.maps.DifferentialDriveMap;
-
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -18,7 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
@@ -167,7 +166,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param turn The direction to turn.
      * @return A command that will run until interrupted.
      */
-    public CommandBase drive(final DoubleSupplier forward, final DoubleSupplier turn) {
+    public Command drive(final DoubleSupplier forward, final DoubleSupplier turn) {
         return this.run(() -> {
             final double yAxis = forward.getAsDouble();
             final double xAxis = turn.getAsDouble();
@@ -182,13 +181,11 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param speed The speed in motor controller units.
      * @return The command.
      */
-    public CommandBase driveDistance(final double distance, final double speed) {
-        return this.cmd("Drive " + distance + " at " + speed).onInitialize(this::resetEncoders)
-                .onExecute(() -> {
-                    this.driveTrain.arcadeDrive(speed, 0);
-                }).onEnd(interrupted -> {
-                    this.driveTrain.stopMotor();
-                }).runsUntil(() -> this.encoderAvg() >= distance);
+    public Command driveDistance(final double distance, final double speed) {
+        return this.runOnce(this::resetEncoders).andThen(this.run(() -> {
+            this.driveTrain.arcadeDrive(speed, 0);
+        })).until(() -> this.encoderAvg() >= distance).finallyDo(this::stop)
+                .withName("Drive " + distance + " at " + speed);
     }
 
     /**
@@ -200,16 +197,15 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param speed The speed to turn at in motor controller units.
      * @return The command.
      */
-    public CommandBase turnDegrees(final double degrees, final double speed) {
-        return this.cmd("Turn Degrees").onInitialize(this::resetGyro).onExecute(() -> {
+    public Command turnDegrees(final double degrees, final double speed) {
+        return this.runOnce(this::resetGyro).andThen(this.run(() -> {
             double realSpeed = speed;
             if (Math.signum(degrees) != Math.signum(speed)) {
                 realSpeed *= -1;
             }
             this.driveTrain.arcadeDrive(0, realSpeed);
-        }).onEnd(interrupted -> {
-            this.driveTrain.stopMotor();
-        }).runsUntil(() -> Math.abs(this.map.gyro().getAngle()) >= Math.abs(degrees));
+        })).until(() -> Math.abs(this.map.gyro().getAngle()) >= Math.abs(degrees))
+                .finallyDo(this::stop).withName("Turn " + degrees + " degrees");
     }
 
     /**
@@ -218,7 +214,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param trajectoryName The trajectory to run.
      * @return A command.
      */
-    public CommandBase autonomousCommand(final String trajectoryName) {
+    public Command autonomousCommand(final String trajectoryName) {
         return this.autonomousCommand(trajectoryName, true);
     }
 
@@ -229,7 +225,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param resetPose Whether to reset the pose first.
      * @return A command.
      */
-    public CommandBase autonomousCommand(final String trajectoryName, final Boolean resetPose) {
+    public Command autonomousCommand(final String trajectoryName, final Boolean resetPose) {
 
         final String trajectoryJSON = "paths/" + trajectoryName + ".wpilib.json";
         Trajectory autoTrajectory = new Trajectory();
@@ -254,15 +250,13 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
                 // Sends speeds to motors
                 this::tankDriveSetpoint, this);
 
-        CommandBase cmd;
+        Command cmd = Commands.none();
         if (resetPose) {
-            cmd = new InstantCommand(() -> this.resetOdometry(finalAutoTrajectory.getInitialPose()))
-                    .andThen(ramseteCommand).andThen(this.driveTrain::stopMotor);
-        } else {
-            cmd = ramseteCommand.andThen(this.driveTrain::stopMotor);
+            cmd = new InstantCommand(() -> {
+                this.resetOdometry(finalAutoTrajectory.getInitialPose());
+            });
         }
-
-        cmd.setName(trajectoryName);
-        return cmd;
+        return cmd.andThen(ramseteCommand).andThen(this.driveTrain::stopMotor)
+                .withName(trajectoryName);
     }
 }
