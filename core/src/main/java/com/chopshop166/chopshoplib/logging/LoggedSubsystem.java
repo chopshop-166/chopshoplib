@@ -39,6 +39,15 @@ public abstract class LoggedSubsystem<D extends LoggableInputs, M extends Loggab
         return this.ioData;
     }
 
+    /**
+     * Get the data for i/o.
+     * 
+     * @return The data object.
+     */
+    public M getMap() {
+        return this.map;
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
