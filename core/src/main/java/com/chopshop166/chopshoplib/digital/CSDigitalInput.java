@@ -4,11 +4,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Invertable Digital Input
- * 
- * @author Andrew Martin
- * @since 2020-01-20
  */
-public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
+public class CSDigitalInput extends DigitalInput {
 
     /**
      * True if the reading should be inverted.
@@ -48,10 +45,5 @@ public class CSDigitalInput extends DigitalInput implements DigitalInputSource {
     @Override
     public boolean get() {
         return this.inverted ^ super.get();
-    }
-
-    @Override
-    public boolean getAsBoolean() {
-        return this.get();
     }
 }
