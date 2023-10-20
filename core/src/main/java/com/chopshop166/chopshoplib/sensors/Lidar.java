@@ -7,15 +7,13 @@ import java.util.Optional;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
 /**
  * LiDAR Sensor class.
  */
-public class Lidar implements Sendable {
+public class Lidar {
 
     /** Communication device. */
     private I2C i2cDevice;
@@ -479,14 +477,5 @@ public class Lidar implements Sendable {
      */
     public Thread getAccessThread() {
         return this.accessThread;
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("LiDAR");
-        builder.addBooleanProperty("isValid", () -> this.isValid, null);
-        builder.addDoubleProperty("Distance", () -> this.getDistance(MeasurementType.MILLIMETERS),
-                null);
-        builder.addDoubleProperty("Standard Deviation", () -> this.stdDevValue, null);
     }
 }

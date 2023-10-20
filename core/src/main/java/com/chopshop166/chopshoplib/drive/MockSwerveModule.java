@@ -4,7 +4,6 @@ import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * A mock swerve module that assumes it goes to the right state instantly.
@@ -46,16 +45,6 @@ public class MockSwerveModule implements SwerveModule {
     @Override
     public void setDesiredState(final SwerveModuleState desiredState) {
         this.desiredState = desiredState;
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setActuator(true);
-        builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("Angle Error", () -> 0.0, null);
-        builder.addDoubleProperty("Speed Error", () -> 0.0, null);
-        builder.addDoubleProperty("Angle", () -> this.getAngle().getDegrees(), null);
-        builder.addDoubleProperty("Speed", () -> this.desiredState.speedMetersPerSecond, null);
     }
 
     @Override

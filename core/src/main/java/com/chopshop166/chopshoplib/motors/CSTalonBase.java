@@ -4,14 +4,12 @@ import com.chopshop166.chopshoplib.sensors.TalonEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
  * Talon that is compatible with the Smart Motor Controller.
  */
-public class CSTalonBase<T extends BaseTalon & MotorController & Sendable>
-        extends SmartMotorController {
+public class CSTalonBase<T extends BaseTalon & MotorController> extends SmartMotorController {
 
     /** Reference to the wrapped Talon. */
     private final T wrapped;

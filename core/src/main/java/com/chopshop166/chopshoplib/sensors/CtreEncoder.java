@@ -2,8 +2,6 @@ package com.chopshop166.chopshoplib.sensors;
 
 import com.ctre.phoenix.sensors.CANCoder;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
-
 /**
  * An Encoder on the CAN bus.
  */
@@ -49,13 +47,5 @@ public class CtreEncoder implements IEncoder {
     @Override
     public void reset() {
         // No no, we don't do that here.
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Encoder");
-        builder.addDoubleProperty("Speed", this::getRate, null);
-        builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", () -> 0, null);
     }
 }

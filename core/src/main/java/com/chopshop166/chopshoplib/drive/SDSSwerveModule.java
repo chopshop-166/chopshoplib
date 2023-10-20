@@ -8,13 +8,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 /** Swerve Drive Specialties Mk3. */
 public class SDSSwerveModule implements SwerveModule {
@@ -298,16 +296,6 @@ public class SDSSwerveModule implements SwerveModule {
     @Override
     public void resetDistance() {
         this.driveController.getEncoder().reset();
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setActuator(true);
-        builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("Angle Error", this.steeringPID::getPositionError, null);
-        builder.addDoubleProperty("Speed Error", () -> this.speedError, null);
-        builder.addDoubleProperty("Angle", () -> this.getAngle().getDegrees(), null);
-        builder.addDoubleProperty("Speed", () -> this.driveController.getEncoder().getRate(), null);
     }
 
     @Override

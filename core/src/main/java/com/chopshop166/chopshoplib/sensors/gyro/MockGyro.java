@@ -1,8 +1,5 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.util.sendable.SendableBuilder;
-
 /**
  * A mock Gyro implementation.
  */
@@ -55,23 +52,6 @@ public class MockGyro implements SmartGyro {
     @Override
     public void close() {
         // Nothing to close
-    }
-
-    @Override
-    public Rotation3d getRotation3d() {
-        return new Rotation3d();
-    }
-
-    @Override
-    public Rotation3d getRotationalVelocity() {
-        return new Rotation3d();
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", this::getAngle, this::setAngle);
-        builder.addDoubleProperty("Rate", this::getRate, this::setRate);
     }
 
 }

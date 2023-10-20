@@ -1,11 +1,10 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /** Gyro wrapper. */
-public interface SmartGyro extends Gyro, Sendable {
+public interface SmartGyro extends Gyro {
 
     /**
      * Set the current angle.
@@ -19,12 +18,16 @@ public interface SmartGyro extends Gyro, Sendable {
      *
      * @return A Rotation3d object containing the current angle of the gyro
      */
-    Rotation3d getRotation3d();
+    default Rotation3d getRotation3d() {
+        return new Rotation3d(0, 0, this.getAngle());
+    }
 
     /**
      * Return the rotational velocity as a Rotation3d
      * 
      * @return A Rotation3d object containing the rotational velocity
      */
-    Rotation3d getRotationalVelocity();
+    default Rotation3d getRotationalVelocity() {
+        return new Rotation3d(0, 0, this.getRate());
+    }
 }
