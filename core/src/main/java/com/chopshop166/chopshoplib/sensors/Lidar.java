@@ -431,6 +431,15 @@ public class Lidar {
         return meas == MeasurementType.INCHES ? this.distanceMM / 25.4 : this.distanceMM;
     }
 
+    /**
+     * Get the standard deviation
+     * 
+     * @return The standard deviation.
+     */
+    public double getStdDev() {
+        return this.stdDevValue;
+    }
+
     private void readDistance() {
         final byte[] dataBuffer = new byte[2];
 

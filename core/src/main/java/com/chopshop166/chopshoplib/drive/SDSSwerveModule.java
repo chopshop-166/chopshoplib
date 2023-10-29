@@ -30,9 +30,6 @@ public class SDSSwerveModule implements SwerveModule {
     /** The motor controller used for driving. */
     private final CSSparkMax driveController;
 
-    /** The last calculated speed error. */
-    private double speedError;
-
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
             (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4));
@@ -218,7 +215,6 @@ public class SDSSwerveModule implements SwerveModule {
         if (state.speedMetersPerSecond == 0) {
             this.driveController.getPidController().setIAccum(0);
         }
-        this.speedError = state.speedMetersPerSecond - this.driveController.getEncoder().getRate();
         if (this.inverted) {
             this.driveController.setSetpoint(-state.speedMetersPerSecond);
         } else {
