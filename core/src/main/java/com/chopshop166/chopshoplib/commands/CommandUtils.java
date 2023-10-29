@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import com.chopshop166.chopshoplib.Box;
+import com.chopshop166.chopshoplib.boxes.BooleanBox;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -147,12 +147,10 @@ final public class CommandUtils {
      */
     public static Command doIfInterrupted(final Command original, final Command ifInterrupted,
             final Command ifFinished) {
-        final Box<Boolean> wasInterrupted = new Box<>();
-        return Commands.runOnce(() -> {
-            wasInterrupted.data = false;
-        }).andThen(original.finallyDo(interrupted -> {
-            wasInterrupted.data = interrupted;
-        }), Commands.either(ifInterrupted, ifFinished, () -> wasInterrupted.data));
+        final BooleanBox wasInterrupted = new BooleanBox();
+        return Commands.runOnce(wasInterrupted::reset).andThen(
+                original.finallyDo(wasInterrupted::accept),
+                Commands.either(ifInterrupted, ifFinished, wasInterrupted));
     }
 
     /**
