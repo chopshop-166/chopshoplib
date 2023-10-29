@@ -83,7 +83,6 @@ public class SwPIDMotorController extends SmartMotorController {
     /**
      * Create a PID speed controller using software PID.
      *
-     * @param <T> The unwrapped type of a motor controller
      * @param motor The motor controller to use.
      * @param pid The PID controller for calculation.
      * @param measurement The measurement source.
@@ -96,7 +95,6 @@ public class SwPIDMotorController extends SmartMotorController {
     /**
      * Create a PID speed controller using software PID.
      *
-     * @param <T> The unwrapped type of a motor controller
      * @param motor The motor controller to use.
      * @param encoder The encoder to use.
      * @param pid The PID controller for calculation.
