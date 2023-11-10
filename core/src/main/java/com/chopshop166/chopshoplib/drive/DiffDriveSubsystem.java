@@ -51,7 +51,6 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
     public void reset() {
         this.resetEncoders();
         this.resetGyro();
-        this.driveTrain.stopMotor();
     }
 
     @Override
@@ -184,7 +183,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
     public Command driveDistance(final double distance, final double speed) {
         return this.runOnce(this::resetEncoders).andThen(this.run(() -> {
             this.driveTrain.arcadeDrive(speed, 0);
-        })).until(() -> this.encoderAvg() >= distance).finallyDo(this::stop)
+        })).until(() -> this.encoderAvg() >= distance).finallyDo(this::safeState)
                 .withName("Drive " + distance + " at " + speed);
     }
 
@@ -205,7 +204,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
             }
             this.driveTrain.arcadeDrive(0, realSpeed);
         })).until(() -> Math.abs(this.map.gyro().getAngle()) >= Math.abs(degrees))
-                .finallyDo(this::stop).withName("Turn " + degrees + " degrees");
+                .finallyDo(this::safeState).withName("Turn " + degrees + " degrees");
     }
 
     /**
