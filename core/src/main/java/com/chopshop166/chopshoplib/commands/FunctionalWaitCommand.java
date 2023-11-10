@@ -32,6 +32,18 @@ public class FunctionalWaitCommand extends Command {
         this.durationSupplier = durationSupplier;
     }
 
+    /**
+     * Creates a new FunctionalWaitCommand. This command will do nothing, and end after the duration
+     * that is supplied.
+     * <p>
+     * This is mainly useful for weird situations where WPIlib's wait command doesn't work properly.
+     *
+     * @param duration The time to wait, in seconds.
+     */
+    public FunctionalWaitCommand(final double duration) {
+        this(() -> duration);
+    }
+
     @Override
     public void initialize() {
         this.timer.reset();
