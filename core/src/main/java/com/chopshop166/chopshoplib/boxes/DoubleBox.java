@@ -12,7 +12,7 @@ public class DoubleBox implements DoubleSupplier, DoubleConsumer {
 
     @Override
     public void accept(final double value) {
-        this.data = value;;
+        this.data = value;
     }
 
     @Override
