@@ -2,6 +2,7 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -46,8 +47,7 @@ public class FunctionalWaitCommand extends Command {
 
     @Override
     public void initialize() {
-        this.timer.reset();
-        this.timer.start();
+        this.timer.restart();
         this.duration = this.durationSupplier.getAsDouble();
     }
 
@@ -64,5 +64,11 @@ public class FunctionalWaitCommand extends Command {
     @Override
     public boolean runsWhenDisabled() {
         return true;
+    }
+
+    @Override
+    public void initSendable(final SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("duration", () -> this.duration, null);
     }
 }
