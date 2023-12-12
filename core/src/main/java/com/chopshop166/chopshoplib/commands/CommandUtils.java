@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WrapperCommand;
 
 /**
@@ -39,6 +40,27 @@ final public class CommandUtils {
      */
     public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
         return Commands.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+    }
+
+    /**
+     * Create a command builder with a given name.
+     *
+     * @param requirements The subsystems that the command needs (can be empty).
+     * @return A new command builder.
+     */
+    public static BuildCommand cmd(final Subsystem... requirements) {
+        return new BuildCommand(requirements);
+    }
+
+    /**
+     * Create a command builder with a given name.
+     *
+     * @param name The command name.
+     * @param requirements The subsystems that the command needs (can be empty).
+     * @return A new command builder.
+     */
+    public static BuildCommand cmd(final String name, final Subsystem... requirements) {
+        return new BuildCommand(name, requirements);
     }
 
     /**
