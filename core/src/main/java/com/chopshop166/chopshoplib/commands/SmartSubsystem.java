@@ -15,6 +15,25 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sendable {
 
     /**
+     * Create a command builder with a given name.
+     *
+     * @return A new command builder.
+     */
+    default BuildCommand cmd() {
+        return new BuildCommand(this);
+    }
+
+    /**
+     * Create a command builder with a given name.
+     *
+     * @param name The command name.
+     * @return A new command builder.
+     */
+    default BuildCommand cmd(final String name) {
+        return new BuildCommand(name, this);
+    }
+
+    /**
      * Create a command to reset the subsystem.
      * 
      * @return A reset command.
