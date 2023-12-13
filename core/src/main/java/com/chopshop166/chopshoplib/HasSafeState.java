@@ -16,15 +16,4 @@ public interface HasSafeState {
      */
     void safeState();
 
-    /**
-     * Go to a safe state.
-     * 
-     * Ignores its parameter by default - useful for passing as the end function of a command.
-     * 
-     * @param interrupted Ignored.
-     */
-    default void stop(final boolean interrupted) {
-        this.safeState();
-    }
-
 }

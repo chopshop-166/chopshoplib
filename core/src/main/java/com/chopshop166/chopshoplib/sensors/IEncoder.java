@@ -1,11 +1,9 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.util.sendable.Sendable;
-
 /**
  * Interface for an Encoder
  */
-public interface IEncoder extends Sendable, IAbsolutePosition {
+public interface IEncoder extends IAbsolutePosition {
 
     /**
      * Reset the encoder distance to zero.

@@ -2,11 +2,9 @@ package com.chopshop166.chopshoplib.commands;
 
 import com.chopshop166.chopshoplib.HasSafeState;
 import com.chopshop166.chopshoplib.Resettable;
-
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
@@ -21,7 +19,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * 
      * @return A reset command.
      */
-    default CommandBase resetCmd() {
+    default Command resetCmd() {
         return this.runOnce(this::reset).withName("Reset " + SendableRegistry.getName(this));
     }
 
@@ -30,7 +28,7 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * 
      * @return A reset command.
      */
-    default CommandBase safeStateCmd() {
+    default Command safeStateCmd() {
         return this.runOnce(this::safeState).withName("Safe " + SendableRegistry.getName(this));
     }
 
@@ -39,8 +37,8 @@ public interface SmartSubsystem extends Subsystem, HasSafeState, Resettable, Sen
      * 
      * @return A cancel command.
      */
-    default CommandBase cancel() {
-        return new InstantCommand(() -> {
-        }, this).withName("Cancel " + SendableRegistry.getName(this));
+    default Command cancel() {
+        return this.runOnce(() -> {
+        }).withName("Cancel " + SendableRegistry.getName(this));
     }
 }

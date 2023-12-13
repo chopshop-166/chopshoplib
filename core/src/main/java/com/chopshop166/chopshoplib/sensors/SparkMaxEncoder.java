@@ -3,8 +3,6 @@ package com.chopshop166.chopshoplib.sensors;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
-
 /**
  * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
  * interfaces.
@@ -128,14 +126,5 @@ public class SparkMaxEncoder implements IEncoder {
     @Override
     public boolean isMovingForward() {
         return this.encoder.getVelocity() >= 0.0;
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Encoder");
-        builder.addDoubleProperty("Speed", this::getRate, null);
-        builder.addDoubleProperty("Distance", this::getDistance, null);
-        builder.addDoubleProperty("Distance per Tick", this::getPositionScaleFactor,
-                this::setPositionScaleFactor);
     }
 }

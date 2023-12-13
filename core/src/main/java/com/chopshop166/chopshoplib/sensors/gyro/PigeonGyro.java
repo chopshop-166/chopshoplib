@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * Gyro Base wrapper for the Pigeon IMU
@@ -115,12 +114,5 @@ public class PigeonGyro implements SmartGyro {
         this.gyro.getRawGyro(xyzDps);
         return new Rotation3d(Units.degreesToRadians(xyzDps[0]), Units.degreesToRadians(xyzDps[1]),
                 Units.degreesToRadians(xyzDps[2]));
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", this::getAngle, null);
-        builder.addDoubleProperty("Rate", this::getRate, null);
     }
 }

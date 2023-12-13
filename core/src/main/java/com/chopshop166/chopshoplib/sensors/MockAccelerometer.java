@@ -1,13 +1,11 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 
 /**
  * An {@link Accelerometer} that can be controlled via the dashboard.
  */
-public class MockAccelerometer implements Accelerometer, Sendable {
+public class MockAccelerometer implements Accelerometer {
 
     /** The X value. */
     private double x;
@@ -72,13 +70,5 @@ public class MockAccelerometer implements Accelerometer, Sendable {
     @Override
     public double getZ() {
         return this.z;
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Accelerometer");
-        builder.addDoubleProperty("X", this::getX, this::setX);
-        builder.addDoubleProperty("Y", this::getY, this::setY);
-        builder.addDoubleProperty("Z", this::getZ, this::setZ);
     }
 }

@@ -4,14 +4,13 @@ import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.sendable.Sendable;
 
 /**
  * Base interface for a swerve module.
  *
  * Contains information about rotation and velocity.
  */
-public interface SwerveModule extends Sendable {
+public interface SwerveModule {
 
     /**
      * Get the angle of the swerve module.

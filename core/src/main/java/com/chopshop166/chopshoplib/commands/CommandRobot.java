@@ -1,8 +1,6 @@
 package com.chopshop166.chopshoplib.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-
-import org.littletonrobotics.junction.LoggedRobot;
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.net.URL;
@@ -10,17 +8,15 @@ import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Stream;
+import org.littletonrobotics.junction.LoggedRobot;
 import com.chopshop166.chopshoplib.Autonomous;
-import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
-import com.google.common.reflect.ClassPath;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -155,10 +151,9 @@ public abstract class CommandRobot extends LoggedRobot {
      * @param subsystems The subsystems to make safe.
      * @return A command
      */
-    public CommandBase resetSubsystems(final SmartSubsystem... subsystems) {
-        return parallel(
-                Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(CommandBase[]::new))
-                        .withName("Reset Subsystems");
+    public Command resetSubsystems(final SmartSubsystem... subsystems) {
+        return parallel(Stream.of(subsystems).map(SmartSubsystem::resetCmd).toArray(Command[]::new))
+                .withName("Reset Subsystems");
     }
 
     /**
@@ -167,90 +162,10 @@ public abstract class CommandRobot extends LoggedRobot {
      * @param subsystems The subsystems to make safe.
      * @return A command
      */
-    public CommandBase safeStateSubsystems(final SmartSubsystem... subsystems) {
+    public Command safeStateSubsystems(final SmartSubsystem... subsystems) {
         return parallel(
-                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(CommandBase[]::new))
+                Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(Command[]::new))
                         .withName("Reset Subsystems");
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param <T> The type to return.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
-     * @return An instance of the given type, or null.
-     */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return CommandRobot.getRobotMap(rootClass, pkg, null);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param <T> The type to return.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
-     * @param defaultValue The object to return if no match is found.
-     * @return An instance of the given type, or the default value.
-     */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
-            final T defaultValue) {
-        return CommandRobot.getMapForName(RobotController.getSerialNumber(), rootClass, pkg,
-                defaultValue);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param <T> The type to return.
-     * @param name The name to match against in annotations.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
-     * @return An instance of the given type, or null.
-     */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass,
-            final String pkg) {
-        return CommandRobot.getMapForName(name, rootClass, pkg, null);
-    }
-
-    /**
-     * Get a RobotMap for the given name.
-     * 
-     * @param <T> The type to return.
-     * @param name The name to match against in annotations.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
-     * @param defaultValue The object to return if no match is found.
-     * @return An instance of the given type, or the default value.
-     */
-    public static <T> T getMapForName(final String name, final Class<T> rootClass, final String pkg,
-            final T defaultValue) {
-        try {
-            final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            // scans the class path used by classloader
-            final ClassPath classpath = ClassPath.from(loader);
-            // Get class info for all classes
-            for (final ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(pkg)) {
-                final Class<?> clazz = classInfo.load();
-                // Make sure the class is derived from rootClass
-                if (rootClass.isAssignableFrom(clazz)) {
-                    // Cast the class to the derived type
-                    final Class<? extends T> theClass = clazz.asSubclass(rootClass);
-                    // Find all annotations that provide a name
-                    for (final RobotMapFor annotation : clazz
-                            .getAnnotationsByType(RobotMapFor.class)) {
-                        // Check to see if the name matches
-                        if (annotation.value().equalsIgnoreCase(name)) {
-                            return theClass.getDeclaredConstructor().newInstance();
-                        }
-                    }
-                }
-            }
-        } catch (IOException | ReflectiveOperationException err) {
-            return defaultValue;
-        }
-        return defaultValue;
     }
 
     /**

@@ -3,10 +3,9 @@ package com.chopshop166.chopshoplib;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
- * Denote a class - usually a {@link Subsystem} - that can be reset to a default safe state.
+ * Denote a class - usually a {@link Subsystem} - that has data that can be reset.
  * <p>
- * This is useful for resetting all subsystems to a "not moving" state when entering a disabled
- * mode.
+ * This is primarily for things like encoders and gyros.
  */
 public interface Resettable {
 
@@ -15,17 +14,6 @@ public interface Resettable {
      */
     default void reset() {
         // Default to not resetting state
-    }
-
-    /**
-     * Reset this object.
-     * 
-     * Ignores its parameter - useful for passing as the end function of a command.
-     * 
-     * @param interrupted Ignored.
-     */
-    default void reset(final boolean interrupted) {
-        this.reset();
     }
 
 }

@@ -1,19 +1,17 @@
 package com.chopshop166.chopshoplib.commands;
 
-import static edu.wpi.first.wpilibj2.command.Commands.*;
-
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import com.chopshop166.chopshoplib.Box;
+import com.chopshop166.chopshoplib.boxes.BooleanBox;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 
 /**
  * Utility class for storing command helpers.
@@ -29,8 +27,8 @@ final public class CommandUtils {
      * @param cmd The command to repeat.
      * @return A newly constructed command.
      */
-    public static CommandBase repeat(final int numTimesToRun, final Command cmd) {
-        return repeat(numTimesToRun, () -> new ProxyCommand(cmd));
+    public static Command repeat(final int numTimesToRun, final Command cmd) {
+        return repeat(numTimesToRun, cmd::asProxy);
     }
 
     /**
@@ -40,8 +38,8 @@ final public class CommandUtils {
      * @param cmd A way to create the command to repeat.
      * @return A newly constructed command group.
      */
-    public static CommandBase repeat(final int numTimesToRun, final Supplier<Command> cmd) {
-        return sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
+    public static Command repeat(final int numTimesToRun, final Supplier<Command> cmd) {
+        return Commands.sequence(Stream.generate(cmd).limit(numTimesToRun).toArray(Command[]::new));
     }
 
     /**
@@ -72,8 +70,8 @@ final public class CommandUtils {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static CommandBase initAndWait(final Runnable init, final BooleanSupplier until) {
-        return parallel(runOnce(init), new WaitUntilCommand(until));
+    public static Command initAndWait(final Runnable init, final BooleanSupplier until) {
+        return Commands.runOnce(init).until(until);
     }
 
     /**
@@ -84,8 +82,8 @@ final public class CommandUtils {
      * @param func The function to call.
      * @return A new command.
      */
-    public static <T> CommandBase setter(final T value, final Consumer<T> func) {
-        return runOnce(() -> {
+    public static <T> Command setter(final T value, final Consumer<T> func) {
+        return Commands.runOnce(() -> {
             func.accept(value);
         });
     }
@@ -97,8 +95,8 @@ final public class CommandUtils {
      * @param motor The motor to use.
      * @return A new command.
      */
-    public static CommandBase runWhile(final double value, final MotorController motor) {
-        return startEnd(() -> {
+    public static Command runWhile(final double value, final MotorController motor) {
+        return Commands.startEnd(() -> {
             motor.set(value);
         }, motor::stopMotor);
     }
@@ -112,7 +110,7 @@ final public class CommandUtils {
      * @param until The condition to wait until.
      * @return A new command.
      */
-    public static <T> CommandBase callAndWait(final T value, final Consumer<T> func,
+    public static <T> Command callAndWait(final T value, final Consumer<T> func,
             final BooleanSupplier until) {
         return initAndWait(() -> {
             func.accept(value);
@@ -126,8 +124,8 @@ final public class CommandUtils {
      * @param cmd The command to run.
      * @return The conditional command.
      */
-    public static CommandBase runIf(final BooleanSupplier condition, final Command cmd) {
-        return either(cmd, none(), condition);
+    public static Command runIf(final BooleanSupplier condition, final Command cmd) {
+        return Commands.either(cmd, Commands.none(), condition);
     }
 
     /**
@@ -136,7 +134,7 @@ final public class CommandUtils {
      * @param selector The function to determine which command should be run.
      * @return The wrapper command object.
      */
-    public static CommandBase select(final Supplier<Command> selector) {
+    public static Command select(final Supplier<Command> selector) {
         return new ProxyCommand(selector);
     }
 
@@ -147,7 +145,7 @@ final public class CommandUtils {
      * @param periodic The runnable to execute.
      * @return A new command.
      */
-    public static CommandBase every(final double timeDelta, final Runnable periodic) {
+    public static Command every(final double timeDelta, final Runnable periodic) {
         return new IntervalCommand(timeDelta, periodic);
     }
 
@@ -157,7 +155,7 @@ final public class CommandUtils {
      * @param durationSupplier Function that returns the number of seconds to wait.
      * @return The wait command.
      */
-    public static CommandBase waitFor(final DoubleSupplier durationSupplier) {
+    public static Command waitFor(final DoubleSupplier durationSupplier) {
         return new FunctionalWaitCommand(durationSupplier);
     }
 
@@ -169,14 +167,12 @@ final public class CommandUtils {
      * @param ifFinished The command to run if original was not interrupted.
      * @return A command object.
      */
-    public static CommandBase doIfInterrupted(final Command original, final Command ifInterrupted,
+    public static Command doIfInterrupted(final Command original, final Command ifInterrupted,
             final Command ifFinished) {
-        final Box<Boolean> wasInterrupted = new Box<>();
-        return runOnce(() -> {
-            wasInterrupted.data = false;
-        }).andThen(original.finallyDo(interrupted -> {
-            wasInterrupted.data = interrupted;
-        }), either(ifInterrupted, ifFinished, () -> wasInterrupted.data));
+        final BooleanBox wasInterrupted = new BooleanBox();
+        return Commands.runOnce(wasInterrupted::reset).andThen(
+                original.finallyDo(wasInterrupted::accept),
+                Commands.either(ifInterrupted, ifFinished, wasInterrupted));
     }
 
     /**
@@ -188,9 +184,24 @@ final public class CommandUtils {
      * @param ifFinished The command to run if original was not interrupted.
      * @return A command object.
      */
-    public static CommandBase doIfInterrupted(final Command original, final double timeout,
+    public static Command doIfInterrupted(final Command original, final double timeout,
             final Command ifInterrupted, final Command ifFinished) {
         return doIfInterrupted(original.withTimeout(timeout), ifInterrupted, ifFinished);
+    }
+
+    /**
+     * Wrap a command, allowing it to run when the robot is disabled.
+     *
+     * @param cmd The command to test.
+     * @return A command object.
+     */
+    public static Command runWhenDisabled(final Command cmd) {
+        return new WrapperCommand(cmd) {
+            @Override
+            public boolean runsWhenDisabled() {
+                return true;
+            }
+        };
     }
 
 }

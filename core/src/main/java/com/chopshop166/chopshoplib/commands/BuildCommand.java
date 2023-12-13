@@ -3,13 +3,13 @@ package com.chopshop166.chopshoplib.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import com.chopshop166.chopshoplib.PersistenceCheck;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * Create a command from only the functions it needs
  */
-public class BuildCommand extends CommandBase {
+public class BuildCommand extends Command {
 
     /** The initalize handler. */
     private Runnable onInitializeHandler = () -> {

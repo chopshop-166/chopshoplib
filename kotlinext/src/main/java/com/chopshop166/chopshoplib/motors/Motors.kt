@@ -7,14 +7,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.revrobotics.CANSparkMax
 import edu.wpi.first.math.controller.PIDController
-import edu.wpi.first.util.sendable.Sendable
 import edu.wpi.first.wpilibj.motorcontrol.MotorController
 
 fun SmartMotorController.toSmart() = this
 
-fun <T> T.toSmart(encoder: IEncoder = MockEncoder()) where
-T : Sendable,
-T : MotorController = SmartMotorController(this, encoder)
+fun MotorController.toSmart(encoder: IEncoder = MockEncoder()) =
+    SmartMotorController(this, encoder)
 
 fun CANSparkMax.follow(thisObj: CSSparkMax, inverted: Boolean = false) =
     follow(thisObj.motorController, inverted)
@@ -46,12 +44,12 @@ fun WPI_TalonFX.withPID(
         block()
     }
 
-fun <T> T.withPID(
+fun MotorController.withPID(
     pid: PIDController,
     encoder: IEncoder,
     controlType: PIDControlType = PIDControlType.Velocity,
     block: SwPIDMotorController.() -> Unit = {}
-) where T : MotorController, T : Sendable =
+) =
     when (controlType) {
         PIDControlType.Position -> SwPIDMotorController.position(this, pid, encoder)
         PIDControlType.Velocity -> SwPIDMotorController.velocity(this, pid, encoder)

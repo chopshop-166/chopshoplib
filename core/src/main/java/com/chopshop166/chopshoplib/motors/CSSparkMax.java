@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * WSparkMax
@@ -115,16 +114,6 @@ public class CSSparkMax extends SmartMotorController {
     @Override
     public void setPidSlot(final int slotId) {
         this.pidSlot = slotId;
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.setActuator(true);
-        builder.setSafeState(this::disable);
-        builder.addDoubleProperty("Value", this::get, this::set);
-        builder.addDoubleArrayProperty("Temperature", this::getTemperatureC, null);
-        builder.addDoubleArrayProperty("Current", this::getCurrentAmps, null);
     }
 
     @Override

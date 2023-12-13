@@ -2,15 +2,16 @@ package com.chopshop166.chopshoplib.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * A command that does nothing but takes a specified amount of time to finish. Useful for
  * CommandGroups. Can also be subclassed to make a command with an internal timer.
  *
  */
-public class FunctionalWaitCommand extends CommandBase {
+public class FunctionalWaitCommand extends Command {
 
     /** Used to see how much time is elapsed. */
     protected Timer timer = new Timer();
@@ -32,10 +33,21 @@ public class FunctionalWaitCommand extends CommandBase {
         this.durationSupplier = durationSupplier;
     }
 
+    /**
+     * Creates a new FunctionalWaitCommand. This command will do nothing, and end after the duration
+     * that is supplied.
+     * <p>
+     * This is mainly useful for weird situations where WPIlib's wait command doesn't work properly.
+     *
+     * @param duration The time to wait, in seconds.
+     */
+    public FunctionalWaitCommand(final double duration) {
+        this(() -> duration);
+    }
+
     @Override
     public void initialize() {
-        this.timer.reset();
-        this.timer.start();
+        this.timer.restart();
         this.duration = this.durationSupplier.getAsDouble();
     }
 
@@ -52,5 +64,11 @@ public class FunctionalWaitCommand extends CommandBase {
     @Override
     public boolean runsWhenDisabled() {
         return true;
+    }
+
+    @Override
+    public void initSendable(final SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("duration", () -> this.duration, null);
     }
 }

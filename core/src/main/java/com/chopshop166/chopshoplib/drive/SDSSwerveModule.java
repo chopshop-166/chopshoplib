@@ -8,13 +8,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableBuilder;
 
 /** Swerve Drive Specialties Mk3. */
 public class SDSSwerveModule implements SwerveModule {
@@ -31,9 +29,6 @@ public class SDSSwerveModule implements SwerveModule {
     private final PIDController steeringPID;
     /** The motor controller used for driving. */
     private final CSSparkMax driveController;
-
-    /** The last calculated speed error. */
-    private double speedError;
 
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
@@ -220,7 +215,6 @@ public class SDSSwerveModule implements SwerveModule {
         if (state.speedMetersPerSecond == 0) {
             this.driveController.getPidController().setIAccum(0);
         }
-        this.speedError = state.speedMetersPerSecond - this.driveController.getEncoder().getRate();
         if (this.inverted) {
             this.driveController.setSetpoint(-state.speedMetersPerSecond);
         } else {
@@ -298,16 +292,6 @@ public class SDSSwerveModule implements SwerveModule {
     @Override
     public void resetDistance() {
         this.driveController.getEncoder().reset();
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        builder.setActuator(true);
-        builder.setSmartDashboardType("Swerve Module");
-        builder.addDoubleProperty("Angle Error", this.steeringPID::getPositionError, null);
-        builder.addDoubleProperty("Speed Error", () -> this.speedError, null);
-        builder.addDoubleProperty("Angle", () -> this.getAngle().getDegrees(), null);
-        builder.addDoubleProperty("Speed", () -> this.driveController.getEncoder().getRate(), null);
     }
 
     @Override

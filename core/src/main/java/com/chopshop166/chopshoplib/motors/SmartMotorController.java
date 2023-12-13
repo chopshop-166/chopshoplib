@@ -8,8 +8,6 @@ import com.chopshop166.chopshoplib.motors.validators.EncoderValidator;
 import com.chopshop166.chopshoplib.motors.validators.MotorValidator;
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.MockEncoder;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
@@ -18,10 +16,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
  * This is used in a few select scenarios, when we want to keep the exact type of an object general,
  * but at the same time want to access it as one of two disconnected interfaces.
  */
-public class SmartMotorController implements Sendable, MotorController {
+public class SmartMotorController implements MotorController {
 
-    /** The wrapped motor controller, as a sendable object. */
-    private final Sendable sendable;
     /** The wrapped motor controller. */
     private final MotorController wrapped;
     /** An encoder, if one is attached and supplied. */
@@ -37,23 +33,19 @@ public class SmartMotorController implements Sendable, MotorController {
     /**
      * Wrap a motor controller.
      *
-     * @param <T> The base type to wrap
      * @param wrapped The wrapped motor controller.
      */
-    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped) {
+    public SmartMotorController(final MotorController wrapped) {
         this(wrapped, new MockEncoder());
     }
 
     /**
      * Wrap a motor controller with an encoder.
      *
-     * @param <T> The base type to wrap
      * @param wrapped The wrapped motor controller.
      * @param encoder The encoder attached to the motor controller.
      */
-    public <T extends Sendable & MotorController> SmartMotorController(final T wrapped,
-            final IEncoder encoder) {
-        this.sendable = wrapped;
+    public SmartMotorController(final MotorController wrapped, final IEncoder encoder) {
         this.wrapped = wrapped;
         this.encoder = encoder;
     }
@@ -207,10 +199,5 @@ public class SmartMotorController implements Sendable, MotorController {
     @Override
     public void stopMotor() {
         this.wrapped.stopMotor();
-    }
-
-    @Override
-    public void initSendable(final SendableBuilder builder) {
-        this.sendable.initSendable(builder);
     }
 }
