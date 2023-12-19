@@ -194,6 +194,9 @@ public abstract class CommandRobot extends LoggedRobot {
             branchString = CommandRobot.getAttr(attrs, "Git-Branch");
             fileString = CommandRobot.getAttr(attrs, "Git-Files");
             serialNumber = RobotController.getSerialNumber();
+            if (serialNumber == null) {
+                serialNumber = CommandRobot.UNKNOWN_VALUE;
+            }
         } catch (IOException ex) {
             // Could not read the manifest, just send dummy values
         } finally {
