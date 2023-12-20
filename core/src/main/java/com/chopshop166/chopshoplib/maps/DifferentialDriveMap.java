@@ -4,9 +4,7 @@ import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
-import com.chopshop166.chopshoplib.sensors.gyro.WGyro;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * Differential Drive Map
@@ -33,33 +31,7 @@ public record DifferentialDriveMap(SmartMotorController left, SmartMotorControll
      */
     public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
             final double trackWidthMeters) {
-        this(left, right, trackWidthMeters, new MockGyro());
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param left Left speed controller.
-     * @param right Right speed controller.
-     * @param trackWidthMeters Width of robot.
-     * @param gyro The gyro.
-     */
-    public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
-            final double trackWidthMeters, final Gyro gyro) {
-        this(left, right, trackWidthMeters, new WGyro(gyro));
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param left Left speed controller.
-     * @param right Right speed controller.
-     * @param trackWidthMeters Width of robot.
-     * @param gyro The gyro.
-     */
-    public DifferentialDriveMap(final SmartMotorController left, final SmartMotorController right,
-            final double trackWidthMeters, final WGyro gyro) {
-        this(left, right, new DifferentialDriveKinematics(trackWidthMeters), gyro);
+        this(left, right, new DifferentialDriveKinematics(trackWidthMeters), new MockGyro());
     }
 
     /**

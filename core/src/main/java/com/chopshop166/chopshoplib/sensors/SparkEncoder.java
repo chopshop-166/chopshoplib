@@ -1,13 +1,13 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.RelativeEncoder;
 
 /**
  * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
  * interfaces.
  */
-public class SparkMaxEncoder implements IEncoder {
+public class SparkEncoder implements IEncoder {
 
     /** The wrapped encoder. */
     private final RelativeEncoder encoder;
@@ -17,7 +17,7 @@ public class SparkMaxEncoder implements IEncoder {
      * 
      * @param encoder The encoder to wrap around.
      */
-    public SparkMaxEncoder(final RelativeEncoder encoder) {
+    public SparkEncoder(final RelativeEncoder encoder) {
         this.encoder = encoder;
     }
 
@@ -26,7 +26,7 @@ public class SparkMaxEncoder implements IEncoder {
      * 
      * @param max The Spark MAX to get the encoder for.
      */
-    public SparkMaxEncoder(final CANSparkMax max) {
+    public SparkEncoder(final CANSparkBase max) {
         this.encoder = max.getEncoder();
     }
 

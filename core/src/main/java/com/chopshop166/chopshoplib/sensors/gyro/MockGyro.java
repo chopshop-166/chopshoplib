@@ -49,9 +49,4 @@ public class MockGyro implements SmartGyro {
         // Nothing to calibrate
     }
 
-    @Override
-    public void close() {
-        // Nothing to close
-    }
-
 }

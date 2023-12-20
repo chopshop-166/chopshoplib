@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
 
 /**
  * An Encoder on the CAN bus.
@@ -8,14 +8,14 @@ import com.ctre.phoenix.sensors.CANCoder;
 public class CtreEncoder implements IEncoder {
 
     /** Reference to the base encoder. */
-    private final CANCoder enc;
+    private final CANcoder enc;
 
     /**
      * Construct the encoder from the raw object.
      * 
      * @param enc The CANCoder to connect to.
      */
-    public CtreEncoder(final CANCoder enc) {
+    public CtreEncoder(final CANcoder enc) {
         this.enc = enc;
     }
 
@@ -25,7 +25,7 @@ public class CtreEncoder implements IEncoder {
      * @param deviceId The device ID on the CAN bus.
      */
     public CtreEncoder(final int deviceId) {
-        this(new CANCoder(deviceId));
+        this(new CANcoder(deviceId));
     }
 
     @Override
@@ -36,12 +36,12 @@ public class CtreEncoder implements IEncoder {
 
     @Override
     public double getRate() {
-        return this.enc.getVelocity();
+        return this.enc.getVelocity().getValueAsDouble();
     }
 
     @Override
     public double getAbsolutePosition() {
-        return this.enc.getAbsolutePosition();
+        return this.enc.getAbsolutePosition().getValueAsDouble();
     }
 
     @Override

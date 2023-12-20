@@ -59,11 +59,6 @@ public class PigeonGyro implements SmartGyro {
         this.inverted = isInverted;
     }
 
-    @Override
-    public void close() throws Exception {
-        // NoOp
-    }
-
     /**
      * Sets the gyro's heading back to zero
      */

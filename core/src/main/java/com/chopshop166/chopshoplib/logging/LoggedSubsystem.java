@@ -53,7 +53,7 @@ public abstract class LoggedSubsystem<D extends LoggableInputs, M extends Loggab
         // This method will be called once per scheduler run
         // Use this for any background processing
         this.map.updateData(this.ioData);
-        Logger.getInstance().processInputs(this.getName(), this.ioData);
+        Logger.processInputs(this.getName(), this.ioData);
     }
 
 }
