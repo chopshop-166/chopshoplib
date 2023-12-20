@@ -51,7 +51,7 @@ public class SmartMotorController implements MotorController {
     }
 
     /**
-     * Add smart motor controller group class Get the encoder attached to the robot.
+     * Get the encoder attached to the robot.
      *
      * @return An encoder, or a mock if none is attached.
      */
