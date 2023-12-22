@@ -44,6 +44,13 @@ class CommandBuilder(private vararg val sys: Subsystem) {
         }
 }
 
+inline fun <reified T> CommandRobot.getMapForName(
+    name: String,
+    pkg: String,
+    defaultValue: T
+) =
+    CommandRobot.getMapForName<T>(name, T::class.java, pkg, defaultValue)
+
 fun repeat(num: Int, block: () -> Command) =
     Commands.sequence(*(0..num).map {block()}.toTypedArray())
 
