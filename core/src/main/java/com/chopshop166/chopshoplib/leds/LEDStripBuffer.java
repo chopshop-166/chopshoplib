@@ -1,0 +1,178 @@
+package com.chopshop166.chopshoplib.leds;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+
+/** LED Buffer that creates and stores segments. */
+public class LEDStripBuffer {
+    /** The list of segments. */
+    private final List<SegmentConfig> segmentConfigs = new ArrayList<>();
+    /** The mapping of tags to segments. */
+    private final Map<String, Set<SegmentConfig>> segmentTagMap = new HashMap<>();
+    /** The map of segment to pattern. */
+    private final Map<SegmentConfig, Pattern> patternMap = new HashMap<>();
+    /** The order of patterns to run on segments. */
+    private final List<RunOrder> runOrder = new ArrayList<>();
+    /** The patterns that have been added since the last run. */
+    private final Set<Pattern> newPatterns = new HashSet<>();
+    /** The buffer object. */
+    private final AddressableLEDBuffer buffer;
+    /** Total number of LEDs in segments. */
+    private final int numLEDs;
+    /** The next LED to assign with factories. */
+    private int nextLED;
+
+    /**
+     * Constructor.
+     * 
+     * @param numLEDs Number of LEDs.
+     */
+    public LEDStripBuffer(final int numLEDs) {
+        this.numLEDs = numLEDs;
+        this.nextLED = 0;
+        this.buffer = new AddressableLEDBuffer(numLEDs);
+    }
+
+    /**
+     * Get the length of the buffer.
+     * 
+     * @return The number of LEDs.
+     */
+    public int getLength() {
+        return this.numLEDs;
+    }
+
+    /**
+     * Factory to create a new segment.
+     * 
+     * @param length The length of the segment (in LEDs).
+     * @return A segment object.
+     */
+    public SegmentConfig segment(final int length) {
+        assert this.numLEDs >= this.nextLED + length;
+        assert length > 0;
+        final var result = new SegmentConfig(this, this.nextLED, length);
+        this.segmentConfigs.add(result);
+        this.nextLED += length;
+        return result;
+    }
+
+    /**
+     * Create a segment that mirrors another segment.
+     * 
+     * @param origConfig The original config to mirror.
+     * @return A segment object.
+     */
+    public SegmentConfig mirrorSegment(final SegmentConfig origConfig) {
+        final var result = this.segment(origConfig.length);
+        origConfig.mirrors.add(result);
+        return result;
+    }
+
+    /**
+     * Add tags to a segment.
+     * 
+     * @param config The segment.
+     * @param tags The string tags.
+     */
+    public void addTags(final SegmentConfig config, final String... tags) {
+        for (final String tag : tags) {
+            this.segmentTagMap.putIfAbsent(tag, new HashSet<>());
+            this.segmentTagMap.get(tag).add(config);
+        }
+    }
+
+    /**
+     * Set a pattern to the entire buffer.
+     * 
+     * @param pattern The pattern to use.
+     */
+    public void setGlobalPattern(final Pattern pattern) {
+        for (final var config : this.segmentConfigs) {
+            this.patternMap.put(config, pattern);
+        }
+        // Then it triggers a recalculation of run order
+        this.recalculateRunOrder();
+        this.newPatterns.add(pattern);
+    }
+
+    /**
+     * Set the pattern for a given tag.
+     * 
+     * @param tag The tag to assign a pattern to.
+     * @param pattern The pattern to use.
+     */
+    public void setPattern(final String tag, final Pattern pattern) {
+        // When setPattern is called, it removes the existing pattern from any segments
+        // that match those tags
+        // and then uses the given pattern in their place
+        //
+        // Internally, the scheduler has a Map<String, List<SegmentConfig>>
+        // When setPattern is called, it indexes into that map and replaces each data's
+        // active pattern with this new one
+        for (final var config : this.segmentTagMap.getOrDefault(tag, new HashSet<>())) {
+            this.patternMap.put(config, pattern);
+        }
+        // Then it triggers a recalculation of run order
+        this.recalculateRunOrder();
+        this.newPatterns.add(pattern);
+    }
+
+    /**
+     * Update an LED strip with the latest values.
+     * 
+     * @param led The wpilib LED strip object.
+     */
+    public void update(final AddressableLED led) {
+        for (final var order : this.runOrder) {
+            if (this.newPatterns.contains(order.pattern())) {
+                order.initialize();
+            }
+        }
+        this.newPatterns.clear();
+        // When leds.update() is called, it goes into the run order and calls the
+        // pattern's update with the segment buffer
+        for (final var order : this.runOrder) {
+            order.update();
+        }
+        led.setData(this.buffer);
+    }
+
+    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops"})
+    private void recalculateRunOrder() {
+        // Run order is a List<RunOrder>
+        // When calculated, it groups together every segment with the same pattern, in
+        // creation order
+        final Set<Pattern> matchedPatterns = new HashSet<>();
+        this.runOrder.clear();
+        for (int i = 0; i < this.segmentConfigs.size(); i++) {
+            final Pattern p = this.patternMap.get(this.segmentConfigs.get(i));
+            if (p == null) {
+                continue;
+            }
+            // If we haven't checked this pattern already
+            if (!matchedPatterns.contains(p)) {
+                // Group together all segments with the same pattern
+                final List<SegmentConfig> patternConfigs = new ArrayList<>();
+                for (int j = i; j < this.segmentConfigs.size(); j++) {
+                    final var conf = this.segmentConfigs.get(j);
+                    final Pattern p2 = this.patternMap.get(conf);
+                    if (p.equals(p2)) {
+                        patternConfigs.add(conf);
+                    }
+                }
+                // Create a Segment Buffer from the list
+                final var segbuf = new SegmentBuffer(this.buffer, patternConfigs);
+                this.runOrder.add(new RunOrder(p, segbuf));
+            }
+            matchedPatterns.add(p);
+        }
+    }
+}
