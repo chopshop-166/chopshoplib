@@ -185,9 +185,23 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T> The type to return.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
+     * @param <T>          The type to return.
+     * @param rootClass    The root class object that the map derives from.
+     * @param defaultValue The object to return if no match is found.
+     * @return An instance of the given type, or the default value.
+     */
+    public <T> T getRobotMap(final Class<T> rootClass, final T defaultValue) {
+        final Class<? extends CommandRobot> clazz = this.getClass();
+        final String pkg = clazz.getPackage().getName();
+        return CommandRobot.getRobotMap(rootClass, pkg, defaultValue);
+    }
+
+    /**
+     * Get a RobotMap for the given name.
+     * 
+     * @param <T>          The type to return.
+     * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
