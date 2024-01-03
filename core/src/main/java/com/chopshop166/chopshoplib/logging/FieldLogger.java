@@ -14,6 +14,26 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
     /** The classes that are able to be logged. */
     public final static Map<Class<?>, FieldLogger> BOXABLE_CLASSES = new HashMap<>();
+    /** The logger to use for enums. */
+    public final static FieldLogger ENUM_LOGGER = new FieldLogger() {
+        @Override
+        public void toLog(final String name, final LogTable table, final Field field,
+                final Object that) throws IllegalAccessException {
+            table.put(name, field.get(that).toString());
+        }
+
+        @Override
+        public void fromLog(final String name, final LogTable table, final Field field,
+                final Object that) throws IllegalAccessException {
+            final String fieldValueStr = field.get(that).toString();
+            final String newTableValue = table.get(name, fieldValueStr);
+            for (final var constant : field.getType().getEnumConstants()) {
+                if (constant.toString().equals(newTableValue)) {
+                    field.set(that, constant);
+                }
+            }
+        }
+    };
 
     /**
      * Convert a field to a log.

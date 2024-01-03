@@ -23,6 +23,9 @@ import org.littletonrobotics.junction.LogTable;
                 logger = entry.getValue();
             }
         }
+        if (logger == null && field.getType().isEnum()) {
+            logger = FieldLogger.ENUM_LOGGER;
+        }
         return logger == null ? null : new LogConfig(name, field, logger);
     }
 
