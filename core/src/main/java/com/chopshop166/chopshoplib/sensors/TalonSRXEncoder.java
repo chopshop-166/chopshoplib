@@ -47,6 +47,6 @@ public class TalonSRXEncoder implements IEncoder {
 
     @Override
     public void reset() {
-        // No no, we don't do that here.
+        this.talon.setSelectedSensorPosition(0.0);
     }
 }

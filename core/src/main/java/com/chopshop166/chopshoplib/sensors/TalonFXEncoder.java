@@ -57,6 +57,6 @@ public class TalonFXEncoder implements IEncoder {
 
     @Override
     public void reset() {
-        // No no, we don't do that here.
+        this.talon.setPosition(0.0);
     }
 }
