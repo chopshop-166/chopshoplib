@@ -91,11 +91,6 @@ public class PigeonGyro implements SmartGyro {
     }
 
     @Override
-    public void calibrate() {
-        // NoOp
-    }
-
-    @Override
     public Rotation3d getRotation3d() {
         final double[] yprDeg = new double[3];
         this.gyro.getYawPitchRoll(yprDeg);

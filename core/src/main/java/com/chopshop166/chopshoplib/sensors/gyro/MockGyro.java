@@ -44,9 +44,4 @@ public class MockGyro implements SmartGyro {
         this.angle = 0;
     }
 
-    @Override
-    public void calibrate() {
-        // Nothing to calibrate
-    }
-
 }

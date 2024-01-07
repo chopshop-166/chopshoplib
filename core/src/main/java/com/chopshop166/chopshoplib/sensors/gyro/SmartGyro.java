@@ -5,12 +5,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 
 /** Gyro wrapper. */
 public interface SmartGyro {
-    /**
-     * Calibrate the gyro. It's important to make sure that the robot is not moving while the
-     * calibration is in progress, this is typically done when the robot is first turned on while
-     * it's sitting at rest before the match starts.
-     */
-    void calibrate();
 
     /**
      * Reset the gyro. Resets the gyro to a heading of zero. This can be used if there is

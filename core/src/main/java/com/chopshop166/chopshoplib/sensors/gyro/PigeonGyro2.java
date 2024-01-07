@@ -98,11 +98,6 @@ public class PigeonGyro2 implements SmartGyro {
     }
 
     @Override
-    public void calibrate() {
-        // NoOp
-    }
-
-    @Override
     public Rotation2d getRotation2d() {
         return this.gyro.getRotation2d();
     }
