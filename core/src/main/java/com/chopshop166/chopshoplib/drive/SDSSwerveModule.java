@@ -1,13 +1,14 @@
 package com.chopshop166.chopshoplib.drive;
 
-import com.chopshop166.chopshoplib.motors.CSSparkMax;
+import com.chopshop166.chopshoplib.motors.CSSpark;
 import com.chopshop166.chopshoplib.motors.PIDControlType;
+import com.chopshop166.chopshoplib.sensors.CtreEncoder;
 import com.chopshop166.chopshoplib.states.PIDValues;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,13 +23,13 @@ public class SDSSwerveModule implements SwerveModule {
     /** The physical location of the module. */
     private final Translation2d location;
     /** The encoder used for steering. */
-    private final CANCoder steeringEncoder;
+    private final CtreEncoder steeringEncoder;
     /** The motor controller for steering. */
-    private final CSSparkMax steeringController;
+    private final CSSpark steeringController;
     /** The PID controller for steering. */
     private final PIDController steeringPID;
     /** The motor controller used for driving. */
-    private final CSSparkMax driveController;
+    private final CSSpark driveController;
 
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
@@ -133,8 +134,8 @@ public class SDSSwerveModule implements SwerveModule {
      * @param driveController The drive motor controller.
      * @param conf The module configuration.
      */
-    public SDSSwerveModule(final Translation2d moduleLocation, final CANCoder steeringEncoder,
-            final CSSparkMax steeringController, final CSSparkMax driveController,
+    public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
+            final CSSpark steeringController, final CSSpark driveController,
             final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
                 new PIDController(conf.pidValues.p(), conf.pidValues.i(), conf.pidValues.d()));
@@ -150,8 +151,8 @@ public class SDSSwerveModule implements SwerveModule {
      * @param conf The module configuration.
      * @param pid The PID controller for steering.
      */
-    public SDSSwerveModule(final Translation2d moduleLocation, final CANCoder steeringEncoder,
-            final CSSparkMax steeringController, final CSSparkMax driveController,
+    public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
+            final CSSpark steeringController, final CSSpark driveController,
             final Configuration conf, final PIDController pid) {
         this.location = moduleLocation;
         this.steeringEncoder = steeringEncoder;
@@ -167,7 +168,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     @Override
-    public CSSparkMax getSteeringMotor() {
+    public CSSpark getSteeringMotor() {
         return this.steeringController;
     }
 
@@ -177,7 +178,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     @Override
-    public CSSparkMax getDriveMotor() {
+    public CSSpark getDriveMotor() {
         return this.driveController;
     }
 
@@ -253,12 +254,11 @@ public class SDSSwerveModule implements SwerveModule {
      * @param motor Drive motor controller to configure.
      * @return Drive motor controller for chaining.
      */
-    private static CSSparkMax configureDriveMotor(final CSSparkMax motor,
-            final Configuration conf) {
+    private static CSSpark configureDriveMotor(final CSSpark motor, final Configuration conf) {
         // Get raw objects from the CSSparkMax
-        final CANSparkMax sparkMax = motor.getMotorController();
+        final CANSparkBase sparkMax = motor.getMotorController();
         final RelativeEncoder encoder = motor.getEncoder().getRaw();
-        final SparkMaxPIDController pid = motor.getPidController();
+        final SparkPIDController pid = motor.getPidController();
         sparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 40);
         sparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500);
 

@@ -1,24 +1,23 @@
 package com.chopshop166.chopshoplib.motors;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.chopshop166.chopshoplib.sensors.TalonFXEncoder;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+/** Convenience alias for a Talon FX. */
+public class CSTalonFX extends SmartMotorController {
 
-/** Convenience alias for a Talon SRX */
-public class CSTalonFX extends CSTalonBase<WPI_TalonFX> {
-
-    /** List of Configurations that we can switch between. */
-    final private List<TalonFXConfiguration> config = new ArrayList<>(4);
+    /** Reference to the wrapped Talon. */
+    private final TalonFX wrapped;
 
     /**
      * Constructor.
      *
      * @param talon The Talon object to wrap.
      */
-    public CSTalonFX(final WPI_TalonFX talon) {
-        super(talon, 2048);
+    public CSTalonFX(final TalonFX talon) {
+        super(talon, new TalonFXEncoder(talon));
+        this.wrapped = talon;
     }
 
     /**
@@ -27,30 +26,20 @@ public class CSTalonFX extends CSTalonBase<WPI_TalonFX> {
      * @param deviceNumber The device number to construct with.
      */
     public CSTalonFX(final int deviceNumber) {
-        this(new WPI_TalonFX(deviceNumber));
+        this(new TalonFX(deviceNumber));
     }
 
     /**
-     * Add the default configuration to the list of configurations and set it in the TalonFX.
+     * Get the wrapped speed controller.
      *
-     * @param config Configuration to add to the list of stored configs.
+     * @return The raw Talon object.
      */
-    public void addDefaultConfiguration(final TalonFXConfiguration config) {
-        this.config.add(config);
-        this.getMotorController().configAllSettings(config);
-    }
-
-    /**
-     * Add a configuration to the list of configurations we can swap to.
-     *
-     * @param config Configuration to add to the list of stored configs.
-     */
-    public void addConfiguration(final TalonFXConfiguration config) {
-        this.config.add(config);
+    public TalonFX getMotorController() {
+        return this.wrapped;
     }
 
     @Override
-    public void setPidSlot(final int slotId) {
-        this.getMotorController().configAllSettings(this.config.get(slotId));
+    public void set(final double speed) {
+        this.wrapped.setControl(new DutyCycleOut(speed));
     }
 }

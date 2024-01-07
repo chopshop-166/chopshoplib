@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 /**
  * An Encoder attached to the Talon SRX.
  */
-public class TalonEncoder implements IEncoder {
+public class TalonSRXEncoder implements IEncoder {
 
     /** Reference to the base Talon SRX. */
     private final BaseTalon talon;
@@ -19,7 +19,7 @@ public class TalonEncoder implements IEncoder {
      * @param talon The Talon SRX to connect to.
      * @param resolution The number of ticks per encoder.
      */
-    public TalonEncoder(final BaseTalon talon, final double resolution) {
+    public TalonSRXEncoder(final BaseTalon talon, final double resolution) {
         this.talon = talon;
         this.revPerTick = 1.0 / resolution;
         talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -47,6 +47,6 @@ public class TalonEncoder implements IEncoder {
 
     @Override
     public void reset() {
-        // No no, we don't do that here.
+        this.talon.setSelectedSensorPosition(0.0);
     }
 }

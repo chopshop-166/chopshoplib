@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
 
@@ -11,8 +12,6 @@ public class PigeonGyro2 implements SmartGyro {
 
     /** The wrapped object. */
     final private Pigeon2 gyro;
-    /** Boolean to control inverted output. */
-    private boolean inverted;
 
     /**
      * Create the wrapper.
@@ -22,13 +21,6 @@ public class PigeonGyro2 implements SmartGyro {
     public PigeonGyro2(final Pigeon2 gyro) {
         super();
         this.gyro = gyro;
-
-        // Automatically invert if the gyro is upside-down
-        final short accelerometerXYZ[] = new short[3];
-        this.gyro.getBiasedAccelerometer(accelerometerXYZ);
-        if (accelerometerXYZ[2] < 0) {
-            this.inverted = true;
-        }
     }
 
     /**
@@ -40,6 +32,16 @@ public class PigeonGyro2 implements SmartGyro {
         this(new Pigeon2(deviceNumber));
     }
 
+    /**
+     * Create the wrapper.
+     *
+     * @param deviceNumber The CAN ID of the Pigeon 2.
+     * @param canBus The CAN Bus name.
+     */
+    public PigeonGyro2(final int deviceNumber, final String canBus) {
+        this(new Pigeon2(deviceNumber, canBus));
+    }
+
 
     /**
      * Get the wrapped object.
@@ -48,20 +50,6 @@ public class PigeonGyro2 implements SmartGyro {
      */
     public Pigeon2 getRaw() {
         return this.gyro;
-    }
-
-    /**
-     * Inverts the angle and rate of the Pigeon.
-     *
-     * @param isInverted The state of inversion, true is inverted.
-     */
-    public void setInverted(final boolean isInverted) {
-        this.inverted = isInverted;
-    }
-
-    @Override
-    public void close() throws Exception {
-        // NoOp
     }
 
     /**
@@ -77,9 +65,7 @@ public class PigeonGyro2 implements SmartGyro {
      */
     @Override
     public double getRate() {
-        final double[] xyz = new double[3];
-        this.gyro.getRawGyro(xyz);
-        return this.inverted ? -xyz[2] : xyz[2];
+        return this.gyro.getRate();
     }
 
     /**
@@ -87,7 +73,7 @@ public class PigeonGyro2 implements SmartGyro {
      */
     @Override
     public double getAngle() {
-        return this.inverted ? -this.gyro.getYaw() : this.gyro.getYaw();
+        return this.gyro.getAngle();
     }
 
     @Override
@@ -96,23 +82,22 @@ public class PigeonGyro2 implements SmartGyro {
     }
 
     @Override
-    public void calibrate() {
-        // NoOp
+    public Rotation2d getRotation2d() {
+        return this.gyro.getRotation2d();
     }
 
     @Override
     public Rotation3d getRotation3d() {
-        final double[] yprDeg = new double[3];
-        this.gyro.getYawPitchRoll(yprDeg);
-        return new Rotation3d(Units.degreesToRadians(yprDeg[2]), Units.degreesToRadians(yprDeg[1]),
-                Units.degreesToRadians(yprDeg[0]));
+        return new Rotation3d(Units.degreesToRadians(this.gyro.getRoll().getValueAsDouble()),
+                Units.degreesToRadians(this.gyro.getPitch().getValueAsDouble()),
+                Units.degreesToRadians(this.gyro.getYaw().getValueAsDouble()));
     }
 
     @Override
     public Rotation3d getRotationalVelocity() {
-        final double[] xyzDps = new double[3];
-        this.gyro.getRawGyro(xyzDps);
-        return new Rotation3d(Units.degreesToRadians(xyzDps[0]), Units.degreesToRadians(xyzDps[1]),
-                Units.degreesToRadians(xyzDps[2]));
+        return new Rotation3d(
+                Units.degreesToRadians(this.gyro.getAngularVelocityXWorld().getValueAsDouble()),
+                Units.degreesToRadians(this.gyro.getAngularVelocityYWorld().getValueAsDouble()),
+                Units.degreesToRadians(this.gyro.getAngularVelocityZWorld().getValueAsDouble()));
     }
 }

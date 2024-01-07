@@ -59,11 +59,6 @@ public class PigeonGyro implements SmartGyro {
         this.inverted = isInverted;
     }
 
-    @Override
-    public void close() throws Exception {
-        // NoOp
-    }
-
     /**
      * Sets the gyro's heading back to zero
      */
@@ -93,11 +88,6 @@ public class PigeonGyro implements SmartGyro {
     @Override
     public void setAngle(final double angleDeg) {
         this.gyro.setFusedHeading(angleDeg);
-    }
-
-    @Override
-    public void calibrate() {
-        // NoOp
     }
 
     @Override
