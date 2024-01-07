@@ -12,8 +12,6 @@ public class PigeonGyro2 implements SmartGyro {
 
     /** The wrapped object. */
     final private Pigeon2 gyro;
-    /** Boolean to control inverted output. */
-    private boolean inverted;
 
     /**
      * Create the wrapper.
@@ -23,11 +21,6 @@ public class PigeonGyro2 implements SmartGyro {
     public PigeonGyro2(final Pigeon2 gyro) {
         super();
         this.gyro = gyro;
-
-        // Automatically invert if the gyro is upside-down
-        if (this.gyro.getRoll().getValueAsDouble() < 0) {
-            this.inverted = true;
-        }
     }
 
     /**
@@ -60,15 +53,6 @@ public class PigeonGyro2 implements SmartGyro {
     }
 
     /**
-     * Inverts the angle and rate of the Pigeon.
-     *
-     * @param isInverted The state of inversion, true is inverted.
-     */
-    public void setInverted(final boolean isInverted) {
-        this.inverted = isInverted;
-    }
-
-    /**
      * Sets the gyro's heading back to zero
      */
     @Override
@@ -89,7 +73,7 @@ public class PigeonGyro2 implements SmartGyro {
      */
     @Override
     public double getAngle() {
-        return this.inverted ? -this.gyro.getAngle() : this.gyro.getAngle();
+        return this.gyro.getAngle();
     }
 
     @Override
