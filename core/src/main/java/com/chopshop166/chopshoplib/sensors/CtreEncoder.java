@@ -1,6 +1,7 @@
 package com.chopshop166.chopshoplib.sensors;
 
 import com.ctre.phoenix6.hardware.CANcoder;
+import edu.wpi.first.units.Units;
 
 /**
  * An Encoder on the CAN bus.
@@ -36,12 +37,12 @@ public class CtreEncoder implements IEncoder {
 
     @Override
     public double getRate() {
-        return this.enc.getVelocity().getValueAsDouble();
+        return Units.RotationsPerSecond.of(this.enc.getVelocity().getValueAsDouble()).in(Units.DegreesPerSecond);
     }
 
     @Override
     public double getAbsolutePosition() {
-        return this.enc.getAbsolutePosition().getValueAsDouble();
+        return Units.Rotations.of(this.enc.getAbsolutePosition().getValueAsDouble()).in(Units.Degrees);
     }
 
     @Override
