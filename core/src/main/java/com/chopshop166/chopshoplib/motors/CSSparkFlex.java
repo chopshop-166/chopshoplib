@@ -20,7 +20,7 @@ public class CSSparkFlex extends CSSpark {
      *        to the Red and Black terminals only.
      */
     public CSSparkFlex(final int deviceID, final MotorType type) {
-        super(new CANSparkFlex(deviceID, type));
+        super(new CANSparkFlex(deviceID, type), type);
     }
 
     @Override
