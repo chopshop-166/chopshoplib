@@ -20,7 +20,7 @@ public class CSSparkMax extends CSSpark {
      *        to the Red and Black terminals only.
      */
     public CSSparkMax(final int deviceID, final MotorType type) {
-        super(new CANSparkMax(deviceID, type));
+        super(new CANSparkMax(deviceID, type), type);
     }
 
     @Override

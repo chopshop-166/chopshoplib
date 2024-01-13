@@ -3,7 +3,9 @@ package com.chopshop166.chopshoplib.motors;
 import com.chopshop166.chopshoplib.sensors.SparkEncoder;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkRelativeEncoder;
 
 /**
  * CSSpark
@@ -25,9 +27,12 @@ public class CSSpark extends SmartMotorController {
      * Create a smart motor controller from an unwrapped Spark object.
      *
      * @param spark The Spark MAX/Flex oject.
+     * @param type The motor type (brushed vs brushless).
      */
-    public CSSpark(final CANSparkBase spark) {
-        super(new MockMotorController(), new SparkEncoder(spark.getEncoder()));
+    public CSSpark(final CANSparkBase spark, final MotorType type) {
+        super(new MockMotorController(),
+                new SparkEncoder(type == MotorType.kBrushless ? spark.getEncoder()
+                        : spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 4096)));
         this.spark = spark;
         this.sparkPID = spark.getPIDController();
     }

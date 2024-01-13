@@ -5,7 +5,9 @@ import com.chopshop166.chopshoplib.sensors.MockEncoder
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.ctre.phoenix6.hardware.TalonFX
+import com.revrobotics.CANSparkFlex
 import com.revrobotics.CANSparkMax
+import com.revrobotics.CANSparkLowLevel.MotorType
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.wpilibj.motorcontrol.MotorController
 
@@ -17,11 +19,22 @@ fun MotorController.toSmart(encoder: IEncoder = MockEncoder()) =
 fun CANSparkMax.follow(thisObj: CSSpark, inverted: Boolean = false) =
     follow(thisObj.motorController, inverted)
 
-fun CANSparkMax.withPID(
+fun CANSparkFlex.withPID(
+    motorType : MotorType,
     controlType: PIDControlType = PIDControlType.Velocity,
     block: CSSpark.() -> Unit = {}
 ) =
-    CSSpark(this).apply {
+    CSSpark(this, motorType).apply {
+        setControlType(controlType)
+        block()
+    }
+
+fun CANSparkMax.withPID(
+    motorType : MotorType,
+    controlType: PIDControlType = PIDControlType.Velocity,
+    block: CSSpark.() -> Unit = {}
+) =
+    CSSpark(this, motorType).apply {
         setControlType(controlType)
         block()
     }
