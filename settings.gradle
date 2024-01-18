@@ -1,2 +1,2 @@
 rootProject.name = 'chopshoplib'
-include('core', 'kotlinext')
+include('core')
