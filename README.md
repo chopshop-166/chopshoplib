@@ -12,24 +12,12 @@ For documentation on classes, see the [javadocs](https://jitpack.io/com/github/c
 To use, in your `build.gradle` add the following:
 
 ```groovy
-plugins {
-    id "com.chopshop166.plugin" version "0.7"
-}
-
-dependencies {
-    implementation chopshop.deps()
-}
-```
-
-Or without the plugin:
-
-```groovy
 repositories {
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    compile group: 'com.chopshop166', name: 'chopshoplib', version: '2020.1.0'
+    compile group: 'com.chopshop166.chopshoplib', name: 'core', version: '2024.1.1'
 }
 ```
 
