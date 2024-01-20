@@ -3,21 +3,15 @@ package com.chopshop166.chopshoplib.commands;
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import java.util.stream.Stream;
 import org.littletonrobotics.junction.LoggedRobot;
 import com.chopshop166.chopshoplib.Autonomous;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
-import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -27,11 +21,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-@SuppressWarnings({ "PMD.ExcessiveImports", "PMD.GodClass" })
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public abstract class CommandRobot extends LoggedRobot {
 
-    /** The value to display on Shuffleboard if Git data isn't found. */
-    final private static String UNKNOWN_VALUE = "???";
     /** Chooser for the autonomous mode. */
     final private SendableChooser<Command> autoChooser = new SendableChooser<>();
     /** Currently running autonomous command. */
@@ -49,7 +41,6 @@ public abstract class CommandRobot extends LoggedRobot {
     @Override
     public void robotInit() {
         super.robotInit();
-        CommandRobot.logBuildData();
         this.configureButtonBindings();
         this.populateDashboard();
         this.setDefaultCommands();
@@ -168,15 +159,15 @@ public abstract class CommandRobot extends LoggedRobot {
     public Command safeStateSubsystems(final SmartSubsystem... subsystems) {
         return parallel(
                 Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(Command[]::new))
-                .withName("Reset Subsystems");
+                        .withName("Reset Subsystems");
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>       The type to return.
+     * @param <T> The type to return.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
+     * @param pkg The package to look in.
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
@@ -186,8 +177,8 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>          The type to return.
-     * @param rootClass    The root class object that the map derives from.
+     * @param <T> The type to return.
+     * @param rootClass The root class object that the map derives from.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
@@ -200,23 +191,24 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>          The type to return.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
+     * @param <T> The type to return.
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
+            final T defaultValue) {
         return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>       The type to return.
-     * @param name      The name to match against in annotations.
+     * @param <T> The type to return.
+     * @param name The name to match against in annotations.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg       The package to look in.
+     * @param pkg The package to look in.
      * @return An instance of the given type, or null.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass,
@@ -227,10 +219,10 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T>          The type to return.
-     * @param name         The name to match against in annotations.
-     * @param rootClass    The root class object that the map derives from.
-     * @param pkg          The package to look in.
+     * @param <T> The type to return.
+     * @param name The name to match against in annotations.
+     * @param rootClass The root class object that the map derives from.
+     * @param pkg The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
@@ -262,61 +254,4 @@ public abstract class CommandRobot extends LoggedRobot {
         }
         return defaultValue;
     }
-
-    /**
-     * Put robot code build information onto the dashboard.
-     * <p>
-     * This will fail without a Gradle task to generate build information. See this
-     * ChopShopLib
-     * README for more information.
-     */
-    @SuppressWarnings("PMD.EmptyCatchBlock")
-    public static void logBuildData() {
-
-        final ShuffleboardTab tab = Shuffleboard.getTab("BuildData");
-        String hashString = CommandRobot.UNKNOWN_VALUE;
-        String buildTime = CommandRobot.UNKNOWN_VALUE;
-        String branchString = CommandRobot.UNKNOWN_VALUE;
-        String fileString = CommandRobot.UNKNOWN_VALUE;
-        String serialNumber = CommandRobot.UNKNOWN_VALUE;
-
-        try {
-            final URL manifestURL = Resources.getResource("META-INF/MANIFEST.MF");
-            final Manifest manifest = new Manifest(manifestURL.openStream());
-            final Attributes attrs = manifest.getMainAttributes();
-
-            hashString = CommandRobot.getAttr(attrs, "Git-Hash");
-            buildTime = CommandRobot.getAttr(attrs, "Build-Time");
-            branchString = CommandRobot.getAttr(attrs, "Git-Branch");
-            fileString = CommandRobot.getAttr(attrs, "Git-Files");
-            serialNumber = RobotController.getSerialNumber();
-            if (serialNumber == null) {
-                serialNumber = CommandRobot.UNKNOWN_VALUE;
-            }
-        } catch (IOException ex) {
-            // Could not read the manifest, just send dummy values
-        } finally {
-            tab.add("Git Hash", hashString).withPosition(0, 0);
-            tab.add("Build Time", buildTime).withPosition(1, 0).withSize(2, 1);
-            tab.add("Git Branch", branchString).withPosition(3, 0);
-            tab.add("Git Files", fileString).withPosition(0, 1).withSize(4, 1);
-            tab.add("Serial Number", serialNumber).withPosition(4, 0);
-        }
-    }
-
-    /**
-     * Get an attribute, safely
-     * 
-     * @param attrs Attributes to load from
-     * @param key   Key to load
-     * @return An attribute, or UNKNOWN_VALUE.
-     */
-    private static String getAttr(final Attributes attrs, final String key) {
-        if (attrs.containsKey(key)) {
-            return attrs.getValue(key);
-        } else {
-            return CommandRobot.UNKNOWN_VALUE;
-        }
-    }
-
 }
