@@ -3,7 +3,8 @@ package com.chopshop166.chopshoplib.drive;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.DoubleSupplier;
-import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
+import com.chopshop166.chopshoplib.logging.LoggedSubsystem;
+import com.chopshop166.chopshoplib.logging.data.DifferentialDriveData;
 import com.chopshop166.chopshoplib.maps.DifferentialDriveMap;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,10 +25,9 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 /**
  * Generic Differential Drive subsystem.
  */
-public class DiffDriveSubsystem extends SmartSubsystemBase {
+public class DiffDriveSubsystem
+        extends LoggedSubsystem<DifferentialDriveData, DifferentialDriveMap> {
 
-    /** The hardware map. */
-    private final DifferentialDriveMap map;
     /** The drive train object. */
     private final DifferentialDrive driveTrain;
     /** The odometry for path following. */
@@ -41,8 +41,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param map The object mapping hardware to software objects.
      */
     public DiffDriveSubsystem(final DifferentialDriveMap map) {
-        super();
-        this.map = map;
+        super(new DifferentialDriveData(), map);
         this.driveTrain = new DifferentialDrive(map.left(), map.right());
         this.odometry = new DifferentialDriveOdometry(this.getRotation(), 0.0, 0.0);
     }
@@ -61,8 +60,8 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
     @Override
     public void periodic() {
         super.periodic();
-        this.odometry.update(this.getRotation(), this.map.leftEncoder().getDistance(),
-                this.map.rightEncoder().getDistance());
+        this.odometry.update(this.getRotation(), this.getMap().leftEncoder().getDistance(),
+                this.getMap().rightEncoder().getDistance());
         this.field.setRobotPose(this.getPose());
     }
 
@@ -83,7 +82,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The rotation as a WPIlib object.
      */
     public final Rotation2d getRotation() {
-        return Rotation2d.fromDegrees(this.map.gyro().getAngle());
+        return Rotation2d.fromDegrees(this.getMap().gyro().getAngle());
     }
 
     /**
@@ -109,13 +108,13 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
 
     /** Reset the encoders. */
     public void resetEncoders() {
-        this.map.leftEncoder().reset();
-        this.map.rightEncoder().reset();
+        this.getMap().leftEncoder().reset();
+        this.getMap().rightEncoder().reset();
     }
 
     /** Reset the gyro. */
     public void resetGyro() {
-        this.map.gyro().reset();
+        this.getMap().gyro().reset();
     }
 
     /**
@@ -124,7 +123,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The turn rate in degrees/second.
      */
     public double getTurnRate() {
-        return this.map.gyro().getRate();
+        return this.getMap().gyro().getRate();
     }
 
     /**
@@ -133,8 +132,8 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return Left and right wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(this.map.leftEncoder().getRate(),
-                this.map.rightEncoder().getRate());
+        return new DifferentialDriveWheelSpeeds(this.getMap().leftEncoder().getRate(),
+                this.getMap().rightEncoder().getRate());
     }
 
     /**
@@ -143,7 +142,8 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @return The average distance.
      */
     private double encoderAvg() {
-        return (this.map.leftEncoder().getDistance() + this.map.rightEncoder().getDistance()) / 2;
+        return (this.getMap().leftEncoder().getDistance()
+                + this.getMap().rightEncoder().getDistance()) / 2;
     }
 
     /**
@@ -153,8 +153,8 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
      * @param right The right speed.
      */
     public void tankDriveSetpoint(final Double left, final Double right) {
-        this.map.left().setSetpoint(left == null ? 0.0 : left);
-        this.map.right().setSetpoint(left == null ? 0.0 : left);
+        this.getMap().left().setSetpoint(left == null ? 0.0 : left);
+        this.getMap().right().setSetpoint(left == null ? 0.0 : left);
         this.driveTrain.feed();
     }
 
@@ -203,7 +203,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
                 realSpeed *= -1;
             }
             this.driveTrain.arcadeDrive(0, realSpeed);
-        })).until(() -> Math.abs(this.map.gyro().getAngle()) >= Math.abs(degrees))
+        })).until(() -> Math.abs(this.getMap().gyro().getAngle()) >= Math.abs(degrees))
                 .finallyDo(this::safeState).withName("Turn " + degrees + " degrees");
     }
 
@@ -245,7 +245,7 @@ public class DiffDriveSubsystem extends SmartSubsystemBase {
                 // Creates our ramsete controller
                 this.getRamsete(),
                 // Describes how the drivetrain is influenced by motor speed
-                this.map.kinematics(),
+                this.getMap().kinematics(),
                 // Sends speeds to motors
                 this::tankDriveSetpoint, this);
 
