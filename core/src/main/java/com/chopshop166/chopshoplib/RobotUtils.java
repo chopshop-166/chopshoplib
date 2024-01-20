@@ -1,22 +1,27 @@
 package com.chopshop166.chopshoplib;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.StringJoiner;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
+
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
  * Utilities that are related to overall robot functionality.
  */
 public final class RobotUtils {
-    private RobotUtils() {}
+    private RobotUtils() {
+    }
 
     /**
      * Get a value if it exists, or a default value if it's null.
      *
-     * @param <T> The type to get.
-     * @param value The value to test.
+     * @param <T>          The type to get.
+     * @param value        The value to test.
      * @param defaultValue The default value for if value is null.
      * @return A null safe value
      */
@@ -50,7 +55,7 @@ public final class RobotUtils {
      *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
-     * @param value The value to clamp.
+     * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
     public static double clamp(final double minBound, final double maxBound, final double value) {
@@ -62,7 +67,7 @@ public final class RobotUtils {
      *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
-     * @param value The value to clamp.
+     * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
     public static float clamp(final float minBound, final float maxBound, final float value) {
@@ -74,7 +79,7 @@ public final class RobotUtils {
      *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
-     * @param value The value to clamp.
+     * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
     public static int clamp(final int minBound, final int maxBound, final int value) {
@@ -86,7 +91,7 @@ public final class RobotUtils {
      *
      * @param minBound The lowest possible value.
      * @param maxBound The highest possible value.
-     * @param value The value to clamp.
+     * @param value    The value to clamp.
      * @return The provided value, clamped between minBound and maxBound.
      */
     public static long clamp(final long minBound, final long maxBound, final long value) {
@@ -107,7 +112,7 @@ public final class RobotUtils {
      * Sign Preserving Power
      *
      * @param value The value to multiply.
-     * @param exp The value to exponentiate by.
+     * @param exp   The value to exponentiate by.
      * @return The square of the given value, preserving sign.
      */
     public static double sppow(final double value, final double exp) {
@@ -136,7 +141,7 @@ public final class RobotUtils {
      * Apply a deadband to an axis, elongating the remaining space.
      *
      * @param range The range to deaden.
-     * @param axis The axis to pull from.
+     * @param axis  The axis to pull from.
      * @return The new axis to use.
      */
     public static DoubleSupplier deadbandAxis(final double range, final DoubleSupplier axis) {
@@ -147,10 +152,35 @@ public final class RobotUtils {
     /**
      * Negate a boolean supplier.
      *
-     * @param func The base function
+     * @param func The base function.
      * @return A function that returns true when func returns false, and vice versa.
      */
     public static BooleanSupplier not(final BooleanSupplier func) {
         return () -> !func.getAsBoolean();
+    }
+
+    /**
+     * Get the MAC address for a robot.
+     * 
+     * @return The MAC address as a standardized string.
+     */
+    public static String getMACAddress() {
+        try {
+            final NetworkInterface iface = NetworkInterface.getByName("eth0");
+            if (iface == null) {
+                return "NotFound";
+            }
+            final byte[] mac = iface.getHardwareAddress();
+            if (mac == null) {
+                throw new SocketException();
+            }
+            final StringJoiner sb = new StringJoiner(":");
+            for (final byte octet : mac) {
+                sb.add(String.format("%02X", octet));
+            }
+            return sb.toString();
+        } catch (SocketException ex) {
+            return "SocketException";
+        }
     }
 }

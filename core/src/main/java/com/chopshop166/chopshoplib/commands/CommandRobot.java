@@ -10,6 +10,7 @@ import java.util.jar.Manifest;
 import java.util.stream.Stream;
 import org.littletonrobotics.junction.LoggedRobot;
 import com.chopshop166.chopshoplib.Autonomous;
+import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
 import com.google.common.io.Resources;
 import com.google.common.reflect.ClassPath;
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
+@SuppressWarnings({ "PMD.ExcessiveImports", "PMD.GodClass" })
 public abstract class CommandRobot extends LoggedRobot {
 
     /** The value to display on Shuffleboard if Git data isn't found. */
@@ -167,15 +168,15 @@ public abstract class CommandRobot extends LoggedRobot {
     public Command safeStateSubsystems(final SmartSubsystem... subsystems) {
         return parallel(
                 Stream.of(subsystems).map(SmartSubsystem::safeStateCmd).toArray(Command[]::new))
-                        .withName("Reset Subsystems");
+                .withName("Reset Subsystems");
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T> The type to return.
+     * @param <T>       The type to return.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
+     * @param pkg       The package to look in.
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
@@ -205,19 +206,17 @@ public abstract class CommandRobot extends LoggedRobot {
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
-    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
-            final T defaultValue) {
-        return CommandRobot.getMapForName(RobotController.getSerialNumber(), rootClass, pkg,
-                defaultValue);
+    public static <T> T getRobotMap(final Class<T> rootClass, final String pkg, final T defaultValue) {
+        return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
     }
 
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T> The type to return.
-     * @param name The name to match against in annotations.
+     * @param <T>       The type to return.
+     * @param name      The name to match against in annotations.
      * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
+     * @param pkg       The package to look in.
      * @return An instance of the given type, or null.
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass,
@@ -228,10 +227,10 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Get a RobotMap for the given name.
      * 
-     * @param <T> The type to return.
-     * @param name The name to match against in annotations.
-     * @param rootClass The root class object that the map derives from.
-     * @param pkg The package to look in.
+     * @param <T>          The type to return.
+     * @param name         The name to match against in annotations.
+     * @param rootClass    The root class object that the map derives from.
+     * @param pkg          The package to look in.
      * @param defaultValue The object to return if no match is found.
      * @return An instance of the given type, or the default value.
      */
@@ -267,7 +266,8 @@ public abstract class CommandRobot extends LoggedRobot {
     /**
      * Put robot code build information onto the dashboard.
      * <p>
-     * This will fail without a Gradle task to generate build information. See this ChopShopLib
+     * This will fail without a Gradle task to generate build information. See this
+     * ChopShopLib
      * README for more information.
      */
     @SuppressWarnings("PMD.EmptyCatchBlock")
@@ -308,7 +308,7 @@ public abstract class CommandRobot extends LoggedRobot {
      * Get an attribute, safely
      * 
      * @param attrs Attributes to load from
-     * @param key Key to load
+     * @param key   Key to load
      * @return An attribute, or UNKNOWN_VALUE.
      */
     private static String getAttr(final Attributes attrs, final String key) {
