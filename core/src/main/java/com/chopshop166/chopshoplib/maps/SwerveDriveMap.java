@@ -2,9 +2,10 @@ package com.chopshop166.chopshoplib.maps;
 
 import com.chopshop166.chopshoplib.drive.MockSwerveModule;
 import com.chopshop166.chopshoplib.drive.SwerveModule;
+import com.chopshop166.chopshoplib.logging.LoggableMap;
+import com.chopshop166.chopshoplib.logging.data.SwerveDriveData;
 import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
-
 import edu.wpi.first.math.geometry.Translation2d;
 
 /**
@@ -14,7 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public record SwerveDriveMap(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule rearLeft,
         SwerveModule rearRight, double maxDriveSpeedMetersPerSecond,
-        double maxRotationRadianPerSecond, SmartGyro gyro) {
+        double maxRotationRadianPerSecond, SmartGyro gyro) implements LoggableMap<SwerveDriveData> {
 
     /** A distance to use for default values. */
     private static final double DEFAULT_DISTANCE_FROM_CENTER = 0.381;
@@ -40,5 +41,14 @@ public record SwerveDriveMap(SwerveModule frontLeft, SwerveModule frontRight, Sw
                 Math.PI,
                 // Gyro
                 new MockGyro());
+    }
+
+    @Override
+    public void updateData(final SwerveDriveData data) {
+        data.frontLeft.updateData(this.frontLeft);
+        data.frontRight.updateData(this.frontRight);
+        data.rearLeft.updateData(this.rearLeft);
+        data.rearRight.updateData(this.rearRight);
+        data.gyroYawPosition = this.gyro.getRotation2d();
     }
 }
