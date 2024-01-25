@@ -72,4 +72,13 @@ public class SwerveModuleData extends DataWrapper {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(this.drivePositionMeters, this.currentState.data.angle);
     }
+
+    /**
+     * Set Desired State.
+     * 
+     * @param state The desired state.
+     */
+    public void setDesiredState(final SwerveModuleState state) {
+        this.desiredState.data = state;
+    }
 }

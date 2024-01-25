@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.logging.data;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /** Data for the entire swerve drive subsystem. */
 public class SwerveDriveData extends DataWrapper {
@@ -36,6 +37,18 @@ public class SwerveDriveData extends DataWrapper {
      */
     public SwerveDriveData(final String name) {
         super(name);
+    }
+
+    /**
+     * Set Desired States.
+     * 
+     * @param states The desired states.
+     */
+    public void setDesiredStates(final SwerveModuleState... states) {
+        this.frontLeft.setDesiredState(states[0]);
+        this.frontRight.setDesiredState(states[1]);
+        this.rearLeft.setDesiredState(states[2]);
+        this.rearRight.setDesiredState(states[3]);
     }
 
 }
