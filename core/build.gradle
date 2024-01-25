@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
 }
 
 publishing {
