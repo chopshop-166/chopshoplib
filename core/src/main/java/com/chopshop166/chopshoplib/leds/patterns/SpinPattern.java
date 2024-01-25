@@ -6,12 +6,24 @@ import edu.wpi.first.wpilibj.util.Color;
 
 /** Display a spinning dot. */
 public class SpinPattern extends AnimatedPattern {
+    /** The color of the dot. */
+    private final Color color;
     /** The position of the indicator. */
     private int ledPosition;
 
     /** Constructor. */
     public SpinPattern() {
+        this(Color.kGreen);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param color The color of the dot.
+     */
+    public SpinPattern(final Color color) {
         super(0.05);
+        this.color = color;
     }
 
     @Override
@@ -27,11 +39,11 @@ public class SpinPattern extends AnimatedPattern {
             this.ledPosition = 0;
         }
         buffer.setAll(Color.kBlack);
-        buffer.set(this.ledPosition, Color.kGreen);
+        buffer.set(this.ledPosition, this.color);
     }
 
     @Override
     public String toString() {
-        return "SpinPattern()";
+        return String.format("SpinPattern(%s)", this.color.toString());
     }
 }
