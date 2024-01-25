@@ -23,6 +23,10 @@ import org.littletonrobotics.junction.LogTable;
                 logger = entry.getValue();
             }
         }
+        // If we didn't special-case the enum, then fall back to the string method
+        if (logger == null && field.getType().isEnum()) {
+            logger = FieldLogger.ENUM_LOGGER;
+        }
         return logger == null ? null : new LogConfig(name, field, logger);
     }
 
