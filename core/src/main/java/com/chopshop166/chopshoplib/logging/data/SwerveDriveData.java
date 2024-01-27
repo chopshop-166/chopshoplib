@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.logging.data;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /** Data for the entire swerve drive subsystem. */
@@ -49,6 +50,28 @@ public class SwerveDriveData extends DataWrapper {
         this.frontRight.setDesiredState(states[1]);
         this.rearLeft.setDesiredState(states[2]);
         this.rearRight.setDesiredState(states[3]);
+    }
+
+    /**
+     * Get the current module positions.
+     * 
+     * @return The position objects as an array.
+     */
+    public SwerveModulePosition[] getModulePositions() {
+        return new SwerveModulePosition[] {this.frontLeft.getModulePosition(),
+                this.frontRight.getModulePosition(), this.rearLeft.getModulePosition(),
+                this.rearRight.getModulePosition()};
+    }
+
+    /**
+     * Get the states of all the modules.
+     * 
+     * @return The state objects as an array.
+     */
+    public SwerveModuleState[] getModuleStates() {
+        return new SwerveModuleState[] {this.frontLeft.getModuleState(),
+                this.frontRight.getModuleState(), this.rearLeft.getModuleState(),
+                this.rearRight.getModuleState()};
     }
 
 }
