@@ -126,7 +126,6 @@ public class CSSpark extends SmartMotorController {
     @Override
     public void setInverted(final boolean isInverted) {
         this.spark.setInverted(isInverted);
-        this.getEncoder().setReverseDirection(isInverted);
     }
 
     @Override

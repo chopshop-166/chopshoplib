@@ -95,24 +95,6 @@ public class SparkEncoder implements IEncoder {
         return this.encoder.getVelocity();
     }
 
-    /**
-     * Get if the encoder is reversed.
-     * 
-     * @return true if reversed, otherwise false.
-     */
-    public boolean isReverseDirection() {
-        return this.encoder.getInverted();
-    }
-
-    /**
-     * Set if the encoder is reversed.
-     * 
-     * @param isReversed true if the encoder is reversed, otherwise false.
-     */
-    public void setReverseDirection(final boolean isReversed) {
-        this.encoder.setInverted(isReversed);
-    }
-
     @Override
     public void reset() {
         this.encoder.setPosition(0.0);
