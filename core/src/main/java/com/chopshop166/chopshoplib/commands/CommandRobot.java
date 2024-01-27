@@ -6,6 +6,7 @@ import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
 import com.chopshop166.chopshoplib.Autonomous;
 import com.chopshop166.chopshoplib.RobotUtils;
 import com.chopshop166.chopshoplib.maps.RobotMapFor;
@@ -40,6 +41,7 @@ public abstract class CommandRobot extends LoggedRobot {
 
     @Override
     public void robotInit() {
+        Logger.recordMetadata("MAC Address", RobotUtils.getMACAddress());
         super.robotInit();
         this.configureButtonBindings();
         this.populateDashboard();
