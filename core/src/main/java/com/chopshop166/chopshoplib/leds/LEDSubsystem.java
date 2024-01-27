@@ -3,11 +3,14 @@ package com.chopshop166.chopshoplib.leds;
 import org.littletonrobotics.junction.Logger;
 
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
+import com.chopshop166.chopshoplib.leds.patterns.SolidColorPattern;
 import com.chopshop166.chopshoplib.maps.LedMap;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** A base class for an LED subsystem. */
+@SuppressWarnings({"PMD.LinguisticNaming"})
 public class LEDSubsystem extends SmartSubsystemBase {
 
     /** The LED subsystem map. */
@@ -39,17 +42,39 @@ public class LEDSubsystem extends SmartSubsystemBase {
     }
 
     /**
+     * Generic "set a tag to a color" command.
+     * 
+     * @param tag The tag to set.
+     * @param color The solid color to set the tag to.
+     * @return A command object.
+     */
+    public Command setPattern(final String tag, final Color color) {
+        return this.setPattern(tag, new SolidColorPattern(color));
+    }
+
+    /**
      * Generic "set a tag to a pattern" command.
      * 
      * @param tag The tag to set.
      * @param pattern The pattern to set it to.
      * @return A command object.
      */
-    @SuppressWarnings({"PMD.LinguisticNaming"})
     public Command setPattern(final String tag, final Pattern pattern) {
         return this.runOnce(() -> {
             this.ledBuffer.setPattern(tag, pattern);
         }).ignoringDisable(true);
+    }
+
+    /**
+     * Generic "set a tag to a color" command.
+     * 
+     * @param tag The tag to set.
+     * @param color The solid color to set the tag to.
+     * @param indicator The name to record in the log.
+     * @return A command object.
+     */
+    public Command setPattern(final String tag, final Color color, final String indicator) {
+        return this.setPattern(tag, new SolidColorPattern(color), indicator);
     }
 
     /**
@@ -60,9 +85,18 @@ public class LEDSubsystem extends SmartSubsystemBase {
      * @param indicator The name to record in the log.
      * @return A command object.
      */
-    @SuppressWarnings({"PMD.LinguisticNaming"})
     public Command setPattern(final String tag, final Pattern pattern, final String indicator) {
         return this.setPattern(tag, pattern).andThen(this.logIndicator(indicator));
+    }
+
+    /**
+     * Generic "set everything to a color" command.
+     * 
+     * @param color The solid color to set the buffer to.
+     * @return A command object.
+     */
+    public Command setGlobalPattern(final Color color) {
+        return this.setGlobalPattern(new SolidColorPattern(color));
     }
 
     /**
