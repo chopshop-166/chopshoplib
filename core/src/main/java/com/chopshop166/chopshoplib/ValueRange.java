@@ -23,7 +23,7 @@ public record ValueRange(double min, double max) {
      * @param value The value to clamp.
      * @return The value, clamped within the range.
      */
-    double clamp(final double value) {
+    public double clamp(final double value) {
         return Math.max(this.min, Math.min(value, this.max));
     }
 
@@ -33,7 +33,7 @@ public record ValueRange(double min, double max) {
      * @param value The value to test.
      * @return A boolean.
      */
-    boolean contains(final double value) {
+    public boolean contains(final double value) {
         return this.min <= value && value <= this.max;
     }
 }
