@@ -1,8 +1,9 @@
 package com.chopshop166.chopshoplib.logging.data;
 
+import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import com.chopshop166.chopshoplib.logging.LoggerDataFor;
-import com.chopshop166.chopshoplib.logging.DataWrapper;
+import com.chopshop166.chopshoplib.logging.NoLog;
 import com.chopshop166.chopshoplib.motors.SmartMotorController;
 
 /**
@@ -27,13 +28,28 @@ public class MotorControllerData extends DataWrapper {
     @LogName("TempCelsius")
     public double[] tempC;
 
+    /** Whether the motor is a flywheel. */
+    @NoLog
+    public boolean isFlywheel;
+
     /**
      * Constructor.
      * 
      * @param name The name of the motor controller.
      */
     public MotorControllerData(final String name) {
+        this(name, false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param name The name of the motor controller.
+     * @param isFlywheel Whether the motor is a flywheel.
+     */
+    public MotorControllerData(final String name, final boolean isFlywheel) {
         super(name);
+        this.isFlywheel = isFlywheel;
     }
 
     /**
@@ -42,7 +58,7 @@ public class MotorControllerData extends DataWrapper {
      * @param motor The motor object to update from.
      */
     public void updateData(final SmartMotorController motor) {
-        if (this.setpoint == 0.0) {
+        if (this.isFlywheel && this.setpoint == 0.0) {
             motor.stopMotor();
         } else {
             motor.set(this.setpoint);
