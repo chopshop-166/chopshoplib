@@ -10,7 +10,8 @@ import com.revrobotics.SparkRelativeEncoder;
 /**
  * CSSpark
  *
- * Derives SmartMotorController to allow for use on a Spark Motor Controller. It will act as a
+ * Derives SmartMotorController to allow for use on a Spark Motor Controller. It
+ * will act as a
  * normal Spark with encoders, but will also be able to use PID.
  */
 public class CSSpark extends SmartMotorController {
@@ -19,7 +20,7 @@ public class CSSpark extends SmartMotorController {
     /** The PID controller from the Spark MAX. */
     private final SparkPIDController sparkPID;
     /** The control type for the PID controller. */
-    private ControlType savedControlType = ControlType.kVelocity;
+    private ControlType savedControlType = ControlType.kDutyCycle;
     /** The PID Slot to send along with all setReference commands. */
     private int pidSlot;
 
@@ -27,7 +28,7 @@ public class CSSpark extends SmartMotorController {
      * Create a smart motor controller from an unwrapped Spark object.
      *
      * @param spark The Spark MAX/Flex oject.
-     * @param type The motor type (brushed vs brushless).
+     * @param type  The motor type (brushed vs brushless).
      */
     public CSSpark(final CANSparkBase spark, final MotorType type) {
         super(new MockMotorController(),
@@ -110,7 +111,11 @@ public class CSSpark extends SmartMotorController {
 
     @Override
     public void set(final double speed) {
-        this.spark.set(speed);
+        if (this.savedControlType == ControlType.kDutyCycle) {
+            this.spark.set(speed);
+        } else {
+            this.setSetpoint(speed);
+        }
     }
 
     @Override
@@ -135,12 +140,12 @@ public class CSSpark extends SmartMotorController {
 
     /**
      * Get Temperature from the motor
-     * 
+     *
      * @return Returns the temperature.
      */
     @Override
     public double[] getTemperatureC() {
-        return new double[] {this.spark.getMotorTemperature()};
+        return new double[] { this.spark.getMotorTemperature() };
     }
 
     /**
@@ -150,7 +155,7 @@ public class CSSpark extends SmartMotorController {
      */
     @Override
     public double[] getCurrentAmps() {
-        return new double[] {this.spark.getOutputCurrent()};
+        return new double[] { this.spark.getOutputCurrent() };
     }
 
     @Override
