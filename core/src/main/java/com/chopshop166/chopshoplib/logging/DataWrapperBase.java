@@ -39,6 +39,7 @@ public class DataWrapperBase implements LoggableInputs {
         // On first run, cache the mapping of field and logname to logger
         if (this.logConfig.isEmpty()) {
             this.logConfig.addAll(Arrays.stream(this.getClass().getFields())
+                    .filter(f -> f.getAnnotation(NoLog.class) == null)
                     .filter(DataWrapperBase::fieldTypeIsLoggable).map(LogConfig::fromField)
                     .filter(c -> c != null).toList());
         }
