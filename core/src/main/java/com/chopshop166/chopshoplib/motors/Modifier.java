@@ -44,6 +44,24 @@ public interface Modifier extends DoubleUnaryOperator {
     }
 
     /**
+     * Apply a deadband to a value.
+     *
+     * Any value outside the deadband is scaled to the entire range.
+     *
+     * @param range The range to deaden.
+     * @return A function taking and returning a double.
+     */
+    static Modifier scalingDeadband(final double range) {
+        return speed -> {
+            if (Math.abs(speed) < range) {
+                return 0.0;
+            } else {
+                return (speed - (Math.signum(speed) * range)) / (1.0 - range);
+            }
+        };
+    }
+
+    /**
      * Modifier to set the speed based on a rolling average.
      * 
      * @param numSamples The number of samples to use.
