@@ -6,16 +6,7 @@ import com.chopshop166.chopshoplib.logging.DataWrapper;
 public class SingleMotorSubsystemData extends DataWrapper {
 
     /** The data object for the motor. */
-    public MotorControllerData motor = new MotorControllerData("Motor");
-
-    /**
-     * Constructor.
-     * 
-     * @param name The name of the subsystem.
-     */
-    public SingleMotorSubsystemData(final String name) {
-        super(name);
-    }
+    public MotorControllerData motor = new MotorControllerData(false);
 
     /**
      * Convenience wrapper for setting the motor's setpoint.

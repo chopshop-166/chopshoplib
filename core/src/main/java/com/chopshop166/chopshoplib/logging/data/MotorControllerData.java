@@ -37,21 +37,18 @@ public class MotorControllerData extends DataWrapper {
 
     /**
      * Constructor.
-     * 
-     * @param name The name of the motor controller.
      */
-    public MotorControllerData(final String name) {
-        this(name, false);
+    public MotorControllerData() {
+        this(false);
     }
 
     /**
      * Constructor.
      * 
-     * @param name The name of the motor controller.
      * @param isFlywheel Whether the motor is a flywheel.
      */
-    public MotorControllerData(final String name, final boolean isFlywheel) {
-        super(name);
+    public MotorControllerData(final boolean isFlywheel) {
+        super();
         this.isFlywheel = isFlywheel;
     }
 

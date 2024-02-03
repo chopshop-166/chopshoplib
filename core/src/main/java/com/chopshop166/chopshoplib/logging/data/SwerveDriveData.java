@@ -10,35 +10,17 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 public class SwerveDriveData extends DataWrapper {
 
     /** Front left swerve module. */
-    public final SwerveModuleData frontLeft = new SwerveModuleData("FrontLeft");
+    public final SwerveModuleData frontLeft = new SwerveModuleData();
     /** Front right swerve module. */
-    public final SwerveModuleData frontRight = new SwerveModuleData("FrontRight");
+    public final SwerveModuleData frontRight = new SwerveModuleData();
     /** Rear left swerve module. */
-    public final SwerveModuleData rearLeft = new SwerveModuleData("RearLeft");
+    public final SwerveModuleData rearLeft = new SwerveModuleData();
     /** Rear right swerve module. */
-    public final SwerveModuleData rearRight = new SwerveModuleData("RearRight");
+    public final SwerveModuleData rearRight = new SwerveModuleData();
 
     /** The heading of the robot. */
     @LogName("GyroYawPosition")
     public Rotation2d gyroYawPosition = new Rotation2d();
-
-    /**
-     * Constructor.
-     * 
-     * Uses default name.
-     */
-    public SwerveDriveData() {
-        this("SwerveDrive");
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param name Uses the given name for logging.
-     */
-    public SwerveDriveData(final String name) {
-        super(name);
-    }
 
     /**
      * Set Desired States.
