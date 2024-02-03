@@ -12,13 +12,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 public class SwerveModuleData extends DataWrapper {
 
     /** Actual State. */
-    public final SwerveModuleStateData currentState = new SwerveModuleStateData("Current");
+    public final SwerveModuleStateData currentState = new SwerveModuleStateData();
     /** Desired State. */
-    public final SwerveModuleStateData desiredState = new SwerveModuleStateData("Desired");
+    public final SwerveModuleStateData desiredState = new SwerveModuleStateData();
     /** Drive Motor params. */
-    public final MotorControllerData driveMotor = new MotorControllerData("Drive");
+    public final MotorControllerData driveMotor = new MotorControllerData();
     /** Steering Motor params. */
-    public final MotorControllerData steeringMotor = new MotorControllerData("Steering");
+    public final MotorControllerData steeringMotor = new MotorControllerData();
     /** Drive Position. */
     @LogName("DrivePositionMeters")
     public double drivePositionMeters;
@@ -28,15 +28,6 @@ public class SwerveModuleData extends DataWrapper {
     /** Actual State. */
     @LogName("DesiredAngleDegrees")
     public double desiredPodAngle;
-
-    /**
-     * Constructor.
-     * 
-     * @param name The name of the swerve module.
-     */
-    public SwerveModuleData(final String name) {
-        super(name);
-    }
 
     /**
      * Update the data with hardware data.
