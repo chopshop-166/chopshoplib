@@ -165,6 +165,15 @@ public class SmartMotorController implements MotorController {
         return new double[] {0};
     }
 
+    /**
+     * Get an array of all voltages associated with the motor controller.
+     * 
+     * @return An array in volts.
+     */
+    public double[] getVoltage() {
+        return new double[] {0};
+    }
+
     @Override
     public void set(final double speed) {
         this.wrapped.set(speed);

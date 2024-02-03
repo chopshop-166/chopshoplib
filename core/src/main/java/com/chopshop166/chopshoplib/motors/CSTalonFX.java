@@ -42,4 +42,9 @@ public class CSTalonFX extends SmartMotorController {
     public void set(final double speed) {
         this.wrapped.setControl(new DutyCycleOut(speed));
     }
+
+    @Override
+    public double[] getVoltage() {
+        return new double[] {this.wrapped.getMotorVoltage().getValueAsDouble()};
+    }
 }

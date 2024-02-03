@@ -23,20 +23,27 @@ public class SmartMotorControllerGroup extends SmartMotorController {
     public SmartMotorControllerGroup(final SmartMotorController controller1,
             final SmartMotorController controller2, final SmartMotorController... controllers) {
         super(controller1, controller1.getEncoder());
-        wrapped.add(controller1);
-        wrapped.add(controller2);
-        wrapped.addAll(Arrays.asList(controllers));
+        this.wrapped.add(controller1);
+        this.wrapped.add(controller2);
+        this.wrapped.addAll(Arrays.asList(controllers));
 
     }
 
     @Override
     public double[] getCurrentAmps() {
-        return wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getCurrentAmps())).toArray();
+        return this.wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getCurrentAmps()))
+                .toArray();
     }
 
     @Override
     public double[] getTemperatureC() {
-        return wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getTemperatureC()))
+        return this.wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getTemperatureC()))
+                .toArray();
+    }
+
+    @Override
+    public double[] getVoltage() {
+        return this.wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getVoltage()))
                 .toArray();
     }
 

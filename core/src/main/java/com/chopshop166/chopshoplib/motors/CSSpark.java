@@ -10,8 +10,7 @@ import com.revrobotics.SparkRelativeEncoder;
 /**
  * CSSpark
  *
- * Derives SmartMotorController to allow for use on a Spark Motor Controller. It
- * will act as a
+ * Derives SmartMotorController to allow for use on a Spark Motor Controller. It will act as a
  * normal Spark with encoders, but will also be able to use PID.
  */
 public class CSSpark extends SmartMotorController {
@@ -28,7 +27,7 @@ public class CSSpark extends SmartMotorController {
      * Create a smart motor controller from an unwrapped Spark object.
      *
      * @param spark The Spark MAX/Flex oject.
-     * @param type  The motor type (brushed vs brushless).
+     * @param type The motor type (brushed vs brushless).
      */
     public CSSpark(final CANSparkBase spark, final MotorType type) {
         super(new MockMotorController(),
@@ -145,7 +144,7 @@ public class CSSpark extends SmartMotorController {
      */
     @Override
     public double[] getTemperatureC() {
-        return new double[] { this.spark.getMotorTemperature() };
+        return new double[] {this.spark.getMotorTemperature()};
     }
 
     /**
@@ -155,7 +154,12 @@ public class CSSpark extends SmartMotorController {
      */
     @Override
     public double[] getCurrentAmps() {
-        return new double[] { this.spark.getOutputCurrent() };
+        return new double[] {this.spark.getOutputCurrent()};
+    }
+
+    @Override
+    public double[] getVoltage() {
+        return new double[] {this.spark.getBusVoltage() * this.spark.getAppliedOutput()};
     }
 
     @Override
