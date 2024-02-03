@@ -7,7 +7,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
-
+import com.chopshop166.chopshoplib.motors.Modifier;
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
@@ -120,24 +120,6 @@ public final class RobotUtils {
     }
 
     /**
-     * Apply a deadband to a value.
-     *
-     * Any value outside the deadband is scaled to the entire range.
-     *
-     * @param range The range to deaden.
-     * @return A function taking and returning a double.
-     */
-    public static DoubleUnaryOperator scalingDeadband(final double range) {
-        return speed -> {
-            if (Math.abs(speed) < range) {
-                return 0.0;
-            } else {
-                return (speed - (Math.signum(speed) * range)) / (1.0 - range);
-            }
-        };
-    }
-
-    /**
      * Apply a deadband to an axis, elongating the remaining space.
      *
      * @param range The range to deaden.
@@ -145,7 +127,7 @@ public final class RobotUtils {
      * @return The new axis to use.
      */
     public static DoubleSupplier deadbandAxis(final double range, final DoubleSupplier axis) {
-        final DoubleUnaryOperator deadband = scalingDeadband(range);
+        final DoubleUnaryOperator deadband = Modifier.scalingDeadband(range);
         return () -> deadband.applyAsDouble(axis.getAsDouble());
     }
 
