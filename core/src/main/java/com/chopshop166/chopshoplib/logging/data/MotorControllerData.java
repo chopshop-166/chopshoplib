@@ -27,6 +27,7 @@ public class MotorControllerData extends DataWrapper {
     /** The motor temperature in celcius. */
     @LogName("TempCelsius")
     public double[] tempC;
+    /** The motor output voltage. */
     @LogName("Voltage")
     public double[] voltage;
 
