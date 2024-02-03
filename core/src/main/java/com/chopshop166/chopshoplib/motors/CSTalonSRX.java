@@ -46,8 +46,7 @@ public class CSTalonSRX extends SmartMotorController {
     }
 
     /**
-     * Add the default configuration to the list of configurations and set it in the
-     * TalonSRX.
+     * Add the default configuration to the list of configurations and set it in the TalonSRX.
      *
      * @param config Configuration to add to the list of stored configs.
      */
@@ -115,12 +114,17 @@ public class CSTalonSRX extends SmartMotorController {
 
     @Override
     public double[] getCurrentAmps() {
-        return new double[] { this.wrapped.getSupplyCurrent() };
+        return new double[] {this.wrapped.getSupplyCurrent()};
     }
 
     @Override
     public double[] getTemperatureC() {
-        return new double[] { this.wrapped.getTemperature() };
+        return new double[] {this.wrapped.getTemperature()};
+    }
+
+    @Override
+    public double[] getVoltage() {
+        return new double[] {this.wrapped.getMotorOutputVoltage()};
     }
 
 }

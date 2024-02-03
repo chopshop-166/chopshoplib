@@ -27,6 +27,8 @@ public class MotorControllerData extends DataWrapper {
     /** The motor temperature in celcius. */
     @LogName("TempCelsius")
     public double[] tempC;
+    @LogName("Voltage")
+    public double[] voltage;
 
     /** Whether the motor is a flywheel. */
     @NoLog
@@ -67,5 +69,6 @@ public class MotorControllerData extends DataWrapper {
         this.velocityInchesPerSec = motor.getEncoder().getRate();
         this.currentAmps = motor.getCurrentAmps();
         this.tempC = motor.getTemperatureC();
+        this.voltage = motor.getVoltage();
     }
 }
