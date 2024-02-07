@@ -31,6 +31,12 @@ public class SDSSwerveModule implements SwerveModule {
     /** The motor controller used for driving. */
     private final CSSpark driveController;
 
+    /** The ratio to adjust desired drive speed based on steering error */
+    private final double steeringErrorDriveRatio;
+
+    /** The steering angle within which we don't adjust the drive speed */
+    private final static double STEERING_ANGLE_TOLERANCE = 2;
+
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
             (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 60.0), Units.inchesToMeters(4));
@@ -65,7 +71,7 @@ public class SDSSwerveModule implements SwerveModule {
         /** Wheel diameter. */
         public final double wheelDiameter;
         /** PID configuration. */
-        public final PIDValues pidValues;
+        public final PIDValues steeringPIDValues;
 
         /** PID Configuration for Drive Motor */
         public final PIDValues drivePIDValues;
@@ -73,47 +79,46 @@ public class SDSSwerveModule implements SwerveModule {
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
-         * @param wheelDiameter The diameter of the wheel.
-         * @param pidValues The PID constants to use for the steering PID.
+         * @param gearRatio      The gear ratio for the module.
+         * @param wheelDiameter  The diameter of the wheel.
+         * @param pidValues      The PID constants to use for the steering PID.
          * @param drivePIDValues The PID constants to use for the drive PID.
          */
         public Configuration(final double gearRatio, final double wheelDiameter,
                 final PIDValues pidValues, final PIDValues drivePIDValues) {
             this.gearRatio = gearRatio;
             this.wheelDiameter = wheelDiameter;
-            this.pidValues = pidValues;
+            this.steeringPIDValues = pidValues;
             this.drivePIDValues = drivePIDValues;
         }
 
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
+         * @param gearRatio     The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
-         * @param pidValues The PID constants to use for the steering PID.
+         * @param pidValues     The PID constants to use for the steering PID.
          */
         public Configuration(final double gearRatio, final double wheelDiameter,
                 final PIDValues pidValues) {
             this.gearRatio = gearRatio;
             this.wheelDiameter = wheelDiameter;
-            this.pidValues = pidValues;
+            this.steeringPIDValues = pidValues;
             this.drivePIDValues = new PIDValues(0, 0.00015, 0, 0.219);
         }
 
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
+         * @param gearRatio     The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
          */
         public Configuration(final double gearRatio, final double wheelDiameter) {
             this.gearRatio = gearRatio;
             this.wheelDiameter = wheelDiameter;
-            this.pidValues = new PIDValues(0.0043, 0.00, 0.0001);
+            this.steeringPIDValues = new PIDValues(0.0043, 0.00, 0.0001);
             this.drivePIDValues = new PIDValues(0, 0.00015, 0, 0.219);
         }
-
 
         /**
          * Get the conversion rate.
@@ -128,38 +133,61 @@ public class SDSSwerveModule implements SwerveModule {
     /**
      * The constructor.
      *
-     * @param moduleLocation The physical location in meters.
-     * @param steeringEncoder The steering encoder.
+     * @param moduleLocation     The physical location in meters.
+     * @param steeringEncoder    The steering encoder.
      * @param steeringController The steering motor controller.
-     * @param driveController The drive motor controller.
-     * @param conf The module configuration.
+     * @param driveController    The drive motor controller.
+     * @param conf               The module configuration.
      */
     public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
             final CSSpark steeringController, final CSSpark driveController,
             final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
-                new PIDController(conf.pidValues.p(), conf.pidValues.i(), conf.pidValues.d()));
+                new PIDController(conf.steeringPIDValues.p(), conf.steeringPIDValues.i(), conf.steeringPIDValues.d()),
+                1);
     }
 
     /**
      * The constructor.
      *
-     * @param moduleLocation The physical location.
-     * @param steeringEncoder The steering encoder.
-     * @param steeringController The steering motor controller.
-     * @param driveController The drive motor controller.
-     * @param conf The module configuration.
-     * @param pid The PID controller for steering.
+     * @param moduleLocation          The physical location in meters.
+     * @param steeringEncoder         The steering encoder.
+     * @param steeringController      The steering motor controller.
+     * @param driveController         The drive motor controller.
+     * @param conf                    The module configuration.
+     * @param steeringErrorDriveRatio The steering angle drive speed adjustment
+     *                                ratio
      */
     public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
             final CSSpark steeringController, final CSSpark driveController,
-            final Configuration conf, final PIDController pid) {
+            final Configuration conf, final double steeringErrorDriveRatio) {
+        this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
+                new PIDController(conf.steeringPIDValues.p(), conf.steeringPIDValues.i(), conf.steeringPIDValues.d()),
+                steeringErrorDriveRatio);
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param moduleLocation          The physical location.
+     * @param steeringEncoder         The steering encoder.
+     * @param steeringController      The steering motor controller.
+     * @param driveController         The drive motor controller.
+     * @param conf                    The module configuration.
+     * @param pid                     The PID controller for steering.
+     * @param steeringErrorDriveRatio The steering angle drive speed adjustment
+     *                                ratio
+     */
+    public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
+            final CSSpark steeringController, final CSSpark driveController,
+            final Configuration conf, final PIDController pid, final double steeringErrorDriveRatio) {
         this.location = moduleLocation;
         this.steeringEncoder = steeringEncoder;
         this.steeringController = steeringController;
         this.driveController = SDSSwerveModule.configureDriveMotor(driveController, conf);
         this.steeringPID = pid;
         this.steeringPID.enableContinuousInput(-180, 180);
+        this.steeringErrorDriveRatio = steeringErrorDriveRatio;
     }
 
     /**
@@ -193,7 +221,8 @@ public class SDSSwerveModule implements SwerveModule {
     }
 
     /**
-     * Process the desired state and set the output values for the motor controllers.
+     * Process the desired state and set the output values for the motor
+     * controllers.
      *
      * @param desiredState The direction and speed.
      */
@@ -202,9 +231,9 @@ public class SDSSwerveModule implements SwerveModule {
         final SwerveModuleState state = this.calculateSteeringAngle(desiredState);
 
         // Run Steering angle PID to calculate output since the Spark Max can't take
-        // advantage of the Cancoder
-        final double angleOutput =
-                this.steeringPID.calculate(this.getAngle().getDegrees(), state.angle.getDegrees());
+        // advantage of the CANCoder
+        final double steeringAngleError = this.getAngle().getDegrees() - state.angle.getDegrees();
+        final double angleOutput = this.steeringPID.calculate(this.getAngle().getDegrees(), state.angle.getDegrees());
         // If we're not trying to actually drive, don't reset the module angle
         if (state.speedMetersPerSecond == 0) {
             this.steeringController.set(0);
@@ -212,14 +241,23 @@ public class SDSSwerveModule implements SwerveModule {
             this.steeringController.set(angleOutput);
         }
 
+        // Adjust the target drive speed inversely proportional to the pod angle error.
+        // This reduces the speed when the pod is not pointing in the desired direction
+        // and proportionally increases it as the pod aligns to the desired angle.
+        double driveSpeedMetersPerSecond = state.speedMetersPerSecond;
+        if (Math.abs(steeringAngleError) >= STEERING_ANGLE_TOLERANCE) {
+            driveSpeedMetersPerSecond = state.speedMetersPerSecond
+                    * (this.steeringErrorDriveRatio * (180 - steeringAngleError) / 180);
+        }
+
         // Set the drive motor output speed
         if (state.speedMetersPerSecond == 0) {
             this.driveController.getPidController().setIAccum(0);
         }
         if (this.inverted) {
-            this.driveController.setSetpoint(-state.speedMetersPerSecond);
+            this.driveController.setSetpoint(-driveSpeedMetersPerSecond);
         } else {
-            this.driveController.setSetpoint(state.speedMetersPerSecond);
+            this.driveController.setSetpoint(driveSpeedMetersPerSecond);
         }
     }
 
@@ -239,9 +277,11 @@ public class SDSSwerveModule implements SwerveModule {
     }
 
     /**
-     * Optimizes the desired module angle by taking into account the current module angle.
+     * Optimizes the desired module angle by taking into account the current module
+     * angle.
      *
-     * @param desiredState The module state as calculated by a SwerveDriveKinematics object.
+     * @param desiredState The module state as calculated by a SwerveDriveKinematics
+     *                     object.
      * @return The optimized module state.
      */
     private SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
