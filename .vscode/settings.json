@@ -28,7 +28,7 @@
     "org.mockito.Answers.*",
     "edu.wpi.first.wpilibj2.command.Commands.*"
   ],
-  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+  "java.format.settings.url": "config/eclipse-java-google-style.xml",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
