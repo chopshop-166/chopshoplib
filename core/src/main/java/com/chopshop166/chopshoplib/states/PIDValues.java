@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.states;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 /**
  * Wrapper for PID values.
  * 
@@ -21,6 +23,15 @@ public record PIDValues(double p, double i, double d, double ff) {
      */
     public PIDValues(final double p, final double i, final double d) {
         this(p, i, d, 0.0);
+    }
+
+    /**
+     * Convert to path planner format.
+     * 
+     * @return A path planner PID constants object.
+     */
+    public PIDConstants toPathPlanner() {
+        return new PIDConstants(this.p, this.i, this.d, this.ff);
     }
 
 }
