@@ -8,6 +8,7 @@ import com.chopshop166.chopshoplib.maps.LedMap;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /** A base class for an LED subsystem. */
 @SuppressWarnings({"PMD.LinguisticNaming"})
@@ -60,7 +61,7 @@ public class LEDSubsystem extends SmartSubsystemBase {
      * @return A command object.
      */
     public Command setPattern(final String tag, final Pattern pattern) {
-        return this.runOnce(() -> {
+        return Commands.runOnce(() -> {
             this.ledBuffer.setPattern(tag, pattern);
         }).ignoringDisable(true);
     }
@@ -107,7 +108,7 @@ public class LEDSubsystem extends SmartSubsystemBase {
      */
     @SuppressWarnings({"PMD.LinguisticNaming"})
     public Command setGlobalPattern(final Pattern pattern) {
-        return this.runOnce(() -> {
+        return Commands.runOnce(() -> {
             this.ledBuffer.setGlobalPattern(pattern);
         }).ignoringDisable(true);
     }
