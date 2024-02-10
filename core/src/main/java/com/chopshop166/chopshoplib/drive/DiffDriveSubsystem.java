@@ -60,7 +60,7 @@ public class DiffDriveSubsystem
     public void periodic() {
         super.periodic();
         this.odometry.update(this.getRotation(), this.getData().left.distanceInches,
-                this.getData().left.distanceInches);
+                this.getData().right.distanceInches);
         this.field.setRobotPose(this.getPose());
     }
 
