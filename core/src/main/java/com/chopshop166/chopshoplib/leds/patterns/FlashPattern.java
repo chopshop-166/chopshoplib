@@ -28,6 +28,7 @@ public class FlashPattern extends AnimatedPattern {
 
     @Override
     public void initialize(final SegmentBuffer buffer) {
+        super.initialize(buffer);
         this.isOn = true;
     }
 
