@@ -50,6 +50,17 @@ public class LEDStripBuffer {
     }
 
     /**
+     * Get the combined length of all segments with a given tag.
+     * 
+     * @param tag The tag to search for.
+     * @return The total length.
+     */
+    public int getLengthOfTag(final String tag) {
+        return this.segmentConfigs.stream().filter(c -> c.tagSet.contains(tag))
+                .mapToInt(c -> c.length).sum();
+    }
+
+    /**
      * Factory to create a new segment.
      * 
      * @param length The length of the segment (in LEDs).
