@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.logging.data;
 
+import org.littletonrobotics.junction.LogTable;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -54,6 +55,14 @@ public class SwerveDriveData extends DataWrapper {
         return new SwerveModuleState[] {this.frontLeft.getModuleState(),
                 this.frontRight.getModuleState(), this.rearLeft.getModuleState(),
                 this.rearRight.getModuleState()};
+    }
+
+    @Override
+    public void toLog(final LogTable table) {
+        super.toLog(table);
+        // We overload this so that we log these at a flatter level, for use with AdvantageScope.
+        // We don't need to fromLog them, since this is just an accessor.
+        table.put("States", this.getModuleStates());
     }
 
 }
