@@ -331,7 +331,7 @@ public class SDSSwerveModule implements SwerveModule {
     @Override
     public SwerveModuleState getState() {
         return new SwerveModuleState(
-                (this.inverted ? 1.0 : -1.0) * this.driveController.getEncoder().getRate(),
+                (this.inverted ? -1.0 : 1.0) * this.driveController.getEncoder().getRate(),
                 this.getAngle());
     }
 }
