@@ -10,8 +10,7 @@ import com.chopshop166.chopshoplib.motors.PIDControlType;
 import com.chopshop166.chopshoplib.states.LinearDirection;
 import com.chopshop166.chopshoplib.states.OpenClose;
 import com.chopshop166.chopshoplib.states.SpinDirection;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.util.struct.StructSerializable;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -63,8 +62,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
             public void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final T fieldValue = (T) field.get(that);
-                final T newTableValue = table.get(name, fieldValue);
-                field.set(that, newTableValue);
+                field.set(that, table.get(name, fieldValue));
             }
         });
     }
@@ -239,33 +237,30 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
                 inps.fromLog(table.getSubtable(name));
             }
         });
-        BOXABLE_CLASSES.put(Rotation2d.class, new FieldLogger() {
+        BOXABLE_CLASSES.put(StructSerializable.class, new FieldLogger() {
             @Override
             public void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
-                table.put(name, ((Rotation2d) field.get(that)).getDegrees());
+                table.put(name, (StructSerializable) field.get(that));
             }
 
             @Override
             public void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
-                final double degrees = table.get(name, ((Rotation2d) field.get(that)).getDegrees());
-                field.set(that, Rotation2d.fromDegrees(degrees));
+                field.set(that, table.get(name, (StructSerializable) field.get(that)));
             }
         });
-        BOXABLE_CLASSES.put(Rotation3d.class, new FieldLogger() {
+        BOXABLE_CLASSES.put(StructSerializable[].class, new FieldLogger() {
             @Override
             public void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
-                final Rotation3d rot = (Rotation3d) field.get(that);
-                table.put(name, new double[] {rot.getX(), rot.getY(), rot.getZ()});
+                table.put(name, (StructSerializable[]) field.get(that));
             }
 
             @Override
             public void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
-                final double[] rotData = table.get(name, new double[3]);
-                field.set(that, new Rotation3d(rotData[0], rotData[1], rotData[2]));
+                field.set(that, table.get(name, new StructSerializable[0]));
             }
         });
         // Add extractors for the common enums we use
