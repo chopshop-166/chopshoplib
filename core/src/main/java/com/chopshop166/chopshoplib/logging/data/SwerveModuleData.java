@@ -12,9 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 public class SwerveModuleData extends DataWrapper {
 
     /** Actual State. */
-    public final SwerveModuleStateData currentState = new SwerveModuleStateData();
+    public SwerveModuleState currentState = new SwerveModuleState();
     /** Desired State. */
-    public final SwerveModuleStateData desiredState = new SwerveModuleStateData();
+    public SwerveModuleState desiredState = new SwerveModuleState();
     /** Drive Motor params. */
     public final MotorControllerData driveMotor = new MotorControllerData();
     /** Steering Motor params. */
@@ -36,21 +36,11 @@ public class SwerveModuleData extends DataWrapper {
      */
     public void updateData(final SwerveModule module) {
         this.drivePositionMeters = module.getDistance();
-        this.currentState.data = module.getState();
+        this.currentState = module.getState();
         this.driveMotor.updateData(module.getDriveMotor());
         this.steeringMotor.updateData(module.getSteeringMotor());
 
-        module.setDesiredState(this.desiredState.data);
-    }
-
-    /**
-     * Get the current module state.
-     * 
-     * @return The state.
-     */
-    public SwerveModuleState getModuleState() {
-        return new SwerveModuleState(this.currentState.data.speedMetersPerSecond,
-                this.currentState.data.angle);
+        module.setDesiredState(this.desiredState);
     }
 
     /**
@@ -61,7 +51,7 @@ public class SwerveModuleData extends DataWrapper {
      * @return The position.
      */
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(this.drivePositionMeters, this.currentState.data.angle);
+        return new SwerveModulePosition(this.drivePositionMeters, this.currentState.angle);
     }
 
     /**
@@ -70,6 +60,6 @@ public class SwerveModuleData extends DataWrapper {
      * @param state The desired state.
      */
     public void setDesiredState(final SwerveModuleState state) {
-        this.desiredState.data = state;
+        this.desiredState = state;
     }
 }
