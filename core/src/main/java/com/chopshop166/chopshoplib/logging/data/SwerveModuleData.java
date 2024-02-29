@@ -44,15 +44,6 @@ public class SwerveModuleData extends DataWrapper {
     }
 
     /**
-     * Get the current module state.
-     * 
-     * @return The state.
-     */
-    public SwerveModuleState getModuleState() {
-        return this.currentState;
-    }
-
-    /**
      * Get the module position.
      *
      * This is the integrated position.
