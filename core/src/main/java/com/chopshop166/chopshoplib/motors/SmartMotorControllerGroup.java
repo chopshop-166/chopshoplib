@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 /**
  * Smart motor controller that contains a group.
@@ -44,6 +45,17 @@ public class SmartMotorControllerGroup extends SmartMotorController {
     @Override
     public double[] getVoltage() {
         return this.wrapped.stream().flatMapToDouble(m -> DoubleStream.of(m.getVoltage()))
+                .toArray();
+    }
+
+    @Override
+    public int[] getFaultData() {
+        return this.wrapped.stream().flatMapToInt(m -> IntStream.of(m.getFaultData())).toArray();
+    }
+
+    @Override
+    public int[] getStickyFaultData() {
+        return this.wrapped.stream().flatMapToInt(m -> IntStream.of(m.getStickyFaultData()))
                 .toArray();
     }
 

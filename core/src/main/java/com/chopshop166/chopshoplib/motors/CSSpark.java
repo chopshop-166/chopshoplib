@@ -163,6 +163,16 @@ public class CSSpark extends SmartMotorController {
     }
 
     @Override
+    public int[] getFaultData() {
+        return new int[] {this.spark.getFaults()};
+    }
+
+    @Override
+    public int[] getStickyFaultData() {
+        return new int[] {this.spark.getStickyFaults()};
+    }
+
+    @Override
     public void disable() {
         this.spark.disable();
     }

@@ -47,4 +47,14 @@ public class CSTalonFX extends SmartMotorController {
     public double[] getVoltage() {
         return new double[] {this.wrapped.getMotorVoltage().getValueAsDouble()};
     }
+
+    @Override
+    public int[] getFaultData() {
+        return new int[] {this.wrapped.getFaultField().getValue()};
+    }
+
+    @Override
+    public int[] getStickyFaultData() {
+        return new int[] {this.wrapped.getStickyFaultField().getValue()};
+    }
 }
