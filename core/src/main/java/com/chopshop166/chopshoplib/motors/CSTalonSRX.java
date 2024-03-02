@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.chopshop166.chopshoplib.sensors.TalonSRXEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -125,6 +127,25 @@ public class CSTalonSRX extends SmartMotorController {
     @Override
     public double[] getVoltage() {
         return new double[] {this.wrapped.getMotorOutputVoltage()};
+    }
+
+    @Override
+    public int[] getFaultData() {
+        final Faults faults = new Faults();
+        this.wrapped.getFaults(faults);
+        return new int[] {faults.toBitfield()};
+    }
+
+    @Override
+    public int[] getStickyFaultData() {
+        final StickyFaults faults = new StickyFaults();
+        this.wrapped.getStickyFaults(faults);
+        return new int[] {faults.toBitfield()};
+    }
+
+    @Override
+    public String getMotorControllerType() {
+        return "Talon SRX";
     }
 
 }

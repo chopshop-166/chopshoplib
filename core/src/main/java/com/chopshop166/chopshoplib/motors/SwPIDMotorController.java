@@ -173,4 +173,9 @@ public class SwPIDMotorController extends SmartMotorController {
         this.set(ff + calc);
         this.dog.reset();
     }
+
+    @Override
+    public String getMotorControllerType() {
+        return "PWM";
+    }
 }

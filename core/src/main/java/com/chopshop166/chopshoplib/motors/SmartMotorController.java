@@ -88,9 +88,9 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Verify that all validators pass.
-     * 
+     *
      * Use this to test for things like current.
-     * 
+     *
      * @return Whether all validators pass.
      */
     public boolean validate() {
@@ -99,7 +99,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Test if any validators failed.
-     * 
+     *
      * @return Whether any validators failed.
      */
     public boolean errored() {
@@ -115,7 +115,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Add a validator.
-     * 
+     *
      * @param validator The validator to test for.
      */
     public void addValidator(final MotorValidator validator) {
@@ -124,7 +124,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Validate whether the encoder rate is above a certain threshold
-     * 
+     *
      * @param rateThreshold the threshold to validate
      * @param persistance how many cycles to determine if the encoder is not rotating
      */
@@ -135,7 +135,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Add a validator to make sure that the current is below a provided limit.
-     * 
+     *
      * @param limit The maximum current to allow.
      * @param filterCutoff The time constant of the IIR filter.
      */
@@ -149,7 +149,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Get an array of all currents associated with the motor controller.
-     * 
+     *
      * @return An array in amps.
      */
     public double[] getCurrentAmps() {
@@ -158,7 +158,7 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Get an array of all temperatures associated with the motor controller.
-     * 
+     *
      * @return An array in degrees celsius.
      */
     public double[] getTemperatureC() {
@@ -167,11 +167,38 @@ public class SmartMotorController implements MotorController {
 
     /**
      * Get an array of all voltages associated with the motor controller.
-     * 
+     *
      * @return An array in volts.
      */
     public double[] getVoltage() {
         return new double[] {0};
+    }
+
+    /**
+     * Get faults for each motor controller.
+     *
+     * @return Fault data as ints.
+     */
+    public int[] getFaultData() {
+        return new int[] {0};
+    }
+
+    /**
+     * Get sticky faults for each motor controller.
+     *
+     * @return Fault data as ints.
+     */
+    public int[] getStickyFaultData() {
+        return new int[] {0};
+    }
+
+    /**
+     * Get a string saying what kind of motor controller it is.
+     * 
+     * @return A string descriptor.
+     */
+    public String getMotorControllerType() {
+        return "Unknown";
     }
 
     @Override

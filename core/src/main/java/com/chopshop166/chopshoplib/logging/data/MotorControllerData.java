@@ -30,6 +30,15 @@ public class MotorControllerData extends DataWrapper {
     /** The motor output voltage. */
     @LogName("Voltage")
     public double[] voltage;
+    /** The faults that are set. */
+    @LogName("Faults")
+    public int[] faults;
+    /** The sticky faults that are set. */
+    @LogName("Sticky Faults")
+    public int[] stickyFaults;
+    /** The type of motor controller. */
+    @LogName("Motor Type")
+    public String motorType;
 
     /** Whether the motor is a flywheel. */
     @NoLog
@@ -44,7 +53,7 @@ public class MotorControllerData extends DataWrapper {
 
     /**
      * Constructor.
-     * 
+     *
      * @param isFlywheel Whether the motor is a flywheel.
      */
     public MotorControllerData(final boolean isFlywheel) {
@@ -54,7 +63,7 @@ public class MotorControllerData extends DataWrapper {
 
     /**
      * Update data from the motor.
-     * 
+     *
      * @param motor The motor object to update from.
      */
     public void updateData(final SmartMotorController motor) {
@@ -68,5 +77,8 @@ public class MotorControllerData extends DataWrapper {
         this.currentAmps = motor.getCurrentAmps();
         this.tempC = motor.getTemperatureC();
         this.voltage = motor.getVoltage();
+        this.faults = motor.getFaultData();
+        this.stickyFaults = motor.getStickyFaultData();
+        this.motorType = motor.getMotorControllerType();
     }
 }
