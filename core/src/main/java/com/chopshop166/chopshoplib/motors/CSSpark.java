@@ -173,6 +173,11 @@ public class CSSpark extends SmartMotorController {
     }
 
     @Override
+    public String getMotorControllerType() {
+        return "Spark";
+    }
+
+    @Override
     public void disable() {
         this.spark.disable();
     }

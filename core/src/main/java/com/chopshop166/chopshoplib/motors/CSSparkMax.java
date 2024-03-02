@@ -27,4 +27,9 @@ public class CSSparkMax extends CSSpark {
     public CANSparkMax getMotorController() {
         return (CANSparkMax) super.getMotorController();
     }
+
+    @Override
+    public String getMotorControllerType() {
+        return "Spark Max";
+    }
 }

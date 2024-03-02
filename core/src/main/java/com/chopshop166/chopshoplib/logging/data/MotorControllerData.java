@@ -36,6 +36,9 @@ public class MotorControllerData extends DataWrapper {
     /** The sticky faults that are set. */
     @LogName("Sticky Faults")
     public int[] stickyFaults;
+    /** The type of motor controller. */
+    @LogName("Motor Type")
+    public String motorType;
 
     /** Whether the motor is a flywheel. */
     @NoLog
@@ -76,5 +79,6 @@ public class MotorControllerData extends DataWrapper {
         this.voltage = motor.getVoltage();
         this.faults = motor.getFaultData();
         this.stickyFaults = motor.getStickyFaultData();
+        this.motorType = motor.getMotorControllerType();
     }
 }

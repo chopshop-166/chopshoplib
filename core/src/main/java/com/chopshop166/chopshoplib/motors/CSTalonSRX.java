@@ -131,16 +131,21 @@ public class CSTalonSRX extends SmartMotorController {
 
     @Override
     public int[] getFaultData() {
-        Faults faults = new Faults();
+        final Faults faults = new Faults();
         this.wrapped.getFaults(faults);
         return new int[] {faults.toBitfield()};
     }
 
     @Override
     public int[] getStickyFaultData() {
-        StickyFaults faults = new StickyFaults();
+        final StickyFaults faults = new StickyFaults();
         this.wrapped.getStickyFaults(faults);
         return new int[] {faults.toBitfield()};
+    }
+
+    @Override
+    public String getMotorControllerType() {
+        return "Talon SRX";
     }
 
 }

@@ -57,4 +57,9 @@ public class CSTalonFX extends SmartMotorController {
     public int[] getStickyFaultData() {
         return new int[] {this.wrapped.getStickyFaultField().getValue()};
     }
+
+    @Override
+    public String getMotorControllerType() {
+        return "Talon FX";
+    }
 }

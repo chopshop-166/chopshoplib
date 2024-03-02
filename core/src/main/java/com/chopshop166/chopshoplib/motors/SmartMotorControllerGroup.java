@@ -59,4 +59,9 @@ public class SmartMotorControllerGroup extends SmartMotorController {
                 .toArray();
     }
 
+    @Override
+    public String getMotorControllerType() {
+        return "Group";
+    }
+
 }

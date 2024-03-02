@@ -27,4 +27,9 @@ public class CSSparkFlex extends CSSpark {
     public CANSparkFlex getMotorController() {
         return (CANSparkFlex) super.getMotorController();
     }
+
+    @Override
+    public String getMotorControllerType() {
+        return "Spark Flex";
+    }
 }

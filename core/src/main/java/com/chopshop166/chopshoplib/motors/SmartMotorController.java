@@ -192,6 +192,15 @@ public class SmartMotorController implements MotorController {
         return new int[] {0};
     }
 
+    /**
+     * Get a string saying what kind of motor controller it is.
+     * 
+     * @return A string descriptor.
+     */
+    public String getMotorControllerType() {
+        return "Unknown";
+    }
+
     @Override
     public void set(final double speed) {
         this.wrapped.set(speed);
