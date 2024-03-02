@@ -16,11 +16,11 @@ public class MotorControllerData extends DataWrapper {
     @LogName("Setpoint")
     public double setpoint;
     /** The distance the motor has traveled in inches. */
-    @LogName("DistanceInches")
-    public double distanceInches;
+    @LogName("Distance")
+    public double distance;
     /** The motor's velocity in inches/second. */
-    @LogName("VelocityInchesPerSec")
-    public double velocityInchesPerSec;
+    @LogName("Velocity")
+    public double velocity;
     /** The motor current in amps. */
     @LogName("CurrentAmps")
     public double[] currentAmps;
@@ -72,8 +72,8 @@ public class MotorControllerData extends DataWrapper {
         } else {
             motor.set(this.setpoint);
         }
-        this.distanceInches = motor.getEncoder().getDistance();
-        this.velocityInchesPerSec = motor.getEncoder().getRate();
+        this.distance = motor.getEncoder().getDistance();
+        this.velocity = motor.getEncoder().getRate();
         this.currentAmps = motor.getCurrentAmps();
         this.tempC = motor.getTemperatureC();
         this.voltage = motor.getVoltage();
