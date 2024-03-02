@@ -3,9 +3,8 @@ package com.chopshop166.chopshoplib.motors;
 import com.chopshop166.chopshoplib.sensors.SparkEncoder;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.SparkRelativeEncoder;
 
 /**
  * CSSpark
@@ -26,13 +25,11 @@ public class CSSpark extends SmartMotorController {
     /**
      * Create a smart motor controller from an unwrapped Spark object.
      *
-     * @param spark The Spark MAX/Flex oject.
-     * @param type The motor type (brushed vs brushless).
+     * @param spark The Spark MAX/Flex object.
+     * @param encoder The wrapped encoder.
      */
-    public CSSpark(final CANSparkBase spark, final MotorType type) {
-        super(new MockMotorController(),
-                new SparkEncoder(type == MotorType.kBrushless ? spark.getEncoder()
-                        : spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 4096)));
+    protected CSSpark(final CANSparkBase spark, final RelativeEncoder encoder) {
+        super(spark, new SparkEncoder(encoder));
         this.spark = spark;
         this.sparkPID = spark.getPIDController();
     }
@@ -122,21 +119,6 @@ public class CSSpark extends SmartMotorController {
         this.spark.setVoltage(outputVolts);
     }
 
-    @Override
-    public double get() {
-        return this.spark.get();
-    }
-
-    @Override
-    public void setInverted(final boolean isInverted) {
-        this.spark.setInverted(isInverted);
-    }
-
-    @Override
-    public boolean getInverted() {
-        return this.spark.getInverted();
-    }
-
     /**
      * Get Temperature from the motor
      *
@@ -175,15 +157,5 @@ public class CSSpark extends SmartMotorController {
     @Override
     public String getMotorControllerType() {
         return "Spark";
-    }
-
-    @Override
-    public void disable() {
-        this.spark.disable();
-    }
-
-    @Override
-    public void stopMotor() {
-        this.spark.stopMotor();
     }
 }

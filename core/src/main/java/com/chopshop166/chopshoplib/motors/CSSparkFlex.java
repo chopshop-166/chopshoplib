@@ -2,6 +2,8 @@ package com.chopshop166.chopshoplib.motors;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkRelativeEncoder;
 
 /**
  * CSSparkFlex
@@ -12,15 +14,50 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class CSSparkFlex extends CSSpark {
 
     /**
-     * Create a new wrapped SPARK Flex Controller.
-     *
-     * @param deviceID The device ID.
-     * @param type The motor type connected to the controller. Brushless motors must be connected to
-     *        their matching color and the hall sensor plugged in. Brushed motors must be connected
-     *        to the Red and Black terminals only.
+     * Create a Spark FLEX associated with a brushed motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @param countsPerRev The counts per revolution of the encoder.
+     * @return A CSSparkFlex object.
      */
-    public CSSparkFlex(final int deviceID, final MotorType type) {
-        super(new CANSparkFlex(deviceID, type), type);
+    public static CSSparkFlex brushed(final int deviceID, final int countsPerRev) {
+        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushed);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, countsPerRev);
+        return new CSSparkFlex(spark, enc);
+    }
+
+    /**
+     * Create a Spark FLEX associated with a Neo or Neo 550 motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @return A CSSparkFlex object.
+     */
+    public static CSSparkFlex neo(final int deviceID) {
+        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
+        return new CSSparkFlex(spark, enc);
+    }
+
+    /**
+     * Create a Spark FLEX associated with a Neo Vortex motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @return A CSSparkFlex object.
+     */
+    public static CSSparkFlex vortex(final int deviceID) {
+        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
+        return new CSSparkFlex(spark, enc);
+    }
+
+    /**
+     * Create a new wrapped SPARK FLEX Controller.
+     *
+     * @param spark The spark object to wrap.
+     * @param enc The encoder object.
+     */
+    public CSSparkFlex(final CANSparkFlex spark, final RelativeEncoder enc) {
+        super(spark, enc);
     }
 
     @Override
