@@ -34,8 +34,7 @@ public class CSSparkMax extends CSSpark {
      */
     public static CSSparkMax neo(final int deviceID) {
         final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
-        return new CSSparkMax(spark, enc);
+        return new CSSparkMax(spark, getNeoEncoder(spark));
     }
 
     /**
@@ -46,8 +45,7 @@ public class CSSparkMax extends CSSpark {
      */
     public static CSSparkMax vortex(final int deviceID) {
         final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
-        return new CSSparkMax(spark, enc);
+        return new CSSparkMax(spark, getVortexEncoder(spark));
     }
 
     /**
@@ -58,6 +56,24 @@ public class CSSparkMax extends CSSpark {
      */
     public CSSparkMax(final CANSparkMax spark, final RelativeEncoder enc) {
         super(spark, enc);
+    }
+
+    /**
+     * Create a SPARK Max Encoder set up for a Neo (most common behavior).
+     * 
+     * @param deviceID The device ID.
+     */
+    public CSSparkMax(final int deviceID) {
+        this(new CANSparkMax(deviceID, MotorType.kBrushless));
+    }
+
+    /**
+     * Helper contructor to get a Neo encoder out of a spark.
+     * 
+     * @param spark The motor controller.
+     */
+    private CSSparkMax(final CANSparkMax spark) {
+        this(spark, getNeoEncoder(spark));
     }
 
     @Override

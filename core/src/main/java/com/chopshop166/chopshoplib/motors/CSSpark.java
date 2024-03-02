@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkRelativeEncoder;
 
 /**
  * CSSpark
@@ -157,5 +158,25 @@ public class CSSpark extends SmartMotorController {
     @Override
     public String getMotorControllerType() {
         return "Spark";
+    }
+
+    /**
+     * Get the NEO's encoder from a Spark.
+     * 
+     * @param spark The motor controller.
+     * @return An encoder object.
+     */
+    protected static RelativeEncoder getNeoEncoder(final CANSparkBase spark) {
+        return spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
+    }
+
+    /**
+     * Get the Vortex's encoder from a Spark.
+     * 
+     * @param spark The motor controller.
+     * @return An encoder object.
+     */
+    protected static RelativeEncoder getVortexEncoder(final CANSparkBase spark) {
+        return spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
     }
 }
