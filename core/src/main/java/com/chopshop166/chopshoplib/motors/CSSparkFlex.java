@@ -34,8 +34,7 @@ public class CSSparkFlex extends CSSpark {
      */
     public static CSSparkFlex neo(final int deviceID) {
         final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
-        return new CSSparkFlex(spark, enc);
+        return new CSSparkFlex(spark, getNeoEncoder(spark));
     }
 
     /**
@@ -46,8 +45,7 @@ public class CSSparkFlex extends CSSpark {
      */
     public static CSSparkFlex vortex(final int deviceID) {
         final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
-        return new CSSparkFlex(spark, enc);
+        return new CSSparkFlex(spark, getVortexEncoder(spark));
     }
 
     /**
@@ -58,6 +56,24 @@ public class CSSparkFlex extends CSSpark {
      */
     public CSSparkFlex(final CANSparkFlex spark, final RelativeEncoder enc) {
         super(spark, enc);
+    }
+
+    /**
+     * Create a SPARK Max Encoder set up for a Vortex (most common behavior).
+     * 
+     * @param deviceID The device ID.
+     */
+    public CSSparkFlex(final int deviceID) {
+        this(new CANSparkFlex(deviceID, MotorType.kBrushless));
+    }
+
+    /**
+     * Helper contructor to get a Vortex encoder out of a spark.
+     * 
+     * @param spark The motor controller.
+     */
+    private CSSparkFlex(final CANSparkFlex spark) {
+        this(spark, getVortexEncoder(spark));
     }
 
     @Override
