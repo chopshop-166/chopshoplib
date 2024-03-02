@@ -2,6 +2,8 @@ package com.chopshop166.chopshoplib.motors;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkRelativeEncoder;
 
 /**
  * CSSparkMax
@@ -12,15 +14,50 @@ import com.revrobotics.CANSparkMax;
 public class CSSparkMax extends CSSpark {
 
     /**
+     * Create a Spark MAX associated with a brushed motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @param countsPerRev The counts per revolution of the encoder.
+     * @return A CSSparkMax object.
+     */
+    public static CSSparkMax brushed(final int deviceID, final int countsPerRev) {
+        final var spark = new CANSparkMax(deviceID, MotorType.kBrushed);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, countsPerRev);
+        return new CSSparkMax(spark, enc);
+    }
+
+    /**
+     * Create a Spark MAX associated with a Neo or Neo 550 motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @return A CSSparkMax object.
+     */
+    public static CSSparkMax neo(final int deviceID) {
+        final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
+        return new CSSparkMax(spark, enc);
+    }
+
+    /**
+     * Create a Spark MAX associated with a Neo Vortex motor.
+     * 
+     * @param deviceID The CAN device ID
+     * @return A CSSparkMax object.
+     */
+    public static CSSparkMax vortex(final int deviceID) {
+        final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
+        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
+        return new CSSparkMax(spark, enc);
+    }
+
+    /**
      * Create a new wrapped SPARK MAX Controller.
      *
-     * @param deviceID The device ID.
-     * @param type The motor type connected to the controller. Brushless motors must be connected to
-     *        their matching color and the hall sensor plugged in. Brushed motors must be connected
-     *        to the Red and Black terminals only.
+     * @param spark The spark object to wrap.
+     * @param enc The encoder object.
      */
-    public CSSparkMax(final int deviceID, final MotorType type) {
-        super(new CANSparkMax(deviceID, type), type);
+    public CSSparkMax(final CANSparkMax spark, final RelativeEncoder enc) {
+        super(spark, enc);
     }
 
     @Override
