@@ -59,8 +59,8 @@ public class DiffDriveSubsystem
     @Override
     public void periodic() {
         super.periodic();
-        this.odometry.update(this.getRotation(), this.getData().left.distanceInches,
-                this.getData().right.distanceInches);
+        this.odometry.update(this.getRotation(), this.getData().left.distance,
+                this.getData().right.distance);
         this.field.setRobotPose(this.getPose());
     }
 
@@ -131,8 +131,8 @@ public class DiffDriveSubsystem
      * @return Left and right wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(this.getData().left.velocityInchesPerSec,
-                this.getData().right.velocityInchesPerSec);
+        return new DifferentialDriveWheelSpeeds(this.getData().left.velocity,
+                this.getData().right.velocity);
     }
 
     /**
@@ -141,14 +141,14 @@ public class DiffDriveSubsystem
      * @return The average distance.
      */
     private double encoderAvg() {
-        return (this.getData().left.distanceInches + this.getData().right.distanceInches) / 2.0;
+        return (this.getData().left.distance + this.getData().right.distance) / 2.0;
     }
 
     /**
      * Drive using controller axes.
      *
      * @param forward The forward direction.
-     * @param turn    The direction to turn.
+     * @param turn The direction to turn.
      * @return A command that will run until interrupted.
      */
     public Command drive(final DoubleSupplier forward, final DoubleSupplier turn) {
@@ -163,7 +163,7 @@ public class DiffDriveSubsystem
      * Drive a given distance at the given speed.
      * 
      * @param distance The distance in meters.
-     * @param speed    The speed in motor controller units.
+     * @param speed The speed in motor controller units.
      * @return The command.
      */
     public Command driveDistance(final double distance, final double speed) {
@@ -179,7 +179,7 @@ public class DiffDriveSubsystem
      * This command resets the gyro when started.
      * 
      * @param degrees The angle to turn by in degrees.
-     * @param speed   The speed to turn at in motor controller units.
+     * @param speed The speed to turn at in motor controller units.
      * @return The command.
      */
     public Command turnDegrees(final double degrees, final double speed) {
@@ -207,7 +207,7 @@ public class DiffDriveSubsystem
      * Run an autonomous trajectory.
      * 
      * @param trajectoryName The trajectory to run.
-     * @param resetPose      Whether to reset the pose first.
+     * @param resetPose Whether to reset the pose first.
      * @return A command.
      */
     public Command autonomousCommand(final String trajectoryName, final Boolean resetPose) {
@@ -215,7 +215,8 @@ public class DiffDriveSubsystem
         final String trajectoryJSON = "paths/" + trajectoryName + ".wpilib.json";
         Trajectory autoTrajectory = new Trajectory();
         try {
-            final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            final Path trajectoryPath =
+                    Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             autoTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
@@ -240,14 +241,13 @@ public class DiffDriveSubsystem
                 this.resetOdometry(finalAutoTrajectory.getInitialPose());
             });
         }
-        return cmd.andThen(ramseteCommand).andThen(this::safeState)
-                .withName(trajectoryName);
+        return cmd.andThen(ramseteCommand).andThen(this::safeState).withName(trajectoryName);
     }
 
     /**
      * Tank drive using motor controller speeds (RPM).
      * 
-     * @param left  The left speed.
+     * @param left The left speed.
      * @param right The right speed.
      */
     private void tankDriveSetpoint(final Double left, final Double right) {
