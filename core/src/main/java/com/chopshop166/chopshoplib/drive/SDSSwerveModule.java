@@ -271,16 +271,6 @@ public class SDSSwerveModule implements SwerveModule {
     }
 
     /**
-     * Optimizes the desired module angle by taking into account the current module angle.
-     *
-     * @param desiredState The module state as calculated by a SwerveDriveKinematics object.
-     * @return The optimized module state.
-     */
-    private SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
-        return SwerveModuleState.optimize(desiredState, this.getAngle());
-    }
-
-    /**
      * Configures a CSSparkMax for use as the drive motor on a MK3 swerve module.
      *
      * @param motor Drive motor controller to configure.
