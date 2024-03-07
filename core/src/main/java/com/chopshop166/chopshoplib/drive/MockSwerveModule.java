@@ -43,8 +43,9 @@ public class MockSwerveModule implements SwerveModule {
      * @param desiredState The direction and speed.
      */
     @Override
-    public void setDesiredState(final SwerveModuleState desiredState) {
+    public SwerveModuleSpeeds calculateDesiredState(final SwerveModuleState desiredState) {
         this.desiredState = desiredState;
+        return new SwerveModuleSpeeds(0.0, 0.0);
     }
 
     @Override

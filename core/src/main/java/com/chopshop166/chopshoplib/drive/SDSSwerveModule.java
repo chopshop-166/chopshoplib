@@ -222,19 +222,17 @@ public class SDSSwerveModule implements SwerveModule {
      * @param desiredState The direction and speed.
      */
     @Override
-    public void setDesiredState(final SwerveModuleState desiredState) {
+    public SwerveModuleSpeeds calculateDesiredState(final SwerveModuleState desiredState) {
         final SwerveModuleState state = this.calculateSteeringAngle(desiredState);
 
         // Run Steering angle PID to calculate output since the Spark Max can't take
         // advantage of the CANCoder
         final double steeringAngleError = this.getAngle().getDegrees() - state.angle.getDegrees();
-        final double angleOutput =
+        double angleOutput =
                 this.steeringPID.calculate(this.getAngle().getDegrees(), state.angle.getDegrees());
         // If we're not trying to actually drive, don't reset the module angle
         if (state.speedMetersPerSecond == 0) {
-            this.steeringController.set(0);
-        } else {
-            this.steeringController.set(angleOutput);
+            angleOutput = 0.0;
         }
 
         // Adjust the target drive speed inversely proportional to the pod angle error.
@@ -251,10 +249,10 @@ public class SDSSwerveModule implements SwerveModule {
             this.driveController.getPidController().setIAccum(0);
         }
         if (this.inverted) {
-            this.driveController.setSetpoint(-driveSpeedMetersPerSecond);
-        } else {
-            this.driveController.setSetpoint(driveSpeedMetersPerSecond);
+            driveSpeedMetersPerSecond *= -1;
         }
+
+        return new SwerveModuleSpeeds(driveSpeedMetersPerSecond, angleOutput);
     }
 
     @Override
@@ -270,16 +268,6 @@ public class SDSSwerveModule implements SwerveModule {
     @Override
     public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(this.steeringEncoder.getAbsolutePosition());
-    }
-
-    /**
-     * Optimizes the desired module angle by taking into account the current module angle.
-     *
-     * @param desiredState The module state as calculated by a SwerveDriveKinematics object.
-     * @return The optimized module state.
-     */
-    private SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
-        return SwerveModuleState.optimize(desiredState, this.getAngle());
     }
 
     /**

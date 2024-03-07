@@ -63,8 +63,9 @@ public interface SwerveModule {
      * Process the desired state and set the output values for the motor controllers.
      *
      * @param desiredState The direction and speed.
+     * @return The actual speed and angle setpoints.
      */
-    void setDesiredState(SwerveModuleState desiredState);
+    SwerveModuleSpeeds calculateDesiredState(SwerveModuleState desiredState);
 
     /**
      * Get the current state of the module.
@@ -72,5 +73,15 @@ public interface SwerveModule {
      * @return A SwerveModuleState object with the module's current state
      */
     SwerveModuleState getState();
+
+    /**
+     * Optimizes the desired module angle by taking into account the current module angle.
+     *
+     * @param desiredState The module state as calculated by a SwerveDriveKinematics object.
+     * @return The optimized module state.
+     */
+    default SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
+        return SwerveModuleState.optimize(desiredState, this.getAngle());
+    }
 
 }
