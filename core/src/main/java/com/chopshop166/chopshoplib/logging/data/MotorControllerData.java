@@ -72,6 +72,15 @@ public class MotorControllerData extends DataWrapper {
         } else {
             motor.set(this.setpoint);
         }
+        this.updateInputData(motor);
+    }
+
+    /**
+     * Update data from the motor.
+     * 
+     * @param motor The motor object to update from.
+     */
+    public void updateInputData(final SmartMotorController motor) {
         this.distance = motor.getEncoder().getDistance();
         this.velocity = motor.getEncoder().getRate();
         this.currentAmps = motor.getCurrentAmps();

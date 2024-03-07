@@ -37,8 +37,8 @@ public class SwerveModuleData extends DataWrapper {
     public void updateData(final SwerveModule module) {
         this.drivePositionMeters = module.getDistance();
         this.currentState = module.getState();
-        this.driveMotor.updateData(module.getDriveMotor());
-        this.steeringMotor.updateData(module.getSteeringMotor());
+        this.driveMotor.updateInputData(module.getDriveMotor());
+        this.steeringMotor.updateInputData(module.getSteeringMotor());
 
         module.setDesiredState(this.desiredState);
     }
