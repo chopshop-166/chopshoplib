@@ -63,8 +63,9 @@ public interface SwerveModule {
      * Process the desired state and set the output values for the motor controllers.
      *
      * @param desiredState The direction and speed.
+     * @return The actual speed and angle setpoints.
      */
-    void setDesiredState(SwerveModuleState desiredState);
+    SwerveModuleSpeeds setDesiredState(SwerveModuleState desiredState);
 
     /**
      * Get the current state of the module.

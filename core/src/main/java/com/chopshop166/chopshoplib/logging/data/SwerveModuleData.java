@@ -40,7 +40,10 @@ public class SwerveModuleData extends DataWrapper {
         this.driveMotor.updateInputData(module.getDriveMotor());
         this.steeringMotor.updateInputData(module.getSteeringMotor());
 
-        module.setDesiredState(this.desiredState);
+        final var speeds = module.setDesiredState(this.desiredState);
+
+        this.driveMotor.setpoint = speeds.drive();
+        this.steeringMotor.setpoint = speeds.steering();
     }
 
     /**
