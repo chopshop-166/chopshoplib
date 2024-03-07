@@ -65,7 +65,7 @@ public interface SwerveModule {
      * @param desiredState The direction and speed.
      * @return The actual speed and angle setpoints.
      */
-    SwerveModuleSpeeds setDesiredState(SwerveModuleState desiredState);
+    SwerveModuleSpeeds calculateDesiredState(SwerveModuleState desiredState);
 
     /**
      * Get the current state of the module.

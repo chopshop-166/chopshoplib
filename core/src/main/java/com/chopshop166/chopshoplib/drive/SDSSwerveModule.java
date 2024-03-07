@@ -222,7 +222,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @param desiredState The direction and speed.
      */
     @Override
-    public SwerveModuleSpeeds setDesiredState(final SwerveModuleState desiredState) {
+    public SwerveModuleSpeeds calculateDesiredState(final SwerveModuleState desiredState) {
         final SwerveModuleState state = this.calculateSteeringAngle(desiredState);
 
         // Run Steering angle PID to calculate output since the Spark Max can't take
@@ -234,7 +234,6 @@ public class SDSSwerveModule implements SwerveModule {
         if (state.speedMetersPerSecond == 0) {
             angleOutput = 0.0;
         }
-        this.steeringController.set(angleOutput);
 
         // Adjust the target drive speed inversely proportional to the pod angle error.
         // This reduces the speed when the pod is not pointing in the desired direction
@@ -252,7 +251,6 @@ public class SDSSwerveModule implements SwerveModule {
         if (this.inverted) {
             driveSpeedMetersPerSecond *= -1;
         }
-        this.driveController.setSetpoint(driveSpeedMetersPerSecond);
 
         return new SwerveModuleSpeeds(driveSpeedMetersPerSecond, angleOutput);
     }
