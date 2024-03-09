@@ -23,7 +23,8 @@ public enum ColorFormat {
      * Convert color to the wire format
      * 
      * @param c The imput color
-     * @return The converted color
+     * @return The converted 
+     * 
      */
     public abstract Color convert(Color c);
 }

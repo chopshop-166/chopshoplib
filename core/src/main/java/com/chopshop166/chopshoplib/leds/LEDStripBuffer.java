@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.util.Color;
 
 /** LED Buffer that creates and stores segments. */
 public class LEDStripBuffer {
@@ -24,20 +24,28 @@ public class LEDStripBuffer {
     private final Set<Pattern> newPatterns = new HashSet<>();
     /** The buffer object. */
     private final AddressableLEDBuffer buffer;
+    /** The buffer that gets written */
+    private final AddressableLEDBuffer rawBuffer;
     /** Total number of LEDs in segments. */
     private final int numLEDs;
     /** The next LED to assign with factories. */
     private int nextLED;
+    /** The format of the colors */
+    private final ColorFormat colorFormat;
+
 
     /**
      * Constructor.
      * 
      * @param numLEDs Number of LEDs.
+     * @param format format of the leds
      */
-    public LEDStripBuffer(final int numLEDs) {
+    public LEDStripBuffer(final int numLEDs, final ColorFormat format) {
         this.numLEDs = numLEDs;
         this.nextLED = 0;
         this.buffer = new AddressableLEDBuffer(numLEDs);
+        this.rawBuffer = new AddressableLEDBuffer(numLEDs);
+        this.colorFormat = format;
     }
 
     /**
@@ -153,7 +161,11 @@ public class LEDStripBuffer {
         for (final var order : this.runOrder) {
             order.update();
         }
-        led.setData(this.buffer);
+        for (int i = 0; i < this.numLEDs; i++) {
+            final Color c = this.buffer.getLED(i);
+            this.rawBuffer.setLED(i, this.colorFormat.convert(c));
+        }
+        led.setData(this.rawBuffer);
     }
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops"})

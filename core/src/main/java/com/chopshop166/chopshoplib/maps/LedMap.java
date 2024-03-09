@@ -38,7 +38,7 @@ public class LedMap {
      */
     public LedMap(final int ledPort, final int ledBufferLength, final ColorFormat format) {
         this.led = new AddressableLED(ledPort);
-        this.ledBuffer = new LEDStripBuffer(ledBufferLength);
+        this.ledBuffer = new LEDStripBuffer(ledBufferLength, format);
         this.format = format;
     }
 }
