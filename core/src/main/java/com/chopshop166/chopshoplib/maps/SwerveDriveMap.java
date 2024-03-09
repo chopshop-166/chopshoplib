@@ -15,10 +15,24 @@ import edu.wpi.first.math.geometry.Translation2d;
  * 
  * All Distances are in Meters
  */
-public record SwerveDriveMap(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule rearLeft,
-        SwerveModule rearRight, double maxDriveSpeedMetersPerSecond,
-        double maxRotationRadianPerSecond, SmartGyro gyro, HolonomicPathFollowerConfig pathFollower)
-        implements LoggableMap<SwerveDriveData> {
+public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
+
+    /** Front left swerve module. */
+    public final SwerveModule frontLeft;
+    /** Front right swerve module. */
+    public final SwerveModule frontRight;
+    /** Rear left swerve module. */
+    public final SwerveModule rearLeft;
+    /** Rear right swerve module. */
+    public final SwerveModule rearRight;
+    /** Max drive speed (m/s). */
+    public final double maxDriveSpeedMetersPerSecond;
+    /** Max rotation speed (rad/s). */
+    public final double maxRotationRadianPerSecond;
+    /** The gyro. */
+    public final SmartGyro gyro;
+    /** Path follower data. */
+    public final HolonomicPathFollowerConfig pathFollower;
 
     /** A distance to use for default values. */
     private static final double DEFAULT_DISTANCE_FROM_CENTER = 0.381;
@@ -47,6 +61,32 @@ public record SwerveDriveMap(SwerveModule frontLeft, SwerveModule frontRight, Sw
                 // Path follower config
                 new HolonomicPathFollowerConfig(2.0, DEFAULT_DISTANCE_FROM_CENTER,
                         new ReplanningConfig()));
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param frontLeft Front left swerve module.
+     * @param frontRight Front right swerve module.
+     * @param rearLeft Rear left swerve module.
+     * @param rearRight Rear right swerve module.
+     * @param maxDriveSpeedMetersPerSecond Max drive speed (m/s).
+     * @param maxRotationRadianPerSecond Max rotation speed (rad/s)
+     * @param gyro They gyro.
+     * @param pathFollower The path follower configuration.
+     */
+    public SwerveDriveMap(final SwerveModule frontLeft, final SwerveModule frontRight,
+            final SwerveModule rearLeft, final SwerveModule rearRight,
+            final double maxDriveSpeedMetersPerSecond, final double maxRotationRadianPerSecond,
+            final SmartGyro gyro, final HolonomicPathFollowerConfig pathFollower) {
+        this.frontLeft = frontLeft;
+        this.frontRight = frontRight;
+        this.rearLeft = rearLeft;
+        this.rearRight = rearRight;
+        this.maxDriveSpeedMetersPerSecond = maxDriveSpeedMetersPerSecond;
+        this.maxRotationRadianPerSecond = maxRotationRadianPerSecond;
+        this.gyro = gyro;
+        this.pathFollower = pathFollower;
     }
 
     @Override
