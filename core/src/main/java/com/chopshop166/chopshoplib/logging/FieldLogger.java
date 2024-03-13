@@ -10,6 +10,7 @@ import com.chopshop166.chopshoplib.motors.PIDControlType;
 import com.chopshop166.chopshoplib.states.LinearDirection;
 import com.chopshop166.chopshoplib.states.OpenClose;
 import com.chopshop166.chopshoplib.states.SpinDirection;
+import edu.wpi.first.util.protobuf.ProtobufSerializable;
 import edu.wpi.first.util.struct.StructSerializable;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -261,6 +262,19 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
             public void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, new StructSerializable[0]));
+            }
+        });
+        BOXABLE_CLASSES.put(ProtobufSerializable.class, new FieldLogger() {
+            @Override
+            public void toLog(final String name, final LogTable table, final Field field,
+                    final Object that) throws IllegalAccessException {
+                table.put(name, (ProtobufSerializable) field.get(that));
+            }
+
+            @Override
+            public void fromLog(final String name, final LogTable table, final Field field,
+                    final Object that) throws IllegalAccessException {
+                field.set(that, table.get(name, (ProtobufSerializable) field.get(that)));
             }
         });
         // Add extractors for the common enums we use
