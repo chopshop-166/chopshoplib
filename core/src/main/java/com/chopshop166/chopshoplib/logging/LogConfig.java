@@ -21,6 +21,7 @@ import org.littletonrobotics.junction.LogTable;
         for (final var entry : FieldLogger.BOXABLE_CLASSES.entrySet()) {
             if (entry.getKey().isAssignableFrom(field.getType())) {
                 logger = entry.getValue();
+                break;
             }
         }
         // If we didn't special-case the enum, then fall back to the string method
