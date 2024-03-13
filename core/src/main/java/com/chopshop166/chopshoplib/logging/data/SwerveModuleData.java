@@ -3,12 +3,10 @@ package com.chopshop166.chopshoplib.logging.data;
 import com.chopshop166.chopshoplib.drive.SwerveModule;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
-import com.chopshop166.chopshoplib.logging.LoggerDataFor;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /** Data for a single swerve module. */
-@LoggerDataFor(SwerveModule.class)
 public class SwerveModuleData extends DataWrapper {
 
     /** Actual State. */

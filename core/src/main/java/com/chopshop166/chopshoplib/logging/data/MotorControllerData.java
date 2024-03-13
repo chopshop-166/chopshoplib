@@ -2,14 +2,12 @@ package com.chopshop166.chopshoplib.logging.data;
 
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
-import com.chopshop166.chopshoplib.logging.LoggerDataFor;
 import com.chopshop166.chopshoplib.logging.NoLog;
 import com.chopshop166.chopshoplib.motors.SmartMotorController;
 
 /**
  * Data object for a motor controller.
  */
-@LoggerDataFor(SmartMotorController.class)
 public class MotorControllerData extends DataWrapper {
 
     /** The setpoint of the motor. */
