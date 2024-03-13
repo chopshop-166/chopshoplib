@@ -120,7 +120,7 @@ public class LEDSubsystem extends SmartSubsystemBase {
      * @return A command object.
      */
     public Command logIndicator(final String name) {
-        return this.runOnce(() -> {
+        return Commands.runOnce(() -> {
             Logger.recordOutput("IndicateLEDs", name);
         }).ignoringDisable(true);
     }
