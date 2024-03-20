@@ -30,22 +30,18 @@ public class LEDStripBuffer {
     private final int numLEDs;
     /** The next LED to assign with factories. */
     private int nextLED;
-    /** The format of the colors */
-    private final ColorFormat colorFormat;
 
 
     /**
      * Constructor.
      * 
      * @param numLEDs Number of LEDs.
-     * @param format format of the leds
      */
-    public LEDStripBuffer(final int numLEDs, final ColorFormat format) {
+    public LEDStripBuffer(final int numLEDs) {
         this.numLEDs = numLEDs;
         this.nextLED = 0;
         this.buffer = new AddressableLEDBuffer(numLEDs);
         this.rawBuffer = new AddressableLEDBuffer(numLEDs);
-        this.colorFormat = format;
     }
 
     /**
@@ -84,6 +80,19 @@ public class LEDStripBuffer {
     }
 
     /**
+     * Factory to create a new segment.
+     * 
+     * @param length The length of the segment (in LEDs).
+     * @param format The wire format of the LEDs.
+     * @return A segment object.
+     */
+    public SegmentConfig segment(final int length, final ColorFormat format) {
+        final var result = this.segment(length);
+        result.format = format;
+        return result;
+    }
+
+    /**
      * Create a segment that mirrors another segment.
      * 
      * @param origConfig The original config to mirror.
@@ -91,6 +100,19 @@ public class LEDStripBuffer {
      */
     public SegmentConfig mirrorSegment(final SegmentConfig origConfig) {
         final var result = this.segment(origConfig.length);
+        origConfig.mirrors.add(result);
+        return result;
+    }
+
+    /**
+     * Create a segment that mirrors another segment.
+     * 
+     * @param origConfig The original config to mirror.
+     * @param format The wire format of the LEDs.
+     * @return A segment object.
+     */
+    public SegmentConfig mirrorSegment(final SegmentConfig origConfig, final ColorFormat format) {
+        final var result = this.segment(origConfig.length, format);
         origConfig.mirrors.add(result);
         return result;
     }
@@ -163,7 +185,7 @@ public class LEDStripBuffer {
         }
         for (int i = 0; i < this.numLEDs; i++) {
             final Color c = this.buffer.getLED(i);
-            this.rawBuffer.setLED(i, this.colorFormat.convert(c));
+            this.rawBuffer.setLED(i, c);
         }
         led.setData(this.rawBuffer);
     }

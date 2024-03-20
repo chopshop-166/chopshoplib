@@ -29,6 +29,8 @@ public class SegmentConfig {
      * This makes it easier to update.
      */
     /* package */ final List<SegmentConfig> mirrors = new ArrayList<>();
+    /** The color format of the segment */
+    /* package */ ColorFormat format = ColorFormat.RGB;
     /** The buffer to write to. */
     private final LEDStripBuffer buffer;
 
@@ -77,7 +79,7 @@ public class SegmentConfig {
      * @param buf The buffer to write to.
      */
     public void update(final int i, final Color c, final AddressableLEDBuffer buf) {
-        buf.setLED(this.indexFor(i), c);
+        buf.setLED(this.indexFor(i), this.format.convert(c));
         for (final var mirror : this.mirrors) {
             mirror.update(i, c, buf);
         }
