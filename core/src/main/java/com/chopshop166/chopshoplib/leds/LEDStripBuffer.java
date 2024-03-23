@@ -28,8 +28,6 @@ public class LEDStripBuffer {
     private final Set<String> allTags = new HashSet<>();
     /** The buffer object. */
     private final AddressableLEDBuffer buffer;
-    /** The buffer that gets written */
-    private final AddressableLEDBuffer rawBuffer;
     /** Total number of LEDs in segments. */
     private final int numLEDs;
     /** The next LED to assign with factories. */
@@ -45,7 +43,6 @@ public class LEDStripBuffer {
         this.numLEDs = numLEDs;
         this.nextLED = 0;
         this.buffer = new AddressableLEDBuffer(numLEDs);
-        this.rawBuffer = new AddressableLEDBuffer(numLEDs);
     }
 
     /**
@@ -192,11 +189,7 @@ public class LEDStripBuffer {
         for (final var order : this.runOrder) {
             order.update();
         }
-        for (int i = 0; i < this.numLEDs; i++) {
-            final Color c = this.buffer.getLED(i);
-            this.rawBuffer.setLED(i, c);
-        }
-        led.setData(this.rawBuffer);
+        led.setData(this.buffer);
     }
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops"})
