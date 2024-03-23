@@ -6,12 +6,9 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import com.chopshop166.chopshoplib.boxes.BooleanBox;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WrapperCommand;
 
 /**
  * Utility class for storing command helpers.
@@ -43,27 +40,6 @@ final public class CommandUtils {
     }
 
     /**
-     * Create a command builder with a given name.
-     *
-     * @param requirements The subsystems that the command needs (can be empty).
-     * @return A new command builder.
-     */
-    public static BuildCommand cmd(final Subsystem... requirements) {
-        return new BuildCommand(requirements);
-    }
-
-    /**
-     * Create a command builder with a given name.
-     *
-     * @param name The command name.
-     * @param requirements The subsystems that the command needs (can be empty).
-     * @return A new command builder.
-     */
-    public static BuildCommand cmd(final String name, final Subsystem... requirements) {
-        return new BuildCommand(name, requirements);
-    }
-
-    /**
      * Run a {@link Runnable} and then wait until a condition is true.
      *
      * @param init The action to take.
@@ -72,6 +48,17 @@ final public class CommandUtils {
      */
     public static Command initAndWait(final Runnable init, final BooleanSupplier until) {
         return Commands.runOnce(init).until(until);
+    }
+
+    /**
+     * Run a {@link Runnable} repeatedly and then wait until a condition is true.
+     *
+     * @param func The action to take.
+     * @param until The condition to wait until.
+     * @return A new command.
+     */
+    public static Command runAndWait(final Runnable func, final BooleanSupplier until) {
+        return Commands.run(func).until(until);
     }
 
     /**
@@ -86,19 +73,6 @@ final public class CommandUtils {
         return Commands.runOnce(() -> {
             func.accept(value);
         });
-    }
-
-    /**
-     * Create a command that sets a motor to a speed while the command is running.
-     *
-     * @param value The value to set the motor to.
-     * @param motor The motor to use.
-     * @return A new command.
-     */
-    public static Command runWhile(final double value, final MotorController motor) {
-        return Commands.startEnd(() -> {
-            motor.set(value);
-        }, motor::stopMotor);
     }
 
     /**
@@ -187,21 +161,6 @@ final public class CommandUtils {
     public static Command doIfInterrupted(final Command original, final double timeout,
             final Command ifInterrupted, final Command ifFinished) {
         return doIfInterrupted(original.withTimeout(timeout), ifInterrupted, ifFinished);
-    }
-
-    /**
-     * Wrap a command, allowing it to run when the robot is disabled.
-     *
-     * @param cmd The command to test.
-     * @return A command object.
-     */
-    public static Command runWhenDisabled(final Command cmd) {
-        return new WrapperCommand(cmd) {
-            @Override
-            public boolean runsWhenDisabled() {
-                return true;
-            }
-        };
     }
 
 }
