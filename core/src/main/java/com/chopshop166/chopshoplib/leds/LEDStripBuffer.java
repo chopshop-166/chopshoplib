@@ -1,10 +1,12 @@
 package com.chopshop166.chopshoplib.leds;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -22,6 +24,8 @@ public class LEDStripBuffer {
     private final List<RunOrder> runOrder = new ArrayList<>();
     /** The patterns that have been added since the last run. */
     private final Set<Pattern> newPatterns = new HashSet<>();
+    /** The patterns that have been added since the last run. */
+    private final Set<String> allTags = new HashSet<>();
     /** The buffer object. */
     private final AddressableLEDBuffer buffer;
     /** The buffer that gets written */
@@ -128,6 +132,7 @@ public class LEDStripBuffer {
             this.segmentTagMap.putIfAbsent(tag, new HashSet<>());
             this.segmentTagMap.get(tag).add(config);
         }
+        this.allTags.addAll(Arrays.asList(tags));
     }
 
     /**
@@ -151,6 +156,10 @@ public class LEDStripBuffer {
      * @param pattern The pattern to use.
      */
     public void setPattern(final String tag, final Pattern pattern) {
+        // We have explicit permission from Ben to crash the code if the tag isn't found.
+        if (!this.hasTag(tag)) {
+            throw new NoSuchElementException("Missing tag " + tag);
+        }
         // When setPattern is called, it removes the existing pattern from any segments
         // that match those tags
         // and then uses the given pattern in their place
@@ -219,5 +228,9 @@ public class LEDStripBuffer {
             }
             matchedPatterns.add(p);
         }
+    }
+
+    private boolean hasTag(final String tag) {
+        return this.allTags.contains(tag);
     }
 }
