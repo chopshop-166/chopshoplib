@@ -51,6 +51,17 @@ final public class CommandUtils {
     }
 
     /**
+     * Run a {@link Runnable} repeatedly and then wait until a condition is true.
+     *
+     * @param func The action to take.
+     * @param until The condition to wait until.
+     * @return A new command.
+     */
+    public static Command runAndWait(final Runnable func, final BooleanSupplier until) {
+        return Commands.run(func).until(until);
+    }
+
+    /**
      * Create a command to call a consumer function.
      *
      * @param <T> The type to wrap.
