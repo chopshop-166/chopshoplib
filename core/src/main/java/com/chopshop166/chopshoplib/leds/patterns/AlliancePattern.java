@@ -16,9 +16,9 @@ public class AlliancePattern extends Pattern {
         if (alliance.isEmpty()) {
             buffer.setAll(Color.kBlack);
         } else if (alliance.get() == Alliance.Blue) {
-            buffer.setAll(new Color(2, 15, 250));
+            buffer.setAll(Color.kBlue);
         } else {
-            buffer.setAll(new Color(250, 2, 2));
+            buffer.setAll(Color.kRed);
         }
     }
 
