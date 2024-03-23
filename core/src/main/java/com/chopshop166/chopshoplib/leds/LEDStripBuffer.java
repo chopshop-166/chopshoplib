@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import edu.wpi.first.wpilibj.AddressableLED;
+import com.chopshop166.chopshoplib.maps.LedMapBase;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.util.Color;
 
 /** LED Buffer that creates and stores segments. */
 public class LEDStripBuffer {
@@ -177,7 +176,7 @@ public class LEDStripBuffer {
      * 
      * @param led The wpilib LED strip object.
      */
-    public void update(final AddressableLED led) {
+    public void update(final LedMapBase led) {
         for (final var order : this.runOrder) {
             if (this.newPatterns.contains(order.pattern())) {
                 order.initialize();
