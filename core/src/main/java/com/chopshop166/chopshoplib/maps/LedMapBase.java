@@ -8,11 +8,6 @@ public abstract class LedMapBase {
     /** The segment buffer. */
     public final LEDStripBuffer ledBuffer;
 
-    /** Constructor. */
-    public LedMapBase() {
-        this(0);
-    }
-
     /**
      * Constructor.
      * 
