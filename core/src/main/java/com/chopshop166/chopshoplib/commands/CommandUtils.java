@@ -6,7 +6,6 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import com.chopshop166.chopshoplib.boxes.BooleanBox;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
@@ -63,19 +62,6 @@ final public class CommandUtils {
         return Commands.runOnce(() -> {
             func.accept(value);
         });
-    }
-
-    /**
-     * Create a command that sets a motor to a speed while the command is running.
-     *
-     * @param value The value to set the motor to.
-     * @param motor The motor to use.
-     * @return A new command.
-     */
-    public static Command runWhile(final double value, final MotorController motor) {
-        return Commands.startEnd(() -> {
-            motor.set(value);
-        }, motor::stopMotor);
     }
 
     /**
