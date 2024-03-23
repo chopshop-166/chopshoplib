@@ -32,4 +32,24 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
     public Command every(final double timeDelta, final Runnable periodic) {
         return new IntervalCommand(timeDelta, this, periodic);
     }
+
+    /**
+     * Create a command that runs a function, and sets back to safe state on terminate.
+     * 
+     * @param init The function to run.
+     * @return A new command.
+     */
+    public Command startSafe(final Runnable init) {
+        return this.startEnd(init, this::safeState);
+    }
+
+    /**
+     * Create a command that runs a function repeatedly, and sets back to safe state on terminate.
+     * 
+     * @param func The function to run.
+     * @return A new command.
+     */
+    public Command runSafe(final Runnable func) {
+        return this.runEnd(func, this::safeState);
+    }
 }
