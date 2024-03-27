@@ -1,11 +1,9 @@
 package com.chopshop166.chopshoplib.leds;
 
 import org.littletonrobotics.junction.Logger;
-
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 import com.chopshop166.chopshoplib.leds.patterns.SolidColorPattern;
-import com.chopshop166.chopshoplib.maps.LedMap;
-import edu.wpi.first.wpilibj.AddressableLED;
+import com.chopshop166.chopshoplib.maps.LedMapBase;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -15,9 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class LEDSubsystem extends SmartSubsystemBase {
 
     /** The LED subsystem map. */
-    protected final LedMap map;
-    /** The addressable LED object. */
-    protected final AddressableLED led;
+    protected final LedMapBase map;
     /**
      * The segment buffer that we use.
      * 
@@ -32,14 +28,10 @@ public class LEDSubsystem extends SmartSubsystemBase {
      * 
      * @param map The subsystem map to use.
      */
-    public LEDSubsystem(final LedMap map) {
+    public LEDSubsystem(final LedMapBase map) {
         super();
-        this.led = map.led;
-        this.ledBuffer = map.ledBuffer;
         this.map = map;
-
-        this.led.setLength(this.ledBuffer.getLength());
-        this.led.start();
+        this.ledBuffer = map.ledBuffer;
     }
 
     /**
@@ -139,6 +131,6 @@ public class LEDSubsystem extends SmartSubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         // Use this for any background processing
-        this.ledBuffer.update(this.led);
+        this.ledBuffer.update(this.map);
     }
 }
