@@ -2,9 +2,8 @@ package com.chopshop166.chopshoplib.controls;
 
 import java.util.EnumMap;
 import java.util.Map;
-
+import com.chopshop166.chopshoplib.motors.Modifier;
 import com.chopshop166.chopshoplib.triggers.AxisButton;
-
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -55,13 +54,63 @@ public class ButtonXboxController extends CommandXboxController {
     /** The mapping of axis to command button. */
     private final Map<Axis, AxisButton> triggerButtons = new EnumMap<>(Axis.class);
 
+    /** The deadband range. */
+    private final Modifier deadband;
+
     /**
      * Construct an instance of a Xbox Controller along with each button the joystick has.
      *
      * @param port The USB port that the Xbox Controller is connected to on the Driver Station.
      */
     public ButtonXboxController(final int port) {
+        this(port, 0.05);
+    }
+
+    /**
+     * Construct an instance of a Xbox Controller along with each button the joystick has.
+     *
+     * @param port The USB port that the Xbox Controller is connected to on the Driver Station.
+     * @param dbRange The dead band range.
+     */
+    public ButtonXboxController(final int port, final double dbRange) {
         super(port);
+        this.deadband = Modifier.scalingDeadband(dbRange);
+    }
+
+    /**
+     * Get the deadbanded X axis of the left joystick.
+     * 
+     * @return The deadbanded value.
+     */
+    public double getDbLeftX() {
+        return this.deadband.applyAsDouble(this.getLeftX());
+    }
+
+    /**
+     * Get the deadbanded Y axis of the left joystick.
+     * 
+     * @return The deadbanded value.
+     */
+    public double getDbLeftY() {
+        return this.deadband.applyAsDouble(this.getLeftY());
+    }
+
+    /**
+     * Get the deadbanded X axis of the right joystick.
+     * 
+     * @return The deadbanded value.
+     */
+    public double getDbRightX() {
+        return this.deadband.applyAsDouble(this.getRightX());
+    }
+
+    /**
+     * Get the deadbanded Y axis of the right joystick.
+     * 
+     * @return The deadbanded value.
+     */
+    public double getDbRightY() {
+        return this.deadband.applyAsDouble(this.getRightY());
     }
 
     /**
