@@ -19,18 +19,6 @@ public class RepeatWhileCommand extends Command {
     /**
      * Create a command that repeats a command while a condition is true.
      * 
-     * @param name The name of the command.
-     * @param cmd The command to repeat.
-     * @param cond The condition to test.
-     */
-    public RepeatWhileCommand(final String name, final Command cmd, final BooleanSupplier cond) {
-        this(cmd, cond);
-        this.setName(name);
-    }
-
-    /**
-     * Create a command that repeats a command while a condition is true.
-     * 
      * @param cmd The command to repeat.
      * @param cond The condition to test.
      */

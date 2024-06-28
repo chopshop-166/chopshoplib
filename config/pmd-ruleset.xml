@@ -24,7 +24,8 @@
         <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="UseUnderscoresInNumericLiterals"/>
-        <exclude name="VariableNamingConventions"/>
+        <exclude name="UselessParentheses"/>
+        <exclude name="UseExplicitTypes"/>
     </rule>
     <rule ref="category/java/design.xml">
         <exclude name="AbstractClassWithoutAnyMethod"/>
@@ -40,7 +41,6 @@
     <rule ref="category/java/errorprone.xml">
         <exclude name="AvoidLiteralsInIfCondition"/>
         <exclude name="CloseResource"/>
-        <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="NonSerializableClass"/>
         <exclude name="NonStaticInitializer"/>
     </rule>
