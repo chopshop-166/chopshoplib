@@ -35,7 +35,7 @@ public class ButtonXboxController extends CommandXboxController {
         UP_LEFT(315);
 
         /** The angle of the direction enum. */
-        private int dPadRotation;
+        private final int dPadRotation;
 
         // Returns an integer representing the angle on the POV.
         private int getAngle() {

@@ -1,7 +1,6 @@
 package com.chopshop166.chopshoplib.states;
 
 import static com.chopshop166.chopshoplib.commands.CommandUtils.setter;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,11 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -55,8 +51,6 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
         super();
         this.currentState = initState;
         this.allowSameTransition = allowSameTransition;
-
-        this.setDefaultCommand(new InstantCommand(() -> this.handleState(this.currentState), this));
     }
 
     /**
@@ -97,6 +91,12 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
         return setter(newState, this::setState).withName(cmdname.toString());
     }
 
+    @Override
+    public void periodic() {
+        super.periodic();
+        this.handleState(this.currentState);
+    }
+
     /**
      * Perform an action if an invalid transition is commanded.
      * 
@@ -131,7 +131,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
      * @param commanded The state to transition to.
      */
     protected final void transition(final S current, final S commanded) {
-        this.transitions.add(new Transition<S>(current, commanded));
+        this.transitions.add(new Transition<>(current, commanded));
     }
 
     /**
@@ -195,13 +195,13 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     /**
      * A transition is a pair from one state to another.
      * 
-     * @param <State> The state enum type.
+     * @param <S> The state enum type.
      */
-    private static final class Transition<State> {
+    private static final class Transition<S> {
         /** The state to transition from. */
-        private final State startState;
+        private final S startState;
         /** The state to transition to. */
-        private final State endState;
+        private final S endState;
 
         /**
          * Create a transition.
@@ -209,7 +209,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
          * @param startState The state to transition from.
          * @param endState The state to transition to.
          */
-        public Transition(final State startState, final State endState) {
+        public Transition(final S startState, final S endState) {
             this.startState = startState;
             this.endState = endState;
         }
@@ -228,7 +228,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
             if (!(obj instanceof Transition)) {
                 return false;
             }
-            final Transition<State> t = (Transition<State>) obj;
+            final var t = (Transition<S>) obj;
             return t.startState.equals(this.startState) && t.endState.equals(this.endState);
         }
     }

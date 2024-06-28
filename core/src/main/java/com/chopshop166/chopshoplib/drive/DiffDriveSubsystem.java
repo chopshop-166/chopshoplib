@@ -39,6 +39,7 @@ public class DiffDriveSubsystem
      * 
      * @param map The object mapping hardware to software objects.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DiffDriveSubsystem(final DifferentialDriveMap map) {
         super(new DifferentialDriveData(), map);
         this.odometry = new DifferentialDriveOdometry(this.getRotation(), 0.0, 0.0);

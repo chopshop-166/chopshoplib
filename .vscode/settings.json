@@ -13,7 +13,6 @@
     "addDeprecated",
     "addOverride",
     "invertEquals",
-    "qualifyMembers",
     "stringConcatToTextBlock"
   ],
   "java.completion.favoriteStaticMembers": [

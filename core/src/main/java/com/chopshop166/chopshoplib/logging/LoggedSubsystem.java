@@ -35,7 +35,7 @@ public abstract class LoggedSubsystem<D extends LoggableInputs, M extends Loggab
      * 
      * @return The data object.
      */
-    public D getData() {
+    public final D getData() {
         return this.ioData;
     }
 
@@ -44,7 +44,7 @@ public abstract class LoggedSubsystem<D extends LoggableInputs, M extends Loggab
      * 
      * @return The data object.
      */
-    public M getMap() {
+    public final M getMap() {
         return this.map;
     }
 

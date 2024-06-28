@@ -17,7 +17,7 @@ final class ColorMathTest {
         final Color colorLeft = new Color(0.1, 0.2, 0.3);
         final Color colorRight = new Color(0.1, 0.2, 0.3);
 
-        Assertions.assertTrue(ColorMath.equals(colorLeft, colorRight, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(colorLeft, colorRight, EPSILON),
                 "Two colors are equal");
     }
 
@@ -28,8 +28,9 @@ final class ColorMathTest {
         final Color colorRight = new Color(0.2, 0.4, 0.6);
         final Color expected = new Color(0.3, 0.6, 0.9);
 
-        Assertions.assertTrue(ColorMath.equals(ColorMath.plus(colorLeft, colorRight), expected,
-                ColorMathTest.EPSILON), "Color addition returns correct value");
+        Assertions.assertTrue(
+                ColorMath.equals(ColorMath.plus(colorLeft, colorRight), expected, EPSILON),
+                "Color addition returns correct value");
     }
 
     /** Check color subtraction */
@@ -39,8 +40,9 @@ final class ColorMathTest {
         final Color colorRight = new Color(0.1, 0.2, 0.3);
         final Color expected = new Color(0.2, 0.4, 0.6);
 
-        Assertions.assertTrue(ColorMath.equals(ColorMath.minus(colorLeft, colorRight), expected,
-                ColorMathTest.EPSILON), "Color subtraction returns correct value");
+        Assertions.assertTrue(
+                ColorMath.equals(ColorMath.minus(colorLeft, colorRight), expected, EPSILON),
+                "Color subtraction returns correct value");
     }
 
     /** Check color multiplication */
@@ -50,8 +52,9 @@ final class ColorMathTest {
         final double scalarRight = 0.5;
         final Color expected = new Color(0.15, 0.3, 0.45);
 
-        Assertions.assertTrue(ColorMath.equals(ColorMath.times(colorLeft, scalarRight), expected,
-                ColorMathTest.EPSILON), "Color multiplication returns correct value");
+        Assertions.assertTrue(
+                ColorMath.equals(ColorMath.times(colorLeft, scalarRight), expected, EPSILON),
+                "Color multiplication returns correct value");
     }
 
     /** Check color division */
@@ -61,8 +64,9 @@ final class ColorMathTest {
         final double scalarRight = 2.0;
         final Color expected = new Color(0.15, 0.3, 0.45);
 
-        Assertions.assertTrue(ColorMath.equals(ColorMath.div(colorLeft, scalarRight), expected,
-                ColorMathTest.EPSILON), "Color multiplication returns correct value");
+        Assertions.assertTrue(
+                ColorMath.equals(ColorMath.div(colorLeft, scalarRight), expected, EPSILON),
+                "Color multiplication returns correct value");
     }
 
     /** Check color dot product */
@@ -72,8 +76,7 @@ final class ColorMathTest {
         final Color colorRight = new Color(0.3, 0.6, 0.9);
         final double expected = 1.26;
 
-        Assertions.assertTrue(
-                Math.abs(expected - ColorMath.dot(colorLeft, colorRight)) <= ColorMathTest.EPSILON,
+        Assertions.assertTrue(Math.abs(expected - ColorMath.dot(colorLeft, colorRight)) <= EPSILON,
                 "Color dot product returns correct value");
     }
 
@@ -85,7 +88,7 @@ final class ColorMathTest {
 
         final Color expected = new Color(0.525, 0.3, 0.525);
         final Color result = ColorMath.lerp(colorStart, colorEnd, 0.5);
-        Assertions.assertTrue(ColorMath.equals(expected, result, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(expected, result, EPSILON),
                 "Middle interpolation is correct");
     }
 
@@ -97,7 +100,7 @@ final class ColorMathTest {
 
         final Color expected = new Color(0.2, 0.4, 0.15);
         final Color result = ColorMath.lerp(colorStart, colorEnd, 0);
-        Assertions.assertTrue(ColorMath.equals(expected, result, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(expected, result, EPSILON),
                 "Start interpolation is correct");
     }
 
@@ -109,7 +112,7 @@ final class ColorMathTest {
 
         final Color expected = new Color(0.85, 0.2, 0.9);
         final Color result = ColorMath.lerp(colorStart, colorEnd, 1);
-        Assertions.assertTrue(ColorMath.equals(expected, result, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(expected, result, EPSILON),
                 "End interpolation is correct");
     }
 
@@ -121,7 +124,7 @@ final class ColorMathTest {
 
         final Color expected = new Color(0, 0.5, 0);
         final Color result = ColorMath.lerp(colorStart, colorEnd, -0.5);
-        Assertions.assertTrue(ColorMath.equals(expected, result, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(expected, result, EPSILON),
                 "Underflow interpolation is correct: " + result.red + ", " + result.green + ", "
                         + result.blue);
     }
@@ -134,7 +137,7 @@ final class ColorMathTest {
 
         final Color expected = new Color(1, 0.1, 1);
         final Color result = ColorMath.lerp(colorStart, colorEnd, 1.5);
-        Assertions.assertTrue(ColorMath.equals(expected, result, ColorMathTest.EPSILON),
+        Assertions.assertTrue(ColorMath.equals(expected, result, EPSILON),
                 "Overflow interpolation is correct: " + result.red + ", " + result.green + ", "
                         + result.blue);
     }

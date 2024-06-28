@@ -18,8 +18,7 @@ public class ModifierGroup extends ArrayList<DoubleUnaryOperator> implements Dou
      * @param ms Modifiers to start with.
      */
     public ModifierGroup(final DoubleUnaryOperator... ms) {
-        super();
-        this.addAll(Arrays.asList(ms));
+        super(Arrays.asList(ms));
     }
 
     /**

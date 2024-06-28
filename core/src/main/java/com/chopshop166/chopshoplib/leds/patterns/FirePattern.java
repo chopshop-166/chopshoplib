@@ -76,7 +76,7 @@ public class FirePattern extends Pattern {
     private void calculateFire(final int sparks) {
         // Cool down each cell a little
         for (int i = 1; i < this.heat.length; i++) {
-            final int cooldown = this.rand.nextInt((this.heat.length * 10) / this.heat.length + 2);
+            final int cooldown = this.rand.nextInt(12);
 
             if (cooldown > this.heat[i]) {
                 this.heat[i] = 0;

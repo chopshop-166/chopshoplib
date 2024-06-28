@@ -52,7 +52,7 @@ public class SwPIDMotorController extends SmartMotorController {
      */
     public static SwPIDMotorController position(final SmartMotorController motor,
             final PIDController pid) {
-        return SwPIDMotorController.position(motor, pid, motor.getEncoder());
+        return position(motor, pid, motor.getEncoder());
     }
 
     /**
@@ -77,7 +77,7 @@ public class SwPIDMotorController extends SmartMotorController {
      */
     public static SwPIDMotorController velocity(final SmartMotorController motor,
             final PIDController pid) {
-        return SwPIDMotorController.velocity(motor, pid, motor.getEncoder());
+        return velocity(motor, pid, motor.getEncoder());
     }
 
     /**

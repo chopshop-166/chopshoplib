@@ -173,7 +173,7 @@ public abstract class CommandRobot extends LoggedRobot {
      * @return An instance of the given type, or null.
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg) {
-        return CommandRobot.getRobotMap(rootClass, pkg, null);
+        return getRobotMap(rootClass, pkg, null);
     }
 
     /**
@@ -187,7 +187,7 @@ public abstract class CommandRobot extends LoggedRobot {
     public <T> T getRobotMap(final Class<T> rootClass, final T defaultValue) {
         final Class<? extends CommandRobot> clazz = this.getClass();
         final String pkg = clazz.getPackage().getName();
-        return CommandRobot.getRobotMap(rootClass, pkg, defaultValue);
+        return getRobotMap(rootClass, pkg, defaultValue);
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class CommandRobot extends LoggedRobot {
      */
     public static <T> T getRobotMap(final Class<T> rootClass, final String pkg,
             final T defaultValue) {
-        return CommandRobot.getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
+        return getMapForName(RobotUtils.getMACAddress(), rootClass, pkg, defaultValue);
     }
 
     /**
@@ -215,7 +215,7 @@ public abstract class CommandRobot extends LoggedRobot {
      */
     public static <T> T getMapForName(final String name, final Class<T> rootClass,
             final String pkg) {
-        return CommandRobot.getMapForName(name, rootClass, pkg, null);
+        return getMapForName(name, rootClass, pkg, null);
     }
 
     /**

@@ -102,8 +102,8 @@ public final class ColorMath {
      * @return a blend of the two colors based on the factor
      */
     public static Color lerp(final Color start, final Color end, final double factor) {
-        return new Color(ColorMath.scalarLerp(start.red, end.red, factor),
-                ColorMath.scalarLerp(start.green, end.green, factor),
-                ColorMath.scalarLerp(start.blue, end.blue, factor));
+        return new Color(scalarLerp(start.red, end.red, factor),
+                scalarLerp(start.green, end.green, factor),
+                scalarLerp(start.blue, end.blue, factor));
     }
 }
