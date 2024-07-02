@@ -219,17 +219,13 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
             return Objects.hash(this.startState, this.endState);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(final Object obj) {
             if (obj == null) {
                 return false;
             }
-            if (!(obj instanceof Transition)) {
-                return false;
-            }
-            final var t = (Transition<S>) obj;
-            return t.startState.equals(this.startState) && t.endState.equals(this.endState);
+            return obj instanceof Transition t && t.startState.equals(this.startState)
+                    && t.endState.equals(this.endState);
         }
     }
 }
