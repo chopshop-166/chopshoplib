@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.commands;
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 import static edu.wpi.first.wpilibj2.command.Commands.waitUntil;
 import java.util.function.BooleanSupplier;
+import com.chopshop166.chopshoplib.boxes.BooleanBox;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -51,5 +52,15 @@ public abstract class SmartSubsystemBase extends SubsystemBase implements SmartS
      */
     public Command runSafe(final Runnable func) {
         return this.runEnd(func, this::safeState);
+    }
+
+    /**
+     * Create a command that sets a boolean true when started, and false when it ends.
+     * 
+     * @param box The contained variable to set.
+     * @return A command object.
+     */
+    public Command toggleCommand(final BooleanBox box) {
+        return this.startEnd(() -> box.accept(true), () -> box.accept(false));
     }
 }
