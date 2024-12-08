@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 import edu.wpi.first.wpilibj.I2C;
@@ -32,7 +34,7 @@ public class Lidar {
     private double stdDevLimit = 100;
 
     /** Synchronization object. */
-    private final Object syncObject = new Object();
+    private final Lock instanceLock = new ReentrantLock();
 
     /**
      * The scale to return measurements in.
@@ -395,8 +397,11 @@ public class Lidar {
      * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             this.stdDevLimit = sdLimit;
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
@@ -404,8 +409,11 @@ public class Lidar {
      * Clear the samples
      */
     public void reset() {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             this.samples.clear();
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
@@ -416,10 +424,13 @@ public class Lidar {
      * @return An Optional containing the distance if it exists
      */
     public Optional<Double> getDistanceOptional(final MeasurementType meas) {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             if (!this.isValid) {
                 return Optional.empty();
             }
+        } finally {
+            this.instanceLock.unlock();
         }
         return Optional.of(this.getDistance(meas));
     }
@@ -449,7 +460,9 @@ public class Lidar {
         this.i2cDevice.write(0x44, 0x1);
         this.i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
+
             this.samples.add((double) bbConvert.getShort());
             final Stats stats = Stats.of(this.samples);
             this.distanceMM = stats.mean();
@@ -457,6 +470,8 @@ public class Lidar {
             // a valid reading.
             this.stdDevValue = stats.populationStandardDeviation();
             this.isValid = this.stdDevValue < this.stdDevLimit;
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
