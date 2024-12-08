@@ -3,11 +3,9 @@ package com.chopshop166.chopshoplib.drive;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.DoubleSupplier;
-
 import com.chopshop166.chopshoplib.logging.LoggedSubsystem;
 import com.chopshop166.chopshoplib.logging.data.DifferentialDriveData;
 import com.chopshop166.chopshoplib.maps.DifferentialDriveMap;
-
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,7 +18,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 /**
@@ -238,7 +235,7 @@ public class DiffDriveSubsystem
 
         Command cmd = Commands.none();
         if (resetPose) {
-            cmd = new InstantCommand(() -> {
+            cmd = this.runOnce(() -> {
                 this.resetOdometry(finalAutoTrajectory.getInitialPose());
             });
         }

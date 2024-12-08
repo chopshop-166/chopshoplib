@@ -74,14 +74,4 @@ public interface SwerveModule {
      */
     SwerveModuleState getState();
 
-    /**
-     * Optimizes the desired module angle by taking into account the current module angle.
-     *
-     * @param desiredState The module state as calculated by a SwerveDriveKinematics object.
-     * @return The optimized module state.
-     */
-    default SwerveModuleState calculateSteeringAngle(final SwerveModuleState desiredState) {
-        return SwerveModuleState.optimize(desiredState, this.getAngle());
-    }
-
 }
