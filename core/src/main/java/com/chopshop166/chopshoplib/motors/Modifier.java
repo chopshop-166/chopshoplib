@@ -3,7 +3,6 @@ package com.chopshop166.chopshoplib.motors;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoublePredicate;
 import java.util.function.DoubleUnaryOperator;
-
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
 
@@ -20,7 +19,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier upperLimit(final BooleanSupplier limit) {
-        return Modifier.speedFilter(speed -> speed > 0.0 && limit.getAsBoolean());
+        return speedFilter(speed -> speed > 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -30,7 +29,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier lowerLimit(final BooleanSupplier limit) {
-        return Modifier.speedFilter(speed -> speed < 0.0 && limit.getAsBoolean());
+        return speedFilter(speed -> speed < 0.0 && limit.getAsBoolean());
     }
 
     /**
@@ -40,7 +39,7 @@ public interface Modifier extends DoubleUnaryOperator {
      * @return The new speed.
      */
     static Modifier deadband(final double band) {
-        return Modifier.speedFilter(speed -> Math.abs(speed) < band);
+        return speedFilter(speed -> Math.abs(speed) < band);
     }
 
     /**
@@ -69,7 +68,7 @@ public interface Modifier extends DoubleUnaryOperator {
      */
     static Modifier rollingAverage(final int numSamples) {
         /** The samples to average. */
-        final SampleBuffer<Double> buffer = new SampleBuffer<>(numSamples);
+        final var buffer = new SampleBuffer<Double>(numSamples);
         return speed -> {
             buffer.add(speed);
             return Stats.of(buffer).mean();

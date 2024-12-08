@@ -123,6 +123,7 @@ public class LEDStripBuffer {
      * @param config The segment.
      * @param tags The string tags.
      */
+    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops"})
     public void addTags(final SegmentConfig config, final String... tags) {
         for (final String tag : tags) {
             this.segmentTagMap.putIfAbsent(tag, new HashSet<>());

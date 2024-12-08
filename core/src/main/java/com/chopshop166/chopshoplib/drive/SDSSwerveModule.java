@@ -180,7 +180,7 @@ public class SDSSwerveModule implements SwerveModule {
         this.location = moduleLocation;
         this.steeringEncoder = steeringEncoder;
         this.steeringController = steeringController;
-        this.driveController = SDSSwerveModule.configureDriveMotor(driveController, conf);
+        this.driveController = configureDriveMotor(driveController, conf);
         this.steeringPID = pid;
         this.steeringPID.enableContinuousInput(-180, 180);
         this.steeringErrorDriveRatio = steeringErrorDriveRatio;

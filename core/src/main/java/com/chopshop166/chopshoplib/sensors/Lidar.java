@@ -2,11 +2,12 @@ package com.chopshop166.chopshoplib.sensors;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import com.chopshop166.chopshoplib.SampleBuffer;
 import com.google.common.math.Stats;
-
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
@@ -25,7 +26,7 @@ public class Lidar {
     /** True if the measurement is valid. */
     private boolean isValid;
     /** The measurement samples, for averaging. */
-    private SampleBuffer<Double> samples;
+    private List<Double> samples;
 
     /** The standard deviation of the measurements. */
     private double stdDevValue;
@@ -33,7 +34,7 @@ public class Lidar {
     private double stdDevLimit = 100;
 
     /** Synchronization object. */
-    private final Object syncObject = new Object();
+    private final Lock instanceLock = new ReentrantLock();
 
     /**
      * The scale to return measurements in.
@@ -77,7 +78,8 @@ public class Lidar {
             /** Use continuous wave. */
             CONTINOUS((byte) 0x53);
 
-            final byte value;
+            /** The value of the operate mode. */
+            public final byte value;
 
             /**
              * Create the enum.
@@ -104,7 +106,7 @@ public class Lidar {
              * @return The operation mode.
              */
             public static OpMode fromByte(final byte value) {
-                return Arrays.stream(OpMode.values()).filter(v -> v.value == value).findFirst()
+                return Arrays.stream(values()).filter(v -> v.value == value).findFirst()
                         .orElse(INVALID);
             }
 
@@ -115,7 +117,7 @@ public class Lidar {
              * @return The operation mode.
              */
             public static OpMode fromSettingsByte(final byte value) {
-                return OpMode.fromByte(value);
+                return fromByte(value);
             }
         }
 
@@ -134,7 +136,8 @@ public class Lidar {
             /** Preset is a tinyLIDAR. */
             TINYLIDAR((byte) 0x54);
 
-            byte value;
+            /** The value of the configuration. */
+            public final byte value;
 
             /**
              * Create the enum value.
@@ -161,8 +164,8 @@ public class Lidar {
              * @return The preset in use.
              */
             public static PresetConfiguration fromByte(final byte value) {
-                return Arrays.stream(PresetConfiguration.values())
-                        .filter(conf -> conf.value == value).findFirst().orElse(CUSTOM);
+                return Arrays.stream(values()).filter(conf -> conf.value == value).findFirst()
+                        .orElse(CUSTOM);
             }
 
             /**
@@ -172,7 +175,7 @@ public class Lidar {
              * @return The operation mode.
              */
             public static PresetConfiguration fromSettingsByte(final byte value) {
-                return PresetConfiguration.fromByte(value);
+                return fromByte(value);
             }
         }
 
@@ -189,7 +192,8 @@ public class Lidar {
             /** The light is in an unknown state. */
             UNKNOWN(3);
 
-            int value;
+            /** The value of the LED indicator. */
+            public final int value;
 
             /**
              * Create the enum.
@@ -216,8 +220,8 @@ public class Lidar {
              * @return The LED state.
              */
             public static LedIndicator fromInt(final int value) {
-                return Arrays.stream(LedIndicator.values()).filter(v -> v.value == value)
-                        .findFirst().orElse(UNKNOWN);
+                return Arrays.stream(values()).filter(v -> v.value == value).findFirst()
+                        .orElse(UNKNOWN);
             }
 
             /**
@@ -227,7 +231,7 @@ public class Lidar {
              * @return The LED state.
              */
             public static LedIndicator fromSensorByte(final byte value) {
-                return LedIndicator.fromInt((value & 0x6) >> 1);
+                return fromInt((value & 0x6) >> 1);
             }
         }
 
@@ -240,7 +244,8 @@ public class Lidar {
             /** Use custom calculation. */
             CUSTOM(1);
 
-            int value;
+            /** The offset calibration value. */
+            public final int value;
 
             /**
              * Create the enum.
@@ -281,7 +286,7 @@ public class Lidar {
              * @return The offset calculation being used.
              */
             public static OffsetCalFlag fromSensorByte(final int value) {
-                return OffsetCalFlag.fromInt((value & 0x8) >> 3);
+                return fromInt((value & 0x8) >> 3);
             }
         }
 
@@ -392,8 +397,11 @@ public class Lidar {
      * @param sdLimit The maximum standard deviation expected
      */
     public void setStandardDeviationLimit(final double sdLimit) {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             this.stdDevLimit = sdLimit;
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
@@ -401,8 +409,11 @@ public class Lidar {
      * Clear the samples
      */
     public void reset() {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             this.samples.clear();
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
@@ -413,10 +424,13 @@ public class Lidar {
      * @return An Optional containing the distance if it exists
      */
     public Optional<Double> getDistanceOptional(final MeasurementType meas) {
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
             if (!this.isValid) {
                 return Optional.empty();
             }
+        } finally {
+            this.instanceLock.unlock();
         }
         return Optional.of(this.getDistance(meas));
     }
@@ -446,7 +460,9 @@ public class Lidar {
         this.i2cDevice.write(0x44, 0x1);
         this.i2cDevice.readOnly(dataBuffer, 2);
         final ByteBuffer bbConvert = ByteBuffer.wrap(dataBuffer);
-        synchronized (this.syncObject) {
+        try {
+            this.instanceLock.lock();
+
             this.samples.add((double) bbConvert.getShort());
             final Stats stats = Stats.of(this.samples);
             this.distanceMM = stats.mean();
@@ -454,6 +470,8 @@ public class Lidar {
             // a valid reading.
             this.stdDevValue = stats.populationStandardDeviation();
             this.isValid = this.stdDevValue < this.stdDevLimit;
+        } finally {
+            this.instanceLock.unlock();
         }
     }
 
