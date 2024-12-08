@@ -223,29 +223,30 @@ public class SDSSwerveModule implements SwerveModule {
      */
     @Override
     public SwerveModuleSpeeds calculateDesiredState(final SwerveModuleState desiredState) {
-        final SwerveModuleState state = this.calculateSteeringAngle(desiredState);
+        desiredState.optimize(this.getAngle());
 
         // Run Steering angle PID to calculate output since the Spark Max can't take
         // advantage of the CANCoder
-        final double steeringAngleError = this.getAngle().getDegrees() - state.angle.getDegrees();
-        double angleOutput =
-                this.steeringPID.calculate(this.getAngle().getDegrees(), state.angle.getDegrees());
+        final double steeringAngleError =
+                this.getAngle().getDegrees() - desiredState.angle.getDegrees();
+        double angleOutput = this.steeringPID.calculate(this.getAngle().getDegrees(),
+                desiredState.angle.getDegrees());
         // If we're not trying to actually drive, don't reset the module angle
-        if (state.speedMetersPerSecond == 0) {
+        if (desiredState.speedMetersPerSecond == 0) {
             angleOutput = 0.0;
         }
 
         // Adjust the target drive speed inversely proportional to the pod angle error.
         // This reduces the speed when the pod is not pointing in the desired direction
         // and proportionally increases it as the pod aligns to the desired angle.
-        double driveSpeedMetersPerSecond = state.speedMetersPerSecond;
+        double driveSpeedMetersPerSecond = desiredState.speedMetersPerSecond;
         if (Math.abs(steeringAngleError) >= STEERING_ANGLE_TOLERANCE) {
             driveSpeedMetersPerSecond *=
                     this.steeringErrorDriveRatio * Math.abs(180 - steeringAngleError) / 180;
         }
 
         // Set the drive motor output speed
-        if (state.speedMetersPerSecond == 0) {
+        if (desiredState.speedMetersPerSecond == 0) {
             this.driveController.getPidController().setIAccum(0);
         }
         if (this.inverted) {

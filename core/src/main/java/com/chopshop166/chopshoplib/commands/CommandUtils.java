@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import com.chopshop166.chopshoplib.boxes.BooleanBox;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ProxyCommand;
 
 /**
  * Utility class for storing command helpers.
@@ -100,16 +99,6 @@ final public class CommandUtils {
      */
     public static Command runIf(final BooleanSupplier condition, final Command cmd) {
         return Commands.either(cmd, Commands.none(), condition);
-    }
-
-    /**
-     * Create a command that selects which command to run from a function.
-     *
-     * @param selector The function to determine which command should be run.
-     * @return The wrapper command object.
-     */
-    public static Command select(final Supplier<Command> selector) {
-        return new ProxyCommand(selector);
     }
 
     /**
