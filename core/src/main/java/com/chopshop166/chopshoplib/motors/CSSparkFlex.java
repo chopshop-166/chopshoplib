@@ -1,12 +1,10 @@
 package com.chopshop166.chopshoplib.motors;
 
 import com.chopshop166.chopshoplib.sensors.SparkFlexEncoder;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 /**

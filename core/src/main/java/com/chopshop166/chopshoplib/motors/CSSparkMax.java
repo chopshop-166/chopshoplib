@@ -1,14 +1,11 @@
 package com.chopshop166.chopshoplib.motors;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkMax;
 import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkRelativeEncoder;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 /**
  * CSSparkMax

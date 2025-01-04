@@ -1,12 +1,10 @@
 package com.chopshop166.chopshoplib.motors;
 
 import com.chopshop166.chopshoplib.sensors.IEncoder;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkRelativeEncoder;
 
 /**
  * CSSpark
