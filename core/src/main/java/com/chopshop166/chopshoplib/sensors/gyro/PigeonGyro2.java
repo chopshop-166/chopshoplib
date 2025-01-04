@@ -65,7 +65,7 @@ public class PigeonGyro2 implements SmartGyro {
      */
     @Override
     public double getRate() {
-        return this.gyro.getRate();
+        return -this.gyro.getAngularVelocityZWorld().getValueAsDouble();
     }
 
     /**
@@ -73,7 +73,7 @@ public class PigeonGyro2 implements SmartGyro {
      */
     @Override
     public double getAngle() {
-        return this.gyro.getAngle();
+        return -this.gyro.getYaw().getValueAsDouble();
     }
 
     @Override
