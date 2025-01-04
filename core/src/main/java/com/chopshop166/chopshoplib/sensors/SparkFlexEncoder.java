@@ -1,14 +1,18 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.revrobotics.CANSparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 /**
  * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
  * interfaces.
  */
-public class SparkEncoder implements IEncoder {
+public class SparkFlexEncoder implements IEncoder {
 
+    private final SparkFlex motor;
     /** The wrapped encoder. */
     private final RelativeEncoder encoder;
 
@@ -17,8 +21,13 @@ public class SparkEncoder implements IEncoder {
      * 
      * @param encoder The encoder to wrap around.
      */
-    public SparkEncoder(final RelativeEncoder encoder) {
+    public SparkFlexEncoder(final SparkFlex motor, final RelativeEncoder encoder) {
+        this.motor = motor;
         this.encoder = encoder;
+
+        final var config = new SparkFlexConfig();
+        config.encoder.countsPerRevolution(42);
+        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     /**
@@ -26,8 +35,8 @@ public class SparkEncoder implements IEncoder {
      * 
      * @param max The Spark MAX to get the encoder for.
      */
-    public SparkEncoder(final CANSparkBase max) {
-        this.encoder = max.getEncoder();
+    public SparkFlexEncoder(final SparkFlex motor) {
+        this(motor, motor.getEncoder());
     }
 
     /**
@@ -45,7 +54,10 @@ public class SparkEncoder implements IEncoder {
      * @param scaleFactor The scaleFactor to set.
      */
     public void setPositionScaleFactor(final double scaleFactor) {
-        this.encoder.setPositionConversionFactor(scaleFactor);
+        final var config = new SparkFlexConfig();
+        config.encoder.positionConversionFactor(scaleFactor);
+        this.motor.configure(config, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     /**
@@ -54,7 +66,7 @@ public class SparkEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getPositionScaleFactor() {
-        return this.encoder.getPositionConversionFactor();
+        return this.motor.configAccessor.encoder.getPositionConversionFactor();
     }
 
     /**
@@ -63,7 +75,10 @@ public class SparkEncoder implements IEncoder {
      * @param scaleFactor The scaleFactor to set.
      */
     public void setVelocityScaleFactor(final double scaleFactor) {
-        this.encoder.setVelocityConversionFactor(scaleFactor);
+        final var config = new SparkFlexConfig();
+        config.encoder.velocityConversionFactor(scaleFactor);
+        this.motor.configure(config, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     /**
@@ -72,7 +87,7 @@ public class SparkEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getVelocityScaleFactor() {
-        return this.encoder.getVelocityConversionFactor();
+        return this.motor.configAccessor.encoder.getVelocityConversionFactor();
     }
 
     /**

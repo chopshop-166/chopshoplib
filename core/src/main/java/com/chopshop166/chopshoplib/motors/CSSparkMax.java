@@ -1,9 +1,14 @@
 package com.chopshop166.chopshoplib.motors;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
+import com.chopshop166.chopshoplib.sensors.SparkMaxEncoder;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.spark.SparkRelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 /**
  * CSSparkMax
@@ -21,9 +26,11 @@ public class CSSparkMax extends CSSpark {
      * @return A CSSparkMax object.
      */
     public static CSSparkMax brushed(final int deviceID, final int countsPerRev) {
-        final var spark = new CANSparkMax(deviceID, MotorType.kBrushed);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, countsPerRev);
-        return new CSSparkMax(spark, enc);
+        final var spark = new SparkMax(deviceID, MotorType.kBrushed);
+        final var config = new SparkMaxConfig();
+        config.encoder.countsPerRevolution(countsPerRev);
+        spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        return new CSSparkMax(spark);
     }
 
     /**
@@ -33,29 +40,8 @@ public class CSSparkMax extends CSSpark {
      * @return A CSSparkMax object.
      */
     public static CSSparkMax neo(final int deviceID) {
-        final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
-        return new CSSparkMax(spark, getNeoEncoder(spark));
-    }
-
-    /**
-     * Create a Spark MAX associated with a Neo Vortex motor.
-     * 
-     * @param deviceID The CAN device ID
-     * @return A CSSparkMax object.
-     */
-    public static CSSparkMax vortex(final int deviceID) {
-        final var spark = new CANSparkMax(deviceID, MotorType.kBrushless);
-        return new CSSparkMax(spark, getVortexEncoder(spark));
-    }
-
-    /**
-     * Create a new wrapped SPARK MAX Controller.
-     *
-     * @param spark The spark object to wrap.
-     * @param enc The encoder object.
-     */
-    public CSSparkMax(final CANSparkMax spark, final RelativeEncoder enc) {
-        super(spark, enc);
+        final var spark = new SparkMax(deviceID, MotorType.kBrushless);
+        return new CSSparkMax(spark);
     }
 
     /**
@@ -64,7 +50,7 @@ public class CSSparkMax extends CSSpark {
      * @param deviceID The device ID.
      */
     public CSSparkMax(final int deviceID) {
-        this(new CANSparkMax(deviceID, MotorType.kBrushless));
+        this(new SparkMax(deviceID, MotorType.kBrushless));
     }
 
     /**
@@ -72,13 +58,19 @@ public class CSSparkMax extends CSSpark {
      * 
      * @param spark The motor controller.
      */
-    private CSSparkMax(final CANSparkMax spark) {
-        this(spark, getNeoEncoder(spark));
+    private CSSparkMax(final SparkMax spark) {
+        super(spark, new SparkMaxEncoder(spark));
     }
 
     @Override
-    public CANSparkMax getMotorController() {
-        return (CANSparkMax) super.getMotorController();
+    public SparkMaxEncoder getEncoder() {
+        // This cast is safe because we're the ones setting it in the first place.
+        return (SparkMaxEncoder) super.getEncoder();
+    }
+
+    @Override
+    public SparkMax getMotorController() {
+        return (SparkMax) super.getMotorController();
     }
 
     @Override

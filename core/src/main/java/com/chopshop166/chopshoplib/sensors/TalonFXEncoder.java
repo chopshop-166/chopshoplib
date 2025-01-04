@@ -1,7 +1,9 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 
 /**
  * An Encoder attached to the Talon SRX.
@@ -11,9 +13,9 @@ public class TalonFXEncoder implements IEncoder {
     /** Reference to the base Talon SRX. */
     private final TalonFX talon;
     /** Signal for position. */
-    private final StatusSignal<Double> positionSignal;
+    private final StatusSignal<Angle> positionSignal;
     /** Signal for velocity. */
-    private final StatusSignal<Double> velocitySignal;
+    private final StatusSignal<AngularVelocity> velocitySignal;
 
     /**
      * Construct the encoder from the Talon.

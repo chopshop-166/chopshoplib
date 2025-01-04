@@ -1,6 +1,6 @@
 package com.chopshop166.chopshoplib.states;
 
-import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.config.PIDConstants;
 
 /**
  * Wrapper for PID values.
