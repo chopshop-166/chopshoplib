@@ -59,7 +59,7 @@ public class CSTalonFX extends SmartMotorController {
     }
 
     @Override
-    public void setInverted(boolean isInverted) {
+    public void setInverted(final boolean isInverted) {
         config.MotorOutput.Inverted = isInverted ? InvertedValue.Clockwise_Positive
                 : InvertedValue.CounterClockwise_Positive;
         wrapped.getConfigurator().apply(config);
@@ -67,17 +67,17 @@ public class CSTalonFX extends SmartMotorController {
 
     @Override
     public double[] getVoltage() {
-        return new double[] {this.wrapped.getMotorVoltage().getValueAsDouble()};
+        return new double[] { this.wrapped.getMotorVoltage().getValueAsDouble() };
     }
 
     @Override
     public int[] getFaultData() {
-        return new int[] {this.wrapped.getFaultField().getValue()};
+        return new int[] { this.wrapped.getFaultField().getValue() };
     }
 
     @Override
     public int[] getStickyFaultData() {
-        return new int[] {this.wrapped.getStickyFaultField().getValue()};
+        return new int[] { this.wrapped.getStickyFaultField().getValue() };
     }
 
     @Override

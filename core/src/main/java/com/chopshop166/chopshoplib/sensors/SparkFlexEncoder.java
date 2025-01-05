@@ -7,11 +7,13 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 /**
- * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
+ * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to
+ * implement WPIlib
  * interfaces.
  */
 public class SparkFlexEncoder implements IEncoder {
 
+    /** The motor that the wrapped encoder is connected to */
     private final SparkFlex motor;
     /** The wrapped encoder. */
     private final RelativeEncoder encoder;
@@ -19,6 +21,7 @@ public class SparkFlexEncoder implements IEncoder {
     /**
      * Create a wrapper object.
      * 
+     * @param motor   The motor controller that this encoder is connected to
      * @param encoder The encoder to wrap around.
      */
     public SparkFlexEncoder(final SparkFlex motor, final RelativeEncoder encoder) {
@@ -33,7 +36,7 @@ public class SparkFlexEncoder implements IEncoder {
     /**
      * Create a wrapper object.
      * 
-     * @param max The Spark MAX to get the encoder for.
+     * @param motor The Spark FLEX to get the encoder for.
      */
     public SparkFlexEncoder(final SparkFlex motor) {
         this(motor, motor.getEncoder());
