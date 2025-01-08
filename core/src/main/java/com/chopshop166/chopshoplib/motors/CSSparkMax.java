@@ -26,18 +26,7 @@ public class CSSparkMax extends CSSpark {
         final var spark = new SparkMax(deviceID, MotorType.kBrushed);
         final var config = new SparkMaxConfig();
         config.encoder.countsPerRevolution(countsPerRev);
-        spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        return new CSSparkMax(spark);
-    }
-
-    /**
-     * Create a Spark MAX associated with a Neo or Neo 550 motor.
-     * 
-     * @param deviceID The CAN device ID
-     * @return A CSSparkMax object.
-     */
-    public static CSSparkMax neo(final int deviceID) {
-        final var spark = new SparkMax(deviceID, MotorType.kBrushless);
+        spark.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         return new CSSparkMax(spark);
     }
 
