@@ -2,7 +2,7 @@ package com.chopshop166.chopshoplib.drive;
 
 import com.chopshop166.chopshoplib.motors.CSSpark;
 import com.chopshop166.chopshoplib.motors.PIDControlType;
-import com.chopshop166.chopshoplib.sensors.CtreEncoder;
+import com.chopshop166.chopshoplib.sensors.IAbsolutePosition;
 import com.chopshop166.chopshoplib.states.PIDValues;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -23,7 +23,7 @@ public class SDSSwerveModule implements SwerveModule {
     /** The physical location of the module. */
     private final Translation2d location;
     /** The encoder used for steering. */
-    private final CtreEncoder steeringEncoder;
+    private final IAbsolutePosition steeringEncoder;
     /** The motor controller for steering. */
     private final CSSpark steeringController;
     /** The PID controller for steering. */
@@ -73,9 +73,9 @@ public class SDSSwerveModule implements SwerveModule {
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
-         * @param wheelDiameter The diameter of the wheel.
-         * @param pidValues The PID constants to use for the steering PID.
+         * @param gearRatio      The gear ratio for the module.
+         * @param wheelDiameter  The diameter of the wheel.
+         * @param pidValues      The PID constants to use for the steering PID.
          * @param drivePIDValues The PID constants to use for the drive PID.
          */
         public Configuration(final double gearRatio, final double wheelDiameter,
@@ -89,9 +89,9 @@ public class SDSSwerveModule implements SwerveModule {
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
+         * @param gearRatio     The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
-         * @param pidValues The PID constants to use for the steering PID.
+         * @param pidValues     The PID constants to use for the steering PID.
          */
         public Configuration(final double gearRatio, final double wheelDiameter,
                 final PIDValues pidValues) {
@@ -101,7 +101,7 @@ public class SDSSwerveModule implements SwerveModule {
         /**
          * Construct configuration data.
          *
-         * @param gearRatio The gear ratio for the module.
+         * @param gearRatio     The gear ratio for the module.
          * @param wheelDiameter The diameter of the wheel.
          */
         public Configuration(final double gearRatio, final double wheelDiameter) {
@@ -122,13 +122,13 @@ public class SDSSwerveModule implements SwerveModule {
     /**
      * The constructor.
      *
-     * @param moduleLocation The physical location in meters.
-     * @param steeringEncoder The steering encoder.
+     * @param moduleLocation     The physical location in meters.
+     * @param steeringEncoder    The steering encoder.
      * @param steeringController The steering motor controller.
-     * @param driveController The drive motor controller.
-     * @param conf The module configuration.
+     * @param driveController    The drive motor controller.
+     * @param conf               The module configuration.
      */
-    public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
+    public SDSSwerveModule(final Translation2d moduleLocation, final IAbsolutePosition steeringEncoder,
             final CSSpark steeringController, final CSSpark driveController,
             final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
@@ -139,14 +139,14 @@ public class SDSSwerveModule implements SwerveModule {
     /**
      * The constructor.
      *
-     * @param moduleLocation The physical location.
-     * @param steeringEncoder The steering encoder.
+     * @param moduleLocation     The physical location.
+     * @param steeringEncoder    The steering encoder.
      * @param steeringController The steering motor controller.
-     * @param driveController The drive motor controller.
-     * @param conf The module configuration.
-     * @param pid The PID controller for steering.
+     * @param driveController    The drive motor controller.
+     * @param conf               The module configuration.
+     * @param pid                The PID controller for steering.
      */
-    public SDSSwerveModule(final Translation2d moduleLocation, final CtreEncoder steeringEncoder,
+    public SDSSwerveModule(final Translation2d moduleLocation, final IAbsolutePosition steeringEncoder,
             final CSSpark steeringController, final CSSpark driveController,
             final Configuration conf, final PIDController pid) {
         this.location = moduleLocation;
@@ -188,7 +188,8 @@ public class SDSSwerveModule implements SwerveModule {
     }
 
     /**
-     * Process the desired state and set the output values for the motor controllers.
+     * Process the desired state and set the output values for the motor
+     * controllers.
      *
      * @param desiredState The direction and speed.
      */
