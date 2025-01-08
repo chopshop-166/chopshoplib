@@ -1,9 +1,8 @@
 package com.chopshop166.chopshoplib.motors;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkRelativeEncoder;
+import com.chopshop166.chopshoplib.sensors.SparkFlexEncoder;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 /**
  * CSSparkFlex
@@ -14,57 +13,12 @@ import com.revrobotics.SparkRelativeEncoder;
 public class CSSparkFlex extends CSSpark {
 
     /**
-     * Create a Spark FLEX associated with a brushed motor.
-     * 
-     * @param deviceID The CAN device ID
-     * @param countsPerRev The counts per revolution of the encoder.
-     * @return A CSSparkFlex object.
-     */
-    public static CSSparkFlex brushed(final int deviceID, final int countsPerRev) {
-        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushed);
-        final var enc = spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, countsPerRev);
-        return new CSSparkFlex(spark, enc);
-    }
-
-    /**
-     * Create a Spark FLEX associated with a Neo or Neo 550 motor.
-     * 
-     * @param deviceID The CAN device ID
-     * @return A CSSparkFlex object.
-     */
-    public static CSSparkFlex neo(final int deviceID) {
-        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
-        return new CSSparkFlex(spark, getNeoEncoder(spark));
-    }
-
-    /**
-     * Create a Spark FLEX associated with a Neo Vortex motor.
-     * 
-     * @param deviceID The CAN device ID
-     * @return A CSSparkFlex object.
-     */
-    public static CSSparkFlex vortex(final int deviceID) {
-        final var spark = new CANSparkFlex(deviceID, MotorType.kBrushless);
-        return new CSSparkFlex(spark, getVortexEncoder(spark));
-    }
-
-    /**
-     * Create a new wrapped SPARK FLEX Controller.
-     *
-     * @param spark The spark object to wrap.
-     * @param enc The encoder object.
-     */
-    public CSSparkFlex(final CANSparkFlex spark, final RelativeEncoder enc) {
-        super(spark, enc);
-    }
-
-    /**
      * Create a SPARK Max Encoder set up for a Vortex (most common behavior).
      * 
      * @param deviceID The device ID.
      */
     public CSSparkFlex(final int deviceID) {
-        this(new CANSparkFlex(deviceID, MotorType.kBrushless));
+        this(new SparkFlex(deviceID, MotorType.kBrushless));
     }
 
     /**
@@ -72,13 +26,19 @@ public class CSSparkFlex extends CSSpark {
      * 
      * @param spark The motor controller.
      */
-    private CSSparkFlex(final CANSparkFlex spark) {
-        this(spark, getVortexEncoder(spark));
+    public CSSparkFlex(final SparkFlex spark) {
+        super(spark, new SparkFlexEncoder(spark));
     }
 
     @Override
-    public CANSparkFlex getMotorController() {
-        return (CANSparkFlex) super.getMotorController();
+    public SparkFlexEncoder getEncoder() {
+        // This cast is safe because we're the ones setting it in the first place.
+        return (SparkFlexEncoder) super.getEncoder();
+    }
+
+    @Override
+    public SparkFlex getMotorController() {
+        return (SparkFlex) super.getMotorController();
     }
 
     @Override

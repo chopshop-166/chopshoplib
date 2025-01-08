@@ -1,33 +1,30 @@
 package com.chopshop166.chopshoplib.sensors;
 
-import com.revrobotics.CANSparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 /**
  * A wrapper for the {@link RelativeEncoder} provided by REV Robotics, to implement WPIlib
  * interfaces.
  */
-public class SparkEncoder implements IEncoder {
+public class SparkMaxEncoder implements IEncoder {
 
+    /** The motor that the wrapped encoder is connected to */
+    private final SparkMax motor;
     /** The wrapped encoder. */
     private final RelativeEncoder encoder;
 
     /**
      * Create a wrapper object.
      * 
-     * @param encoder The encoder to wrap around.
+     * @param motor The Spark MAX get the encoder for.
      */
-    public SparkEncoder(final RelativeEncoder encoder) {
-        this.encoder = encoder;
-    }
-
-    /**
-     * Create a wrapper object.
-     * 
-     * @param max The Spark MAX to get the encoder for.
-     */
-    public SparkEncoder(final CANSparkBase max) {
-        this.encoder = max.getEncoder();
+    public SparkMaxEncoder(final SparkMax motor) {
+        this.motor = motor;
+        this.encoder = motor.getEncoder();
     }
 
     /**
@@ -42,10 +39,16 @@ public class SparkEncoder implements IEncoder {
     /**
      * Sets the scale factor used to convert encoder values to useful units.
      * 
-     * @param scaleFactor The scaleFactor to set.
+     * @param positionScaleFactor The scale factor to set for position.
+     * @param velocityScaleFactor The scale factor to set for velocity.
      */
-    public void setPositionScaleFactor(final double scaleFactor) {
-        this.encoder.setPositionConversionFactor(scaleFactor);
+    public void setScaleFactors(final double positionScaleFactor,
+            final double velocityScaleFactor) {
+        final var config = new SparkMaxConfig();
+        config.encoder.positionConversionFactor(positionScaleFactor);
+        config.encoder.velocityConversionFactor(velocityScaleFactor);
+        this.motor.configure(config, ResetMode.kNoResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     /**
@@ -54,16 +57,7 @@ public class SparkEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getPositionScaleFactor() {
-        return this.encoder.getPositionConversionFactor();
-    }
-
-    /**
-     * Sets the scale factor used to convert encoder values to useful units.
-     * 
-     * @param scaleFactor The scaleFactor to set.
-     */
-    public void setVelocityScaleFactor(final double scaleFactor) {
-        this.encoder.setVelocityConversionFactor(scaleFactor);
+        return this.motor.configAccessor.encoder.getPositionConversionFactor();
     }
 
     /**
@@ -72,7 +66,7 @@ public class SparkEncoder implements IEncoder {
      * @return The scale factor.
      */
     public double getVelocityScaleFactor() {
-        return this.encoder.getVelocityConversionFactor();
+        return this.motor.configAccessor.encoder.getVelocityConversionFactor();
     }
 
     /**

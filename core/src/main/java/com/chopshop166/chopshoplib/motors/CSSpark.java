@@ -1,11 +1,10 @@
 package com.chopshop166.chopshoplib.motors;
 
-import com.chopshop166.chopshoplib.sensors.SparkEncoder;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.SparkRelativeEncoder;
+import com.chopshop166.chopshoplib.sensors.IEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 /**
  * CSSpark
@@ -15,13 +14,13 @@ import com.revrobotics.SparkRelativeEncoder;
  */
 public class CSSpark extends SmartMotorController {
     /** The unwrapped Spark MAX object. */
-    private final CANSparkBase spark;
+    private final SparkBase spark;
     /** The PID controller from the Spark MAX. */
-    private final SparkPIDController sparkPID;
+    private final SparkClosedLoopController sparkPID;
     /** The control type for the PID controller. */
     private ControlType savedControlType = ControlType.kDutyCycle;
     /** The PID Slot to send along with all setReference commands. */
-    private int pidSlot;
+    private ClosedLoopSlot pidSlot;
 
     /**
      * Create a smart motor controller from an unwrapped Spark object.
@@ -29,10 +28,10 @@ public class CSSpark extends SmartMotorController {
      * @param spark The Spark MAX/Flex object.
      * @param encoder The wrapped encoder.
      */
-    protected CSSpark(final CANSparkBase spark, final RelativeEncoder encoder) {
-        super(spark, new SparkEncoder(encoder));
+    protected CSSpark(final SparkBase spark, final IEncoder encoder) {
+        super(spark, encoder);
         this.spark = spark;
-        this.sparkPID = spark.getPIDController();
+        this.sparkPID = spark.getClosedLoopController();
     }
 
     /**
@@ -40,7 +39,7 @@ public class CSSpark extends SmartMotorController {
      *
      * @return The raw Spark MAX object.
      */
-    public CANSparkBase getMotorController() {
+    public SparkBase getMotorController() {
         return this.spark;
     }
 
@@ -49,7 +48,7 @@ public class CSSpark extends SmartMotorController {
      *
      * @return The CAN PID object.
      */
-    public SparkPIDController getPidController() {
+    public SparkClosedLoopController getPidController() {
         return this.sparkPID;
     }
 
@@ -86,12 +85,6 @@ public class CSSpark extends SmartMotorController {
     }
 
     @Override
-    public SparkEncoder getEncoder() {
-        // This cast is safe because we're the ones setting it in the first place.
-        return (SparkEncoder) super.getEncoder();
-    }
-
-    @Override
     public void setSetpoint(final double setPoint) {
         this.sparkPID.setReference(setPoint, this.savedControlType, this.pidSlot);
     }
@@ -103,7 +96,13 @@ public class CSSpark extends SmartMotorController {
      */
     @Override
     public void setPidSlot(final int slotId) {
-        this.pidSlot = slotId;
+        this.pidSlot = switch (slotId) {
+            case 0 -> ClosedLoopSlot.kSlot0;
+            case 1 -> ClosedLoopSlot.kSlot1;
+            case 2 -> ClosedLoopSlot.kSlot2;
+            case 3 -> ClosedLoopSlot.kSlot3;
+            default -> ClosedLoopSlot.kSlot0;
+        };
     }
 
     @Override
@@ -147,36 +146,16 @@ public class CSSpark extends SmartMotorController {
 
     @Override
     public int[] getFaultData() {
-        return new int[] {this.spark.getFaults()};
+        return new int[] {this.spark.getFaults().rawBits};
     }
 
     @Override
     public int[] getStickyFaultData() {
-        return new int[] {this.spark.getStickyFaults()};
+        return new int[] {this.spark.getStickyFaults().rawBits};
     }
 
     @Override
     public String getMotorControllerType() {
         return "Spark";
-    }
-
-    /**
-     * Get the NEO's encoder from a Spark.
-     * 
-     * @param spark The motor controller.
-     * @return An encoder object.
-     */
-    protected static RelativeEncoder getNeoEncoder(final CANSparkBase spark) {
-        return spark.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
-    }
-
-    /**
-     * Get the Vortex's encoder from a Spark.
-     * 
-     * @param spark The motor controller.
-     * @return An encoder object.
-     */
-    protected static RelativeEncoder getVortexEncoder(final CANSparkBase spark) {
-        return spark.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 7168);
     }
 }
