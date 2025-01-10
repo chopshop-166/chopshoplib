@@ -260,6 +260,8 @@ public class SDSSwerveModule implements SwerveModule {
         config.closedLoop.pidf(conf.drivePIDValues.p(), conf.drivePIDValues.i(),
                 conf.drivePIDValues.d(), conf.drivePIDValues.ff());
 
+        motor.setPidSlot(0);
+
         sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Return the original object so this can be chained
