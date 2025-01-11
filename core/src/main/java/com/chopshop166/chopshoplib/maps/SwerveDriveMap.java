@@ -7,7 +7,10 @@ import com.chopshop166.chopshoplib.logging.data.SwerveDriveData;
 import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
 import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 
@@ -34,6 +37,8 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
     public final SmartGyro gyro;
     /** Path follower robot config. */
     public final RobotConfig config;
+    /** Pid constants */
+    public final PPHolonomicDriveController holonomicDrive;
 
     /** A distance to use for default values. */
     private static final double DEFAULT_DISTANCE_FROM_CENTER = 0.381;
@@ -65,7 +70,9 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
                         new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER),
                         new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER),
                         new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER),
-                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER)));
+                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER)),
+                new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)));
+
     }
 
     /**
@@ -77,13 +84,14 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
      * @param rearRight                    Rear right swerve module.
      * @param maxDriveSpeedMetersPerSecond Max drive speed (m/s).
      * @param maxRotationRadianPerSecond   Max rotation speed (rad/s)
-     * @param gyro                         They gyro.
+     * @param gyro                         The gyro.
      * @param config                       The path follow robot configuration.
+     * @param holonomicDrive               Creates PID constants for holonomic
      */
     public SwerveDriveMap(final SwerveModule frontLeft, final SwerveModule frontRight,
             final SwerveModule rearLeft, final SwerveModule rearRight,
             final double maxDriveSpeedMetersPerSecond, final double maxRotationRadianPerSecond,
-            final SmartGyro gyro, final RobotConfig config) {
+            final SmartGyro gyro, final RobotConfig config, final PPHolonomicDriveController holonomicDrive) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.rearLeft = rearLeft;
@@ -92,6 +100,7 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
         this.maxRotationRadianPerSecond = maxRotationRadianPerSecond;
         this.gyro = gyro;
         this.config = config;
+        this.holonomicDrive = holonomicDrive;
     }
 
     @Override
