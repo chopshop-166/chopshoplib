@@ -37,7 +37,7 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
     public final SmartGyro gyro;
     /** Path follower robot config. */
     public final RobotConfig config;
-    /** Pid constants */
+    /** Pid constants. */
     public final PPHolonomicDriveController holonomicDrive;
 
     /** A distance to use for default values. */

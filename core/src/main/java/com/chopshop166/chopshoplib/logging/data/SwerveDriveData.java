@@ -20,7 +20,7 @@ public class SwerveDriveData extends DataWrapper {
     public final SwerveModuleData rearRight = new SwerveModuleData();
 
     /** The heading of the robot. */
-    @LogName("GyroYawPosition")
+    @LogName("Gyro Yaw Position")
     public Rotation2d gyroYawPosition = new Rotation2d();
 
     /**
