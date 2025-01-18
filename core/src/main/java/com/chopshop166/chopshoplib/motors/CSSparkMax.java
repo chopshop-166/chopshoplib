@@ -63,4 +63,12 @@ public class CSSparkMax extends CSSpark {
     public String getMotorControllerType() {
         return "Spark Max";
     }
+
+    @Override
+    public void setInverted(final boolean isInverted) {
+        final var config = new SparkMaxConfig();
+        config.inverted(isInverted);
+        getMotorController().configure(config, ResetMode.kNoResetSafeParameters,
+                PersistMode.kPersistParameters);
+    }
 }
