@@ -154,7 +154,7 @@ public class LEDStripBuffer {
      */
     public void setPattern(final String tag, final Pattern pattern) {
         // We have explicit permission from Ben to crash the code if the tag isn't found.
-        if (!this.hasTag(tag)) {
+        if (!this.hasTag(tag) && getLength() != 0) {
             throw new NoSuchElementException("Missing tag " + tag);
         }
         // When setPattern is called, it removes the existing pattern from any segments
