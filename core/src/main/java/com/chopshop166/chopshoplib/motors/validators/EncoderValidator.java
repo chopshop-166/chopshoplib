@@ -27,7 +27,7 @@ public class EncoderValidator implements MotorValidator {
         this.encoderRate = encoderRate;
         this.rateThreshold = rateThreshold;
         this.persistenceCheck = new PersistenceCheck(persistance,
-                () -> Math.abs(this.encoderRate.getAsDouble()) >= this.rateThreshold);
+                () -> Math.abs(this.encoderRate.getAsDouble()) <= this.rateThreshold);
     }
 
     /**
