@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.LogTable;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
@@ -22,6 +23,9 @@ public class SwerveDriveData extends DataWrapper {
     /** The heading of the robot. */
     @LogName("GyroYawPosition")
     public Rotation2d gyroYawPosition = new Rotation2d();
+
+    /** The actual chassis speeds. */
+    public ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
 
     /**
      * Set Desired States.
