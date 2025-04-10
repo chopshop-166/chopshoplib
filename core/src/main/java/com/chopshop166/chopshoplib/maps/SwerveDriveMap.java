@@ -10,9 +10,12 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 /**
@@ -42,6 +45,8 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
     public final PPHolonomicDriveController holonomicDrive;
     /** Kinematics object. */
     public final SwerveDriveKinematics kinematics;
+    /** Estimator. */
+    public final SwerveDrivePoseEstimator estimator;
 
     /** A distance to use for default values. */
     private static final double DEFAULT_DISTANCE_FROM_CENTER = 0.381;
@@ -114,6 +119,10 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
         this.kinematics = new SwerveDriveKinematics(this.frontLeft.getLocation(),
                 this.frontRight.getLocation(), this.rearLeft.getLocation(),
                 this.rearRight.getLocation());
+        this.estimator = new SwerveDrivePoseEstimator(kinematics, new Rotation2d(),
+                new SwerveModulePosition[] {new SwerveModulePosition(), new SwerveModulePosition(),
+                        new SwerveModulePosition(), new SwerveModulePosition()},
+                new Pose2d());
     }
 
     @Override
