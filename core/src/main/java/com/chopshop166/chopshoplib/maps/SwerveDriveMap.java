@@ -12,6 +12,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 /**
@@ -37,8 +38,10 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
     public final SmartGyro gyro;
     /** Path follower robot config. */
     public final RobotConfig config;
-    /** Pid constants */
+    /** PID constants. */
     public final PPHolonomicDriveController holonomicDrive;
+    /** Kinematics object. */
+    public final SwerveDriveKinematics kinematics;
 
     /** A distance to use for default values. */
     private static final double DEFAULT_DISTANCE_FROM_CENTER = 0.381;
@@ -65,33 +68,39 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
                 // Gyro
                 new MockGyro(),
                 // Path follower robot config
-                new RobotConfig(68, 5000, new ModuleConfig(
-                        0.1016, 6000, 1.0, DCMotor.getNeoVortex(1), 50, 1),
-                        new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER),
-                        new Translation2d(DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER),
-                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, DEFAULT_DISTANCE_FROM_CENTER),
-                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER, -DEFAULT_DISTANCE_FROM_CENTER)),
-                new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)));
+                new RobotConfig(68, 5000,
+                        new ModuleConfig(0.1016, 6000, 1.0, DCMotor.getNeoVortex(1), 50, 1),
+                        new Translation2d(DEFAULT_DISTANCE_FROM_CENTER,
+                                DEFAULT_DISTANCE_FROM_CENTER),
+                        new Translation2d(DEFAULT_DISTANCE_FROM_CENTER,
+                                -DEFAULT_DISTANCE_FROM_CENTER),
+                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER,
+                                DEFAULT_DISTANCE_FROM_CENTER),
+                        new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER,
+                                -DEFAULT_DISTANCE_FROM_CENTER)),
+                new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0),
+                        new PIDConstants(5.0, 0.0, 0.0)));
 
     }
 
     /**
      * Constructor.
      * 
-     * @param frontLeft                    Front left swerve module.
-     * @param frontRight                   Front right swerve module.
-     * @param rearLeft                     Rear left swerve module.
-     * @param rearRight                    Rear right swerve module.
+     * @param frontLeft Front left swerve module.
+     * @param frontRight Front right swerve module.
+     * @param rearLeft Rear left swerve module.
+     * @param rearRight Rear right swerve module.
      * @param maxDriveSpeedMetersPerSecond Max drive speed (m/s).
-     * @param maxRotationRadianPerSecond   Max rotation speed (rad/s)
-     * @param gyro                         The gyro.
-     * @param config                       The path follow robot configuration.
-     * @param holonomicDrive               Creates PID constants for holonomic
+     * @param maxRotationRadianPerSecond Max rotation speed (rad/s)
+     * @param gyro The gyro.
+     * @param config The path follow robot configuration.
+     * @param holonomicDrive Creates PID constants for holonomic
      */
     public SwerveDriveMap(final SwerveModule frontLeft, final SwerveModule frontRight,
             final SwerveModule rearLeft, final SwerveModule rearRight,
             final double maxDriveSpeedMetersPerSecond, final double maxRotationRadianPerSecond,
-            final SmartGyro gyro, final RobotConfig config, final PPHolonomicDriveController holonomicDrive) {
+            final SmartGyro gyro, final RobotConfig config,
+            final PPHolonomicDriveController holonomicDrive) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.rearLeft = rearLeft;
@@ -101,6 +110,10 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
         this.gyro = gyro;
         this.config = config;
         this.holonomicDrive = holonomicDrive;
+
+        this.kinematics = new SwerveDriveKinematics(this.frontLeft.getLocation(),
+                this.frontRight.getLocation(), this.rearLeft.getLocation(),
+                this.rearRight.getLocation());
     }
 
     @Override
@@ -110,5 +123,6 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
         data.rearLeft.updateData(this.rearLeft);
         data.rearRight.updateData(this.rearRight);
         data.gyroYawPosition = this.gyro.getRotation2d();
+        data.chassisSpeeds = this.kinematics.toChassisSpeeds(data.getModuleStates());
     }
 }
