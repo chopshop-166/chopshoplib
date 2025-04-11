@@ -10,6 +10,8 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,6 +19,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 /**
@@ -85,7 +89,8 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
                         new Translation2d(-DEFAULT_DISTANCE_FROM_CENTER,
                                 -DEFAULT_DISTANCE_FROM_CENTER)),
                 new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0),
-                        new PIDConstants(5.0, 0.0, 0.0)));
+                        new PIDConstants(5.0, 0.0, 0.0)),
+                VecBuilder.fill(0.1, 0.1, 0.1), VecBuilder.fill(0.9, 0.9, 0.9));
 
     }
 
@@ -101,12 +106,15 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
      * @param gyro The gyro.
      * @param config The path follow robot configuration.
      * @param holonomicDrive Creates PID constants for holonomic
+     * @param stateStdDevs Standard deviations for the estimator.
+     * @param visionMeasurementStdDevs Standard deviations for the estimator for vision data.
      */
     public SwerveDriveMap(final SwerveModule frontLeft, final SwerveModule frontRight,
             final SwerveModule rearLeft, final SwerveModule rearRight,
             final double maxDriveSpeedMetersPerSecond, final double maxRotationRadianPerSecond,
             final SmartGyro gyro, final RobotConfig config,
-            final PPHolonomicDriveController holonomicDrive) {
+            final PPHolonomicDriveController holonomicDrive, final Matrix<N3, N1> stateStdDevs,
+            final Matrix<N3, N1> visionMeasurementStdDevs) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.rearLeft = rearLeft;
@@ -123,7 +131,7 @@ public class SwerveDriveMap implements LoggableMap<SwerveDriveData> {
         this.estimator = new SwerveDrivePoseEstimator(kinematics, new Rotation2d(),
                 new SwerveModulePosition[] {new SwerveModulePosition(), new SwerveModulePosition(),
                         new SwerveModulePosition(), new SwerveModulePosition()},
-                new Pose2d());
+                new Pose2d(), stateStdDevs, visionMeasurementStdDevs);
     }
 
     @Override
