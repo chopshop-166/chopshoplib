@@ -3,7 +3,12 @@ package com.chopshop166.chopshoplib.logging.data;
 import com.chopshop166.chopshoplib.logging.DataWrapper;
 import com.chopshop166.chopshoplib.logging.LogName;
 import com.chopshop166.chopshoplib.logging.NoLog;
-import com.chopshop166.chopshoplib.motors.SmartMotorController;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Temperature;
+import edu.wpi.first.units.measure.Voltage;
+import yams.motorcontrollers.SmartMotorController;
 
 /**
  * Data object for a motor controller.
@@ -15,19 +20,19 @@ public class MotorControllerData extends DataWrapper {
     public double setpoint;
     /** The distance the motor has traveled in inches. */
     @LogName("Distance")
-    public double distance;
+    public Distance distance;
     /** The motor's velocity in inches/second. */
     @LogName("Velocity")
-    public double velocity;
+    public LinearVelocity velocity;
     /** The motor current in amps. */
     @LogName("CurrentAmps")
-    public double[] currentAmps;
+    public Current currentAmps;
     /** The motor temperature in celcius. */
     @LogName("TempCelsius")
-    public double[] tempC;
+    public Temperature tempC;
     /** The motor output voltage. */
     @LogName("Voltage")
-    public double[] voltage;
+    public Voltage voltage;
     /** The faults that are set. */
     @LogName("Faults")
     public int[] faults;
@@ -65,27 +70,7 @@ public class MotorControllerData extends DataWrapper {
      * @param motor The motor object to update from.
      */
     public void updateData(final SmartMotorController motor) {
-        if (this.isFlywheel && this.setpoint == 0.0) {
-            motor.stopMotor();
-        } else {
-            motor.set(this.setpoint);
-        }
-        this.updateInputData(motor);
-    }
-
-    /**
-     * Update data from the motor.
-     * 
-     * @param motor The motor object to update from.
-     */
-    public void updateInputData(final SmartMotorController motor) {
-        this.distance = motor.getEncoder().getDistance();
-        this.velocity = motor.getEncoder().getRate();
-        this.currentAmps = motor.getCurrentAmps();
-        this.tempC = motor.getTemperatureC();
-        this.voltage = motor.getVoltage();
-        this.faults = motor.getFaultData();
-        this.stickyFaults = motor.getStickyFaultData();
-        this.motorType = motor.getMotorControllerType();
+        motor.setDutyCycle(this.setpoint);
+        motor.updateTelemetry();
     }
 }

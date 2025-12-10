@@ -2,11 +2,10 @@ package com.chopshop166.chopshoplib.maps;
 
 import com.chopshop166.chopshoplib.logging.LoggableMap;
 import com.chopshop166.chopshoplib.logging.data.DifferentialDriveData;
-import com.chopshop166.chopshoplib.motors.SmartMotorController;
-import com.chopshop166.chopshoplib.sensors.IEncoder;
 import com.chopshop166.chopshoplib.sensors.gyro.MockGyro;
 import com.chopshop166.chopshoplib.sensors.gyro.SmartGyro;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import yams.motorcontrollers.SmartMotorController;
 
 /**
  * Differential Drive Map
@@ -17,13 +16,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public record DifferentialDriveMap(SmartMotorController left, SmartMotorController right,
         DifferentialDriveKinematics kinematics, SmartGyro gyro)
         implements LoggableMap<DifferentialDriveData> {
-
-    /**
-     * Default constructor.
-     */
-    public DifferentialDriveMap() {
-        this(new SmartMotorController(), new SmartMotorController(), 1.0);
-    }
 
     /**
      * Constructor.
@@ -38,32 +30,14 @@ public record DifferentialDriveMap(SmartMotorController left, SmartMotorControll
     }
 
     /**
-     * Shortcut for the left encoder.
-     *
-     * @return The encoder object.
-     */
-    public IEncoder leftEncoder() {
-        return this.left.getEncoder();
-    }
-
-    /**
-     * Shortcut for the left encoder.
-     *
-     * @return The encoder object.
-     */
-    public IEncoder rightEncoder() {
-        return this.right.getEncoder();
-    }
-
-    /**
      * Updates inputs and outputs from the subsystem mechanisms
      *
      * @param data The data object to update
      */
     @Override
     public void updateData(final DifferentialDriveData data) {
-        data.left.updateData(this.left);
-        data.right.updateData(this.right);
+        this.left.updateTelemetry();
+        this.right.updateTelemetry();
         data.gyroYawAngleDegrees = this.gyro.getAngle();
     }
 }
