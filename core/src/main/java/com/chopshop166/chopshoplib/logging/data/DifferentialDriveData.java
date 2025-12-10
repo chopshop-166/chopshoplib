@@ -1,16 +1,14 @@
 package com.chopshop166.chopshoplib.logging.data;
 
 import com.chopshop166.chopshoplib.logging.DataWrapper;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 
 /**
  * Differential Drive Data
  *
- * Provides an interface for getting and setting data in the Different Drive
- * Map. This implemnts the loggable IO layer that AdvantageKit expects and
- * provides a snapshot of sensor input.
+ * Provides an interface for getting and setting data in the Different Drive Map. This implemnts the
+ * loggable IO layer that AdvantageKit expects and provides a snapshot of sensor input.
  */
 public class DifferentialDriveData extends DataWrapper {
 
@@ -25,7 +23,7 @@ public class DifferentialDriveData extends DataWrapper {
     /**
      * Use arcade style drive.
      * 
-     * @param xSpeed    The x speed.
+     * @param xSpeed The x speed.
      * @param zRotation The robot rotation.
      */
     public void arcadeDrive(final double xSpeed, final double zRotation) {
@@ -37,7 +35,7 @@ public class DifferentialDriveData extends DataWrapper {
     /**
      * Use tank style drive.
      * 
-     * @param leftSpeed  The left motor speed.
+     * @param leftSpeed The left motor speed.
      * @param rightSpeed The right motor speed.
      */
     public void tankDrive(final double leftSpeed, final double rightSpeed) {

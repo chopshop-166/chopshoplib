@@ -1,9 +1,9 @@
 package com.chopshop166.chopshoplib.drive;
 
-import com.chopshop166.chopshoplib.motors.SmartMotorController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import yams.motorcontrollers.SmartMotorController;
 
 /**
  * A mock swerve module that assumes it goes to the right state instantly.
@@ -70,11 +70,11 @@ public class MockSwerveModule implements SwerveModule {
 
     @Override
     public SmartMotorController getDriveMotor() {
-        return new SmartMotorController();
+        return null;
     }
 
     @Override
     public SmartMotorController getSteeringMotor() {
-        return new SmartMotorController();
+        return null;
     }
 }
