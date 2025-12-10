@@ -1,5 +1,7 @@
 package com.chopshop166.chopshoplib.drive;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Radians;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.DoubleSupplier;
@@ -57,8 +59,8 @@ public class DiffDriveSubsystem
     @Override
     public void periodic() {
         super.periodic();
-        this.odometry.update(this.getRotation(), this.getData().left.distance,
-                this.getData().right.distance);
+        this.odometry.update(this.getRotation(), this.getData().left.distance.in(Inches),
+                this.getData().right.distance.in(Inches));
         this.field.setRobotPose(this.getPose());
     }
 
@@ -105,8 +107,8 @@ public class DiffDriveSubsystem
 
     /** Reset the encoders. */
     public void resetEncoders() {
-        this.getMap().leftEncoder().reset();
-        this.getMap().rightEncoder().reset();
+        this.getMap().left().setEncoderPosition(Radians.of(0));
+        this.getMap().right().setEncoderPosition(Radians.of(0));
     }
 
     /** Reset the gyro. */
@@ -139,7 +141,7 @@ public class DiffDriveSubsystem
      * @return The average distance.
      */
     private double encoderAvg() {
-        return (this.getData().left.distance + this.getData().right.distance) / 2.0;
+        return this.getData().left.distance.plus(this.getData().right.distance).div(2.0).in(Inches);
     }
 
     /**

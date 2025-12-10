@@ -1,36 +1,32 @@
 package com.chopshop166.chopshoplib.drive;
 
-import com.chopshop166.chopshoplib.motors.CSSpark;
-import com.chopshop166.chopshoplib.motors.PIDControlType;
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
 import com.chopshop166.chopshoplib.sensors.IAbsolutePosition;
 import com.chopshop166.chopshoplib.states.PIDValues;
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
+import yams.motorcontrollers.local.SparkWrapper;
 
 /** Swerve Drive Specialties Mk3. */
 public class SDSSwerveModule implements SwerveModule {
 
-    /** State of the module inversion */
-    private boolean inverted;
     /** The physical location of the module. */
     private final Translation2d location;
     /** The encoder used for steering. */
     private final IAbsolutePosition steeringEncoder;
     /** The motor controller for steering. */
-    private final CSSpark steeringController;
+    private final SparkWrapper steeringController;
     /** The PID controller for steering. */
     private final PIDController steeringPID;
     /** The motor controller used for driving. */
-    private final CSSpark driveController;
+    private final SparkWrapper driveController;
 
     /** Mark 3 Standard configuration. */
     public static final Configuration MK3_STANDARD = new Configuration(
@@ -130,8 +126,8 @@ public class SDSSwerveModule implements SwerveModule {
      * @param conf The module configuration.
      */
     public SDSSwerveModule(final Translation2d moduleLocation,
-            final IAbsolutePosition steeringEncoder, final CSSpark steeringController,
-            final CSSpark driveController, final Configuration conf) {
+            final IAbsolutePosition steeringEncoder, final SparkWrapper steeringController,
+            final SparkWrapper driveController, final Configuration conf) {
         this(moduleLocation, steeringEncoder, steeringController, driveController, conf,
                 new PIDController(conf.steeringPIDValues.p(), conf.steeringPIDValues.i(),
                         conf.steeringPIDValues.d()));
@@ -148,8 +144,8 @@ public class SDSSwerveModule implements SwerveModule {
      * @param pid The PID controller for steering.
      */
     public SDSSwerveModule(final Translation2d moduleLocation,
-            final IAbsolutePosition steeringEncoder, final CSSpark steeringController,
-            final CSSpark driveController, final Configuration conf, final PIDController pid) {
+            final IAbsolutePosition steeringEncoder, final SparkWrapper steeringController,
+            final SparkWrapper driveController, final Configuration conf, final PIDController pid) {
         this.location = moduleLocation;
         this.steeringEncoder = steeringEncoder;
         this.steeringController = steeringController;
@@ -164,7 +160,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     @Override
-    public CSSpark getSteeringMotor() {
+    public SparkWrapper getSteeringMotor() {
         return this.steeringController;
     }
 
@@ -174,7 +170,7 @@ public class SDSSwerveModule implements SwerveModule {
      * @return The controller object.
      */
     @Override
-    public CSSpark getDriveMotor() {
+    public SparkWrapper getDriveMotor() {
         return this.driveController;
     }
 
@@ -209,19 +205,12 @@ public class SDSSwerveModule implements SwerveModule {
         desiredState.cosineScale(this.getAngle());
 
         // Set the drive motor output speed
-        if (desiredState.speedMetersPerSecond == 0) {
-            this.driveController.getPidController().setIAccum(0);
-        }
-        if (this.inverted) {
-            desiredState.speedMetersPerSecond *= -1;
-        }
-
         return new SwerveModuleSpeeds(desiredState.speedMetersPerSecond, angleOutput);
     }
 
     @Override
     public void setInverted(final boolean isInverted) {
-        this.inverted = isInverted;
+        this.driveController.setMotorInverted(isInverted);
     }
 
     /**
@@ -240,30 +229,16 @@ public class SDSSwerveModule implements SwerveModule {
      * @param motor Drive motor controller to configure.
      * @return Drive motor controller for chaining.
      */
-    private static CSSpark configureDriveMotor(final CSSpark motor, final Configuration conf) {
+    private static SparkWrapper configureDriveMotor(final SparkWrapper motor,
+            final Configuration conf) {
         // Get raw objects from the CSSparkMax
-        final SparkBase sparkMax = motor.getMotorController();
-        final var config = new SparkMaxConfig();
-
-        // Set Motor controller configuration
-        motor.setControlType(PIDControlType.Velocity);
-        config.idleMode(IdleMode.kBrake);
-        config.smartCurrentLimit(50);
-
-        // Set velocity conversion to convert RPM to M/s
-        // Set Position conversion to convert from Rotations to M
-        config.encoder.velocityConversionFactor(conf.getConversion() / 60.0)
-                .positionConversionFactor(conf.getConversion());
-
-        // Configure PID
-        // https://docs.revrobotics.com/sparkmax/operating-modes/closed-loop-control
-        config.closedLoop.pid(conf.drivePIDValues.p(), conf.drivePIDValues.i(),
-                conf.drivePIDValues.d(), ClosedLoopSlot.kSlot0);
-        config.closedLoop.feedForward.kV(conf.drivePIDValues.ff());
-
-        motor.setPidSlot(0);
-
-        sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        final SmartMotorControllerConfig driveCfg =
+                motor.getConfig().withIdleMode(MotorMode.BRAKE).withStatorCurrentLimit(Amps.of(50))
+                        .withClosedLoopController(conf.drivePIDValues.p(), conf.drivePIDValues.i(),
+                                conf.drivePIDValues.d())
+                        .withFeedforward(new SimpleMotorFeedforward(0.0, conf.drivePIDValues.ff()))
+                        .withGearing(conf.getConversion());
+        motor.applyConfig(driveCfg);
 
         // Return the original object so this can be chained
         return motor;
@@ -271,18 +246,17 @@ public class SDSSwerveModule implements SwerveModule {
 
     @Override
     public double getDistance() {
-        return this.driveController.getEncoder().getDistance();
+        return this.driveController.getMeasurementPosition().magnitude();
     }
 
     @Override
     public void resetDistance() {
-        this.driveController.getEncoder().reset();
+        this.driveController.setPosition(Degrees.of(0));
     }
 
     @Override
     public SwerveModuleState getState() {
-        return new SwerveModuleState(
-                (this.inverted ? -1.0 : 1.0) * this.driveController.getEncoder().getRate(),
+        return new SwerveModuleState(this.driveController.getMeasurementVelocity(),
                 this.getAngle());
     }
 }
