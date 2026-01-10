@@ -1,7 +1,7 @@
 package com.chopshop166.chopshoplib.motors.validators;
 
 import java.util.function.DoubleSupplier;
-import com.chopshop166.chopshoplib.PersistenceCheck;
+import edu.wpi.first.math.filter.Debouncer;
 
 /**
  * A validator that uses a motor's encoder rate to determine if the motor is currently spinning
@@ -13,7 +13,7 @@ public class EncoderValidator implements MotorValidator {
     /** A function that returns a motor's encoder rate */
     private final DoubleSupplier encoderRate;
     /** Persistance check that determines if the encoder is not spinning */
-    private final PersistenceCheck persistenceCheck;
+    private final Debouncer debouncer;
 
     /**
      * Construct an encoder validator
@@ -23,11 +23,10 @@ public class EncoderValidator implements MotorValidator {
      * @param persistance how many cycles to determine if the encoder is not rotating
      */
     public EncoderValidator(final DoubleSupplier encoderRate, final double rateThreshold,
-            final int persistance) {
+            final double persistance) {
         this.encoderRate = encoderRate;
         this.rateThreshold = rateThreshold;
-        this.persistenceCheck = new PersistenceCheck(persistance,
-                () -> Math.abs(this.encoderRate.getAsDouble()) <= this.rateThreshold);
+        this.debouncer = new Debouncer(persistance);
     }
 
     /**
@@ -35,7 +34,8 @@ public class EncoderValidator implements MotorValidator {
      */
     @Override
     public boolean getAsBoolean() {
-        return this.persistenceCheck.getAsBoolean();
+        return this.debouncer
+                .calculate(Math.abs(this.encoderRate.getAsDouble()) <= this.rateThreshold);
     }
 
     /**
@@ -43,6 +43,6 @@ public class EncoderValidator implements MotorValidator {
      */
     @Override
     public void reset() {
-        this.persistenceCheck.reset();
+        // This call should do nothing, debouncer handles it for us
     }
 }

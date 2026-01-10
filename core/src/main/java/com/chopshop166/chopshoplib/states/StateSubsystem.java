@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import com.chopshop166.chopshoplib.commands.SmartSubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -121,7 +122,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
         final StringBuilder builder = new StringBuilder("Attempted transition from ");
         builder.append(currentState).append(" to ").append(commandedState);
         final Command cmd = new PrintCommand(builder.toString());
-        cmd.schedule();
+        CommandScheduler.getInstance().schedule(cmd);
     }
 
     /**

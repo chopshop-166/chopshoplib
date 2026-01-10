@@ -71,7 +71,7 @@ public abstract class CommandRobot extends LoggedRobot {
 
         // schedule the autonomous command (example)
         if (this.autoCmd != null) {
-            this.autoCmd.schedule();
+            CommandScheduler.getInstance().schedule(this.autoCmd);
         }
     }
 
