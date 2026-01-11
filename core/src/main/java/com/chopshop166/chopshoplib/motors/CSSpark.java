@@ -86,7 +86,7 @@ public class CSSpark extends SmartMotorController {
 
     @Override
     public void setSetpoint(final double setPoint) {
-        this.sparkPID.setReference(setPoint, this.savedControlType, this.pidSlot);
+        this.sparkPID.setSetpoint(setPoint, this.savedControlType, this.pidSlot);
     }
 
     /**
