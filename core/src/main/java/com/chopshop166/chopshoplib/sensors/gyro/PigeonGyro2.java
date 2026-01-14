@@ -1,5 +1,6 @@
 package com.chopshop166.chopshoplib.sensors.gyro;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -39,7 +40,7 @@ public class PigeonGyro2 implements SmartGyro {
      * @param canBus The CAN Bus name.
      */
     public PigeonGyro2(final int deviceNumber, final String canBus) {
-        this(new Pigeon2(deviceNumber, canBus));
+        this(new Pigeon2(deviceNumber, CANBus.roboRIO(canBus)));
     }
 
 
