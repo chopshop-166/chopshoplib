@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 public class SwPIDMotorController extends SmartMotorController {
 
     /** The PID controller for calculations. */
-    final private PIDController pid;
+    private final PIDController pid;
     /** The measurement source. */
-    final private DoubleSupplier measurement;
+    private final DoubleSupplier measurement;
     /** The watchdog to repeatedly trigger the calculation. */
-    final private Watchdog dog = new Watchdog(1.0 / 50.0, this::calculatePID);
+    private final Watchdog dog = new Watchdog(1.0 / 50.0, this::calculatePID);
     /** The feedforward coefficient. */
     private double feedforward;
     /** The setpoint to move to. */
@@ -28,7 +28,7 @@ public class SwPIDMotorController extends SmartMotorController {
     /** Whether the PID controller is enabled. */
     private boolean pidEnabled = true;
     /** List of PID Parameters that we can switch between. */
-    final private List<PIDValues> configs = new ArrayList<>(4);
+    private final List<PIDValues> configs = new ArrayList<>(4);
 
     /**
      * Use a PID controller with the position of an encoder.

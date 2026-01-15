@@ -22,11 +22,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * 
  * Contains convenient wrappers for the commands that are often used in groups.
  */
-@SuppressWarnings({"PMD.ExcessiveImports", "PMD.GodClass"})
 public abstract class CommandRobot extends LoggedRobot {
 
     /** Chooser for the autonomous mode. */
-    final private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     /** Currently running autonomous command. */
     private Command autoCmd;
 

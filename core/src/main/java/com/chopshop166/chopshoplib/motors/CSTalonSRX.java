@@ -17,7 +17,7 @@ public class CSTalonSRX extends SmartMotorController {
     /** The Talon control mode. */
     private ControlMode savedControlType = ControlMode.PercentOutput;
     /** List of Configurations that we can switch between. */
-    final private List<TalonSRXConfiguration> config = new ArrayList<>(4);
+    private final List<TalonSRXConfiguration> config = new ArrayList<>(4);
 
     /**
      * Constructor.

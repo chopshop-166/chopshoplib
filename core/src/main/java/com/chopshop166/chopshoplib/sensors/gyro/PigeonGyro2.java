@@ -12,7 +12,7 @@ import edu.wpi.first.math.util.Units;
 public class PigeonGyro2 implements SmartGyro {
 
     /** The wrapped object. */
-    final private Pigeon2 gyro;
+    private final Pigeon2 gyro;
 
     /**
      * Create the wrapper.

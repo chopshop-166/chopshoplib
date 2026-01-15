@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.Units;
 public class PigeonGyro implements SmartGyro {
 
     /** The wrapped object. */
-    final private PigeonIMU gyro;
+    private final PigeonIMU gyro;
     /** Boolean to control inverted output. */
     private boolean inverted;
 

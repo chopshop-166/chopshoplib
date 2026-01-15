@@ -12,7 +12,7 @@ import com.chopshop166.chopshoplib.maps.RobotMap.MapType;
 final class MapGetterTest {
 
     /** The package to use. */
-    static private final String PACKAGE = "com.chopshop166";
+    private static final String PACKAGE = "com.chopshop166";
 
     /** Get the map for A. */
     @Test

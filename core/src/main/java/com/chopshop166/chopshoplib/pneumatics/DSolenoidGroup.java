@@ -35,7 +35,7 @@ public final class DSolenoidGroup implements IDSolenoid {
     }
 
     @Override
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock"})
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException"})
     public void close() throws Exception {
         this.wrapped.forEach(s -> {
             try {
