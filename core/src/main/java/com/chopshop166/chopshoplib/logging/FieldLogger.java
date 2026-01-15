@@ -10,6 +10,20 @@ import com.chopshop166.chopshoplib.motors.PIDControlType;
 import com.chopshop166.chopshoplib.states.LinearDirection;
 import com.chopshop166.chopshoplib.states.OpenClose;
 import com.chopshop166.chopshoplib.states.SpinDirection;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Unit;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Energy;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
+import edu.wpi.first.units.measure.Temperature;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.protobuf.ProtobufSerializable;
 import edu.wpi.first.util.struct.StructSerializable;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -63,6 +77,31 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
             public void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final T fieldValue = (T) field.get(that);
+                field.set(that, table.get(name, fieldValue));
+            }
+        });
+    }
+
+    /**
+     * Create the logger to use for an enum type.
+     * 
+     * @param clazz The class descriptor.
+     */
+    public static <U extends Unit, M extends Measure<U>> void registerMeasureForLogger(
+            final Class<M> clazz) {
+        BOXABLE_CLASSES.putIfAbsent(clazz, new FieldLogger() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public void toLog(final String name, final LogTable table, final Field field,
+                    final Object that) throws IllegalAccessException {
+                table.put(name, (M) field.get(that));
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public void fromLog(final String name, final LogTable table, final Field field,
+                    final Object that) throws IllegalAccessException {
+                final M fieldValue = (M) field.get(that);
                 field.set(that, table.get(name, fieldValue));
             }
         });
@@ -277,6 +316,19 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
                 field.set(that, table.get(name, (ProtobufSerializable) field.get(that)));
             }
         });
+        // Measurements
+        registerMeasureForLogger(Angle.class);
+        registerMeasureForLogger(AngularAcceleration.class);
+        registerMeasureForLogger(AngularVelocity.class);
+        registerMeasureForLogger(Current.class);
+        registerMeasureForLogger(Distance.class);
+        registerMeasureForLogger(Energy.class);
+        registerMeasureForLogger(LinearAcceleration.class);
+        registerMeasureForLogger(LinearVelocity.class);
+        registerMeasureForLogger(Mass.class);
+        registerMeasureForLogger(Temperature.class);
+        registerMeasureForLogger(Time.class);
+        registerMeasureForLogger(Voltage.class);
         // Add extractors for the common enums we use
         registerEnumForLogger(ButtonXboxController.POVDirection.class);
         registerEnumForLogger(DriverStation.Alliance.class);

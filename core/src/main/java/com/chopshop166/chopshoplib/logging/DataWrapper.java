@@ -37,7 +37,8 @@ public class DataWrapper implements LoggableInputs {
     private static boolean fieldTypeIsLoggable(final Field field) {
         final Class<?> fieldType = field.getType();
         return LoggableInputs.class.isAssignableFrom(fieldType) || fieldType.isEnum()
-                || FieldLogger.BOXABLE_CLASSES.containsKey(fieldType);
+                || FieldLogger.BOXABLE_CLASSES.entrySet().stream()
+                        .anyMatch(entry -> entry.getKey().isAssignableFrom(fieldType));
     }
 
 }
