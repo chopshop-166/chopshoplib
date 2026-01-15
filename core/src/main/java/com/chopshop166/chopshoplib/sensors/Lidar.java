@@ -65,7 +65,6 @@ public class Lidar {
     /**
      * Settings received from the sensor.
      */
-    @SuppressWarnings({"PMD.TooManyFields"})
     public static class Settings {
         /**
          * Mode of operation.

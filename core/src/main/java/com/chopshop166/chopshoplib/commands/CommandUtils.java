@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 /**
  * Utility class for storing command helpers.
  */
-final public class CommandUtils {
+public final class CommandUtils {
 
     private CommandUtils() {}
 
