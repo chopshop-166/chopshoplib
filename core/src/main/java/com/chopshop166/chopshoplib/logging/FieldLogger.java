@@ -36,9 +36,9 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 /* package */ abstract class FieldLogger {
 
     /** The classes that are able to be logged. */
-    public final static Map<Class<?>, FieldLogger> BOXABLE_CLASSES = new HashMap<>();
+    public static final Map<Class<?>, FieldLogger> BOXABLE_CLASSES = new HashMap<>();
     /** The logger to use for enums. */
-    public final static FieldLogger ENUM_LOGGER = new FieldLogger() {
+    public static final FieldLogger ENUM_LOGGER = new FieldLogger() {
         @Override
         public void toLog(final String name, final LogTable table, final Field field,
                 final Object that) throws IllegalAccessException {
@@ -116,7 +116,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * @param that The object to log from.
      * @throws IllegalAccessException Only if something's horribly wrong
      */
-    abstract public void toLog(String name, LogTable table, Field field, Object that)
+    public abstract void toLog(String name, LogTable table, Field field, Object that)
             throws IllegalAccessException;
 
     /**
@@ -128,7 +128,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * @param that The object to set to.
      * @throws IllegalAccessException Only if something's horribly wrong
      */
-    abstract public void fromLog(String name, LogTable table, Field field, Object that)
+    public abstract void fromLog(String name, LogTable table, Field field, Object that)
             throws IllegalAccessException;
 
     static {

@@ -62,7 +62,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     public void setState(final S newState) {
         final Transition<S> transition = new Transition<>(this.currentState, newState);
         if (this.transitions.contains(transition)
-                || this.allowSameTransition && this.currentState.equals(newState)) {
+                || this.allowSameTransition && this.currentState == newState) {
             Optional.of(this.onExitHandlers.get(this.currentState)).ifPresent(Runnable::run);
             this.currentState = newState;
             Optional.of(this.onEntryHandlers.get(this.currentState)).ifPresent(Runnable::run);
@@ -166,7 +166,7 @@ public abstract class StateSubsystem<S extends Enum<S>> extends SmartSubsystemBa
     protected final void handle(final S state, final Supplier<S> action) {
         this.handlers.put(state, () -> {
             final S newState = action.get();
-            if (!this.getState().equals(newState) || this.allowSameTransition) {
+            if (this.getState() != newState || this.allowSameTransition) {
                 this.setState(newState);
             }
         });

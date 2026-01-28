@@ -3,6 +3,7 @@ package com.chopshop166.chopshoplib.maps;
 /**
  * Sample RobotMap base interface.
  */
+@SuppressWarnings({"PMD.ImplicitFunctionalInterface"})
 public interface RobotMap {
 
     /** Enum for denoting different map values. */

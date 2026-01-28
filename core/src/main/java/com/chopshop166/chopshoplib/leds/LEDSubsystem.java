@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 /** A base class for an LED subsystem. */
-@SuppressWarnings({"PMD.LinguisticNaming"})
 public class LEDSubsystem extends SmartSubsystemBase {
 
     /** The LED subsystem map. */
@@ -98,7 +97,6 @@ public class LEDSubsystem extends SmartSubsystemBase {
      * @param pattern The pattern to set it to.
      * @return A command object.
      */
-    @SuppressWarnings({"PMD.LinguisticNaming"})
     public Command setGlobalPattern(final Pattern pattern) {
         return Commands.runOnce(() -> {
             this.ledBuffer.setGlobalPattern(pattern);
