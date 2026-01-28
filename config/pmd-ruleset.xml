@@ -30,6 +30,7 @@
     <rule ref="category/java/design.xml">
         <exclude name="AbstractClassWithoutAnyMethod"/>
         <exclude name="DataClass"/>
+        <exclude name="ExcessiveImports"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
         <exclude name="TooManyMethods"/>
@@ -55,5 +56,12 @@
         <exclude name="UseConcurrentHashMap"/>
     </rule>
     <rule ref="category/java/performance.xml"/>
+
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+        <properties>
+            <property name="skipAnnotations" value="true" />
+        </properties>
+    </rule>
+
 
 </ruleset>
