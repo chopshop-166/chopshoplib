@@ -1,6 +1,8 @@
 package com.chopshop166.chopshoplib.maps;
 
-import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix6.controls.SolidColor;
+import com.ctre.phoenix6.hardware.CANdle;
+import com.ctre.phoenix6.signals.RGBWColor;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 
@@ -22,11 +24,11 @@ public class CANdleLedMap extends LedMapBase {
 
 
     @Override
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void setData(final AddressableLEDBuffer buf) {
         for (int i = 0; i < buf.getLength(); i++) {
             final Color c = buf.getLED(i);
-            this.candle.setLEDs((int) (c.red * 255), (int) (c.green * 255), (int) (c.blue * 255),
-                    255, i, 1);
+            this.candle.setControl(new SolidColor(i, i).withColor(new RGBWColor(c)));
         }
     }
 }
