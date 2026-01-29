@@ -26,6 +26,8 @@ public class SwerveDriveData extends DataWrapper {
 
     /** The actual chassis speeds. */
     public ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
+    /** The field-relative chassis speeds. */
+    public ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds();
 
     /**
      * Set Desired States.
