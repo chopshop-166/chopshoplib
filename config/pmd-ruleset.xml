@@ -31,6 +31,7 @@
         <exclude name="AbstractClassWithoutAnyMethod"/>
         <exclude name="DataClass"/>
         <exclude name="ExcessiveImports"/>
+        <exclude name="ExcessiveParameterList"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
         <exclude name="TooManyMethods"/>
