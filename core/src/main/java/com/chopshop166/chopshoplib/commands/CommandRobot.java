@@ -51,6 +51,16 @@ public abstract class CommandRobot extends LoggedRobot {
     }
 
     @Override
+    public void startCompetition() {
+        // For 2026, robotInit is deprecated.
+        // In 2027+, robotInit has been removed.
+        // We like this functionality because it's bad practice to call virtual functions from
+        // constructors, so we're adding it back.
+        robotInit();
+        super.startCompetition();
+    }
+
+    @Override
     public void robotPeriodic() {
         // Do not call the super method, remove the annoying print
         CommandScheduler.getInstance().run();
