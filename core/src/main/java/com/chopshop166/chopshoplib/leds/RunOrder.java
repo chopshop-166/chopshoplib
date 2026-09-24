@@ -4,12 +4,12 @@ package com.chopshop166.chopshoplib.leds;
 /* package */ record RunOrder(Pattern pattern, SegmentBuffer buffer) {
 
     /** Wrapper to call initialize. */
-    public void initialize() {
+    /* package */ void initialize() {
         this.pattern.initialize(this.buffer);
     }
 
     /** Wrapper to call update. */
-    public void update() {
+    /* package */ void update() {
         this.pattern.update(this.buffer);
     }
 }

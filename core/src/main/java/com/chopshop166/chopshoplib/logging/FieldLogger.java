@@ -36,17 +36,17 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 /* package */ abstract class FieldLogger {
 
     /** The classes that are able to be logged. */
-    public static final Map<Class<?>, FieldLogger> BOXABLE_CLASSES = new HashMap<>();
+    /* package */ static final Map<Class<?>, FieldLogger> BOXABLE_CLASSES = new HashMap<>();
     /** The logger to use for enums. */
-    public static final FieldLogger ENUM_LOGGER = new FieldLogger() {
+    /* package */ static final FieldLogger ENUM_LOGGER = new FieldLogger() {
         @Override
-        public void toLog(final String name, final LogTable table, final Field field,
+        /* package */ void toLog(final String name, final LogTable table, final Field field,
                 final Object that) throws IllegalAccessException {
             table.put(name, field.get(that).toString());
         }
 
         @Override
-        public void fromLog(final String name, final LogTable table, final Field field,
+        /* package */ void fromLog(final String name, final LogTable table, final Field field,
                 final Object that) throws IllegalAccessException {
             final String fieldValueStr = field.get(that).toString();
             final String newTableValue = table.get(name, fieldValueStr);
@@ -63,18 +63,18 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * 
      * @param clazz The class descriptor.
      */
-    public static <T extends Enum<T>> void registerEnumForLogger(final Class<T> clazz) {
+    /* package */ static <T extends Enum<T>> void registerEnumForLogger(final Class<T> clazz) {
         BOXABLE_CLASSES.putIfAbsent(clazz, new FieldLogger() {
             @Override
             @SuppressWarnings("unchecked")
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (T) field.get(that));
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final T fieldValue = (T) field.get(that);
                 field.set(that, table.get(name, fieldValue));
@@ -87,19 +87,19 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * 
      * @param clazz The class descriptor.
      */
-    public static <U extends Unit, M extends Measure<U>> void registerMeasureForLogger(
+    /* package */ static <U extends Unit, M extends Measure<U>> void registerMeasureForLogger(
             final Class<M> clazz) {
         BOXABLE_CLASSES.putIfAbsent(clazz, new FieldLogger() {
             @Override
             @SuppressWarnings("unchecked")
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (M) field.get(that));
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final M fieldValue = (M) field.get(that);
                 field.set(that, table.get(name, fieldValue));
@@ -116,7 +116,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * @param that The object to log from.
      * @throws IllegalAccessException Only if something's horribly wrong
      */
-    public abstract void toLog(String name, LogTable table, Field field, Object that)
+    /* package */ abstract void toLog(String name, LogTable table, Field field, Object that)
             throws IllegalAccessException;
 
     /**
@@ -128,150 +128,150 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
      * @param that The object to set to.
      * @throws IllegalAccessException Only if something's horribly wrong
      */
-    public abstract void fromLog(String name, LogTable table, Field field, Object that)
+    /* package */ abstract void fromLog(String name, LogTable table, Field field, Object that)
             throws IllegalAccessException;
 
     static {
         BOXABLE_CLASSES.put(Boolean.TYPE, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, field.getBoolean(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.setBoolean(that, table.get(name, field.getBoolean(that)));
             }
         });
         BOXABLE_CLASSES.put(boolean[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (boolean[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (boolean[]) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(Double.TYPE, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, field.getDouble(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.setDouble(that, table.get(name, field.getDouble(that)));
             }
         });
         BOXABLE_CLASSES.put(double[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (double[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (double[]) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(Integer.TYPE, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, field.getInt(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.setInt(that, table.get(name, field.getInt(that)));
             }
         });
         BOXABLE_CLASSES.put(int[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (int[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (int[]) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(Long.TYPE, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, field.getLong(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.setLong(that, table.get(name, field.getLong(that)));
             }
         });
         BOXABLE_CLASSES.put(int[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (int[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (int[]) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(String.class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (String) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (String) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(String[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (String[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (String[]) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(LoggableInputs.class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final LoggableInputs inps = (LoggableInputs) field.get(that);
                 inps.toLog(table.getSubtable(name));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 final LoggableInputs inps = (LoggableInputs) field.get(that);
                 inps.fromLog(table.getSubtable(name));
@@ -279,39 +279,39 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
         });
         BOXABLE_CLASSES.put(StructSerializable.class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (StructSerializable) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (StructSerializable) field.get(that)));
             }
         });
         BOXABLE_CLASSES.put(StructSerializable[].class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (StructSerializable[]) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, new StructSerializable[0]));
             }
         });
         BOXABLE_CLASSES.put(ProtobufSerializable.class, new FieldLogger() {
             @Override
-            public void toLog(final String name, final LogTable table, final Field field,
+            /* package */ void toLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 table.put(name, (ProtobufSerializable) field.get(that));
             }
 
             @Override
-            public void fromLog(final String name, final LogTable table, final Field field,
+            /* package */ void fromLog(final String name, final LogTable table, final Field field,
                     final Object that) throws IllegalAccessException {
                 field.set(that, table.get(name, (ProtobufSerializable) field.get(that)));
             }

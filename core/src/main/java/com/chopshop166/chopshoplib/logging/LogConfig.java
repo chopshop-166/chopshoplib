@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.LogTable;
      * @param field The field to use.
      * @return A new object.
      */
-    public static LogConfig fromField(final Field field) {
+    /* package */ static LogConfig fromField(final Field field) {
         // Get the name that it gets logged by
         String name = field.getName();
         if (field.isAnnotationPresent(LogName.class)) {
@@ -36,7 +36,7 @@ import org.littletonrobotics.junction.LogTable;
      * 
      * @param table A logging table.
      */
-    public void toLog(final LogTable table, final Object that) {
+    /* package */ void toLog(final LogTable table, final Object that) {
         try {
             this.logger.toLog(this.name, table, this.field, that);
         } catch (IllegalAccessException ex) {
@@ -49,7 +49,7 @@ import org.littletonrobotics.junction.LogTable;
      * 
      * @param table A logging table.
      */
-    public void fromLog(final LogTable table, final Object that) {
+    /* package */ void fromLog(final LogTable table, final Object that) {
         try {
             this.logger.fromLog(this.name, table, this.field, that);
         } catch (IllegalAccessException ex) {
